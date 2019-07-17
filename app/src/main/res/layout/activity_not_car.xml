@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/mNoGoodLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+
+        <ImageView
+            android:layout_width="231px"
+            android:layout_height="301px"
+            android:layout_marginTop="300px"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/nowifi" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="74px"
+            android:text="您的网络开小差了!"
+            android:textColor="@color/txt_hei"
+            android:textSize="46px" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30px"
+            android:text="请检查您的网络设置,再刷新试试吧!"
+            android:textColor="@color/txt_gray"
+            android:textSize="42px" />
+
+        <TextView
+            android:id="@+id/mGoGuangguangTV"
+            android:layout_width="wrap_content"
+            android:layout_height="120px"
+            android:layout_marginTop="65px"
+            android:paddingRight="100px"
+            android:paddingLeft="100px"
+            android:background="@drawable/bg_notcar"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="40px"
+            android:layout_marginLeft="40px"
+            android:gravity="center"
+            android:text="刷 新"
+            android:textColor="@color/white"
+            android:textSize="42px" />
+    </LinearLayout>
+
+</RelativeLayout>

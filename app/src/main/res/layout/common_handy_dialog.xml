@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <RelativeLayout
+        android:layout_width="880px"
+        android:layout_height="580px"
+        android:background="@drawable/dialog" >
+
+
+        <ImageView
+            android:id="@+id/mImageView"
+            android:layout_centerHorizontal="true"
+            android:layout_width="150px"
+            android:layout_height="150px"
+            android:src="@drawable/w_icon_toast_success"
+            android:layout_marginTop="70px" />
+		<RelativeLayout 
+		    android:id="@+id/mBottomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="70px">
+            <View 
+                android:layout_width="40px"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:id="@+id/mCenterView"/>
+            <TextView 
+                android:id="@+id/mCancleTV"
+                android:layout_width="315px"
+                android:textSize="44px"
+                android:gravity="center"
+                android:background="@drawable/btn_order_commit_green"
+                android:textColor="@color/white"
+                android:text="取消"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/mCenterView"/>
+            <TextView 
+                android:id="@+id/mSureTV"
+                android:layout_width="315px"
+                android:textSize="44px"
+                android:gravity="center"
+                android:text="确定"
+                android:background="@drawable/btn_order_commit_orange"
+                android:textColor="@color/white"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/mCenterView"/>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/mTextTV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="90px"
+            android:layout_marginRight="90px"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/mImageView"
+            android:layout_above="@id/mBottomLayout"
+            android:textColor="@color/txt_black_center"
+            android:textSize="44px" />
+    </RelativeLayout>
+</RelativeLayout>
