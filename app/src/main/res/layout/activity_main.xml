@@ -1,30 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:clipChildren="false"
         android:background="#FFF"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="?android:attr/windowBackground"
-            app:menu="@menu/navigation" />
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
     <View
             android:layout_width="match_parent"
             android:layout_below="@+id/vp_main"
             android:layout_height="0.5dp"
             android:background="@color/line"/>
-    <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_main"
-            android:layout_above="@id/bottom_navigation"
+    <com.qmuiteam.qmui.widget.QMUITabSegment
+            android:id="@+id/views"
+            android:visibility="gone"
+            app:qmui_tab_has_indicator="false"
+            app:qmui_tab_icon_position="top"
+            app:qmui_tab_mode="fixed"
+            app:qmui_tab_indicator_height="1dp"
+            app:qmui_tab_indicator_top="false"
+            android:textSize="14sp"
+            android:background="?android:attr/windowBackground"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="80dp"/>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:itemIconTint="@drawable/selector_tab_color"
+            app:itemTextColor="@drawable/selector_tab_color"
+            app:itemBackground="@null"
+            app:labelVisibilityMode="labeled"
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/navigation"/>
 
-</RelativeLayout>
+</LinearLayout>

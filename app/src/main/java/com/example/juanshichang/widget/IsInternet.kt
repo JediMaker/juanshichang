@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.provider.Settings
 import android.widget.TextView
 
@@ -41,16 +42,23 @@ class IsInternet {
             //        return false;
 
 
-            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            /*val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             if(connectivityManager == null){
                 return  false
             }
             val networkinfo = connectivityManager.activeNetworkInfo
-
             if (networkinfo == null || !networkinfo.isAvailable) {
                 return false
             }
-            return true
+            return true*/
+            if(context != null){
+                val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val netWorkInfo:NetworkInfo = connectivityManager.activeNetworkInfo
+                if(netWorkInfo!=null){
+                    return  netWorkInfo.isAvailable
+                }
+            }
+            return false
         }
 
         // 如果没有网络，则弹出网络设置对话框

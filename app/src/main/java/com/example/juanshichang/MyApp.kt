@@ -7,6 +7,7 @@ import android.text.TextUtils
 import androidx.multidex.MultiDex
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.MD5Utils
+import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager
 
 open class MyApp : Application() {
     companion object{
@@ -30,6 +31,10 @@ open class MyApp : Application() {
         }
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        QMUISwipeBackActivityManager.init(this)  //初始化 腾讯QMUI_Android
+    }
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)

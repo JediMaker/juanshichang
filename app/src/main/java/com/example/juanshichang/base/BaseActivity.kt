@@ -42,8 +42,9 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
      var unbinder : Unbinder? = null
     //没有网络添加的
     private var mNotIntent: TextView? = null
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         //-----------------网络-------------------------
         //网络连接
         val conn = IsInternet.isNetworkAvalible(this@BaseActivity)
@@ -133,36 +134,35 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
     }
 
     @CallSuper
-    protected override fun onStart() {
+    override fun onStart() {
         super.onStart()
         lifecycleSubject.onNext(ActivityEvent.START)
     }
 
     @CallSuper
-    protected override fun onResume() {
+    override fun onResume() {
         super.onResume()
         lifecycleSubject.onNext(ActivityEvent.RESUME)
 //        MobclickAgent.onResume(this)  // todo Mob 相关
     }
 
     @CallSuper
-    protected override fun onPause() {
+    override fun onPause() {
         super.onPause()
         lifecycleSubject.onNext(ActivityEvent.PAUSE)
 //        MobclickAgent.onPause(this)   // todo Mob 相关
     }
 
     @CallSuper
-    protected override fun onStop() {
+    override fun onStop() {
         super.onStop()
         lifecycleSubject.onNext(ActivityEvent.STOP)
     }
 
-    protected override fun onDestroy() {
+    override fun onDestroy() {
         super.onDestroy()
         unbinder?.unbind()
         lifecycleSubject.onNext(ActivityEvent.DESTROY)
-
     }
     companion object{
         /**失败：对应叉号 */
@@ -177,12 +177,17 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
          * @Bundle    传入要传递的参数
          * @Class<BaseActivity>   传入跳向A界面 A界面
          */
-        fun startActivity(context: Context, bundle: Bundle, activity:BaseActivity) {
+        fun goStartActivity(context: Context, bundle: Bundle, activity:BaseActivity) {
             var intent = Intent()
             intent.setClass(context, activity.javaClass)
             if (!bundle.isEmpty) {
                 intent.putExtra("BUNDLE", bundle)
             }
+            context.startActivity(intent)
+        }
+        fun goStartActivity(context: Context,activity:BaseActivity) {
+            var intent = Intent()
+            intent.setClass(context, activity.javaClass)
             context.startActivity(intent)
         }
     }
