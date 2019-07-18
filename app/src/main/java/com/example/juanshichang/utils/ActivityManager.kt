@@ -23,14 +23,14 @@ class ActivityManager {
 
     fun close() {
         for (activity in activityList) {
-            activity?.finish()
+            activity.finish()
         }
     }
 
     // 遍历所有Activity并finish
     fun exit() {
         for (activity in activityList) {
-            activity?.finish()
+            activity.finish()
         }
         android.os.Process.killProcess(android.os.Process.myPid())
     }

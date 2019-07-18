@@ -49,14 +49,13 @@ class HandyDialog (type:Int,text:String,sureBtnText:String,cancleBtnText:String,
             mSureTV.text = mSureBtnText
         }
         mSureTV.setOnClickListener(this)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCanceledOnTouchOutside(false)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setCanceledOnTouchOutside(false)
 
         return view
     }
     override fun onClick(v: View?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         dismiss()
         when (v?.getId()) {
             R.id.mCancleTV -> if (mCallback != null) {

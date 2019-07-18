@@ -3,10 +3,8 @@ package com.example.juanshichang.widget
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.provider.Settings
 import android.widget.TextView
 
@@ -44,15 +42,15 @@ class IsInternet {
 
 
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-                ?: return false
+            if(connectivityManager == null){
+                return  false
+            }
+            val networkinfo = connectivityManager.activeNetworkInfo
 
-            val networkinfo = connectivityManager!!.activeNetworkInfo
-
-            return if (networkinfo == null || !networkinfo!!.isAvailable) {
-                false
-            } else true
-
-
+            if (networkinfo == null || !networkinfo.isAvailable) {
+                return false
+            }
+            return true
         }
 
         // 如果没有网络，则弹出网络设置对话框
@@ -67,10 +65,7 @@ class IsInternet {
                     .setView(msg)
                     .setPositiveButton("确定") { dialog, whichButton ->
                         // 跳转到设置界面
-                        activity.startActivityForResult(
-                            Intent(
-                                Settings.ACTION_WIRELESS_SETTINGS),
-                            0)
+                        activity.startActivityForResult(Intent(Settings.ACTION_WIRELESS_SETTINGS),0)
                     }.create().show()
             }
             return

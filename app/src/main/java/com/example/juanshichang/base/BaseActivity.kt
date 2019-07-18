@@ -34,12 +34,12 @@ import java.util.*
 
 abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEvent> {
     private val lifecycleSubject = BehaviorSubject.create<ActivityEvent>()
-    var myApp : MyApp?? = null
+    var myApp : MyApp? = null
     protected abstract fun getContentView(): Int
     protected abstract fun initView()
     protected abstract fun initData()
     //绑定控件id
-     var unbinder : Unbinder?? = null
+     var unbinder : Unbinder? = null
     //没有网络添加的
     private var mNotIntent: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
@@ -180,7 +180,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
         fun startActivity(context: Context, bundle: Bundle, activity:BaseActivity) {
             var intent = Intent()
             intent.setClass(context, activity.javaClass)
-            if (bundle != null) {
+            if (!bundle.isEmpty) {
                 intent.putExtra("BUNDLE", bundle)
             }
             context.startActivity(intent)

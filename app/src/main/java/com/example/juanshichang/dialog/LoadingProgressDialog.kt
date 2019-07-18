@@ -14,22 +14,21 @@ import com.example.juanshichang.R
  */
 open class LoadingProgressDialog: Dialog {
     constructor(context: Context):super(context){
-        var context = context
         setContentView(R.layout.dialog_progress)
         imageView = findViewById<View>(R.id.loadingImageView) as ImageView
-        animationDrawable = imageView.getBackground() as AnimationDrawable
-        animationDrawable.start()
+        animationDrawable = imageView?.getBackground() as AnimationDrawable
+        animationDrawable?.start()
     }
-    private var imageView: ImageView = null!!
-    private var animationDrawable: AnimationDrawable = null!!
+    private var imageView: ImageView? = null
+    private var animationDrawable: AnimationDrawable? = null
     constructor(context: Context,theme:Int):super(context,theme){
         setContentView(R.layout.dialog_progress)
         imageView = findViewById<View>(R.id.loadingImageView) as ImageView
-        animationDrawable = imageView.background as AnimationDrawable
-        animationDrawable.start()
+        animationDrawable = imageView?.background as AnimationDrawable
+        animationDrawable?.start()
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
-        animationDrawable.start()
+        animationDrawable?.start()
     }
 }

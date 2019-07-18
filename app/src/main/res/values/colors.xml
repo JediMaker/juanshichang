@@ -9,4 +9,5 @@
     <color name="red">#ca0000</color>
     <color name="bt">#da002f</color>
     <color name="white">#ffffff</color>
+    <color name="line">#eeeeee</color>
 </resources>
