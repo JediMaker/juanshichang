@@ -10,4 +10,6 @@
     <color name="bt">#da002f</color>
     <color name="white">#ffffff</color>
     <color name="line">#eeeeee</color>
+    <color name="xian">#cccccc</color>
+    <color name="edit_gray">#cccccc</color>
 </resources>

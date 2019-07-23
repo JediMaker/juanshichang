@@ -72,6 +72,8 @@ dependencies {
     //引入腾讯UI框架
     implementation 'com.qmuiteam:qmui:1.2.0'
     implementation 'com.qmuiteam:arch:0.3.1'
+    //引入万能适配器
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45'
     //屏幕适配
     implementation 'com.zhy:autolayout:1.4.5'
     //解决重复类dex问题
@@ -86,13 +88,13 @@ dependencies {
     //添加这行
     //eventbus
     api 'org.greenrobot:eventbus:3.1.1'
-    kapt"org.greenrobot:eventbus-annotation-processor:3.1.1" // New Add
+    kapt "org.greenrobot:eventbus-annotation-processor:3.1.1" // New Add
     //rxlifecycle2 避免内存泄漏
     api 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
     api 'com.trello.rxlifecycle2:rxlifecycle-android:2.1.0'
     api 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
     api 'com.github.bumptech.glide:glide:4.9.0'
-    api 'com.yanzhenjie:permission:1.0.7'
+    api 'com.yanzhenjie.permission:x:2.0.1'
     api 'com.zhy:okhttputils:2.6.2'
     api 'org.ligboy.retrofit2:converter-fastjson-android:2.2.0'
     api 'com.squareup.okhttp3:logging-interceptor:4.0.1'

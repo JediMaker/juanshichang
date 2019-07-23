@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.LoginActivity">
+    <LinearLayout
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_marginLeft="125px"
+            android:layout_marginRight="125px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:id="@+id/Ll1"
+                android:layout_width="match_parent"
+                android:layout_height="120px"
+
+                android:background="@drawable/bg_login_white">
+
+            <ImageView
+                    android:layout_width="48px"
+                    android:layout_height="48px"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="46px"
+                    android:background="@drawable/i_login_user"/>
+
+            <EditText
+                    android:id="@+id/mLoginName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="40px"
+                    android:background="@null"
+                    android:hint="手机号"
+                    android:textColor="@color/edit_gray"
+                    android:textSize="40px"/>
+        </LinearLayout>
+        <!--  18668960768   18612312312-->
+        <LinearLayout
+                android:id="@+id/Ll2"
+                android:layout_width="match_parent"
+                android:layout_height="120px"
+                android:layout_below="@+id/Ll1"
+                android:layout_marginTop="40px"
+                android:background="@drawable/bg_login_white">
+
+            <ImageView
+                    android:layout_width="48px"
+                    android:layout_height="48px"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="46px"
+                    android:background="@drawable/i_login_pwd"/>
+
+            <EditText
+                    android:id="@+id/mLoginPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="40px"
+                    android:background="@null"
+                    android:hint="密码"
+                    android:inputType="textPassword"
+                    android:textColor="@color/edit_gray"
+                    android:textSize="40px"/>
+        </LinearLayout>
+        <Button
+                android:id="@+id/mLogoinBt"
+                android:layout_width="match_parent"
+                android:layout_height="120px"
+                android:layout_below="@+id/mLoginPassLayout"
+                android:layout_marginLeft="125px"
+                android:layout_marginRight="125px"
+                android:layout_marginTop="55px"
+                android:background="@drawable/bg_gray"
+                android:gravity="center"
+                android:text="立即登录"
+                android:textColor="@color/white"
+                android:textSize="40px"/>
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/mLogoinBt"
+                android:layout_marginTop="10px">
+
+            <TextView
+                    android:id="@+id/mRegisterTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="95px"
+                    android:padding="30px"
+                    android:text="注册新用户"
+                    android:textColor="@color/txt_gray"
+                    android:textSize="40px"/>
+
+            <TextView
+                    android:id="@+id/mForgetPwdTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="95px"
+                    android:padding="30px"
+                    android:text="忘记密码"
+                    android:textColor="@color/txt_gray"
+                    android:textSize="40px"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</com.zhy.autolayout.AutoRelativeLayout>

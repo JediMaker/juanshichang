@@ -1,16 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
+             android:orientation="vertical"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".fragment.OneFragment">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+    >
 
+        <!--返回-->
+
+        <View
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                />
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_index_serch"
+                android:layout_marginRight="50dp"
+                android:layout_marginLeft="50dp"
+        >
+            <TextView
+                    android:id="@+id/etsearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="请输入商品搜一搜"
+                    android:paddingLeft="40dp"
+                    android:textSize="14sp" />
+
+            <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/ic_shop_search" />
+
+        </RelativeLayout>
+
+        <View
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:padding="9dp"
+                android:layout_marginRight="5dp"
+        />
+
+
+    </RelativeLayout>
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textSize="26sp"
             android:textColor="@android:color/holo_red_dark"
             android:text="首页"/>
 
-</RelativeLayout>
+</com.zhy.autolayout.AutoLinearLayout>

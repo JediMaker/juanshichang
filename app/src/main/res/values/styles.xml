@@ -7,7 +7,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">#3e000000</item>
+        <item name="android:windowBackground">#FFF</item>
     </style>
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
@@ -23,4 +23,9 @@
         <item name="android:windowNoTitle">true</item>
     </style>
     <!--加载圈所用-->
+    <!--首页 TabLayout -->
+    <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

@@ -1,12 +1,17 @@
 package com.example.juanshichang
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.text.TextUtils
+import android.util.Log
 import android.util.SparseArray
 import android.view.MenuItem
 import android.view.View
@@ -18,21 +23,50 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.juanshichang.R
+import com.example.juanshichang.activity.LoginActivity
+import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
+import com.example.juanshichang.base.JsonParser
+import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.fragment.*
+import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.JumpPermissionManagement
+import com.example.juanshichang.utils.SpUtil
+import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.Util
+import com.example.juanshichang.widget.seletpic.PermissionHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.google.android.material.tabs.TabItem
+import com.google.android.material.tabs.TabLayout
+import com.qmuiteam.qmui.arch.Utils
 import com.qmuiteam.qmui.util.QMUIResHelper
 import com.qmuiteam.qmui.widget.QMUITabSegment
+import com.yanzhenjie.permission.AndPermission
+import com.yanzhenjie.permission.setting.Setting
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONException
+import org.json.JSONObject
+import rx.Subscriber
 
 /**
  * @作者: yzq
  * @创建日期: 2019/7/17 11:32
  * @文件作用:  首页面
  */
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(){
+    companion object{
+        private const val CAM_CODE = 101
+    }
+    private val PERMISSION_CAM = arrayOf(
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.CAMERA,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+//        Manifest.permission.RECORD_AUDIO
+    ) //新添 Manifest.permission.RECORD_AUDIO  音频
     private var fragmentList:MutableList<Fragment>? = null
     private var oneFragment: OneFragment? = null
     private var twoFragment: TwoFragment? = null
@@ -58,6 +92,13 @@ class MainActivity : BaseActivity() {
         fragmentList?.add(threeFragment!!)
         fragmentList?.add(fourFragment!!)
         fragmentList?.add(fiveFragment!!)
+            AndPermission.with(this).runtime().permission(PERMISSION_CAM).onGranted({//使用权限
+                ToastUtil.showToast(this,"劵市场,感谢您的支持!!!")
+            }) .onDenied({ //拒绝使用权限
+                ToastUtil.showToast(this,"请前往设置中心开启权限")
+                JumpPermissionManagement.GoToSetting(this)
+            }) .start()
+//            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request()
     }
 
     @SuppressLint("ResourceType")
@@ -65,7 +106,9 @@ class MainActivity : BaseActivity() {
 //        val xpp = resources.getXml(R.drawable.selector_tab_color)
 //        val csl = ColorStateList.createFromXml(resources,xpp)
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){ // todo 此处 待确定 版本
+            //如果SDK版本过低 就关闭 滑动事件 并启用 教Low 的旧版本状态栏
 //            val view = android.support.design.widget.BottomNavigationView(this@MainActivity)
+            vp_main.setPagingEnabled(false)
             views.visibility = View.VISIBLE
             setTecentBottom()
         }else{
@@ -94,12 +137,17 @@ class MainActivity : BaseActivity() {
             }
             R.id.me -> {
                 vp_main.currentItem = 4
+                if(!Util.hasLogin()){
+                    BaseActivity.Companion.goStartActivity(this@MainActivity,LoginActivity())
+                }else{
+                    ToastUtil.showToast(this@MainActivity,"登录检查通过")
+                }
                 return@OnNavigationItemSelectedListener true
             }
         }
         false
     }
-    private val mTencentBottomView = object : QMUITabSegment.OnTabSelectedListener{
+    /*private val mTencentBottomView = object : QMUITabSegment.OnTabSelectedListener{
         override fun onDoubleTap(index: Int) { //当某个 Tab 被双击时会触发
         }
 
@@ -114,12 +162,37 @@ class MainActivity : BaseActivity() {
             vp_main.currentItem = index
         }
 
+    }*/
+    private val mTabLayoutBottom = object : TabLayout.OnTabSelectedListener{
+        override fun onTabReselected(p0: TabLayout.Tab?) {
+        }
+
+        override fun onTabUnselected(p0: TabLayout.Tab?) {
+
+        }
+
+        override fun onTabSelected(p0: TabLayout.Tab?) {
+            vp_main.currentItem = p0!!.position
+            if(p0.position == 4){
+                if(!Util.hasLogin()){
+                    BaseActivity.Companion.goStartActivity(this@MainActivity,LoginActivity())
+                }else{
+                    ToastUtil.showToast(this@MainActivity,"登录检查通过")
+                }
+            }
+        }
+
     }
     override fun initData() {
 
         normalAdapter = NormalAdapter(supportFragmentManager, fragmentList!!)
         vp_main.adapter = normalAdapter
-        vp_main.offscreenPageLimit = fragmentList!!.size
+        vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
+        val token = SpUtil.getIstance().user.usertoken
+        Log.e("token","本地的token值为:"+token)
+        if(token!="" && TextUtils.isEmpty(token)){
+            downUser("login")
+        }
     }
 
     internal inner class NormalAdapter(fm: FragmentManager, private val fragmentList: List<Fragment>) : FragmentPagerAdapter(fm) {
@@ -135,13 +208,13 @@ class MainActivity : BaseActivity() {
     }
 
     /**
-     *  腾讯底部栏
+     *  腾讯底部栏舍弃 - 采用原生底部栏
      */
     private fun setTecentBottom() {
 //        val view : QMUITabSegment= QMUITabSegment(this@MainActivity,false)
 //        views.setDefaultTabIconPosition(QMUITabSegment.ICON_POSITION_TOP) // top
 //        views.setHasIndicator(false) //设置是否显示下划线
-        val normalColor = QMUIResHelper.getAttrColor(this@MainActivity, R.attr.qmui_config_color_gray_6);
+        /*val normalColor = QMUIResHelper.getAttrColor(this@MainActivity, R.attr.qmui_config_color_gray_6);
         val selectColor = QMUIResHelper.getAttrColor(this@MainActivity, R.attr.qmui_config_color_blue);
         views.setDefaultNormalColor(normalColor); //设置tab正常下的颜色  
         views.setDefaultSelectedColor(selectColor); //设置tab选中下的颜色  
@@ -178,7 +251,32 @@ class MainActivity : BaseActivity() {
         views.addTab(component4)
         views.addOnTabSelectedListener(mTencentBottomView)
         views.setupWithViewPager(vp_main)
-        views.notifyDataChanged()
+        views.notifyDataChanged()*/
+//        views.setupWithViewPager(vp_main)  // todo 绑定 有Bug
+//        vp_main.currentItem =  0
+        views.addTab(views.newTab().setText(R.string.first).setIcon(R.drawable.tab_one))
+        views.addTab(views.newTab().setText(R.string.study).setIcon(R.drawable.tab_one))
+        views.addTab(views.newTab().setText(R.string.store).setIcon(R.drawable.tab_one))
+        views.addTab(views.newTab().setText(R.string.community).setIcon(R.drawable.tab_one))
+        views.addTab(views.newTab().setText(R.string.me).setIcon(R.drawable.tab_one))
+//        views.getTabAt(0)?.text = resources.getText(R.string.first)
+//        views.getTabAt(1)?.text = resources.getText(R.string.study)
+//        views.getTabAt(2)?.text = resources.getText(R.string.store)
+//        views.getTabAt(3)?.text = resources.getText(R.string.community)
+//        views.getTabAt(4)?.text = resources.getText(R.string.me)
+        views.addOnTabSelectedListener(mTabLayoutBottom)
+        vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                views.getTabAt(position)?.isSelected()
+            }
+
+        })
     }
     /**
      *  原生谷歌官方底部栏
@@ -191,7 +289,7 @@ class MainActivity : BaseActivity() {
 //        view.itemTextColor = csl
 //        view.itemIconTintList = csl
 //        view.itemBackground = null
-//        view.setOnNavigationItemSelectedListener(mBottomNavigationView)
+        view.setOnNavigationItemSelectedListener(mBottomNavigationView)
         var menuItem:MenuItem? = null
         vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -202,6 +300,15 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onPageSelected(position: Int) {
+                // todo new add
+                if(position == 4){
+                    if(!Util.hasLogin()){
+                        BaseActivity.Companion.goStartActivity(this@MainActivity,LoginActivity())
+                    }else{
+                        ToastUtil.showToast(this@MainActivity,"登录检查通过")
+                    }
+                }
+                // new add
                 if (menuItem != null) {
                     menuItem!!.isChecked = false
                 } else {
@@ -214,5 +321,45 @@ class MainActivity : BaseActivity() {
         })
     }
 
+
+    /**
+     * 获取用户信息
+     */
+    private fun downUser(typeLogin: String) {
+        HttpManager.getInstance().post(Api.USERINFO, Parameter.fengMap(typeLogin), object : Subscriber<String>() {
+            override fun onNext(str: String?) {
+                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                    var jsonObj: JSONObject? = null
+                    try {
+                        jsonObj = JSONObject(str)
+                    } catch (e: JSONException) {
+                        e.printStackTrace();
+                    }
+                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        ToastUtil.showToast(this@MainActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
+                    } else {
+                        val data = jsonObj!!.getJSONObject("data")
+                        val age: String = data.getString("age")
+                        val avatar: String = data.getString("avatar")
+                        val name: String = data.getString("name")
+                        var user = SpUtil.getIstance().user
+                        user.userage = age
+                        user.useravatar = avatar
+                        user.username = name
+                        SpUtil.getIstance().user = user //写入
+                        Log.e("userInfo","获取用户信息成功:年龄:$age 头像地址:$avatar 昵称:$name")
+                    }
+                }
+            }
+
+            override fun onCompleted() {
+                Log.e("onCompleted","用户信息请求完成!")
+            }
+
+            override fun onError(e: Throwable?) {
+                Log.e("onCompleted","用户信息请求错误!")
+            }
+        })
+    }
 }
 

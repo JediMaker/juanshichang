@@ -8,20 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.example.juanshichang.R
+import com.example.juanshichang.base.BaseFragment
+
 /**
  * @作者: yzq
  * @创建日期: 2019/7/17 16:55
  * @文件作用:  个人中心
  */
-class FiveFragment : Fragment() {
+class FiveFragment : BaseFragment() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_five, container, false)
+    override fun getLayoutId(): Int {
+        return  R.layout.fragment_five
     }
 
+    override fun initViews(savedInstanceState: Bundle) {
+    }
 
+    override fun initData() {
+    }
 }
