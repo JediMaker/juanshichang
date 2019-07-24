@@ -7,12 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import butterknife.OnClick
 import com.example.juanshichang.MyApp
 
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.SearcheActivity
 import com.example.juanshichang.base.BaseFragment
 import com.example.juanshichang.utils.ToastUtil
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.fragment_one.*
 
 /**
@@ -20,7 +22,7 @@ import kotlinx.android.synthetic.main.fragment_one.*
  * @创建日期: 2019/7/17 16:52
  * @文件作用: 首页
  */
-class OneFragment : BaseFragment(),View.OnClickListener{
+class OneFragment : BaseFragment() {
     /* override fun onCreateView(
          inflater: LayoutInflater, container: ViewGroup?,
          savedInstanceState: Bundle?
@@ -29,25 +31,29 @@ class OneFragment : BaseFragment(),View.OnClickListener{
          return inflater.inflate(R.layout.fragment_one, container, false)
      }*/
     override fun getLayoutId(): Int {
-        return  R.layout.fragment_one
+//        QMUIStatusBarHelper.translucent(mContext)
+        return R.layout.fragment_one
     }
 
     override fun initViews(savedInstanceState: Bundle) {
-        etsearch.setOnClickListener(this)
+
     }
 
     override fun initData() {
 
     }
-    override fun onClick(view: View?) {
-        when(view){
-            etsearch -> {
-                ToastUtil.showToast(MyApp.applicationContext,"搜索ing")
-                val intent = Intent(mContext,SearcheActivity::class.java)
+
+    @OnClick(R.id.etsearch)
+    fun onViewClicked(v: View) {
+        when (v.id) {
+            R.id.etsearch -> {
+                ToastUtil.showToast(MyApp.applicationContext, "搜索ing  setOnClickListener")
+                val intent = Intent(mContext, SearcheActivity::class.java)
                 //...
                 startActivity(intent)
             }
-            else ->{}
+            else -> {
+            }
         }
     }
 

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".fragment.OneFragment">
+<com.zhy.autolayout.AutoLinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.OneFragment">
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -19,7 +21,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                />
+        />
 
         <RelativeLayout
                 android:layout_width="match_parent"
@@ -37,14 +39,14 @@
                     android:gravity="center_vertical"
                     android:text="请输入商品搜一搜"
                     android:paddingLeft="40dp"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/ic_shop_search" />
+                    android:src="@drawable/ic_shop_search"/>
 
         </RelativeLayout>
 

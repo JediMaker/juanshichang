@@ -124,7 +124,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理
-                        if(token!=null){
+                        if(token!=""){
                             ToastUtil.showToast(this@RegisterActivity, "注册成功,正在登录...")
                         }
                         logGo(phone, ps)  //注册完成 直接登录

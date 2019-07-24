@@ -14,7 +14,18 @@ interface Api {
         val USER = "/register"
         //登录
         val LOGIN = "/login"
-        //用户信息
+        //用户信息 login
         val USERINFO = "/user/info"
+        //商品搜索/商品详情查询 unlogin
+        val SEARCH = "/apiserver/search"
+        // 商品分享链接 必须登录  login
+        val SHARE = "/user/generateurl"
+
+
+
+        //servicer 关键字
+        val Pdd = "pdd"
+        val TaoBao = "taobao"
+        val Jd = "jd"
     }
 }

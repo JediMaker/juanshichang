@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import butterknife.ButterKnife
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment(){
     var mContext: BaseActivity? = null
     protected var mBaseView: View? = null
     protected abstract fun getLayoutId(): Int
@@ -28,7 +28,7 @@ abstract class BaseFragment : Fragment() {
             mBaseView = inflater.inflate(getLayoutId(), container, false)
             ButterKnife.bind(this,mBaseView!!)
             if(savedInstanceState != null){  //todo 此处添加状态判断 防止走空
-                initViews(savedInstanceState!!)
+                initViews(savedInstanceState)
             }
             initData()
         }

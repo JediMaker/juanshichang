@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/mNotNUll"
+        android:layout_width="400px"
+        android:layout_height="286px"
+        android:background="@drawable/c_defull_null"
+        android:layout_marginTop="400px"
+        android:layout_centerHorizontal="true">
+
+    </RelativeLayout>
+    <TextView
+        android:layout_marginTop="30px"
+        android:layout_below="@+id/mNotNUll"
+        android:text="暂无数据"
+        android:textSize="42px"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/txt_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

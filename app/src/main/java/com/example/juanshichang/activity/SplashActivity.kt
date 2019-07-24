@@ -29,7 +29,7 @@ class SplashActivity : FragmentActivity() {
     }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var GxmQ:Boolean = MyApp.sp?.getBoolean("FIRST", true)!!
+        var GxmQ:Boolean = MyApp.sp.getBoolean("FIRST", true)
         val edit = MyApp.sp.edit()
         edit.putString("appkey","0371.ml.appkey")
         edit.commit()
@@ -57,9 +57,9 @@ class SplashActivity : FragmentActivity() {
 
     private fun goActivity(context: Context) {
         if(Util.hasLogin()){
-            BaseActivity.goStartActivity(this@SplashActivity,MainActivity())
+            BaseActivity.goStartActivity(context,MainActivity())
         }else{
-            BaseActivity.goStartActivity(this@SplashActivity,LoginActivity())
+            BaseActivity.goStartActivity(context,LoginActivity())
         }
         finish()
     }

@@ -19,7 +19,7 @@ open class MyApp : Application() {
         lateinit var applicationContext: Context
 
         fun getInstance(): MyApp {
-            return app!!
+            return app
         }
 
         /**

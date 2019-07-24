@@ -2,27 +2,15 @@ package com.example.juanshichang
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
-import android.util.SparseArray
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.example.juanshichang.R
 import com.example.juanshichang.activity.LoginActivity
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
@@ -34,16 +22,10 @@ import com.example.juanshichang.utils.JumpPermissionManagement
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
-import com.example.juanshichang.widget.seletpic.PermissionHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomnavigation.LabelVisibilityMode
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
-import com.qmuiteam.qmui.arch.Utils
-import com.qmuiteam.qmui.util.QMUIResHelper
-import com.qmuiteam.qmui.widget.QMUITabSegment
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.yanzhenjie.permission.AndPermission
-import com.yanzhenjie.permission.setting.Setting
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -54,10 +36,11 @@ import rx.Subscriber
  * @创建日期: 2019/7/17 11:32
  * @文件作用:  首页面
  */
-class MainActivity : BaseActivity(){
-    companion object{
+class MainActivity : BaseActivity() {
+    companion object {
         private const val CAM_CODE = 101
     }
+
     private val PERMISSION_CAM = arrayOf(
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.CAMERA,
@@ -67,7 +50,7 @@ class MainActivity : BaseActivity(){
         Manifest.permission.WRITE_EXTERNAL_STORAGE
 //        Manifest.permission.RECORD_AUDIO
     ) //新添 Manifest.permission.RECORD_AUDIO  音频
-    private var fragmentList:MutableList<Fragment>? = null
+    private var fragmentList: MutableList<Fragment>? = null
     private var oneFragment: OneFragment? = null
     private var twoFragment: TwoFragment? = null
     private var threeFragment: ThreeFragment? = null
@@ -92,12 +75,14 @@ class MainActivity : BaseActivity(){
         fragmentList?.add(threeFragment!!)
         fragmentList?.add(fourFragment!!)
         fragmentList?.add(fiveFragment!!)
-            AndPermission.with(this).runtime().permission(PERMISSION_CAM).onGranted({//使用权限
-                ToastUtil.showToast(this,"劵市场,感谢您的支持!!!")
-            }) .onDenied({ //拒绝使用权限
-                ToastUtil.showToast(this,"请前往设置中心开启权限")
-                JumpPermissionManagement.GoToSetting(this)
-            }) .start()
+        AndPermission.with(this).runtime().permission(PERMISSION_CAM).onGranted({
+            //使用权限
+            ToastUtil.showToast(this, "劵市场,感谢您的支持!!!")
+        }).onDenied({
+            //拒绝使用权限
+            ToastUtil.showToast(this, "请前往设置中心开启权限")
+            JumpPermissionManagement.GoToSetting(this)
+        }).start()
 //            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request()
     }
 
@@ -105,13 +90,13 @@ class MainActivity : BaseActivity(){
     private fun setBottomView() {
 //        val xpp = resources.getXml(R.drawable.selector_tab_color)
 //        val csl = ColorStateList.createFromXml(resources,xpp)
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){ // todo 此处 待确定 版本
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // todo 此处 待确定 版本
             //如果SDK版本过低 就关闭 滑动事件 并启用 教Low 的旧版本状态栏
 //            val view = android.support.design.widget.BottomNavigationView(this@MainActivity)
             vp_main.setPagingEnabled(false)
             views.visibility = View.VISIBLE
             setTecentBottom()
-        }else{
+        } else {
             view.visibility = View.VISIBLE
             setGoogleBottom()
         }
@@ -137,10 +122,10 @@ class MainActivity : BaseActivity(){
             }
             R.id.me -> {
                 vp_main.currentItem = 4
-                if(!Util.hasLogin()){
-                    BaseActivity.Companion.goStartActivity(this@MainActivity,LoginActivity())
-                }else{
-                    ToastUtil.showToast(this@MainActivity,"登录检查通过")
+                if (!Util.hasLogin()) {
+                    BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
+                } else {
+                    ToastUtil.showToast(this@MainActivity, "登录检查通过")
                 }
                 return@OnNavigationItemSelectedListener true
             }
@@ -163,7 +148,7 @@ class MainActivity : BaseActivity(){
         }
 
     }*/
-    private val mTabLayoutBottom = object : TabLayout.OnTabSelectedListener{
+    private val mTabLayoutBottom = object : TabLayout.OnTabSelectedListener {
         override fun onTabReselected(p0: TabLayout.Tab?) {
         }
 
@@ -173,29 +158,31 @@ class MainActivity : BaseActivity(){
 
         override fun onTabSelected(p0: TabLayout.Tab?) {
             vp_main.currentItem = p0!!.position
-            if(p0.position == 4){
-                if(!Util.hasLogin()){
-                    BaseActivity.Companion.goStartActivity(this@MainActivity,LoginActivity())
-                }else{
-                    ToastUtil.showToast(this@MainActivity,"登录检查通过")
+            if (p0.position == 4) {
+                if (!Util.hasLogin()) {
+                    BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
+                } else {
+                    ToastUtil.showToast(this@MainActivity, "登录检查通过")
                 }
             }
         }
 
     }
+
     override fun initData() {
 
         normalAdapter = NormalAdapter(supportFragmentManager, fragmentList!!)
         vp_main.adapter = normalAdapter
         vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
         val token = SpUtil.getIstance().user.usertoken
-        Log.e("token","本地的token值为:"+token)
-        if(token!="" && TextUtils.isEmpty(token)){
+        Log.e("token", "本地的token值为:" + token)
+        if (token != "" && TextUtils.isEmpty(token)) {
             downUser("login")
         }
     }
 
-    internal inner class NormalAdapter(fm: FragmentManager, private val fragmentList: List<Fragment>) : FragmentPagerAdapter(fm) {
+    internal inner class NormalAdapter(fm: FragmentManager, private val fragmentList: List<Fragment>) :
+        FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
             return fragmentList[position]
@@ -278,6 +265,7 @@ class MainActivity : BaseActivity(){
 
         })
     }
+
     /**
      *  原生谷歌官方底部栏
      */
@@ -290,7 +278,7 @@ class MainActivity : BaseActivity(){
 //        view.itemIconTintList = csl
 //        view.itemBackground = null
         view.setOnNavigationItemSelectedListener(mBottomNavigationView)
-        var menuItem:MenuItem? = null
+        var menuItem: MenuItem? = null
         vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
@@ -301,11 +289,11 @@ class MainActivity : BaseActivity(){
 
             override fun onPageSelected(position: Int) {
                 // todo new add
-                if(position == 4){
-                    if(!Util.hasLogin()){
-                        BaseActivity.Companion.goStartActivity(this@MainActivity,LoginActivity())
-                    }else{
-                        ToastUtil.showToast(this@MainActivity,"登录检查通过")
+                if (position == 4) {
+                    if (!Util.hasLogin()) {
+                        BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
+                    } else {
+                        ToastUtil.showToast(this@MainActivity, "登录检查通过")
                     }
                 }
                 // new add
@@ -347,17 +335,17 @@ class MainActivity : BaseActivity(){
                         user.useravatar = avatar
                         user.username = name
                         SpUtil.getIstance().user = user //写入
-                        Log.e("userInfo","获取用户信息成功:年龄:$age 头像地址:$avatar 昵称:$name")
+                        Log.e("userInfo", "获取用户信息成功:年龄:$age 头像地址:$avatar 昵称:$name")
                     }
                 }
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted","用户信息请求完成!")
+                Log.e("onCompleted", "用户信息请求完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onCompleted","用户信息请求错误!")
+                Log.e("onCompleted", "用户信息请求错误!")
             }
         })
     }

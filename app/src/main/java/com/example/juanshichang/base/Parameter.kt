@@ -19,7 +19,7 @@ class Parameter {
          * 签名
          */
         fun getSignString(signType: Int, str: String): String {
-            var appkey = MyApp.sp?.getString("appkey", "0371.ml.appkey")   //获取AppKey
+            var appkey = MyApp.sp.getString("appkey", "0371.ml.appkey")   //获取AppKey
             var usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
             var sign: String = ""
             if (signType == 0) { //未登录
@@ -67,7 +67,7 @@ class Parameter {
          * 签名
          */
         fun getSign(signType: String, fuji: String): String {
-            var appkey = MyApp.sp?.getString("appkey", "0371.ml.appkey")   //获取AppKey
+            var appkey = MyApp.sp.getString("appkey", "0371.ml.appkey")   //获取AppKey
             var usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
             var sign: String = ""
             if (signType.equals("unlogin")) { //未登录
@@ -140,5 +140,37 @@ class Parameter {
             return map
         }
 
+        /**
+         * 商品搜索
+         * @param servicer  只能为以下之一:pdd,taobao,jd
+         * @param keyword  商品搜素关键字
+         * @param page  搜索结果第几页
+         */
+        fun getSearchMap(servicer: String, keyword: String,page: String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("servicer=$servicer")
+            baseList.add("keyword=$keyword")
+            baseList.add("page=$page")
+            var map = fengMap("unlogin")
+            map.put("servicer", servicer)
+            map.put("keyword", keyword)
+            map.put("page", page)
+            return map
+        }
+        /**
+         * 商品搜索详情
+         * @param servicer  只能为以下之一:pdd,taobao,jd
+         * @param goods_id  商品ID
+         *
+         */
+        fun getSearchDetailsMap(servicer: String, goods_id: String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("servicer=$servicer")
+            baseList.add("goods_id=$goods_id")
+            var map = fengMap("unlogin")
+            map.put("servicer", servicer)
+            map.put("goods_id", goods_id)
+            return map
+        }
     }
 }
