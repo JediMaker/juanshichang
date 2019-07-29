@@ -20,13 +20,25 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.ClassTypeActivity">
+        <activity android:name=".activity.SettingActivity">
         </activity>
-        <activity android:name=".activity.SearcheActivity">
+        <activity android:name=".activity.WebActivity">
+        </activity>
+        <activity
+                android:name=".activity.ShangPinContains"
+                android:launchMode="singleTask">
+        </activity>
+        <activity
+                android:name=".activity.ClassTypeActivity"
+                android:launchMode="singleTask">
+        </activity>
+        <activity
+                android:name=".activity.SearcheActivity"
+                android:launchMode="singleTask">
         </activity>
         <activity
                 android:name=".activity.LoginActivity"
-                android:launchMode="singleTop">
+                android:launchMode="singleTask">
         </activity>
 
         <meta-data
@@ -38,6 +50,7 @@
 
         <activity
                 android:name=".activity.SplashActivity"
+                android:launchMode="singleTask"
                 android:theme="@style/QMUI.Compat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -52,7 +65,7 @@
                 android:theme="@style/QMUI.Compat.NoActionBar"/>
         <activity
                 android:name=".activity.RegisterActivity"
-                android:launchMode="singleTop"/>
+                android:launchMode="singleTask"/>
     </application>
 
 </manifest>

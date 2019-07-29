@@ -25,7 +25,7 @@ public class HttpManager{
 
 
     private static final int READ_TIME_OUT = 5;
-    private static final int CONNECT_TIME_OUT = 5;
+    private static final int CONNECT_TIME_OUT = 5; //5
 
     private ApiService mApiService;
 
@@ -36,6 +36,7 @@ public class HttpManager{
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(READ_TIME_OUT, TimeUnit.SECONDS)
                 .connectTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
+                .writeTimeout(5,TimeUnit.SECONDS)  //new add
                 .addInterceptor(loggingInterceptor)
                 .build();
 

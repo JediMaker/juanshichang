@@ -8,12 +8,13 @@ import com.zhy.autolayout.AutoFrameLayout
 import com.zhy.autolayout.AutoLinearLayout
 import com.zhy.autolayout.AutoRelativeLayout
 
-open class AutoLayoutActivity : AppCompatActivity(){
-    companion object{
+open class AutoLayoutActivity : AppCompatActivity() {
+    companion object {
         private const val LAYOUT_LINEARLAYOUT = "LinearLayout"
         private const val LAYOUT_FRAMELAYOUT = "FrameLayout"
         private const val LAYOUT_RELATIVELAYOUT = "RelativeLayout"
     }
+
     override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
         var view: View? = null
         if (name == LAYOUT_FRAMELAYOUT) {
@@ -27,7 +28,7 @@ open class AutoLayoutActivity : AppCompatActivity(){
         if (name == LAYOUT_RELATIVELAYOUT) {
             view = AutoRelativeLayout(context, attrs)
         }
-
+//        if (view != null) return view
         return view ?: super.onCreateView(name, context, attrs)
 //        return super.onCreateView(parent, name, context, attrs)
     }

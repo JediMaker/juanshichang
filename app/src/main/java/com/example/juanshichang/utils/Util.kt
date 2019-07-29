@@ -5,6 +5,11 @@ import android.content.Context
 import android.media.MediaCodec
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
+import android.webkit.CookieManager
+import android.webkit.CookieSyncManager
+import java.math.BigDecimal
+import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -67,11 +72,50 @@ class Util {
         /**
          * 判断是否已经登陆
          */
-        fun hasLogin() :Boolean{
-            if (TextUtils.isEmpty(SpUtil.getIstance().user.usertoken)){
+        fun hasLogin(): Boolean {
+            if (TextUtils.isEmpty(SpUtil.getIstance().user.usertoken)) {
                 return false
             }
             return true
+        }
+
+        /**
+         * 根据拼多多接口特性
+         * 自定义的 数据接口
+         * @param price 传入单位为分的价格
+         */
+        fun getFloatPrice(price: Any): String {
+            if (price is Long) {
+                val penny = price % 10 //得到 分
+                val dime = price % 100 //得到 角
+                var retStr = ""
+                if (penny == 0.toLong()) { //如果分位 为0 则
+                    if (dime != 0.toLong()) {//如果角位 不为0 则
+                        val d: Double = UtilsBigDecimal.div(price.toDouble(), 100.toDouble(), 1)
+                        retStr = "$d"
+                        return retStr
+                    } else {//如果角位 为0 则
+                        val d: Double = UtilsBigDecimal.div(price.toDouble(), 100.toDouble(), 0)
+                        retStr = "$d"
+                        return retStr
+                    }
+                } else { // 如果分位 不为0 则
+                    val d: Double = UtilsBigDecimal.div(price.toDouble(), 100.toDouble(), 2)
+                    retStr = "$d"
+                    return retStr
+                }
+            }
+            return ""
+        }
+
+        /**
+         *清理Cookie
+         */
+        fun removeCookie(context: Context) {
+            CookieSyncManager.createInstance(context)
+            var cookieManager: CookieManager = CookieManager.getInstance()
+            cookieManager.removeAllCookie()
+            CookieSyncManager.getInstance().sync()
         }
     }
 }

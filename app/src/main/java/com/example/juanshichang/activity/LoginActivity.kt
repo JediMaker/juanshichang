@@ -112,7 +112,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onCompleted","登录请求错误!"+e)
+                Log.e("onError","登录请求错误!"+e)
             }
 
         })

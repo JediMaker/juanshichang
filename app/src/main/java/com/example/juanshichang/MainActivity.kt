@@ -40,16 +40,6 @@ class MainActivity : BaseActivity() {
     companion object {
         private const val CAM_CODE = 101
     }
-
-    private val PERMISSION_CAM = arrayOf(
-        Manifest.permission.READ_PHONE_STATE,
-        Manifest.permission.CAMERA,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-//        Manifest.permission.RECORD_AUDIO
-    ) //新添 Manifest.permission.RECORD_AUDIO  音频
     private var fragmentList: MutableList<Fragment>? = null
     private var oneFragment: OneFragment? = null
     private var twoFragment: TwoFragment? = null
@@ -75,15 +65,8 @@ class MainActivity : BaseActivity() {
         fragmentList?.add(threeFragment!!)
         fragmentList?.add(fourFragment!!)
         fragmentList?.add(fiveFragment!!)
-        AndPermission.with(this).runtime().permission(PERMISSION_CAM).onGranted({
-            //使用权限
-            ToastUtil.showToast(this, "劵市场,感谢您的支持!!!")
-        }).onDenied({
-            //拒绝使用权限
-            ToastUtil.showToast(this, "请前往设置中心开启权限")
-            JumpPermissionManagement.GoToSetting(this)
-        }).start()
-//            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request()
+//            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request
+        MyApp.requestPermission(this@MainActivity)
     }
 
     @SuppressLint("ResourceType")
@@ -124,6 +107,7 @@ class MainActivity : BaseActivity() {
                 vp_main.currentItem = 4
                 if (!Util.hasLogin()) {
                     BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
+                    finish()
                 } else {
                     ToastUtil.showToast(this@MainActivity, "登录检查通过")
                 }
@@ -161,6 +145,7 @@ class MainActivity : BaseActivity() {
             if (p0.position == 4) {
                 if (!Util.hasLogin()) {
                     BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
+                    finish()
                 } else {
                     ToastUtil.showToast(this@MainActivity, "登录检查通过")
                 }
@@ -292,6 +277,7 @@ class MainActivity : BaseActivity() {
                 if (position == 4) {
                     if (!Util.hasLogin()) {
                         BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
+                        finish()
                     } else {
                         ToastUtil.showToast(this@MainActivity, "登录检查通过")
                     }
@@ -345,7 +331,7 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onCompleted", "用户信息请求错误!")
+                Log.e("onError", "用户信息请求错误!")
             }
         })
     }

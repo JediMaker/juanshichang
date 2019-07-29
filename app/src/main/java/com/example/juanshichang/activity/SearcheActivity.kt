@@ -64,16 +64,16 @@ class SearcheActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             mbackLayout -> {//返回
-                ToastUtil.showToast(this@SearcheActivity, "主人 你又要离开了吗 ┭┮﹏┭┮")
+                ToastUtil.showToast(this@SearcheActivity, "大侠 你又要离开了吗 ┭┮﹏┭┮")
                 finish()
             }
             etsearch -> {//搜索框
-                ToastUtil.showToast(this@SearcheActivity, "主人 你终于来啦!!!")
+                ToastUtil.showToast(this@SearcheActivity, "大侠 你终于来啦!!!")
             }
             mSearchBt -> {//搜索按钮
                 val str = getEditText()
                 if(!TextUtils.isEmpty(str)){
-                    ToastUtil.showToast(this@SearcheActivity, "开始寻找喽...")
+                    ToastUtil.showToast(this@SearcheActivity, "开始寻找...")
                     var intent = Intent(this@SearcheActivity,ClassTypeActivity::class.java)
                     intent.putExtra("keyword",str)
                     startActivity(intent)

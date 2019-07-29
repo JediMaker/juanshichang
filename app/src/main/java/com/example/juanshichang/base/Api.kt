@@ -7,20 +7,21 @@ package com.example.juanshichang.base
  */
 interface Api {
     companion object {
-//        const val BASEURL = "http://dev.0371.ml:8080/" // 内网环境
-//        const val BASEURL = "http://in.0371.ml:8080/" // 阿里环境
-        const val BASEURL = "http://192.168.5.67:8080/" // 本地环境
+        //        const val BASEURL = "http://dev.0371.ml:8080/" // 内网环境
+        const val BASEURL = "http://in.0371.ml:88/" // 阿里环境
+        //        const val BASEURL = "http://192.168.5.67:8080/" // 本地环境
         //注册
         val USER = "/register"
         //登录
         val LOGIN = "/login"
         //用户信息 login
         val USERINFO = "/user/info"
-        //商品搜索/商品详情查询 unlogin
+        //商品搜索 unlogin
         val SEARCH = "/apiserver/search"
+        //商品详情查询
+        val SEARCHDETAIL = "/apiserver/goodsdetail"
         // 商品分享链接 必须登录  login
         val SHARE = "/user/generateurl"
-
 
 
         //servicer 关键字

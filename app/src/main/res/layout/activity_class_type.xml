@@ -5,6 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical"
         tools:context=".activity.ClassTypeActivity">
         <include
@@ -123,7 +124,7 @@
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mTypeClassView"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="3px"
             android:scrollbars="none"
             android:background="@color/beijing"
             android:gravity="center"

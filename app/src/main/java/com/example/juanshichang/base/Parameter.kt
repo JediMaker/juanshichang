@@ -76,6 +76,9 @@ class Parameter {
                 Log.e("sign", MD5Utils.getMD5Str("|D|$fuji|K|$appkey"))
             } else if (signType.equals("login")) { //登录
                 sign = MD5Utils.getMD5Str("|D|$fuji|K|$usertoken")
+                Log.e("sign2", "$usertoken")
+                Log.e("sign2", "|D|$fuji|K|$usertoken")
+                Log.e("sign2", MD5Utils.getMD5Str("|D|$fuji|K|$usertoken"))
             } else if (signType.equals("special")) { //其它情况
                 sign = ""
             }
@@ -141,12 +144,12 @@ class Parameter {
         }
 
         /**
-         * 商品搜索
+         * 商品搜索 pdd
          * @param servicer  只能为以下之一:pdd,taobao,jd
          * @param keyword  商品搜素关键字
          * @param page  搜索结果第几页
          */
-        fun getSearchMap(servicer: String, keyword: String,page: String): HashMap<String, String>{
+        fun getSearchMap(servicer: String, keyword: String,page: Int): HashMap<String, String>{
             baseList.clear()
             baseList.add("servicer=$servicer")
             baseList.add("keyword=$keyword")
@@ -154,22 +157,37 @@ class Parameter {
             var map = fengMap("unlogin")
             map.put("servicer", servicer)
             map.put("keyword", keyword)
-            map.put("page", page)
+            map.put("page", "$page")
             return map
         }
         /**
-         * 商品搜索详情
+         * 商品搜索详情 pdd
          * @param servicer  只能为以下之一:pdd,taobao,jd
          * @param goods_id  商品ID
          *
          */
-        fun getSearchDetailsMap(servicer: String, goods_id: String): HashMap<String, String>{
+        fun getSearchDetailsMap(servicer: String, goods_id: Long): HashMap<String, String>{
             baseList.clear()
             baseList.add("servicer=$servicer")
             baseList.add("goods_id=$goods_id")
             var map = fengMap("unlogin")
             map.put("servicer", servicer)
-            map.put("goods_id", goods_id)
+            map.put("goods_id", "$goods_id")
+            return map
+        }
+
+        /**
+         * @param isLogin  登录与否？ 必须登录
+         * @param servicer  只能为以下之一:pdd,taobao,jd
+         * @param goods_id  商品ID
+         */
+        fun getShareMap(isLogin:String,goods_id:Long,servicer:String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("servicer=$servicer")
+            baseList.add("goods_id=$goods_id")
+            var map = fengMap(isLogin)
+            map.put("servicer", servicer)
+            map.put("goods_id", "$goods_id")
             return map
         }
     }

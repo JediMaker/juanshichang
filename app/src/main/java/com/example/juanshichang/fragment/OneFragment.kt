@@ -36,7 +36,7 @@ class OneFragment : BaseFragment() {
     }
 
     override fun initViews(savedInstanceState: Bundle) {
-
+        MyApp.requestPermission(mContext!!)
     }
 
     override fun initData() {
@@ -47,7 +47,6 @@ class OneFragment : BaseFragment() {
     fun onViewClicked(v: View) {
         when (v.id) {
             R.id.etsearch -> {
-                ToastUtil.showToast(MyApp.applicationContext, "搜索ing  setOnClickListener")
                 val intent = Intent(mContext, SearcheActivity::class.java)
                 //...
                 startActivity(intent)
