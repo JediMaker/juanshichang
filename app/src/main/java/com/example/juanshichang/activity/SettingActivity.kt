@@ -1,5 +1,6 @@
 package com.example.juanshichang.activity
 
+import android.app.ActivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log

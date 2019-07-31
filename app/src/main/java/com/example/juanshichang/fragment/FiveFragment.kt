@@ -14,6 +14,7 @@ import com.example.juanshichang.MainActivity
 import com.example.juanshichang.MyApp
 
 import com.example.juanshichang.R
+import com.example.juanshichang.activity.SettingActivity
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.BaseFragment
 import com.example.juanshichang.utils.SpUtil
@@ -45,7 +46,7 @@ class FiveFragment : BaseFragment() {
     fun onViewClicked(v: View) {
         when (v.id) {
             R.id.setting -> {
-                BaseActivity.goStartActivity(this.mContext!!, MainActivity())
+                BaseActivity.goStartActivity(this.mContext!!, SettingActivity())
             }
         }
     }

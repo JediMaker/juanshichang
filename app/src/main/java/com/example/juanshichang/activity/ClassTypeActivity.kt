@@ -12,9 +12,11 @@ import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
+import com.example.juanshichang.bean.BannnerDetailBean
 import com.example.juanshichang.bean.CLB
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.Util
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_class_type.*
 import kotlinx.android.synthetic.main.activity_seek_bar.*
@@ -145,7 +147,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
 //                            setLoadMores(goodsBean.size)
 //                        }
                         goodsList.addAll(goodsBean)
-                        adapter?.addData(goodsBean)
+//                        adapter?.addData(goodsBean) //todo
                         adapter?.notifyDataSetChanged()
 //                        adapter?.setAutoLoadMoreSize(adapter!!.itemCount)
                     }
@@ -162,7 +164,6 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
 
         })
     }
-
     /**
      * @param size 为本次加载的数据长度
      */

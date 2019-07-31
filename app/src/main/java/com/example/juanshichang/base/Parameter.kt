@@ -190,5 +190,22 @@ class Parameter {
             map.put("goods_id", "$goods_id")
             return map
         }
+        /**
+         * 请求首页Banner轮播图 地址
+         * todo 其它无参 亦可
+         */
+        fun getMainBannerMap(): HashMap<String, String>{
+            baseList.clear()
+            var map = fengMap("unlogin")
+            return map
+        }
+        //banner点击请求 接口
+        fun getBannerClickMap(theme_id:Long): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("theme_id=$theme_id")
+            var map = fengMap("unlogin")
+            map.put("theme_id", "$theme_id")
+            return map
+        }
     }
 }

@@ -7,9 +7,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Handler
 import android.os.Message
+import android.text.Layout
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.base.Api
@@ -21,6 +25,7 @@ import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.GlideImageLoader
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
+import com.example.juanshichang.utils.glide.GlideUtil
 import com.google.gson.Gson
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
@@ -29,8 +34,9 @@ import org.json.JSONObject
 import rx.Subscriber
 
 class ShangPinContains : BaseActivity(), View.OnClickListener {
-    var goods_id: Long = 0
-    var mall_name: String? = null
+    var goods_id: Long = 0 //从正常列表进入
+    var theme_id: Long = 0  //Banner进入
+    //    var mall_name: String? = null //店铺名称
     val goods_id_def: Long = 0
     var goods: SDB.GoodsDetail? = null
     var goodsPromotionUrl: PSP.GoodsPromotionUrl? = null
@@ -59,14 +65,18 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
         meBanner.visibility = View.INVISIBLE
-        if (goods_id_def != intent.getLongExtra("goods_id", 0) && null != intent.getStringExtra("mall_name")) {
+        if (goods_id_def != intent.getLongExtra("goods_id", 0)) { //&& null != intent.getStringExtra("mall_name")
             goods_id = intent.getLongExtra("goods_id", 0)
-            mall_name = intent.getStringExtra("mall_name")
+//            mall_name = intent.getStringExtra("mall_name")
             searchDetailList(Api.Pdd, goods_id)
+        } else if(goods_id_def != intent.getLongExtra("theme_id", 0)){ //从banner 传入  todo
+            theme_id = intent.getLongExtra("theme_id", 0)
+//            searchDetailListBanner(theme_id)
         } else {
             ToastUtil.showToast(this@ShangPinContains, "数据传输错误,请稍后重试!!!")
             finish()
         }
+
     }
 
     override fun initData() {
@@ -81,7 +91,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view) {
-            mbackLayouts->{
+            mbackLayouts -> {
                 finish()
             }
             go_shop -> {
@@ -126,15 +136,15 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
             }
             spGou -> {
                 if (Util.hasLogin()) {
-                    var intent = Intent(this@ShangPinContains,WebActivity::class.java)
-                    if(!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)){
-                        intent.putExtra("mobile_short_url",goodsPromotionUrl?.mobile_short_url)
+                    var intent = Intent(this@ShangPinContains, WebActivity::class.java)
+                    if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)) {
+                        intent.putExtra("mobile_short_url", goodsPromotionUrl?.mobile_short_url)
                     }
-                    if(!TextUtils.isEmpty(goodsPromotionUrl?.mobile_url)){
-                        intent.putExtra("mobile_url",goodsPromotionUrl?.mobile_url)
+                    if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_url)) {
+                        intent.putExtra("mobile_url", goodsPromotionUrl?.mobile_url)
                     }
                     startActivity(intent)
-                }else{
+                } else {
                     goStartActivity(this@ShangPinContains, LoginActivity())
                 }
             }
@@ -143,11 +153,12 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
             }
         }
     }
-//    override fun onCreate(savedInstanceState: Bundle?) {
+
+    //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_shang_pin_contains)
 //    }
-
+    //正常列表进入获取商品详细信息
     private fun searchDetailList(servicer: String, goods_id: Long) {
         HttpManager.getInstance().post(Api.SEARCHDETAIL, Parameter.getSearchDetailsMap(servicer, goods_id), object :
             Subscriber<String>() {
@@ -164,7 +175,6 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                             this@ShangPinContains.runOnUiThread(object : Runnable {
                                 override fun run() {
                                     setData(goods!!)
-                                    Log.e("gxui4", "gogogogo")
                                 }
                             })
                         }
@@ -176,15 +186,14 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "商品详情加载完成!")
+                Log.e("onCompleted", "商品详情加载完成1!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "商品详情加载失败!" + e)
+                Log.e("onError", "商品详情加载失败1!" + e)
             }
         })
     }
-
     /**
      * 获取分享链接 必须登录
      */
@@ -234,11 +243,9 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         desc_txt.text = goods.desc_txt //描述分
         serv_txt.text = goods.serv_txt //服务分
         lgst_txt.text = goods.lgst_txt //物流分
-        shop_name.text = mall_name //店铺名
+        shop_name.text = goods.mall_name //店铺名
         goods_desc.text = goods.goods_desc //介绍
-//        refresh()
     }
-
     private fun getTags(serviceTags: List<Int>): CharSequence? {  //返回支持的服务
         if (serviceTags.size != 0) {
             var sbs: StringBuilder = StringBuilder()
@@ -343,11 +350,40 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         //meBanner.setBannerTitles(images);
         //banner设置方法全部调用完毕时最后调用
         meBanner.start()
+        //临时添加
+        if(imgUrls!=null && imgUrls.size >=9){
+            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
+            Glide.with(this).load(imgUrls[1]).error(R.drawable.c_error).into(iv2)
+            Glide.with(this).load(imgUrls[2]).error(R.drawable.c_error).into(iv3)
+            Glide.with(this).load(imgUrls[3]).error(R.drawable.c_error).into(iv4)
+            Glide.with(this).load(imgUrls[4]).error(R.drawable.c_error).into(iv5)
+            Glide.with(this).load(imgUrls[5]).error(R.drawable.c_error).into(iv6)
+            Glide.with(this).load(imgUrls[6]).error(R.drawable.c_error).into(iv7)
+            Glide.with(this).load(imgUrls[7]).error(R.drawable.c_error).into(iv8)
+            Glide.with(this).load(imgUrls[8]).error(R.drawable.c_error).into(iv9)
+        }else if(imgUrls!=null && imgUrls.size >=7){
+            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
+            Glide.with(this).load(imgUrls[1]).error(R.drawable.c_error).into(iv2)
+            Glide.with(this).load(imgUrls[2]).error(R.drawable.c_error).into(iv3)
+            Glide.with(this).load(imgUrls[3]).error(R.drawable.c_error).into(iv4)
+            Glide.with(this).load(imgUrls[4]).error(R.drawable.c_error).into(iv5)
+            Glide.with(this).load(imgUrls[5]).error(R.drawable.c_error).into(iv6)
+            Glide.with(this).load(imgUrls[6]).error(R.drawable.c_error).into(iv7)
+        }else if(imgUrls!=null && imgUrls.size >=5){
+            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
+            Glide.with(this).load(imgUrls[1]).error(R.drawable.c_error).into(iv2)
+            Glide.with(this).load(imgUrls[2]).error(R.drawable.c_error).into(iv3)
+            Glide.with(this).load(imgUrls[3]).error(R.drawable.c_error).into(iv4)
+            Glide.with(this).load(imgUrls[4]).error(R.drawable.c_error).into(iv5)
+        }else if(imgUrls!=null && imgUrls.size >=3){
+            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
+            Glide.with(this).load(imgUrls[1]).error(R.drawable.c_error).into(iv2)
+            Glide.with(this).load(imgUrls[2]).error(R.drawable.c_error).into(iv3)
+        }else{
+            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
+        }
     }
 
-    private fun refresh() {
-        onCreate(null)
-    }
 
     override fun onDestroy() {
         super.onDestroy()
