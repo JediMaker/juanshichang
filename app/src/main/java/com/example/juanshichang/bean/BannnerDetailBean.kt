@@ -1,5 +1,6 @@
 package com.example.juanshichang.bean
-class BannnerDetailBean{
+
+class BannnerDetailBean {
     data class BannnerDetailBeans(
         var `data`: Data = Data(),
         var errmsg: String = "",
@@ -7,17 +8,11 @@ class BannnerDetailBean{
     )
 
     data class Data(
-        var theme_list_get_response: ThemeListGetResponse = ThemeListGetResponse()
+        var list: List<X> = listOf()
     )
 
-    data class ThemeListGetResponse(
-        var goods_list: List<Goods> = listOf(),
-        var request_id: String = "",
-        var total: Int = 0
-    )
-
-    data class Goods(
-        var activity_type: Int? = null,
+    data class X(
+        var activity_type: Any? = null,
         var cat_id: Any? = null,
         var cat_ids: List<Int> = listOf(),
         var category_id: Int = 0,

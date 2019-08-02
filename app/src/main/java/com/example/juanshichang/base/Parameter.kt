@@ -72,13 +72,13 @@ class Parameter {
             var sign: String = ""
             if (signType.equals("unlogin")) { //未登录
                 sign = MD5Utils.getMD5Str("|D|$fuji|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥  todo 待询问
-                Log.e("sign", "|D|$fuji|K|$appkey")
-                Log.e("sign", MD5Utils.getMD5Str("|D|$fuji|K|$appkey"))
+//                Log.e("sign", "|D|$fuji|K|$appkey")
+//                Log.e("sign", MD5Utils.getMD5Str("|D|$fuji|K|$appkey"))
             } else if (signType.equals("login")) { //登录
                 sign = MD5Utils.getMD5Str("|D|$fuji|K|$usertoken")
-                Log.e("sign2", "$usertoken")
-                Log.e("sign2", "|D|$fuji|K|$usertoken")
-                Log.e("sign2", MD5Utils.getMD5Str("|D|$fuji|K|$usertoken"))
+//                Log.e("sign2", "$usertoken")
+//                Log.e("sign2", "|D|$fuji|K|$usertoken")
+//                Log.e("sign2", MD5Utils.getMD5Str("|D|$fuji|K|$usertoken"))
             } else if (signType.equals("special")) { //其它情况
                 sign = ""
             }
@@ -199,12 +199,25 @@ class Parameter {
             var map = fengMap("unlogin")
             return map
         }
-        //banner点击请求 接口
-        fun getBannerClickMap(theme_id:Long): HashMap<String, String>{
+
+        /**
+         * @param banner_id id值
+         * @param offset  页面页码 optional:default 0
+         * @param limit   请求数据条目数 optional;default 20
+         */
+        fun getBannerClickMap(banner_id:Long,offset:Int,limit:Int): HashMap<String, String>{
             baseList.clear()
-            baseList.add("theme_id=$theme_id")
+            baseList.add("banner_id=$banner_id")
             var map = fengMap("unlogin")
-            map.put("theme_id", "$theme_id")
+            map.put("banner_id", "$banner_id")
+            if(offset != 0){
+                baseList.add("offset=$offset")
+                map.put("offset", "$offset")
+            }
+            if(limit != 20){
+                baseList.add("limit=$limit")
+                map.put("limit", "$limit")
+            }
             return map
         }
     }

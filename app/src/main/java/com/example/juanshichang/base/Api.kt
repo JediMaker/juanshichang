@@ -23,9 +23,18 @@ interface Api {
         // 商品分享链接 必须登录  login
         val SHARE = "/user/generateurl"
         //首页banner
-        val MAINBANNER = "/theme/list"
+        val MAINBANNER = "/index/bannerlist" //  /theme/list   delete
         //Banner 条目请求商品地址
-        val BANNERITEM= "/theme/theme_goods"
+        val BANNERITEM= "/index/banner" //   /theme/theme_goods  delete
+        //请求GridView条目
+        val CHANNELLIST = "/index/channellist"
+        //GridView条目数据请求
+        val CHANNEL = "/index/channel"
+        //
+        val THEMELIST = "/index/themelist"
+        //
+        val THEME = "/index/banner"
+
 
         //servicer 关键字
         val Pdd = "pdd"

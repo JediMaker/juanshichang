@@ -29,6 +29,8 @@ abstract class BaseFragment : Fragment(){
             ButterKnife.bind(this,mBaseView!!)
             if(savedInstanceState != null){  //todo 此处添加状态判断 防止走空
                 initViews(savedInstanceState)
+            }else{
+                initViews(Bundle())
             }
             initData()
         }

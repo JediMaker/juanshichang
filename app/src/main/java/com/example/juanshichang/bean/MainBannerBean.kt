@@ -7,19 +7,12 @@ data class MainBannerBean(
 )
 
 data class Data(
-    var theme_list_get_response: ThemeListGetResponse = ThemeListGetResponse()
+    var banner_list: List<Banner> = listOf()
 )
 
-data class ThemeListGetResponse(
-    var request_id: String = "",
-    var theme_list: List<Theme> = listOf(),
-    var total: Int = 0
-)
-
-data class Theme(
-    var goods_num: Int = 0,
-    var id: Int = 0,
+data class Banner(
+    var banner_id: Int = 0,
     var image_url: String = "",
-    var name: String = "",
-    var type: Int = 0
+    var order: Int = 0,
+    var type: String = ""
 )

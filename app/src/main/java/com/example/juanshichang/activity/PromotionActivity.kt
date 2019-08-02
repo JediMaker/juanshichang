@@ -29,26 +29,25 @@ import rx.Subscriber
  * @文件作用:首页 banner 活动商品 列表
  */
 class PromotionActivity : BaseActivity() {
-    var theme_id: Long = 0
-    var goods_num:Int = 0
-    val theme_id_def: Long = 0
+    var banner_id: Long = 0
+    val banner_id_def: Long = 0
+    var offset:Int = 0
     var adapter: PromotionListAdapter? = null
-    var goodsList = mutableListOf<BannnerDetailBean.Goods>()
+    var goodsList = mutableListOf<BannnerDetailBean.X>()
     override fun getContentView(): Int {
         return R.layout.activity_promotion
     }
 
     override fun initView() {
-        if (theme_id_def != intent.getLongExtra("theme_id", 0)) {
-            theme_id = intent.getLongExtra("theme_id", 0) //id
-            goods_num = intent.getIntExtra("goods_num", 0) //条目数量
+        if (banner_id_def != intent.getLongExtra("banner_id", 0)) {
+            banner_id = intent.getLongExtra("banner_id", 0) //id
             val grid = GridLayoutManager(this@PromotionActivity, 2)
             adapter = PromotionListAdapter(R.layout.item_banner_pro,goodsList)
             adapter?.openLoadAnimation()//  （默认为渐显效果） 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
             adapter?.emptyView = View.inflate(this, R.layout.activity_not_null, null)
             mTypeClassView.layoutManager = grid
             mTypeClassView.adapter = adapter
-            searchDetailListBanner(theme_id)
+            searchDetailListBanner(banner_id)
         }
     }
 
@@ -70,8 +69,8 @@ class PromotionActivity : BaseActivity() {
 
 
     //从首页Banner进入的请求 传入商品列表id
-    private fun searchDetailListBanner(theme_id: Long) {
-        HttpManager.getInstance().post(Api.BANNERITEM, Parameter.getBannerClickMap(theme_id), object :
+    private fun searchDetailListBanner(banner_id: Long) {
+        HttpManager.getInstance().post(Api.BANNERITEM, Parameter.getBannerClickMap(banner_id,0,20), object :
             Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
@@ -81,9 +80,9 @@ class PromotionActivity : BaseActivity() {
                         ToastUtil.showToast(this@PromotionActivity, jsonObj.optString(JsonParser.JSON_MSG))
                     } else {
                         var bannnerDetailBean = Gson().fromJson(str, BannnerDetailBean.BannnerDetailBeans::class.java)
-                        val goods2:List<BannnerDetailBean.Goods> = bannnerDetailBean.data.theme_list_get_response.goods_list
-                        goodsList.addAll(goods2)
+                        val goods2:List<BannnerDetailBean.X> = bannnerDetailBean.data.list
                         if (null != goods2) {
+                            goodsList.addAll(goods2)
                             this@PromotionActivity.runOnUiThread(object : Runnable {
                                 override fun run() {
                                     adapter?.notifyDataSetChanged()

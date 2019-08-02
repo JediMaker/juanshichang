@@ -52,6 +52,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
+//        QMUIStatusBarHelper.translucent(this@MainActivity)
         setBottomView()
         fragmentList = mutableListOf<Fragment>()
         oneFragment = OneFragment()
