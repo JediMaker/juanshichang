@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+          android:fromDegrees="90"
+          android:toDegrees="90">
+        <shape
+            android:shape="line">
+            <stroke
+                android:width="2px"
+                android:color="#FFFFFF"
+                android:dashGap="1px"
+                android:dashWidth="2px"/>
+        </shape>
+    <!-- dashGap 虚线间隔宽度-->
+    <!--dashWidth 虚线的宽度-->
+    <!--fromDegrees 设置旋转度*度-->
+    <!--android:layerType="software"  使用虚线的控件还要添加 否则会是实线-->
+</rotate >

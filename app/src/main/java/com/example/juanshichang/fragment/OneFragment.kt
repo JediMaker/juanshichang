@@ -5,13 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import butterknife.OnClick
 import com.example.juanshichang.MyApp
 
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.PromotionActivity
 import com.example.juanshichang.activity.SearcheActivity
+import com.example.juanshichang.activity.WebActivity
 import com.example.juanshichang.adapter.MainGridAdapter
+import com.example.juanshichang.adapter.MainRecyclerAdapter
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseFragment
 import com.example.juanshichang.base.JsonParser
@@ -19,6 +23,7 @@ import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.Banner
 import com.example.juanshichang.bean.GridItemBean
 import com.example.juanshichang.bean.MainBannerBean
+import com.example.juanshichang.bean.MainRecyclerBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.GlideImageLoader
 import com.example.juanshichang.utils.StatusBarUtil
@@ -46,6 +51,10 @@ class OneFragment : BaseFragment() {
          // Inflate the layout for this fragment
          return inflater.inflate(R.layout.fragment_one, container, false)
      }*/
+    var WebUrl:String? = null
+    var next:Int = 1
+    var rvData = mutableListOf<MainRecyclerBean.Theme>()
+    var rcAdapter:MainRecyclerAdapter? = null
     override fun getLayoutId(): Int {
         return R.layout.fragment_one
     }
@@ -59,6 +68,7 @@ class OneFragment : BaseFragment() {
     override fun initData() {
         getBanner()
         getGrid()
+        getRecycler(2,next)
     }
 
     @OnClick(R.id.etsearch)
@@ -84,7 +94,7 @@ class OneFragment : BaseFragment() {
         main_banner.stopAutoPlay()
     }
 
-    fun getBanner() {
+    private fun getBanner() {
         HttpManager.getInstance().post(Api.MAINBANNER, Parameter.getMainBannerMap(), object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
@@ -109,6 +119,46 @@ class OneFragment : BaseFragment() {
                 Log.e("onError", "Banner加载失败!")
             }
         })
+    }
+    private fun getRecycler(theme_goods_count:Int,next:Int) {
+        HttpManager.getInstance().post(Api.THEMELIST, Parameter.getRecyclerMap(theme_goods_count), object : Subscriber<String>() {
+            override fun onNext(str: String?) {
+                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                    var jsonObj: JSONObject = JSONObject(str)
+                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        ToastUtil.showToast(this@OneFragment.mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
+                    } else {
+                        if(next == 1){
+                            rvData.clear()
+                        }
+                        val Data = Gson().fromJson(str, MainRecyclerBean.MainRecyclerBeans::class.java)
+                        val recyclerList = Data.data.theme_list
+                        rvData.addAll(recyclerList)
+                        this@OneFragment.mContext?.runOnUiThread(Runnable {
+                            if(next == 1){
+                                setRv()
+                            }
+                            rcAdapter?.notifyDataSetChanged()
+                        })
+                    }
+                }
+            }
+
+            override fun onCompleted() {
+                Log.e("onCompleted", "Recycler加载完成!")
+            }
+
+            override fun onError(e: Throwable?) {
+                Log.e("onError", "Recycler加载失败!")
+            }
+        })
+    }
+
+    private fun setRv() {
+        val lm:LinearLayoutManager = LinearLayoutManager(mContext!!,RecyclerView.VERTICAL,false)
+        main_recycler.layoutManager = lm
+        rcAdapter = MainRecyclerAdapter(R.layout.item_main_recycler,rvData,mContext!!)
+        main_recycler.adapter = rcAdapter
     }
 
     private fun getGrid() {
@@ -138,6 +188,37 @@ class OneFragment : BaseFragment() {
 
         })
     }
+    //获取链接 跳转
+    private fun getWebLink(channel_id:Long){
+        HttpManager.getInstance().post(Api.CHANNEL, Parameter.getGridClickMap(channel_id,0,20), object : Subscriber<String>() {
+            override fun onNext(str: String?) {
+                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                    var jsonObj: JSONObject = JSONObject(str)
+                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        ToastUtil.showToast(this@OneFragment.mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
+                    } else {
+                        val jsonObjs = jsonObj.getJSONObject("data")
+                        Log.e("kkkkk",jsonObjs.toString())
+                        WebUrl = jsonObjs.getString("url")
+                        Log.e("kkkkk",WebUrl.toString())
+                        this@OneFragment.mContext?.runOnUiThread(Runnable {
+                            var intent = Intent(mContext,WebActivity::class.java)
+                            intent.putExtra("mobile_short_url",WebUrl!!.trim())  //todo 偷天换日法
+                            startActivity(intent)
+                        })
+                    }
+                }
+            }
+
+            override fun onCompleted() {
+                Log.e("onCompleted", "Banner加载完成!")
+            }
+
+            override fun onError(e: Throwable?) {
+                Log.e("onError", "Banner加载失败!")
+            }
+        })
+    }
 
     //    var gridLists: MutableList<GridItemBean.Channel> = mutableListOf()
 //    var gridAdapter: MainGridAdapter? = null
@@ -154,11 +235,18 @@ class OneFragment : BaseFragment() {
         main_gridView.numColumns = column
         main_gridView.adapter = gridAdapter
         gridAdapter.notifyDataSetChanged()
-        main_gridView.onItemClick { p0, p1, p2, p3 ->
-            ToastUtil.showToast(mContext!!, "p0:$p0,p1:$p1,p2:$p2,p3:$p3")
-            Log.e("jjjj","p0:$p0,p1:$p1,p2:$p2,p3:$p3")
+        main_gridView.onItemClick { p0, p1, p, p3 ->
+            if(gridList[p].type.equals("link")){
+                WebUrl = null
+                getWebLink(gridList[p].channel_id)
+            }else if(gridList[p].type.equals("goods")){
+                var intent = Intent(mContext!!, PromotionActivity::class.java)
+                intent.putExtra("channel_id",gridList[p].channel_id)
+                startActivity(intent)
+            }else{
+                ToastUtil.showToast(mContext!!,"不存在的类型:"+gridList[p].type)
+            }
         }
-
     }
 
     var imgs: MutableList<Banner>? = null

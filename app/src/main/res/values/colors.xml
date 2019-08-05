@@ -18,4 +18,5 @@
     <color name="txt_qian_huang">#ff7200</color>
     <color name="txt_fenlei">#df0005</color>
     <color name="main_text">#222222</color>
+    <color name="label_color">#F93736</color>
 </resources>

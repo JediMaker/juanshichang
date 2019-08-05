@@ -220,5 +220,38 @@ class Parameter {
             }
             return map
         }
+        /**
+         * @param channel_id id值
+         * @param offset  页面页码 optional:default 0
+         * @param limit   请求数据条目数 optional;default 20
+         */
+        fun getGridClickMap(channel_id:Long,offset:Int,limit:Int): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("channel_id=$channel_id")
+            var map = fengMap("unlogin")
+            map.put("channel_id", "$channel_id")
+            if(offset != 0){
+                baseList.add("offset=$offset")
+                map.put("offset", "$offset")
+            }
+            if(limit != 20){
+                baseList.add("limit=$limit")
+                map.put("limit", "$limit")
+            }
+            return map
+        }
+
+        /**
+         * @param theme_goods_count optional;default 2
+         */
+        fun getRecyclerMap(theme_goods_count:Int): HashMap<String, String>{
+            baseList.clear()
+            var map = fengMap("unlogin")
+            if(theme_goods_count != 2){
+                baseList.add("theme_goods_count=$theme_goods_count")
+                map.put("theme_goods_count", "$theme_goods_count")
+            }
+            return map
+        }
     }
 }

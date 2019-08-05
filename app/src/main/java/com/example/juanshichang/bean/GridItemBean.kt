@@ -12,7 +12,7 @@ class GridItemBean {
     )
 
     data class Channel(
-        var channel_id: Int = 0,
+        var channel_id: Long = 0,
         var image_url: String = "",
         var order: Int = 0,
         var type: String = ""

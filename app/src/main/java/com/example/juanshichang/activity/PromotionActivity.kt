@@ -31,7 +31,7 @@ import rx.Subscriber
 class PromotionActivity : BaseActivity() {
     var banner_id: Long = 0
     val banner_id_def: Long = 0
-    var offset:Int = 0
+    var offset: Int = 0
     var adapter: PromotionListAdapter? = null
     var goodsList = mutableListOf<BannnerDetailBean.X>()
     override fun getContentView(): Int {
@@ -42,12 +42,24 @@ class PromotionActivity : BaseActivity() {
         if (banner_id_def != intent.getLongExtra("banner_id", 0)) {
             banner_id = intent.getLongExtra("banner_id", 0) //id
             val grid = GridLayoutManager(this@PromotionActivity, 2)
-            adapter = PromotionListAdapter(R.layout.item_banner_pro,goodsList)
+            adapter = PromotionListAdapter(R.layout.item_banner_pro, goodsList)
             adapter?.openLoadAnimation()//  （默认为渐显效果） 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
             adapter?.emptyView = View.inflate(this, R.layout.activity_not_null, null)
             mTypeClassView.layoutManager = grid
             mTypeClassView.adapter = adapter
-            searchDetailListBanner(banner_id)
+            searchDetailListBanner(banner_id,1)
+        } else if (banner_id_def != intent.getLongExtra("channel_id", 0)) {
+            val channel_id = intent.getLongExtra("channel_id", 0) //id
+            val grid = GridLayoutManager(this@PromotionActivity, 2)
+            adapter = PromotionListAdapter(R.layout.item_banner_pro, goodsList)
+            adapter?.openLoadAnimation()//  （默认为渐显效果） 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
+            adapter?.emptyView = View.inflate(this, R.layout.activity_not_null, null)
+            mTypeClassView.layoutManager = grid
+            mTypeClassView.adapter = adapter
+            searchDetailListBanner(channel_id,2)
+        }else{
+            ToastUtil.showToast(this@PromotionActivity,"数据异常 请稍后重试!!!")
+            finish()
         }
     }
 
@@ -69,8 +81,17 @@ class PromotionActivity : BaseActivity() {
 
 
     //从首页Banner进入的请求 传入商品列表id
-    private fun searchDetailListBanner(banner_id: Long) {
-        HttpManager.getInstance().post(Api.BANNERITEM, Parameter.getBannerClickMap(banner_id,0,20), object :
+    private fun searchDetailListBanner(banner_id: Long, type: Int) { //Banner 为 1,graid 为 2
+        var url: String? = null
+        var map: HashMap<String, String>? = null
+        if (type == 1) {
+            url = Api.BANNERITEM
+            map = Parameter.getBannerClickMap(banner_id, 0, 20)
+        } else if (type == 2) {
+            url = Api.CHANNEL
+            map = Parameter.getGridClickMap(banner_id, 0, 20)
+        }
+        HttpManager.getInstance().post(url, map, object :
             Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
@@ -80,7 +101,7 @@ class PromotionActivity : BaseActivity() {
                         ToastUtil.showToast(this@PromotionActivity, jsonObj.optString(JsonParser.JSON_MSG))
                     } else {
                         var bannnerDetailBean = Gson().fromJson(str, BannnerDetailBean.BannnerDetailBeans::class.java)
-                        val goods2:List<BannnerDetailBean.X> = bannnerDetailBean.data.list
+                        val goods2: List<BannnerDetailBean.X> = bannnerDetailBean.data.list
                         if (null != goods2) {
                             goodsList.addAll(goods2)
                             this@PromotionActivity.runOnUiThread(object : Runnable {

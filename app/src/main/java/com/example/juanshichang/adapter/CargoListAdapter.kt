@@ -15,9 +15,9 @@ import com.qmuiteam.qmui.util.QMUIViewHelper
 
 class CargoListAdapter(layoutResId: Int, data: MutableList<CLB.Goods>?, context: Context) :
     BaseQuickAdapter<CLB.Goods, BaseViewHolder>(layoutResId, data) {
-//    var  mContext:Context? = null
+    var  mContexts:Context? = null
     init {
-//        this.mContext = context
+        this.mContexts = context
     }
 
     override fun convert(helper: BaseViewHolder?, item: CLB.Goods?) {
@@ -28,7 +28,7 @@ class CargoListAdapter(layoutResId: Int, data: MutableList<CLB.Goods>?, context:
 //        Glide.with(mContext).load(item?.goods_thumbnail_url)
 //            .placeholder(R.drawable.c_defull_null)
 //            .into(helper!!.getView(R.id.mTypeImg))
-        GlideUtil.loadImage(mContext,item?.goods_thumbnail_url,helper!!.getView(R.id.mTypeImg))
+        GlideUtil.loadImage(mContexts,item?.goods_thumbnail_url,helper!!.getView(R.id.mTypeImg))
 //        QMUIViewHelper.generateViewId() //View 工具类
 //        QMUIDisplayHelper.getDisplayMetrics(mContext)//屏幕相关的工具类
     }
