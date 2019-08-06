@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/auto_1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <com.youth.banner.Banner
+            android:visibility="visible"
+            android:id="@+id/main_banner"
+            android:layout_marginTop="30px"
+            android:layout_marginLeft="48px"
+            android:layout_marginRight="48px"
+            android:layout_marginBottom="30px"
+            app:image_scale_type="fit_xy"
+            app:indicator_drawable_selected="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="468px">
+    </com.youth.banner.Banner>
+</com.zhy.autolayout.AutoLinearLayout>

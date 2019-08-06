@@ -1,18 +1,25 @@
 package com.example.juanshichang.bean
 
-data class MainBannerBean(
-    var `data`: Data = Data(),
-    var errmsg: String = "",
-    var errno: Int = 0
-)
+import com.chad.library.adapter.base.entity.MultiItemEntity
 
-data class Data(
-    var banner_list: List<Banner> = listOf()
-)
+class MainBannerBean: MultiItemEntity {
+    data class MainBannerBeans(
+        var `data`: Data = Data(),
+        var errmsg: String = "",
+        var errno: Int = 0
+    )
 
-data class Banner(
-    var banner_id: Int = 0,
-    var image_url: String = "",
-    var order: Int = 0,
-    var type: String = ""
-)
+    data class Data(
+        var banner_list: List<Banner> = listOf()
+    )
+
+    data class Banner(
+        var banner_id: Int = 0,
+        var image_url: String = "",
+        var order: Int = 0,
+        var type: String = ""
+    )
+    override fun getItemType(): Int {
+        return HomeEntity.TYPE_BANNER
+    }
+}

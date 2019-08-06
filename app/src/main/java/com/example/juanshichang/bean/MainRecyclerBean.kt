@@ -1,6 +1,8 @@
 package com.example.juanshichang.bean
 
-class MainRecyclerBean {
+import com.chad.library.adapter.base.entity.MultiItemEntity
+
+class MainRecyclerBean : MultiItemEntity {
     data class MainRecyclerBeans(
         var `data`: Data = Data(),
         var errmsg: String = "",
@@ -77,4 +79,8 @@ class MainRecyclerBean {
         var service_tags: Any? = null,
         var zs_duo_id: Int = 0
     )
+
+    override fun getItemType(): Int {
+        return HomeEntity.TYPE_RECYCLER
+    }
 }

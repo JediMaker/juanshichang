@@ -1,6 +1,9 @@
 package com.example.juanshichang.bean
 
-class GridItemBean {
+import com.chad.library.adapter.base.entity.MultiItemEntity
+
+class GridItemBean : MultiItemEntity {
+
     data class GridItemBeans(
         var `data`: Data = Data(),
         var errmsg: String = "",
@@ -17,4 +20,7 @@ class GridItemBean {
         var order: Int = 0,
         var type: String = ""
     )
+    override fun getItemType(): Int {
+        return HomeEntity.TYPE_GRID
+    }
 }

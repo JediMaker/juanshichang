@@ -68,17 +68,19 @@
 
         </RelativeLayout>
         <com.youth.banner.Banner
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/main_banner"
                 android:layout_marginTop="30px"
                 android:layout_marginLeft="48px"
                 android:layout_marginRight="48px"
+                android:layout_marginBottom="30px"
                 app:image_scale_type="fit_xy"
                 app:indicator_drawable_selected="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="468px">
         </com.youth.banner.Banner>
         <GridView
+                android:visibility="gone"
                 android:id="@+id/main_gridView"
                 android:layout_marginTop="20px"
                 android:layout_marginBottom="20px"
@@ -91,7 +93,15 @@
                 android:layout_height="wrap_content">
         </GridView>
         <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/main_recycler"
+                android:scrollbars="none"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+        <!--android:overScrollMode="never"-->
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_recycler"
                 android:scrollbars="none"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

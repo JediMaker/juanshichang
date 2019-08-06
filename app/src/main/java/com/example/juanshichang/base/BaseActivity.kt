@@ -190,6 +190,9 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
             intent.setClass(context, activity.javaClass)
             context.startActivity(intent)
         }
+        fun goStartActivity(context: Context,intent:Intent) {
+            context.startActivity(intent)
+        }
     }
     /**
      * 代替原来Toast
