@@ -16,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.juanshichang.MyApp;
 import com.example.juanshichang.R;
+import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 
 import java.security.MessageDigest;
 
@@ -144,4 +145,10 @@ public class GlideUtil {
         }
     }
 
+    /**
+     * 圆角图片
+     */
+    public static void loadRoundImage(){
+
+    }
 }

@@ -29,7 +29,7 @@ import rx.Subscriber
  * @文件作用:首页 banner 活动商品 列表
  */
 class PromotionActivity : BaseActivity() {
-    var banner_id: Long = 0
+    //    var banner_id: Long = 0
     val banner_id_def: Long = 0
     var offset: Int = 0
     var adapter: PromotionListAdapter? = null
@@ -39,8 +39,38 @@ class PromotionActivity : BaseActivity() {
     }
 
     override fun initView() {
-        if (banner_id_def != intent.getLongExtra("banner_id", 0)) {
-            banner_id = intent.getLongExtra("banner_id", 0) //id
+        if (banner_id_def != intent.getLongExtra("id", 0) && null != intent.getStringExtra("idName")) {
+            val id = intent.getLongExtra("id", 0)
+            val idName = intent.getStringExtra("idName").toString().trim()  //idName 仅供参考  后面请求数据 有 type 为约束
+            var type = Int.MAX_VALUE
+            when (idName) {
+                "banner_id" -> {
+                    type = 1
+                }
+                "channel_id" -> {
+                    type = 2
+                }
+                "theme_id" -> {
+                    type = 3
+                }
+                else -> {
+                    ToastUtil.showToast(this@PromotionActivity, "数据加载错误 请稍后重试!!!")
+                    finish()
+                }
+            }
+            val grid = GridLayoutManager(this@PromotionActivity, 2)
+            adapter = PromotionListAdapter(R.layout.item_banner_pro, goodsList)
+            adapter?.openLoadAnimation()//  （默认为渐显效果） 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
+            adapter?.emptyView = View.inflate(this, R.layout.activity_not_null, null)
+            mTypeClassView.layoutManager = grid
+            mTypeClassView.adapter = adapter
+            searchDetailListBanner(id, type)
+        } else {
+            ToastUtil.showToast(this@PromotionActivity, "数据异常 请稍后重试!!!")
+            finish()
+        }
+        /*if (banner_id_def != intent.getLongExtra("banner_id", 0)) {
+            val banner_id = intent.getLongExtra("banner_id", 0) //id
             val grid = GridLayoutManager(this@PromotionActivity, 2)
             adapter = PromotionListAdapter(R.layout.item_banner_pro, goodsList)
             adapter?.openLoadAnimation()//  （默认为渐显效果） 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
@@ -50,6 +80,7 @@ class PromotionActivity : BaseActivity() {
             searchDetailListBanner(banner_id,1)
         } else if (banner_id_def != intent.getLongExtra("channel_id", 0)) {
             val channel_id = intent.getLongExtra("channel_id", 0) //id
+
             val grid = GridLayoutManager(this@PromotionActivity, 2)
             adapter = PromotionListAdapter(R.layout.item_banner_pro, goodsList)
             adapter?.openLoadAnimation()//  （默认为渐显效果） 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
@@ -60,7 +91,7 @@ class PromotionActivity : BaseActivity() {
         }else{
             ToastUtil.showToast(this@PromotionActivity,"数据异常 请稍后重试!!!")
             finish()
-        }
+        }*/
     }
 
     override fun initData() {
@@ -81,15 +112,25 @@ class PromotionActivity : BaseActivity() {
 
 
     //从首页Banner进入的请求 传入商品列表id
-    private fun searchDetailListBanner(banner_id: Long, type: Int) { //Banner 为 1,graid 为 2
+    private fun searchDetailListBanner(banner_id: Long, type: Int) { //Banner 为 1,graid 为 2 ,recycler大图 为3
         var url: String? = null
         var map: HashMap<String, String>? = null
-        if (type == 1) {
-            url = Api.BANNERITEM
-            map = Parameter.getBannerClickMap(banner_id, 0, 20)
-        } else if (type == 2) {
-            url = Api.CHANNEL
-            map = Parameter.getGridClickMap(banner_id, 0, 20)
+        when (type) {
+            1 -> {
+                url = Api.BANNERITEM
+//            map = Parameter.getBannerClickMap(banner_id, 0, 20)
+                map = Parameter.getBaseSonMap("banner_id", banner_id, 0, 20)
+            }
+            2 -> {
+                url = Api.CHANNEL
+                // channel_id
+//            map = Parameter.getGridClickMap(banner_id, 0, 20) //之前共用一个请求体
+                map = Parameter.getBaseSonMap("channel_id", banner_id, 0, 20)
+            }
+            3 -> {
+                url = Api.THEME
+                map = Parameter.getBaseSonMap("theme_id",banner_id,0,20)
+            }
         }
         HttpManager.getInstance().post(url, map, object :
             Subscriber<String>() {

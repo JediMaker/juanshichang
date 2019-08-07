@@ -1,21 +1,18 @@
 package com.example.juanshichang.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.GridView
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.ButterKnife
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.PromotionActivity
+import com.example.juanshichang.activity.ShangPinContains
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.fragment.OneFragment.Companion.WebUrl
@@ -67,34 +64,25 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
             else -> {
             }
         }
-        /*when(helper?.getItemViewType()){
-            HomeEntity.TYPE_BANNER -> {
-                setBanner(homeEntity, helper)
-            }
-            HomeEntity.TYPE_GRID -> {
-//                ButterKnife.bind(mContext,helper?.itemView!!)
-                setGrid(homeEntity, helper)
-            }
-            HomeEntity.TYPE_RECYCLER -> {
-//                ButterKnife.bind(mContext,helper?.itemView!!)
-                setRecycler(homeEntity, helper)
-            }
-        }*/
     }
-
+    fun recyclerAddData(data: List<MainRecyclerBean.Theme>){ //自定义数据添加方法
+        for (index in 0 until data.size){
+            rvAdapter?.addData(data[index])
+        }
+    }
     private fun setRecycler(item: HomeEntity, helper: BaseViewHolder?) {
 //        val home_recycler = helper!!.getView<AutoLinearLayout>(R.id.auto_3).home_recycler
         val home_recycler = helper!!.itemView.find<RecyclerView>(R.id.home_recycler)
         if (r_i == 1) {
             rvList.clear()
             val lm = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
-            val lms =object : LinearLayoutManager(mContext){
+            /*val lms =object : LinearLayoutManager(mContext){
                 override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
 //                    return super.generateDefaultLayoutParams()
                     return RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
                 }
             }
-            lms.orientation = RecyclerView.VERTICAL
+            lms.orientation = RecyclerView.VERTICAL*/
             home_recycler.layoutManager = lm
             r_i = 2
         }
@@ -103,9 +91,38 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
                 rvList.add(item.recyclers!![index])
             }
         }
-        rvAdapter = MainRecyclerAdapter(R.layout.item_main_recycler, rvList, mContext)
+        rvAdapter = MainRecyclerAdapter(R.layout.item_main_recycler,mContext)
         home_recycler.adapter = rvAdapter
-        rvAdapter?.notifyDataSetChanged()
+        rvAdapter?.setNewData(rvList)
+        rvAdapter?.setOnItemChildClickListener(object : OnItemChildClickListener{
+            override fun onItemChildClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
+                when(view?.id){ //theme_id
+                    R.id.head_iv ->{ //头图片
+                        if(rvList[position].theme_goods_servicer.equals("pdd")){//拼多多
+                            val intent = Intent(mContext,PromotionActivity::class.java)
+                            intent.putExtra("id",rvList[position].theme_id.toLong()) //theme_id
+                            intent.putExtra("idName","theme_id")
+                            BaseActivity.goStartActivity(mContext,intent)
+                        }
+                    }
+                    R.id.r1 ->{
+                        if(rvList[position].theme_goods_servicer.equals("pdd")){//拼多多
+                            val intent = Intent(mContext,ShangPinContains::class.java)
+                            intent.putExtra("goods_id",rvList[position].theme_goods_list[0].goods_id)
+                            BaseActivity.goStartActivity(mContext,intent)
+                        }
+                    }
+                    R.id.r2 ->{
+                        if(rvList[position].theme_goods_servicer.equals("pdd")){//拼多多
+                            val intent = Intent(mContext,ShangPinContains::class.java)
+                            intent.putExtra("goods_id",rvList[position].theme_goods_list[1].goods_id)
+                            BaseActivity.goStartActivity(mContext,intent)
+                        }
+                    }
+                    else->{}
+                }
+            }
+        })
     }
 
     private fun setGrid(item: HomeEntity, helper: BaseViewHolder?) {
@@ -140,7 +157,8 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
                 getWebLink(gridList[p].channel_id, mContext)
             } else if (gridList[p].type.equals("goods")) {
                 var intent = Intent(mContext!!, PromotionActivity::class.java)
-                intent.putExtra("channel_id", gridList[p].channel_id)
+                intent.putExtra("id", gridList[p].channel_id)
+                intent.putExtra("idName","channel_id")
                 BaseActivity.goStartActivity(mContext, intent)
             } else {
                 ToastUtil.showToast(mContext!!, "不存在的类型:" + gridList[p].type)
@@ -183,7 +201,8 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
         main_banner.setOnBannerListener(OnBannerListener {
             if (imgs!![it].type.equals("goods")) {
                 var intent = Intent(mContext, PromotionActivity::class.java)
-                intent.putExtra("banner_id", imgs!![it].banner_id.toLong())
+                intent.putExtra("id", imgs!![it].banner_id.toLong())
+                intent.putExtra("idName","banner_id")
                 BaseActivity.goStartActivity(mContext, intent)
             } else {
                 ToastUtil.showToast(this.mContext!!, "这个商品类型异常,快去看日志...")
@@ -197,40 +216,4 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
         main_banner.start()
     }
 
-    /*override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
-    }*/
-
-    /*override fun onCreateViewHolder(holder: ViewGroup, position: Int): BaseViewHolder {
-        var itemType = getItemViewType(position)
-        when (itemType) {
-            HomeEntity.TYPE_BANNER -> { //banner
-
-            }
-            HomeEntity.TYPE_GRID -> { //grid
-
-            }
-            HomeEntity.TYPE_RECYCLER -> { //recycler
-
-            }
-        }
-        return super.onCreateViewHolder(holder, position)
-    }*/
-
-    /*override fun getItemViewType(position: Int): Int {
-        when (data[position].itemType) {
-            HomeEntity.TYPE_BANNER -> {
-                return HomeEntity.TYPE_BANNER
-            }
-            HomeEntity.TYPE_GRID -> {
-                return HomeEntity.TYPE_GRID
-            }
-            HomeEntity.TYPE_RECYCLER -> {
-                return HomeEntity.TYPE_RECYCLER
-            }
-            else -> {
-                return HomeEntity.TYPE_RECYCLER
-            }
-        }
-    }*/
 }

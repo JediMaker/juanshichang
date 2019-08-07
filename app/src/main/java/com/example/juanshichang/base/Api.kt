@@ -33,7 +33,7 @@ interface Api {
         //
         val THEMELIST = "/index/themelist"
         //
-        val THEME = "/index/banner"
+        val THEME = "/index/theme"
 
 
         //servicer 关键字

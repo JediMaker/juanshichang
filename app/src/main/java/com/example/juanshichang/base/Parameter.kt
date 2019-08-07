@@ -201,6 +201,7 @@ class Parameter {
         }
 
         /**
+         * todo 废弃的方法   已被getBaseSonMap代替
          * @param banner_id id值
          * @param offset  页面页码 optional:default 0
          * @param limit   请求数据条目数 optional;default 20
@@ -221,6 +222,7 @@ class Parameter {
             return map
         }
         /**
+         * todo 废弃的方法 已被getBaseSonMap代替
          * @param channel_id id值
          * @param offset  页面页码 optional:default 0
          * @param limit   请求数据条目数 optional;default 20
@@ -240,9 +242,30 @@ class Parameter {
             }
             return map
         }
+        /**
+         * @param idName 传入id的名称进行操作
+         * @param id id值
+         * @param offset  页面页码 optional:default 0
+         * @param limit   请求数据条目数 optional;default 20
+         */
+        fun getBaseSonMap(idName:String,id:Long,offset:Int,limit:Int): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("$idName=$id")
+            var map = fengMap("unlogin")
+            map.put("$idName", "$id")
+            if(offset != 0){
+                baseList.add("offset=$offset")
+                map.put("offset", "$offset")
+            }
+            if(limit != 20){
+                baseList.add("limit=$limit")
+                map.put("limit", "$limit")
+            }
+            return map
+        }
 
         /**
-         * @param theme_goods_count optional;default 2
+         * @param theme_goods_count optional;default 20
          */
         fun getRecyclerMap(theme_goods_count:Int): HashMap<String, String>{
             baseList.clear()
