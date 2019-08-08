@@ -10,6 +10,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.juanshichang.activity.LoginActivity
 import com.example.juanshichang.base.Api
@@ -44,7 +45,7 @@ class MainActivity : BaseActivity() {
     private var oneFragment: OneFragment? = null
     private var twoFragment: TwoFragment? = null
     private var threeFragment: ThreeFragment? = null
-    private var fourFragment: FourFragment? = null
+//    private var fourFragment: FourFragment? = null  //设计五个页面 现保留至四个
     private var fiveFragment: FiveFragment? = null
     private var normalAdapter: NormalAdapter? = null
     override fun getContentView(): Int {
@@ -58,13 +59,13 @@ class MainActivity : BaseActivity() {
         oneFragment = OneFragment()
         twoFragment = TwoFragment()
         threeFragment = ThreeFragment()
-        fourFragment = FourFragment()
+//        fourFragment = FourFragment()
         fiveFragment = FiveFragment()
 
         fragmentList?.add(oneFragment!!)
         fragmentList?.add(twoFragment!!)
         fragmentList?.add(threeFragment!!)
-        fragmentList?.add(fourFragment!!)
+//        fragmentList?.add(fourFragment!!)
         fragmentList?.add(fiveFragment!!)
 //            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request
         MyApp.requestPermission(this@MainActivity)
@@ -96,16 +97,16 @@ class MainActivity : BaseActivity() {
                 vp_main.currentItem = 1
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.store -> {
+//            R.id.store -> {
+//                vp_main.currentItem = 2
+//                return@OnNavigationItemSelectedListener true
+//            }
+            R.id.community -> {
                 vp_main.currentItem = 2
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.community -> {
-                vp_main.currentItem = 3
-                return@OnNavigationItemSelectedListener true
-            }
             R.id.me -> {
-                vp_main.currentItem = 4
+                vp_main.currentItem = 3
                 if (!Util.hasLogin()) {
                     BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
                     finish()
@@ -143,7 +144,7 @@ class MainActivity : BaseActivity() {
 
         override fun onTabSelected(p0: TabLayout.Tab?) {
             vp_main.currentItem = p0!!.position
-            if (p0.position == 4) {
+            if (p0.position == 3) {
                 if (!Util.hasLogin()) {
                     BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
                     finish()
@@ -156,7 +157,6 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initData() {
-
         normalAdapter = NormalAdapter(supportFragmentManager, fragmentList!!)
         vp_main.adapter = normalAdapter
         vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
@@ -168,7 +168,7 @@ class MainActivity : BaseActivity() {
     }
 
     internal inner class NormalAdapter(fm: FragmentManager, private val fragmentList: List<Fragment>) :
-        FragmentPagerAdapter(fm) {
+        FragmentPagerAdapter(fm,FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
             return fragmentList[position]
@@ -184,59 +184,11 @@ class MainActivity : BaseActivity() {
      *  腾讯底部栏舍弃 - 采用原生底部栏
      */
     private fun setTecentBottom() {
-//        val view : QMUITabSegment= QMUITabSegment(this@MainActivity,false)
-//        views.setDefaultTabIconPosition(QMUITabSegment.ICON_POSITION_TOP) // top
-//        views.setHasIndicator(false) //设置是否显示下划线
-        /*val normalColor = QMUIResHelper.getAttrColor(this@MainActivity, R.attr.qmui_config_color_gray_6);
-        val selectColor = QMUIResHelper.getAttrColor(this@MainActivity, R.attr.qmui_config_color_blue);
-        views.setDefaultNormalColor(normalColor); //设置tab正常下的颜色  
-        views.setDefaultSelectedColor(selectColor); //设置tab选中下的颜色  
-//        views.setTabTextSize(20)
-        val component:QMUITabSegment.Tab  = QMUITabSegment.Tab(
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_sel),
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_nor),
-            "首页", true
-        )
-        val component1:QMUITabSegment.Tab  = QMUITabSegment.Tab(
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_sel),
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_nor),
-            "学院", true
-        )
-        val component2:QMUITabSegment.Tab  = QMUITabSegment.Tab(
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_sel),
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_nor),
-            "小店", true
-        )
-        val component3:QMUITabSegment.Tab  = QMUITabSegment.Tab(
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_sel),
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_nor),
-            "社区", true
-        )
-        val component4:QMUITabSegment.Tab  = QMUITabSegment.Tab(
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_sel),
-            ContextCompat.getDrawable(this, R.mipmap.icon_home_nor),
-            "我的", true
-        )
-        views.addTab(component)
-        views.addTab(component1)
-        views.addTab(component2)
-        views.addTab(component3)
-        views.addTab(component4)
-        views.addOnTabSelectedListener(mTencentBottomView)
-        views.setupWithViewPager(vp_main)
-        views.notifyDataChanged()*/
-//        views.setupWithViewPager(vp_main)  // todo 绑定 有Bug
-//        vp_main.currentItem =  0
         views.addTab(views.newTab().setText(R.string.first).setIcon(R.drawable.tab_one))
-        views.addTab(views.newTab().setText(R.string.study).setIcon(R.drawable.tab_one))
-        views.addTab(views.newTab().setText(R.string.store).setIcon(R.drawable.tab_one))
-        views.addTab(views.newTab().setText(R.string.community).setIcon(R.drawable.tab_one))
-        views.addTab(views.newTab().setText(R.string.me).setIcon(R.drawable.tab_one))
-//        views.getTabAt(0)?.text = resources.getText(R.string.first)
-//        views.getTabAt(1)?.text = resources.getText(R.string.study)
-//        views.getTabAt(2)?.text = resources.getText(R.string.store)
-//        views.getTabAt(3)?.text = resources.getText(R.string.community)
-//        views.getTabAt(4)?.text = resources.getText(R.string.me)
+        views.addTab(views.newTab().setText(R.string.study).setIcon(R.drawable.tab_two))
+//        views.addTab(views.newTab().setText(R.string.store).setIcon(R.drawable.tab_three))
+        views.addTab(views.newTab().setText(R.string.community).setIcon(R.drawable.tab_three))
+        views.addTab(views.newTab().setText(R.string.me).setIcon(R.drawable.tab_four))
         views.addOnTabSelectedListener(mTabLayoutBottom)
         vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -275,7 +227,7 @@ class MainActivity : BaseActivity() {
 
             override fun onPageSelected(position: Int) {
                 // todo new add
-                if (position == 4) {
+                if (position == 3) {
                     if (!Util.hasLogin()) {
                         BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
                         finish()

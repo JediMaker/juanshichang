@@ -9,6 +9,7 @@
         tools:context=".fragment.OneFragment">
     <ImageView
             android:src="@drawable/mback"
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="540px"/>
     <LinearLayout
@@ -18,12 +19,13 @@
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="150px"
-                android:background="@color/colorPrimary"
         >
             <!--返回-->
             <View
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:id="@+id/scan_home"
+                    android:layout_width="78px"
+                    android:layout_height="78px"
+                    android:background="@drawable/scan"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -57,12 +59,14 @@
             </RelativeLayout>
 
             <View
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:id="@+id/message_home"
+                    android:background="@drawable/mess_home"
+                    android:layout_width="78px"
+                    android:layout_height="78px"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:padding="9dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="10dp"
             />
 
 

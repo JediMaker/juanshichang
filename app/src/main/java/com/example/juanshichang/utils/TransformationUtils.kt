@@ -8,7 +8,7 @@ import com.bumptech.glide.request.target.ImageViewTarget
 /**
  * @作者: yzq
  * @创建日期: 2019/7/26 11:28
- * @文件作用: 等比缩放图片
+ * @文件作用: 等比缩放图片 todo 弃用
  */
 class TransformationUtils : ImageViewTarget<Bitmap>{
     var target:ImageView? = null

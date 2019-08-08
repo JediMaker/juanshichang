@@ -123,7 +123,7 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
         hr?.adapter = homeAdapter
     }
 
-    @OnClick(R.id.etsearch)
+    @OnClick(R.id.etsearch,R.id.scan_home,R.id.message_home)
     fun onViewClicked(v: View) {
         when (v.id) {
             R.id.etsearch -> {
@@ -132,6 +132,7 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
                 startActivity(intent)
             }
             else -> {
+                ToastUtil.showToast(mContext!!,"程序猿小哥 日夜赶工中...")
             }
         }
     }

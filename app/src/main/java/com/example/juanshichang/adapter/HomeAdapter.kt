@@ -178,7 +178,7 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
             //设置图片加载器
             main_banner.setImageLoader(GlideImageLoader())
             //设置动画效果
-            main_banner.setBannerAnimation(Transformer.Default)
+            main_banner.setBannerAnimation(Transformer.Tablet)
             //设置轮播图片间隔时间（不设置默认为2000）
             main_banner.setDelayTime(4500)
             //设置是否自动轮播（不设置则默认自动）

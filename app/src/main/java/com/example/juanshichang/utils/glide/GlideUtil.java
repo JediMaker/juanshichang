@@ -10,19 +10,23 @@ import android.graphics.Paint;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.juanshichang.MyApp;
 import com.example.juanshichang.R;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 
 import java.security.MessageDigest;
 
 /**
  * Created by Administrator on 2018/3/27/027.
- *
+ * <p>
  * 加载图片
  */
 
@@ -35,7 +39,7 @@ public class GlideUtil {
      * @param url
      * @param mImageView
      */
-    public static void loadImage(Context mContext, String url, ImageView mImageView){
+    public static void loadImage(Context mContext, String url, ImageView mImageView) {
         try {
             RequestOptions options = new RequestOptions();
             options.transform(new StaggeredBitmapTransform(MyApp.app))
@@ -52,11 +56,12 @@ public class GlideUtil {
 
     /**
      * 加载长图
+     *
      * @param mContext
      * @param url
      * @param mImageView
      */
-    public static void loadImageLong(Context mContext, String url, ImageView mImageView){
+    public static void loadImageLong(Context mContext, String url, ImageView mImageView) {
         try {
             RequestOptions options = new RequestOptions();
             options.transform(new StaggeredBitmapTransform(MyApp.app))
@@ -82,11 +87,12 @@ public class GlideUtil {
         RequestOptions options = new RequestOptions();
         options.centerCrop().placeholder(R.drawable.c_error)
                 .error(R.drawable.ic_no_pic)
-                .transform(new GlideCircleTransform(mContext,2,mContext.getResources().getColor(R.color.white)))
+                .transform(new GlideCircleTransform(mContext, 2, mContext.getResources().getColor(R.color.white)))
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE);
         Glide.with(mContext).load(url).apply(options).into(imageview);
 
     }
+
     static class GlideCircleTransform extends BitmapTransformation {
 
         private Paint mBorderPaint;
@@ -146,9 +152,63 @@ public class GlideUtil {
     }
 
     /**
-     * 圆角图片
+     * 半圆角图片
+     * type 为1 则只绘制 图片上面两个圆角 , 0 绘制四角
      */
-    public static void loadRoundImage(){
+    public static void loadHalfRoundImage(final Context context,int roundRadius,String url, final ImageView imageView) {//int resId,
+        //默认请求选项【不太习惯，还是每个请求重复使用吧】
+//        builder.setDefaultRequestOptions(
+//                new RequestOptions()
+//                        //设置等待时的图片
+//                        .placeholder(R.drawable.img_loading)
+//                        //设置加载失败后的图片显示
+//                        .error(R.drawable.img_error)
+//                        .centerCrop()
+//                        //缓存策略,跳过内存缓存【此处应该设置为false，否则列表刷新时会闪一下】
+//                        .skipMemoryCache(false)
+//                        //缓存策略,貌似只有这一个设置
+//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                        //设置图片加载的优先级
+//                        .priority(Priority.HIGH));
+        //DiskCacheStrategy.RESOURCE 只缓存原始文件
+        //DiskCacheStrategy.ALL 缓存所有size的图片和源文件
+        //DiskCacheStrategy.RESULT 缓存最后的结果文件
+        //DiskCacheStrategy.NONE 撒都不缓存
+        try {
+            RequestOptions options = new RequestOptions()
+//                    .transform(new StaggeredBitmapTransform(context))
+                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context,roundRadius),GlideRoundedCornersTransform.CornerType.TOP))
+//                    .skipMemoryCache(true)
+                    .error(R.drawable.c_error)//加载失败显示图片
+                    .placeholder(R.drawable.c_error)//预加载图片
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//设置缓存策略 缓存最后的结果文件
+                    .priority(Priority.HIGH); //优先级
+            Glide.with(context).asBitmap().load(url).apply(options).into(imageView);
+//            options.bitmapTransform(new CircleCrop()); //圆形
+//            options.bitmapTransform(new RoundedCorners(cornerRadius)); //圆角
+        } catch (Exception e) {
 
+        }
+    }
+
+    /**
+     *
+     * 圆角图
+     */
+    public static void loadRoundImage(final Context context,int roundRadius,String url, final ImageView imageView) {
+        try {
+            RequestOptions options = new RequestOptions();
+            options.placeholder(R.drawable.c_error) //预加载
+                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context,roundRadius),GlideRoundedCornersTransform.CornerType.TOP))
+//                    .skipMemoryCache(true) //不从内存加载
+                    .error(R.drawable.c_error)      //失败
+                    .priority(Priority.HIGH) //优先级
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//设置缓存策略 缓存最后的结果文件
+                    .transform(new GlideRoundTransform(roundRadius));
+//            options.bitmapTransform(roundedCorners);
+            Glide.with(context).asBitmap().load(url).apply(options).into(imageView);
+        } catch (Exception e) {
+
+        }
     }
 }
