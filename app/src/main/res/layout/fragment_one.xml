@@ -37,12 +37,12 @@
                     android:gravity="center_vertical"
                     android:layout_centerVertical="true"
                     android:background="@drawable/bg_index_serch"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="155px"
+                    android:layout_marginLeft="155px"
             >
                 <TextView
                         android:id="@+id/etsearchs"
-                        android:layout_width="810px"
+                        android:layout_width="match_parent"
                         android:layout_height="100px"
                         android:gravity="center_vertical"
                         android:text="粘贴宝贝标题，先领劵再购物"
