@@ -41,7 +41,7 @@
                     android:layout_marginLeft="50dp"
             >
                 <TextView
-                        android:id="@+id/etsearch"
+                        android:id="@+id/etsearchs"
                         android:layout_width="810px"
                         android:layout_height="100px"
                         android:gravity="center_vertical"

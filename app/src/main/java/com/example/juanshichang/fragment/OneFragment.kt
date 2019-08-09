@@ -123,10 +123,10 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
         hr?.adapter = homeAdapter
     }
 
-    @OnClick(R.id.etsearch,R.id.scan_home,R.id.message_home)
+    @OnClick(R.id.etsearchs,R.id.scan_home,R.id.message_home)
     fun onViewClicked(v: View) {
         when (v.id) {
-            R.id.etsearch -> {
+            R.id.etsearchs -> {
                 val intent = Intent(mContext, SearcheActivity::class.java)
                 //...
                 startActivity(intent)

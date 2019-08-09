@@ -152,8 +152,7 @@ public class GlideUtil {
     }
 
     /**
-     * 半圆角图片
-     * type 为1 则只绘制 图片上面两个圆角 , 0 绘制四角
+     * 半圆角图片   存在图片加载不完整问题 建议 操作控件 ...
      */
     public static void loadHalfRoundImage(final Context context,int roundRadius,String url, final ImageView imageView) {//int resId,
         //默认请求选项【不太习惯，还是每个请求重复使用吧】
@@ -177,7 +176,8 @@ public class GlideUtil {
         try {
             RequestOptions options = new RequestOptions()
 //                    .transform(new StaggeredBitmapTransform(context))
-                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context,roundRadius),GlideRoundedCornersTransform.CornerType.TOP))
+                    .fitCenter()
+                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context,roundRadius),-5,GlideRoundedCornersTransform.CornerType.TOP))
 //                    .skipMemoryCache(true)
                     .error(R.drawable.c_error)//加载失败显示图片
                     .placeholder(R.drawable.c_error)//预加载图片
@@ -199,12 +199,13 @@ public class GlideUtil {
         try {
             RequestOptions options = new RequestOptions();
             options.placeholder(R.drawable.c_error) //预加载
-                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context,roundRadius),GlideRoundedCornersTransform.CornerType.TOP))
+                    .fitCenter()
+                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context,roundRadius),GlideRoundedCornersTransform.CornerType.ALL))
 //                    .skipMemoryCache(true) //不从内存加载
                     .error(R.drawable.c_error)      //失败
                     .priority(Priority.HIGH) //优先级
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)//设置缓存策略 缓存最后的结果文件
-                    .transform(new GlideRoundTransform(roundRadius));
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE);//设置缓存策略 缓存最后的结果文件
+//                    .transform(new GlideRoundTransform(roundRadius));
 //            options.bitmapTransform(roundedCorners);
             Glide.with(context).asBitmap().load(url).apply(options).into(imageView);
         } catch (Exception e) {

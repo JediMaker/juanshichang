@@ -19,4 +19,7 @@
     <color name="txt_fenlei">#df0005</color>
     <color name="main_text">#222222</color>
     <color name="label_color">#F93736</color>
+    <color name="home_yellow">#FBEE3A</color>
+    <color name="home_gray">#666666</color>
+    <color name="home_gray2">#444444</color>
 </resources>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoLinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:paddingTop="18px"
         android:paddingLeft="48px"
@@ -23,7 +24,6 @@
     <com.qmuiteam.qmui.widget.QMUIRadiusImageView
             android:id="@+id/head_iv"
             app:qmui_corner_radius="8dp"
-            android:scaleType="centerCrop"
             android:background="@drawable/main_recycler_item_iv"
             android:layout_gravity="center"
             android:layout_width="match_parent"
@@ -40,15 +40,15 @@
                 android:background="@drawable/main_recycler_item_two"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="600px">
-            <ImageView
+                android:layout_height="630px">
+            <com.example.juanshichang.widget.TopRoundedImageView
                     android:id="@+id/left_iv"
                     android:layout_marginTop="2px"
                     android:layout_marginLeft="2px"
                     android:layout_marginRight="2px"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:layout_width="match_parent"
-                    android:layout_height="396px"/>
+                    android:layout_height="401px"/>
             <TextView
                     android:id="@+id/left_tv_title"
                     android:ellipsize="end"
@@ -66,8 +66,9 @@
                     android:id="@+id/left_left_label"
                     android:layout_below="@+id/left_tv_title"
                     android:textColor="@color/label_color"
-                    android:text="包邮"
+                    tools:text="包邮"
                     android:textSize="20px"
+                    android:layout_marginTop="4px"
                     android:paddingTop="1px"
                     android:paddingBottom="1px"
                     android:paddingLeft="7px"
@@ -81,19 +82,51 @@
                     android:layout_below="@+id/left_tv_title"
                     android:layout_marginLeft="10px"
                     android:layout_toRightOf="@+id/left_left_label"
-                    android:textColor="@color/label_color"
-                    android:text="拼多多"
+                    android:textColor="@color/home_gray"
+                    tools:text="拼多多"
                     android:textSize="20px"
                     android:paddingTop="1px"
                     android:paddingBottom="1px"
                     android:paddingLeft="7px"
                     android:paddingRight="7px"
-                    android:background="@drawable/item_recycler_main_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <LinearLayout
-                    android:id="@+id/left_linear"
+                    android:id="@+id/left_left_label2"
                     android:layout_below="@+id/left_left_label"
+                    android:layout_marginTop="10px"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="19px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/left_volume"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="16px"
+                        android:textColor="@color/home_gray"
+                        tools:text="销量1321"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/left_promotion_rate"
+                        android:textSize="16px"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginLeft="20px"
+                        android:paddingRight="8px"
+                        android:paddingLeft="9px"
+                        android:paddingTop="4px"
+                        android:paddingBottom="4px"
+                        android:background="@drawable/item_recycler_home_earnings"
+                        tools:text="预估收益1.12元"
+                        android:textColor="@color/home_gray2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:id="@+id/left_linear"
+                    android:layout_below="@+id/left_left_label2"
                     android:paddingTop="5px"
                     android:layout_marginLeft="19px"
                     android:orientation="horizontal"
@@ -126,6 +159,7 @@
                     android:textColor="@color/txt_gray"
                     android:textSize="24px"/>
             <LinearLayout
+                    android:id="@+id/left_juan"
                     android:layout_alignBottom="@+id/left_linear"
                     android:layout_marginBottom="8px"
                     android:layout_marginRight="21px"
@@ -167,15 +201,16 @@
                 android:background="@drawable/main_recycler_item_two"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="600px">
-            <ImageView
+                android:layout_height="630px">
+            <!--396px-->
+            <com.example.juanshichang.widget.TopRoundedImageView
                     android:id="@+id/right_iv"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:layout_marginTop="2px"
                     android:layout_marginLeft="2px"
                     android:layout_marginRight="2px"
                     android:layout_width="match_parent"
-                    android:layout_height="396px"/>
+                    android:layout_height="401px"/>
             <TextView
                     android:id="@+id/right_tv_title"
                     android:ellipsize="end"
@@ -193,7 +228,7 @@
                     android:id="@+id/right_left_label"
                     android:layout_below="@+id/right_tv_title"
                     android:textColor="@color/label_color"
-                    android:text="包邮"
+                    tools:text="拼多多"
                     android:textSize="20px"
                     android:paddingTop="1px"
                     android:paddingBottom="1px"
@@ -208,19 +243,51 @@
                     android:layout_below="@+id/right_tv_title"
                     android:layout_marginLeft="10px"
                     android:layout_toRightOf="@+id/right_left_label"
-                    android:textColor="@color/label_color"
-                    android:text="拼多多"
+                    android:textColor="@color/home_gray"
+                    tools:text="某个店"
                     android:textSize="20px"
                     android:paddingTop="1px"
                     android:paddingBottom="1px"
                     android:paddingLeft="7px"
                     android:paddingRight="7px"
-                    android:background="@drawable/item_recycler_main_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <LinearLayout
-                    android:id="@+id/right_linear"
+                    android:id="@+id/right_left_label2"
                     android:layout_below="@+id/right_left_label"
+                    android:layout_marginTop="10px"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="19px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/right_volume"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="16px"
+                        android:textColor="@color/home_gray"
+                        tools:text="销量1321"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/right_promotion_rate"
+                        android:textSize="16px"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginLeft="20px"
+                        android:paddingRight="8px"
+                        android:paddingLeft="9px"
+                        android:paddingTop="4px"
+                        android:paddingBottom="4px"
+                        android:background="@drawable/item_recycler_home_earnings"
+                        tools:text="预估收益1.12元"
+                        android:textColor="@color/home_gray2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:id="@+id/right_linear"
+                    android:layout_below="@+id/right_left_label2"
                     android:paddingTop="5px"
                     android:layout_marginLeft="19px"
                     android:orientation="horizontal"
@@ -253,6 +320,7 @@
                     android:textColor="@color/txt_gray"
                     android:textSize="24px"/>
             <LinearLayout
+                    android:id="@+id/right_juan"
                     android:layout_alignBottom="@+id/right_linear"
                     android:layout_marginBottom="8px"
                     android:layout_marginRight="21px"

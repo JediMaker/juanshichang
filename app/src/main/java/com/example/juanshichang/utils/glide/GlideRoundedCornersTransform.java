@@ -13,6 +13,8 @@ import java.security.MessageDigest;
  */
 public class GlideRoundedCornersTransform extends CenterCrop {
     private float mRadius;
+    private float mDiameter;
+    private int mMargin;
     private CornerType mCornerType;
     private static final int VERSION = 1;
     private static final String ID = BuildConfig.APPLICATION_ID + "GlideRoundedCornersTransform." + VERSION;
@@ -31,11 +33,19 @@ public class GlideRoundedCornersTransform extends CenterCrop {
     }
 
     public GlideRoundedCornersTransform(float radius, CornerType cornerType) {
+        this(radius,0,cornerType);
+    }
+    //new add
+    public GlideRoundedCornersTransform(float radius) {
+        this(radius,0,CornerType.ALL);
+    }
+    public GlideRoundedCornersTransform(float radius, int margin,CornerType cornerType) {
         super();
         mRadius = radius;
+        mDiameter = radius*2;
+        mMargin = margin;
         mCornerType = cornerType;
     }
-
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
         Bitmap transform = super.transform(pool, toTransform, outWidth, outHeight);
@@ -57,21 +67,24 @@ public class GlideRoundedCornersTransform extends CenterCrop {
         Canvas canvas = new Canvas(result);
         Paint paint = new Paint();
         paint.setShader(new BitmapShader(source, BitmapShader.TileMode.CLAMP, BitmapShader
-                .TileMode.CLAMP));
+                .TileMode.CLAMP)); //CLAMP
         paint.setAntiAlias(true);
 
         Path path = new Path();
         drawRoundRect(canvas, paint, path, width, height);
-
+//            source.recycle(); //回收
         return result;
     }
 
-    private void drawRoundRect(Canvas canvas, Paint paint, Path path, int width, int height) {
+    private void drawRoundRect(Canvas canvas, Paint paint, Path path, int widths, int heights) {
         float[] rids ;
+        int width = widths - mMargin;
+        int height = heights - mMargin;
         switch (mCornerType) {
             case ALL:
-                rids = new float[]{mRadius,mRadius,mRadius,mRadius,mRadius,mRadius,mRadius,mRadius};
-                drawPath(rids,canvas, paint, path, width, height);
+//                rids = new float[]{mRadius,mRadius,mRadius,mRadius,mRadius,mRadius,mRadius,mRadius};
+//                drawPath(rids,canvas, paint, path, width, height);
+              canvas.drawRoundRect(new RectF(mMargin,mMargin,width,height),mRadius,mRadius,paint);
                 break;
             case TOP_LEFT:
                 rids = new float[]{mRadius,mRadius,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f};

@@ -4,15 +4,21 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/auto_1"
         android:orientation="vertical"
+        android:paddingTop="30px"
+        android:paddingLeft="48px"
+        android:paddingRight="48px"
+        android:paddingBottom="30px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+    <!--android:paddingTop="30px"-->
+    <!--android:paddingBottom="30px"-->
+    <!--android:layout_marginTop="30px"-->
+    <!--android:layout_marginLeft="48px"-->
+    <!--android:layout_marginRight="48px"-->
+    <!--android:layout_marginBottom="30px"-->
     <com.youth.banner.Banner
             android:visibility="visible"
             android:id="@+id/main_banner"
-            android:layout_marginTop="30px"
-            android:layout_marginLeft="48px"
-            android:layout_marginRight="48px"
-            android:layout_marginBottom="30px"
             app:image_scale_type="fit_xy"
             app:indicator_drawable_selected="@color/colorPrimary"
             android:layout_width="match_parent"

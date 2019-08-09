@@ -21,6 +21,7 @@ class GlideImageLoader : ImageLoader() {
         //DiskCacheStrategy.RESULT 缓存最后的结果文件
         //DiskCacheStrategy.NONE 撒都不缓存
         var options = RequestOptions()
+            .fitCenter()
 //            .transform(StaggeredBitmapTransform(MyApp.getInstance()))
             .optionalTransform(
                 GlideRoundedCornersTransform(
