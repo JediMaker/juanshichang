@@ -131,7 +131,8 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                         }
                     }
                 } else {
-                    goStartActivity(this@ShangPinContains, LoginActivity())
+//                    goStartActivity(this@ShangPinContains, LoginActivity())
+                    goStartActivity(this@ShangPinContains, Reg2LogActivity())
                 }
             }
             spGou -> {
@@ -145,7 +146,8 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                     }
                     startActivity(intent)
                 } else {
-                    goStartActivity(this@ShangPinContains, LoginActivity())
+//                    goStartActivity(this@ShangPinContains, LoginActivity())
+                    goStartActivity(this@ShangPinContains, Reg2LogActivity())
                 }
             }
             else -> {

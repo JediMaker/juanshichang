@@ -1,6 +1,5 @@
 package com.example.juanshichang
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
 import android.text.TextUtils
@@ -10,9 +9,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.example.juanshichang.activity.LoginActivity
+import com.example.juanshichang.activity.Reg2LogActivity
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
@@ -108,7 +106,7 @@ class MainActivity : BaseActivity() {
             R.id.me -> {
                 vp_main.currentItem = 3
                 if (!Util.hasLogin()) {
-                    BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
+                    BaseActivity.Companion.goStartActivity(this@MainActivity, Reg2LogActivity())
                     finish()
                 } else {
                     ToastUtil.showToast(this@MainActivity, "登录检查通过")
@@ -146,7 +144,7 @@ class MainActivity : BaseActivity() {
             vp_main.currentItem = p0!!.position
             if (p0.position == 3) {
                 if (!Util.hasLogin()) {
-                    BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
+                    BaseActivity.Companion.goStartActivity(this@MainActivity, Reg2LogActivity())
                     finish()
                 } else {
                     ToastUtil.showToast(this@MainActivity, "登录检查通过")
@@ -229,7 +227,7 @@ class MainActivity : BaseActivity() {
                 // todo new add
                 if (position == 3) {
                     if (!Util.hasLogin()) {
-                        BaseActivity.Companion.goStartActivity(this@MainActivity, LoginActivity())
+                        BaseActivity.Companion.goStartActivity(this@MainActivity, Reg2LogActivity())
                         finish()
                     } else {
                         ToastUtil.showToast(this@MainActivity, "登录检查通过")

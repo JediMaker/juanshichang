@@ -27,8 +27,8 @@
                     android:layout_height="78px"
                     android:background="@drawable/scan"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="47px"
+                    android:layout_marginRight="30dp"
             />
 
             <RelativeLayout
@@ -62,11 +62,12 @@
                     android:id="@+id/message_home"
                     android:background="@drawable/mess_home"
                     android:layout_width="78px"
-                    android:layout_height="78px"
+                    android:layout_height="73px"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:padding="9dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="35px"
+                    android:layout_marginRight="48px"
             />
 
 

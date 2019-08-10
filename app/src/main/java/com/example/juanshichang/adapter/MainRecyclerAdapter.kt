@@ -62,9 +62,9 @@ class MainRecyclerAdapter(layoutResId: Int,context: Context) :
             }
         }else{ //填入优惠劵数据
             if(type == 0){
-                helper.setText(R.id.left_juan_price,UtilsBigDecimal.div(item.theme_goods_list[0].coupon_discount.toDouble(),100.toDouble(),0).toString()+"元")
+                helper.setText(R.id.left_juan_price,UtilsBigDecimal.div(item.theme_goods_list[0].coupon_discount.toDouble(),100.toDouble(),0).toInt().toString()+"元")
             }else if(type == 1){
-                helper.setText(R.id.right_juan_price,UtilsBigDecimal.div(item.theme_goods_list[1].coupon_discount.toDouble(),100.toDouble(),0).toString()+"元")
+                helper.setText(R.id.right_juan_price,UtilsBigDecimal.div(item.theme_goods_list[1].coupon_discount.toDouble(),100.toDouble(),0).toInt().toString()+"元")
             }
         }
         //填入预估佣金

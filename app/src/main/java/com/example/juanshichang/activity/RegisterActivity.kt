@@ -54,8 +54,8 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         when (v) {
             registerBut -> { //注册
                 if (goRegister()) {
-                    val phone = mRegPhone.text.toString().trim()
-                    val ps = mRegpass.text.toString().trim()
+                    val phone = mRegPhone.text.toString()
+                    val ps = mRegpass.text.toString()
                     ToastUtil.showToast(this@RegisterActivity,"一键登录")
                     regGo(phone,ps)
                 }
@@ -78,9 +78,9 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun goRegister(): Boolean {
-        val phone = mRegPhone.text.toString().trim()
-        val ps = mRegpass.text.toString().trim()
-        val ps2 = mRegpass2.text.toString().trim()
+        val phone = mRegPhone.text.toString()
+        val ps = mRegpass.text.toString()
+        val ps2 = mRegpass2.text.toString()
         if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(ps) || TextUtils.isEmpty(ps2)) {
             ToastUtil.showToast(this@RegisterActivity, "请根据提示框输入正确的信息!")
             return false
@@ -119,7 +119,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     } catch (e: JSONException) {
                         e.printStackTrace();
                     }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
                         ToastUtil.showToast(this@RegisterActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
@@ -155,7 +155,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     } catch (e: JSONException) {
                         e.printStackTrace();
                     }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
                         ToastUtil.showToast(this@RegisterActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj!!.getJSONObject("data")

@@ -46,8 +46,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.mLogoinBt ->{
-                val phone = mLoginName.text.toString().trim()
-                val ps = mLoginPass.text.toString().trim()
+                val phone = mLoginName.text.toString()
+                val ps = mLoginPass.text.toString()
                 if(goLogin(phone,ps)){
                     logGo(phone,ps)
                 }
@@ -89,7 +89,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
                     } catch (e: JSONException) {
                         e.printStackTrace();
                     }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
                         ToastUtil.showToast(this@LoginActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
