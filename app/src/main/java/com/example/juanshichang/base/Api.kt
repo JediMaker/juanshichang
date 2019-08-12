@@ -30,11 +30,12 @@ interface Api {
         val CHANNELLIST = "/index/channellist"
         //GridView条目数据请求
         val CHANNEL = "/index/channel"
-        //
+        //请求首页RecyclerView条目
         val THEMELIST = "/index/themelist"
-        //
+        //RecyclerView条目数据请求
         val THEME = "/index/theme"
-
+        //发送验证码
+        val SMSSEND = "/smssend"
 
         //servicer 关键字
         val Pdd = "pdd"

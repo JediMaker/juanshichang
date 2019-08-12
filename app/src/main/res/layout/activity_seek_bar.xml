@@ -30,6 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="96px"
                 android:maxLines="1"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:background="@drawable/bg_search_white"
                 android:hint="搜一搜你喜欢的吧..."

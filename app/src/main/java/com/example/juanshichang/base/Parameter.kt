@@ -1,7 +1,5 @@
 package com.example.juanshichang.base
 
-import android.provider.Settings
-import android.util.Log
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.MyApp.Companion.getMD5uuid
 import com.example.juanshichang.utils.SpUtil
@@ -12,8 +10,8 @@ import kotlin.collections.HashMap
 
 class Parameter {
     companion object {
-        var baseList = arrayListOf<String>()//存放签名集合
-        var stringList = arrayListOf<String>()//存放签名集合
+        var baseList = ArrayList<String>()//存放签名集合
+        var stringList = ArrayList<String>()//存放签名集合
 
         /**
          * 签名
@@ -53,7 +51,7 @@ class Parameter {
             for (i in 0 until stringList.size) {
                 sbs.append(stringList[i] + "&")
             }
-            var map = hashMapOf<String, String>()
+            var map = HashMap<String, String>()
 //            map.put("action", action)
             map.put("uuid", getMD5uuid())
 //            map.put("clienttype", "2")
@@ -89,7 +87,7 @@ class Parameter {
          * 公共参数
          */
         fun getPublicMap(signType: String, fuji: String): HashMap<String, String> { //action: String,
-            var map = hashMapOf<String, String>()
+            var map = HashMap<String, String>()
 //            map.put("action", action)
             map.put("sign", getSign(signType, fuji))
             map.put("uuid", getMD5uuid())
@@ -274,6 +272,17 @@ class Parameter {
                 baseList.add("theme_goods_count=$theme_goods_count")
                 map.put("theme_goods_count", "$theme_goods_count")
             }
+            return map
+        }
+
+        /**
+         * @param mobile 传入要发送短信的手机号
+         */
+        fun getVerifyCode(mobile:String):HashMap<String,String>{
+            baseList.clear()
+            var map = fengMap("unlogin")
+            baseList.add("mobile=$mobile")
+            map.put("mobile", mobile)
             return map
         }
     }

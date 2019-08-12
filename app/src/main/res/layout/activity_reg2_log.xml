@@ -12,7 +12,7 @@
             android:scaleType="fitStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    <RelativeLayout
+    <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/rRL"
             android:layout_marginTop="40px"
             android:layout_width="match_parent"
@@ -34,20 +34,35 @@
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-    </RelativeLayout>
-    <include
-            android:id="@+id/registerInclude"
+    </com.zhy.autolayout.AutoRelativeLayout>
+    <ScrollView
             android:layout_alignParentBottom="true"
+            android:scrollbars="none"
+            android:fillViewport="true"
             android:layout_width="match_parent"
-            android:layout_height="1116px"
-            layout="@layout/regist_item"
-    />
-    <include
-            android:visibility="gone"
-            android:id="@+id/loginInclude"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="1116px"
-            layout="@layout/login_item"
-    />
+            android:layout_height="wrap_content">
+        <com.zhy.autolayout.AutoLinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <include
+                        android:id="@+id/registerInclude"
+                        android:layout_width="match_parent"
+                        android:layout_height="930px"
+                        layout="@layout/regist_item"
+                />
+                <include
+                        android:visibility="gone"
+                        android:id="@+id/loginInclude"
+                        android:layout_width="match_parent"
+                        android:layout_height="930px"
+                        layout="@layout/login_item"
+                />
+            </RelativeLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+    </ScrollView>
 </com.zhy.autolayout.AutoRelativeLayout>

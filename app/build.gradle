@@ -42,7 +42,6 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    ext.build_number = "beta"
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
