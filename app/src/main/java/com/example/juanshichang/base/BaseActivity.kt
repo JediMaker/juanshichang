@@ -20,8 +20,10 @@ import com.example.juanshichang.dialog.LoadingProgressDialog
 import com.example.juanshichang.dialog.ToastDialog
 import com.example.juanshichang.utils.ActivityManager
 import com.example.juanshichang.utils.AutoLayoutActivity
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.IsInternet
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.trello.rxlifecycle2.LifecycleProvider
 import com.trello.rxlifecycle2.LifecycleTransformer
 import com.trello.rxlifecycle2.RxLifecycle
@@ -45,6 +47,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        QMUIStatusBarHelper.translucent(this)
         //-----------------网络-------------------------
         //网络连接
         val conn = IsInternet.isNetworkAvalible(this@BaseActivity)

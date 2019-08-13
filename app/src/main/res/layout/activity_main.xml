@@ -40,9 +40,9 @@
             android:background="@null"
             app:tabBackground="@color/white"
             app:tabIndicatorHeight="0dp"
-            app:tabSelectedTextColor="@color/red"
+            app:tabSelectedTextColor="@color/colorPrimary"
             app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
-            app:tabTextColor="@color/colorPrimary"
+            app:tabTextColor="@color/txt_black_center"
             app:tabGravity="fill"
             app:tabMode="fixed">
     </com.google.android.material.tabs.TabLayout>

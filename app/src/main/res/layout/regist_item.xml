@@ -112,7 +112,7 @@
                             android:paddingLeft="36px"
                             android:paddingRight="36px"
                             android:gravity="center"
-                            android:textColor="@color/label_color"
+                            android:textColor="@drawable/rig_text"
                             android:textSize="36px"
                             android:text="获取验证码"
                             android:layout_marginLeft="42px"
@@ -174,9 +174,10 @@
                         android:paddingBottom="42px"
                         android:gravity="center"
                         android:textSize="48px"
-                        android:text="立即注册"
-                        android:background="@drawable/rig_text"
-                        android:textColor="@color/white"
+                        android:text="立即注册/登录"
+                        android:enabled="false"
+                        android:background="@drawable/rig_go_but"
+                        android:textColor="@drawable/rig_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 <LinearLayout

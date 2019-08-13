@@ -26,6 +26,7 @@ import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
+import com.qmuiteam.qmui.util.QMUIDisplayHelper.getStatusBarHeight
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.fragment_one.*
 import org.jetbrains.anko.runOnUiThread
@@ -82,8 +83,8 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
     }
 
     override fun initViews(savedInstanceState: Bundle) {
-        QMUIStatusBarHelper.translucent(mContext)
-        StatusBarUtil.addStatusViewWithColor(mContext, R.color.colorPrimary)
+//        QMUIStatusBarHelper.translucent(mContext)
+//        StatusBarUtil.addStatusViewWithColor(mContext, R.color.colorPrimary)
         MyApp.requestPermission(mContext!!)
         getBanner()
         getGrid()

@@ -17,10 +17,7 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.fragment.*
 import com.example.juanshichang.http.HttpManager
-import com.example.juanshichang.utils.JumpPermissionManagement
-import com.example.juanshichang.utils.SpUtil
-import com.example.juanshichang.utils.ToastUtil
-import com.example.juanshichang.utils.Util
+import com.example.juanshichang.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
@@ -51,7 +48,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
-//        QMUIStatusBarHelper.translucent(this@MainActivity)
+        StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
         setBottomView()
         fragmentList = mutableListOf<Fragment>()
         oneFragment = OneFragment()
@@ -260,7 +257,7 @@ class MainActivity : BaseActivity() {
                     } catch (e: JSONException) {
                         e.printStackTrace();
                     }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
                         ToastUtil.showToast(this@MainActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj!!.getJSONObject("data")

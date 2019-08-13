@@ -97,8 +97,9 @@
                         android:gravity="center"
                         android:textSize="48px"
                         android:text="立即登录"
-                        android:background="@drawable/rig_text"
-                        android:textColor="@color/white"
+                        android:enabled="false"
+                        android:background="@drawable/rig_go_but"
+                        android:textColor="@drawable/rig_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 <LinearLayout

@@ -18,8 +18,10 @@ import com.example.juanshichang.activity.SettingActivity
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.BaseFragment
 import com.example.juanshichang.utils.SpUtil
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.fragment_five.*
 
 /**
@@ -37,15 +39,17 @@ class FiveFragment : BaseFragment() {
 //        if (Util.hasLogin()) {
 //            unlogin.visibility = View.VISIBLE
 //        }
+//        QMUIStatusBarHelper.translucent(mContext)
+//        StatusBarUtil.addStatusViewWithColor(mContext, R.color.white)
     }
 
     override fun initData() {
     }
 
-    @OnClick(R.id.setting)
+    @OnClick(R.id.ffUserSet)
     fun onViewClicked(v: View) {
         when (v.id) {
-            R.id.setting -> {
+            R.id.ffUserSet -> {
                 BaseActivity.goStartActivity(this.mContext!!, SettingActivity())
             }
         }

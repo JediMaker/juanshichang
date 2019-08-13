@@ -1,5 +1,6 @@
 package com.example.juanshichang.base
 
+import android.util.Log
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.MyApp.Companion.getMD5uuid
 import com.example.juanshichang.utils.SpUtil
@@ -70,8 +71,8 @@ class Parameter {
             var sign: String = ""
             if (signType.equals("unlogin")) { //未登录
                 sign = MD5Utils.getMD5Str("|D|$fuji|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥  todo 待询问
-//                Log.e("sign", "|D|$fuji|K|$appkey")
-//                Log.e("sign", MD5Utils.getMD5Str("|D|$fuji|K|$appkey"))
+                Log.e("sign", "|D|$fuji|K|$appkey")
+                Log.e("sign", MD5Utils.getMD5Str("|D|$fuji|K|$appkey"))
             } else if (signType.equals("login")) { //登录
                 sign = MD5Utils.getMD5Str("|D|$fuji|K|$usertoken")
 //                Log.e("sign2", "$usertoken")
@@ -249,14 +250,18 @@ class Parameter {
         fun getBaseSonMap(idName:String,id:Long,offset:Int,limit:Int): HashMap<String, String>{
             baseList.clear()
             baseList.add("$idName=$id")
-            var map = fengMap("unlogin")
-            map.put("$idName", "$id")
             if(offset != 0){
                 baseList.add("offset=$offset")
-                map.put("offset", "$offset")
             }
             if(limit != 20){
                 baseList.add("limit=$limit")
+            }
+            var map = fengMap("unlogin")
+            map.put("$idName", "$id")
+            if(offset != 0){
+                map.put("offset", "$offset")
+            }
+            if(limit != 20){
                 map.put("limit", "$limit")
             }
             return map
@@ -267,9 +272,11 @@ class Parameter {
          */
         fun getRecyclerMap(theme_goods_count:Int): HashMap<String, String>{
             baseList.clear()
-            var map = fengMap("unlogin")
             if(theme_goods_count != 2){
                 baseList.add("theme_goods_count=$theme_goods_count")
+            }
+            var map = fengMap("unlogin")
+            if(theme_goods_count != 2){
                 map.put("theme_goods_count", "$theme_goods_count")
             }
             return map
@@ -280,8 +287,8 @@ class Parameter {
          */
         fun getVerifyCode(mobile:String):HashMap<String,String>{
             baseList.clear()
-            var map = fengMap("unlogin")
             baseList.add("mobile=$mobile")
+            var map = fengMap("unlogin")
             map.put("mobile", mobile)
             return map
         }

@@ -12,11 +12,15 @@
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="540px"/>
+    <!--　布局中部分控件或者子布局不想进入到状态栏后面，
+        导致无法点击，则需要在该控件或者子布局中添加一个属性：
+        android:fitsSystemWindows="true"-->
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <RelativeLayout
+                android:id="@+id/homeRelatie"
                 android:layout_width="match_parent"
                 android:layout_height="150px"
         >

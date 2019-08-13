@@ -40,7 +40,7 @@ import java.util.*
  */
 class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     var tag = 1
-    var mSmsCode: String? = null  //返回的 验证码
+    var mSmsCode: String? = ""  //返回的 验证码
     override fun getContentView(): Int {
         return R.layout.activity_reg2_log;
     }
@@ -56,6 +56,9 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         if (type != 0) {
             registerInclude.visibility = View.GONE
             loginInclude.visibility = View.VISIBLE
+            timerLogin.start()
+        }else{
+            timerLogin.start()
         }
     }
 
@@ -74,13 +77,17 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             //注册页面
             R.id.goLog -> {//登录
                 registerInclude.visibility = View.GONE
+                timerReg.cancel()
                 loginInclude.visibility = View.VISIBLE
+                timerLogin.start()
             }
             R.id.goVerifyCode -> {//获取验证码
                 val phone = regPhone.text.toString()
                 mSmsCode = null
                 if (Util.validateMobile(phone)) {
-                    mSmsCode = getSendSMS(phone, this@Reg2LogActivity)
+                    //启动注册轮询
+                    timerReg.start()
+                    getSendSMS(phone, this@Reg2LogActivity)
                 } else {
                     ToastUtil.showToast(this@Reg2LogActivity, "请输入正确的手机号!!!")
                 }
@@ -103,12 +110,14 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.userAgreements -> {//用户协议字体
-                ToastUtil.showToast(this@Reg2LogActivity, "《用户协议》准备中")
+                ToastUtil.showToast(this@Reg2LogActivity, "《注册协议》准备中...")
             }
             //登录界面
             R.id.goReg -> {//注册
                 loginInclude.visibility = View.GONE
+                timerLogin.cancel()
                 registerInclude.visibility = View.VISIBLE
+                timerReg.start()
             }
             R.id.loginBut -> {//登录按钮
                 val phone = logPhone.text.toString()
@@ -123,15 +132,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             R.id.lookPW -> {//找回密码
                 ToastUtil.showToast(this@Reg2LogActivity, "入口待开放!")
             }
-            else -> {
-                if (NavigationBarUtil.checkDeviceHasNavigationBar(this@Reg2LogActivity)) {
-                    ToastUtil.showToast(this@Reg2LogActivity, "这个是虚拟键盘")
-                }
-                ToastUtil.showToast(
-                    this@Reg2LogActivity,
-                    "键盘高度 " + NavigationBarUtil.getNavigationBarHeight(this@Reg2LogActivity)
-                )
-            }
+            else -> { }
         }
     }
 
@@ -184,7 +185,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             return false
         }
         if (mSmsCode != null && !TextUtils.isEmpty(mSmsCode)) {//todo 验证码 判断 ....
-            if (yzCode.length != mSmsCode!!.length || mSmsCode!!.equals(yzCode)) {
+            if (yzCode.length != mSmsCode!!.length || !mSmsCode!!.equals(yzCode)) {
                 ToastUtil.showToast(this@Reg2LogActivity, "验证码有误!!!")
                 return false
             }
@@ -227,6 +228,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                         val data = jsonObj!!.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理
                         if (token != "") {
+                            timerReg.cancel() //注销注册轮询
                             ToastUtil.showToast(this@Reg2LogActivity, "注册成功,正在登录...")
                         }
                         logGo(phone, ps)  //注册完成 直接登录
@@ -271,6 +273,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                             if (token != "" && !TextUtils.isEmpty(token)) {
 //                            downUser("login")
                                 goStartActivity(this@Reg2LogActivity, MainActivity())
+                                timerLogin.cancel()
                                 this@Reg2LogActivity.finish()
                             }
                         })
@@ -289,12 +292,8 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         })
     }
 
-    companion object {
-        val validateTime = 0
-    }
-
-    fun getSendSMS(mobile: String, context: Context): String {
-        var smsCodes: String? = null
+    fun getSendSMS(mobile: String, context: Context){
+//        var smsCodes: String? = null
         HttpManager.getInstance().post(Api.SMSSEND, Parameter.getVerifyCode(mobile), object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
@@ -308,8 +307,10 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                         ToastUtil.showToast(context, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
-                        smsCodes = data.getString("sms_code")  //注册返回Token不做处理
-                        if (smsCodes != "") {
+                        Log.e("zxcv","Date: "+data.toString())
+                        mSmsCode = data.getString("sms_code")  //注册返回Token不做处理
+                        Log.e("zxcv","sms_code: "+mSmsCode.toString())
+                        if (mSmsCode != "") {
                             timer.start()
                             ToastUtil.showToast(context, "验证码请求完成,请注意查收消息")
                             //todo 此处可添加 请求读取通知类消息权限
@@ -323,12 +324,11 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onError(e: Throwable?) {
-                smsCodes = null
+                mSmsCode = ""
                 Log.e("onError", "验证码请求错误!" + e)
                 ToastUtil.showToast(context, "验证码发送失败,请稍后重试!!!")
             }
         })
-        return smsCodes.toString()
     }
     //验证码计时器
 //    var curTime = 60
@@ -347,4 +347,73 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     }
     //取消倒计时（译者：取消后，再次启动会重新开始倒计时）
 //    timer.cancel()
+    //这个计时器用于轮询注册是否输入完成
+    var timerReg:CountDownTimer = object : CountDownTimer(Long.MAX_VALUE,500){
+        override fun onFinish() {
+
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+            if(goJudgeReg()){
+                registBut.isEnabled = true
+            }else{
+                registBut.isEnabled = false
+            }
+        }
+    }
+    //判断 信息输入是否正确 无误
+    private fun goJudgeReg(): Boolean {
+        val phone = regPhone.text.toString()
+        val ps = regPassword.text.toString()
+        val yzCode = yzCode.text.toString()
+        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(ps) || TextUtils.isEmpty(yzCode)) {
+            return false
+        }
+        if (!Util.validateMobile(phone)) {
+            return false
+        }
+        if (mSmsCode == null && TextUtils.isEmpty(mSmsCode)) {//todo 验证码 判断 ....
+                return false
+        }
+        if(!mSmsCode!!.equals(yzCode) || yzCode.length != mSmsCode!!.length){
+            Log.e("zxcv","mSmsCode:$mSmsCode")
+            Log.e("zxcv","yzCode:$yzCode")
+            return false
+        }
+        if (ps.length < 6) {
+            return false
+        }
+        if (tag == 0) {
+            return false
+        }
+        return true
+    }
+    //这个计时器用于轮询登录是否输入完成
+    var timerLogin:CountDownTimer = object : CountDownTimer(Long.MAX_VALUE,500){
+        override fun onFinish() {
+
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+            if(goJudgeLogin()){
+                loginBut.isEnabled = true
+            }else{
+                loginBut.isEnabled = false
+            }
+        }
+    }
+    private fun goJudgeLogin(): Boolean {
+        val phone = logPhone.text.toString()
+        val ps = logPW.text.toString()
+        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(ps)) {
+            return false
+        }
+        if (!Util.validateMobile(phone)) {
+            return false
+        }
+        if (ps.length < 6) {
+            return false
+        }
+        return true
+    }
 }
