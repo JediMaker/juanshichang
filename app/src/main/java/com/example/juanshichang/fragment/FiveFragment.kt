@@ -2,27 +2,13 @@ package com.example.juanshichang.fragment
 
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import butterknife.OnClick
-import butterknife.internal.Utils
-import com.bumptech.glide.Glide
-import com.example.juanshichang.MainActivity
-import com.example.juanshichang.MyApp
 
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.SettingActivity
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.BaseFragment
-import com.example.juanshichang.utils.SpUtil
-import com.example.juanshichang.utils.StatusBarUtil
-import com.example.juanshichang.utils.ToastUtil
-import com.example.juanshichang.utils.Util
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper
-import kotlinx.android.synthetic.main.fragment_five.*
 
 /**
  * @作者: yzq
@@ -41,16 +27,20 @@ class FiveFragment : BaseFragment() {
 //        }
 //        QMUIStatusBarHelper.translucent(mContext)
 //        StatusBarUtil.addStatusViewWithColor(mContext, R.color.white)
+//        StatusBarUtil.fullScreen(mContext)
     }
 
     override fun initData() {
     }
 
-    @OnClick(R.id.ffUserSet)
+    @OnClick(R.id.ffUserSet,R.id.ffCopy)
     fun onViewClicked(v: View) {
         when (v.id) {
             R.id.ffUserSet -> {
                 BaseActivity.goStartActivity(this.mContext!!, SettingActivity())
+            }
+            R.id.ffCopy ->{ //复制
+
             }
         }
     }

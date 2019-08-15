@@ -7,7 +7,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">#FFF</item>
+        <!--避免了启动App的白屏问题 甩锅 Are you Ok?-->
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
     <style name="CustomDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>

@@ -176,7 +176,7 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
             //设置指示器位置（当banner模式中有指示器时）
             main_banner.setIndicatorGravity(BannerConfig.LEFT)//指示器居右
             //设置图片加载器
-            main_banner.setImageLoader(GlideImageLoader())
+            main_banner.setImageLoader(GlideImageLoader(1))
             //设置动画效果
             main_banner.setBannerAnimation(Transformer.Tablet)
             //设置轮播图片间隔时间（不设置默认为2000）

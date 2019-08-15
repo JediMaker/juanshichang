@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                     xmlns:tools="http://schemas.android.com/tools"
-                                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                                     android:orientation="vertical"
-                                     android:paddingLeft="46px"
-                                     android:paddingRight="46px"
-                                     android:layout_width="match_parent"
-                                     android:layout_height="match_parent"
-                                     tools:context=".fragment.FiveFragment">
-
+<com.zhy.autolayout.AutoLinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:background="#FFF"
+        android:paddingLeft="46px"
+        android:paddingRight="46px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragment.FiveFragment">
+    <!--android:fitsSystemWindows="true"-->
     <!-- TODO: Update blank fragment layout -->
     <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/rRL"
@@ -71,6 +73,20 @@
                     tools:text="WW7HKS"
                     android:textSize="35px"
                     android:textColor="@color/home_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:id="@+id/ffCopy"
+                    android:layout_marginLeft="28px"
+                    android:layout_gravity="center"
+                    android:paddingTop="7px"
+                    android:paddingBottom="7px"
+                    android:paddingLeft="18px"
+                    android:paddingRight="19px"
+                    android:text="复制"
+                    android:textSize="23px"
+                    android:textColor="@color/white"
+                    android:background="@drawable/ff_copt_but"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -168,6 +184,8 @@
             </LinearLayout>
     </com.zhy.autolayout.AutoRelativeLayout>
     <androidx.cardview.widget.CardView
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="10px"
             android:layout_marginTop="30px"
             app:cardCornerRadius="5dp"
             app:cardElevation="10px"
@@ -182,7 +200,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                             android:drawableTop="@drawable/ff_one_image"
-                            android:drawablePadding="-25px"
+                            android:drawablePadding="-20px"
                             android:gravity="center"
                             android:text="收益"
                             android:textColor="@color/ff_gray"
@@ -192,7 +210,7 @@
                             android:layout_height="wrap_content"/>
                     <TextView
                             android:drawableTop="@drawable/ff_two_image"
-                            android:drawablePadding="-25px"
+                            android:drawablePadding="-20px"
                             android:gravity="center"
                             android:text="订单"
                             android:textColor="@color/ff_gray"
@@ -202,7 +220,7 @@
                             android:layout_height="wrap_content"/>
                     <TextView
                             android:drawableTop="@drawable/ff_three_image"
-                            android:drawablePadding="-25px"
+                            android:drawablePadding="-20px"
                             android:gravity="center"
                             android:text="粉丝"
                             android:textColor="@color/ff_gray"
@@ -212,7 +230,7 @@
                             android:layout_height="wrap_content"/>
                     <TextView
                             android:drawableTop="@drawable/ff_four_image"
-                            android:drawablePadding="-25px"
+                            android:drawablePadding="-20px"
                             android:gravity="center"
                             android:text="邀请"
                             android:textColor="@color/ff_gray"

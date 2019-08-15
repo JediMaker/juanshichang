@@ -44,7 +44,10 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     override fun getContentView(): Int {
         return R.layout.activity_reg2_log;
     }
-
+    companion object{
+        val REGISTERCODE:Int = 0
+        val LOGINCODE:Int = 1
+    }
     override fun initView() {
         QMUIStatusBarHelper.translucent(this@Reg2LogActivity)
 //        StatusBarUtil.addStatusViewWithColor(this@Reg2LogActivity, R.color.label_color)
@@ -89,7 +92,13 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                     timerReg.start()
                     getSendSMS(phone, this@Reg2LogActivity)
                 } else {
-                    ToastUtil.showToast(this@Reg2LogActivity, "请输入正确的手机号!!!")
+                    showRegisterDialog("温馨提示","请输入正确的手机号","确定","",object : DialogCallback{
+                        override fun cancle() { //无取消
+                        }
+                        override fun sure() {
+                            regPhone.text.clear()
+                        }
+                    },false)
                 }
             }
             R.id.registBut -> {//注册按钮

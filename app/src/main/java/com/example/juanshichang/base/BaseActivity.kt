@@ -17,6 +17,7 @@ import com.example.juanshichang.MyApp
 import com.example.juanshichang.R
 import com.example.juanshichang.dialog.HandyDialog
 import com.example.juanshichang.dialog.LoadingProgressDialog
+import com.example.juanshichang.dialog.RegisterDialog
 import com.example.juanshichang.dialog.ToastDialog
 import com.example.juanshichang.utils.ActivityManager
 import com.example.juanshichang.utils.AutoLayoutActivity
@@ -48,6 +49,8 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         QMUIStatusBarHelper.translucent(this)
+        QMUIStatusBarHelper.setStatusBarLightMode(this) //黑色
+//    QMUIStatusBarHelper.setStatusBarDarkMode(this@MainActivity)   //白色
         //-----------------网络-------------------------
         //网络连接
         val conn = IsInternet.isNetworkAvalible(this@BaseActivity)
@@ -248,6 +251,13 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
         fragmentYes.show(this.getSupportFragmentManager(), null)
     }
 
+    /**
+     * 这是一个高仿的....
+     */
+    fun showRegisterDialog(title:String,content:String,sureBtnText:String,cancleBtnText:String,callback: BaseActivity.DialogCallback,isCanceled:Boolean) {
+        val fragments = RegisterDialog(title,content,sureBtnText,cancleBtnText,callback,isCanceled)
+        fragments.show(this.getSupportFragmentManager(), null)
+    }
     /**
      * 对话框回调
      * @author yl

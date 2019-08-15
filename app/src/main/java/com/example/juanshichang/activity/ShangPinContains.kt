@@ -246,7 +246,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         serv_txt.text = goods.serv_txt //服务分
         lgst_txt.text = goods.lgst_txt //物流分
         shop_name.text = goods.mall_name //店铺名
-        goods_desc.text = goods.goods_desc //介绍
+        shangPinJs.text = goods.goods_desc //介绍
     }
     private fun getTags(serviceTags: List<Int>): CharSequence? {  //返回支持的服务
         if (serviceTags.size != 0) {
@@ -339,7 +339,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         //设置指示器位置（当banner模式中有指示器时）
         meBanner.setIndicatorGravity(BannerConfig.RIGHT)//指示器居右
         //设置图片加载器
-        meBanner.setImageLoader(GlideImageLoader())
+        meBanner.setImageLoader(GlideImageLoader(1))
         //设置图片集合
         meBanner.setImages(imgUrls)
         //设置动画效果
@@ -352,38 +352,6 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         //meBanner.setBannerTitles(images);
         //banner设置方法全部调用完毕时最后调用
         meBanner.start()
-        //临时添加
-        if(imgUrls!=null && imgUrls.size >=9){
-            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
-            Glide.with(this).load(imgUrls[1]).error(R.drawable.c_error).into(iv2)
-            Glide.with(this).load(imgUrls[2]).error(R.drawable.c_error).into(iv3)
-            Glide.with(this).load(imgUrls[3]).error(R.drawable.c_error).into(iv4)
-            Glide.with(this).load(imgUrls[4]).error(R.drawable.c_error).into(iv5)
-            Glide.with(this).load(imgUrls[5]).error(R.drawable.c_error).into(iv6)
-            Glide.with(this).load(imgUrls[6]).error(R.drawable.c_error).into(iv7)
-            Glide.with(this).load(imgUrls[7]).error(R.drawable.c_error).into(iv8)
-            Glide.with(this).load(imgUrls[8]).error(R.drawable.c_error).into(iv9)
-        }else if(imgUrls!=null && imgUrls.size >=7){
-            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
-            Glide.with(this).load(imgUrls[1]).error(R.drawable.c_error).into(iv2)
-            Glide.with(this).load(imgUrls[2]).error(R.drawable.c_error).into(iv3)
-            Glide.with(this).load(imgUrls[3]).error(R.drawable.c_error).into(iv4)
-            Glide.with(this).load(imgUrls[4]).error(R.drawable.c_error).into(iv5)
-            Glide.with(this).load(imgUrls[5]).error(R.drawable.c_error).into(iv6)
-            Glide.with(this).load(imgUrls[6]).error(R.drawable.c_error).into(iv7)
-        }else if(imgUrls!=null && imgUrls.size >=5){
-            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
-            Glide.with(this).load(imgUrls[1]).error(R.drawable.c_error).into(iv2)
-            Glide.with(this).load(imgUrls[2]).error(R.drawable.c_error).into(iv3)
-            Glide.with(this).load(imgUrls[3]).error(R.drawable.c_error).into(iv4)
-            Glide.with(this).load(imgUrls[4]).error(R.drawable.c_error).into(iv5)
-        }else if(imgUrls!=null && imgUrls.size >=3){
-            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
-            Glide.with(this).load(imgUrls[1]).error(R.drawable.c_error).into(iv2)
-            Glide.with(this).load(imgUrls[2]).error(R.drawable.c_error).into(iv3)
-        }else{
-            Glide.with(this).load(imgUrls[0]).error(R.drawable.c_error).into(iv1)
-        }
     }
 
 

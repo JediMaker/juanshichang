@@ -1,6 +1,7 @@
 package com.example.juanshichang
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
@@ -46,7 +47,6 @@ class MainActivity : BaseActivity() {
     override fun getContentView(): Int {
         return R.layout.activity_main
     }
-
     override fun initView() {
         StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
         setBottomView()
@@ -71,7 +71,7 @@ class MainActivity : BaseActivity() {
 //        val xpp = resources.getXml(R.drawable.selector_tab_color)
 //        val csl = ColorStateList.createFromXml(resources,xpp)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // todo 此处 待确定 版本
-            //如果SDK版本过低 就关闭 滑动事件 并启用 教Low 的旧版本状态栏
+            //如果SDK版本过低 就关闭 滑动事件 并启用 较Low 的旧版本状态栏
 //            val view = android.support.design.widget.BottomNavigationView(this@MainActivity)
             vp_main.setPagingEnabled(false)
             views.visibility = View.VISIBLE
@@ -103,10 +103,12 @@ class MainActivity : BaseActivity() {
             R.id.me -> {
                 vp_main.currentItem = 3
                 if (!Util.hasLogin()) {
-                    BaseActivity.Companion.goStartActivity(this@MainActivity, Reg2LogActivity())
+                    val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
+                    intent.putExtra("type",Reg2LogActivity.LOGINCODE)
+                    BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
                     finish()
                 } else {
-                    ToastUtil.showToast(this@MainActivity, "登录检查通过")
+                    ToastUtil.showToast(this@MainActivity, "登录检查通过2")
                 }
                 return@OnNavigationItemSelectedListener true
             }
@@ -139,12 +141,18 @@ class MainActivity : BaseActivity() {
 
         override fun onTabSelected(p0: TabLayout.Tab?) {
             vp_main.currentItem = p0!!.position
+            if(p0.position != 3){
+                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
+            }
             if (p0.position == 3) {
+                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
                 if (!Util.hasLogin()) {
-                    BaseActivity.Companion.goStartActivity(this@MainActivity, Reg2LogActivity())
+                    val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
+                    intent.putExtra("type",Reg2LogActivity.LOGINCODE)
+                    BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
                     finish()
                 } else {
-                    ToastUtil.showToast(this@MainActivity, "登录检查通过")
+                    ToastUtil.showToast(this@MainActivity, "登录检查通过3")
                 }
             }
         }
@@ -222,12 +230,18 @@ class MainActivity : BaseActivity() {
 
             override fun onPageSelected(position: Int) {
                 // todo new add
+                if(position != 3){
+                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
+                }
                 if (position == 3) {
+                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
                     if (!Util.hasLogin()) {
-                        BaseActivity.Companion.goStartActivity(this@MainActivity, Reg2LogActivity())
+                        val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
+                        intent.putExtra("type",Reg2LogActivity.LOGINCODE)
+                        BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
                         finish()
                     } else {
-                        ToastUtil.showToast(this@MainActivity, "登录检查通过")
+                        ToastUtil.showToast(this@MainActivity, "登录检查通过1")
                     }
                 }
                 // new add

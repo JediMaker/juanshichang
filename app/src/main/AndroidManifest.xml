@@ -68,6 +68,7 @@
         </activity>
         <activity
                 android:name=".MainActivity"
+                android:theme="@style/AppTheme"
                 android:configChanges="orientation"
                 android:launchMode="singleTask"/>
         <activity

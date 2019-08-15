@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -83,8 +84,6 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
     }
 
     override fun initViews(savedInstanceState: Bundle) {
-//        QMUIStatusBarHelper.translucent(mContext)
-//        StatusBarUtil.addStatusViewWithColor(mContext, R.color.colorPrimary)
         MyApp.requestPermission(mContext!!)
         getBanner()
         getGrid()
@@ -105,7 +104,7 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
          * 从左到右 SLIDEIN_LEFT
          * 从右到左 SLIDEIN_RIGHT
          */
-        homeAdapter?.openLoadAnimation(BaseQuickAdapter.SCALEIN)
+        homeAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM) //SCALEIN
         homeAdapter?.setOnLoadMoreListener(this, hr)//设置加载更多
         mSwipeRefreshLayout?.setOnRefreshListener(this)
         //默认第一次加载会进入回调，如果不需要可以配置

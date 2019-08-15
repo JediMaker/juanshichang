@@ -9,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import static com.qmuiteam.qmui.util.QMUIDisplayHelper.getStatusBarHeight;
+
 /**
  * @作者: yzq
  * @创建日期: 2019/8/2 12:21
@@ -17,7 +18,6 @@ import static com.qmuiteam.qmui.util.QMUIDisplayHelper.getStatusBarHeight;
 public class StatusBarUtil {
     /**
      * 通过设置全屏，设置状态栏透明
-     *
      * @param activity
      */
     public static void fullScreen(Activity activity) {
@@ -70,6 +70,7 @@ public class StatusBarUtil {
             } else {
                 //增加占位状态栏
                 ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
+                decorView.clearFocus();
                 View statusBarView = new View(activity);
                 ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams
                         .MATCH_PARENT,
@@ -79,4 +80,5 @@ public class StatusBarUtil {
             }
         }
     }
+
 }

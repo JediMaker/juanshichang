@@ -1,6 +1,7 @@
 package com.example.juanshichang.activity
 
 import android.app.ActivityManager
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import com.example.juanshichang.MyApp
 import com.example.juanshichang.R
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.utils.SpUtil
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -19,7 +21,9 @@ class SettingActivity : BaseActivity(),View.OnClickListener {
 
 
     override fun initView() {
+        StatusBarUtil.addStatusViewWithColor(this@SettingActivity, R.color.white)
         unlogin.setOnClickListener(this)
+        setRet.setOnClickListener(this)
     }
 
     override fun initData() {
@@ -54,6 +58,9 @@ class SettingActivity : BaseActivity(),View.OnClickListener {
                         }
 
                     })
+            }
+            setRet ->{
+                this@SettingActivity.finish()
             }
         }
     }

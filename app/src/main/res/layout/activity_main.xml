@@ -4,12 +4,12 @@
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:clipChildren="false"
-        android:background="#FFF"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-
+    <!--android:fitsSystemWindows="true"-->
+    <!--android:background="#FFF"-->
     <com.example.juanshichang.utils.CustomViewPager
             android:id="@+id/vp_main"
             android:layout_width="match_parent"
