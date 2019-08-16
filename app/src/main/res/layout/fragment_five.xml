@@ -199,6 +199,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
+                            android:id="@+id/earnings"
                             android:drawableTop="@drawable/ff_one_image"
                             android:drawablePadding="-20px"
                             android:gravity="center"
@@ -209,6 +210,7 @@
                             android:layout_weight="1"
                             android:layout_height="wrap_content"/>
                     <TextView
+                            android:id="@+id/orderForm"
                             android:drawableTop="@drawable/ff_two_image"
                             android:drawablePadding="-20px"
                             android:gravity="center"
@@ -219,6 +221,7 @@
                             android:layout_weight="1"
                             android:layout_height="wrap_content"/>
                     <TextView
+                            android:id="@+id/myFans"
                             android:drawableTop="@drawable/ff_three_image"
                             android:drawablePadding="-20px"
                             android:gravity="center"
@@ -229,6 +232,7 @@
                             android:layout_weight="1"
                             android:layout_height="wrap_content"/>
                     <TextView
+                            android:id="@+id/myInvite"
                             android:drawableTop="@drawable/ff_four_image"
                             android:drawablePadding="-20px"
                             android:gravity="center"

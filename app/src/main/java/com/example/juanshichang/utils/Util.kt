@@ -9,6 +9,7 @@ import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import java.math.BigDecimal
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -56,7 +57,7 @@ class Util {
             val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
             val name = manager.getRunningTasks(1)[0].topActivity?.getClassName()
 //            return name.equals(activity::class.java.name)
-            return name.equals(activity.javaClass.name)
+            return name!!.equals(activity.javaClass.name)
         }
 
         /***
@@ -107,7 +108,29 @@ class Util {
             }
             return ""
         }
-
+        fun getIntPrice(price: Any): String {
+            if (price is Long) {
+                val penny = price % 10 //得到 分
+                val dime = price % 100 //得到 角
+                var retStr = ""
+                if (penny == 0.toLong()) { //如果分位 为0 则
+                    if (dime != 0.toLong()) {//如果角位 不为0 则
+                        val d: Double = UtilsBigDecimal.div(price.toDouble(), 100.toDouble(), 1)
+                        retStr = "${d.toInt()}"
+                        return retStr
+                    } else {//如果角位 为0 则
+                        val d: Double = UtilsBigDecimal.div(price.toDouble(), 100.toDouble(), 0)
+                        retStr = "${d.toInt()}"
+                        return retStr
+                    }
+                } else { // 如果分位 不为0 则
+                    val d: Double = UtilsBigDecimal.div(price.toDouble(), 100.toDouble(), 2)
+                    retStr = "${d.toInt()}"
+                    return retStr
+                }
+            }
+            return ""
+        }
         /**
          *清理Cookie
          */
@@ -117,5 +140,14 @@ class Util {
             cookieManager.removeAllCookie()
             CookieSyncManager.getInstance().sync()
         }
+
+        private var  sf: SimpleDateFormat? = null
+        /*时间戳转换成字符窜*/
+        fun getDateToString(time:Long):String{
+            val d = Date(time)
+            sf = SimpleDateFormat("MM-dd") //yyyy年MM月dd日
+            return sf!!.format(d)
+        }
+
     }
 }

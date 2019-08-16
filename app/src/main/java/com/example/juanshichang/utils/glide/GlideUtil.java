@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
@@ -45,6 +46,7 @@ public class GlideUtil {
             options.transform(new StaggeredBitmapTransform(MyApp.app))
 //                    .placeholder(R.drawable.c_placeholderlong)
                     .error(R.drawable.c_error)
+//                    .format(DecodeFormat.PREFER_ARGB_8888)
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(mContext).load(url)
                     .apply(options)
@@ -53,7 +55,23 @@ public class GlideUtil {
 
         }
     }
+    public static void loadImage(Context mContext, String url, ImageView mImageView,int type) {
+        try {
+            RequestOptions options = new RequestOptions();
+            options.transform(new StaggeredBitmapTransform(MyApp.app))
+//                    .placeholder(R.drawable.c_placeholderlong)
+                    .error(R.drawable.c_error)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+            if(type!=0){
+                options.format(DecodeFormat.PREFER_ARGB_8888);
+            }
+            Glide.with(mContext).load(url)
+                    .apply(options)
+                    .into(mImageView);
+        } catch (Exception e) {
 
+        }
+    }
     /**
      * 加载长图
      *

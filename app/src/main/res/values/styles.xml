@@ -40,4 +40,32 @@
         <item name="android:textSize">48px</item>
         <item name="android:background">@null</item>
     </style>
+    <!--我的收益 TextView-->
+    <style name="EarningText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">35px</item>
+        <item name="android:textColor">@color/main_text</item>
+        <item name="android:paddingTop">40px</item>
+        <item name="android:paddingBottom">50px</item>
+    </style>
+    <!--使用此style的前提是 父布局为RelativeLayout-->
+    <style name="NotitleButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">46px</item>
+        <item name="android:paddingRight">46px</item>
+        <item name="android:paddingTop">23px</item>
+        <item name="android:paddingBottom">21px</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:drawableRight">@drawable/details_next</item>
+    </style>
+    <!--订单页面专用-->
+    <style name="OrderTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">40px</item>
+        <!--<item name="android:textColor"></item>-->
+    </style>
 </resources>

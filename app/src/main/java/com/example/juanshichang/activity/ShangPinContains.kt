@@ -13,9 +13,13 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ScrollView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
+import com.example.juanshichang.adapter.ShangPinXqAdapter
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
@@ -26,6 +30,7 @@ import com.example.juanshichang.utils.GlideImageLoader
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
+import com.example.juanshichang.widget.MyScrollView
 import com.google.gson.Gson
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
@@ -87,12 +92,20 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         spShouCang.setOnClickListener(this) //加收藏
         spJia.setOnClickListener(this)  //分享
         spGou.setOnClickListener(this) //领劵
+        goTop.setOnClickListener(this) //回顶部
     }
 
     override fun onClick(view: View?) {
         when (view) {
             mbackLayouts -> {
                 finish()
+            }
+            goTop ->{
+                nestedScrollView.post(object:kotlinx.coroutines.Runnable {
+                    override fun run() {
+                        nestedScrollView.fullScroll(ScrollView.FOCUS_UP) //// 滚动至顶部  FOCUS_DOWN 滚动到底部
+                    }
+                })
             }
             go_shop -> {
                 ToastUtil.showToast(this@ShangPinContains, "暂未开放店铺入口")
@@ -240,75 +253,106 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         spName.text = goods.goods_name //名称
         spJinEr.text = Util.getFloatPrice(goods.min_group_price.toLong()) //最低价sku的拼团价，单位为分
         original_cost_view.text = Util.getFloatPrice(goods.min_normal_price.toLong()) //最低价sku的单买价，单位为分
-        spShouyi.text = getTags(goods.service_tags)//服务
+        getTags(goods.service_tags)//服务
         spjian.text = goods.sales_tip //销量
         desc_txt.text = goods.desc_txt //描述分
         serv_txt.text = goods.serv_txt //服务分
         lgst_txt.text = goods.lgst_txt //物流分
         shop_name.text = goods.mall_name //店铺名
         shangPinJs.text = goods.goods_desc //介绍
+        if(!goods.has_coupon){ //是否有优惠劵
+            spYhj.visibility = View.GONE
+            spGou.text = "立即购买"
+        }else{
+            //这里可以判断 用户优惠劵 是否过期....
+            if((goods.coupon_total_quantity - goods.coupon_remain_quantity) < goods.coupon_total_quantity){ //总数 和 剩余
+                val juan = Util.getIntPrice(goods.coupon_discount.toLong())
+                sPYHme.text = "$juan 元优惠劵"
+                sPYHDate.text = "有效日期:" + Util.getDateToString(goods.coupon_start_time.toLong())+"到"+Util.getDateToString(goods.coupon_end_time.toLong())
+                spGou.text = "立即购买\n(省$juan 元)"
+            }else{ //这里进行优惠劵数量为0的处理
+                //暂时设置为隐藏吧!!!
+                spYhj.visibility = View.GONE
+                spGou.text = "立即购买"
+            }
+        }
+        val promotionRate = Util.getFloatPrice(goods.promotion_rate.toLong())
+        sPSY.text = "收益:$promotionRate"
+        spJia.text = "分享\n(收益$promotionRate 元)"
+        GlideUtil.loadImage(this,goods.goods_thumbnail_url,shop_img)
+
+        //获取SocllView的高度  ScrollView组件只允许一个子View，可以利用这一个特性，获取子View的高度即所要的ScrollView的整体高度
+        nestedScrollView.setOnScrollListener(object : MyScrollView.OnScrollListener{
+            override fun onScroll(scrollY: Int) {
+                if(scrollY > 450){
+                    goTop.visibility = View.VISIBLE
+                }else{
+                    goTop.visibility = View.GONE
+                }
+            }
+        })
     }
-    private fun getTags(serviceTags: List<Int>): CharSequence? {  //返回支持的服务
+    private fun getTags(serviceTags: List<Int>){  //返回支持的服务
         if (serviceTags.size != 0) {
-            var sbs: StringBuilder = StringBuilder()
+            var sbs: ArrayList<String> = ArrayList()
             for (index in 1 until serviceTags.size) {
                 when (serviceTags[index]) {
                     4 -> {
-                        sbs.append("送货入户并安装;")
+                        sbs.add("送货入户并安装;")
                     }
                     5 -> {
-                        sbs.append("送货入户;")
+                        sbs.add("送货入户;")
                     }
                     6 -> {
-                        sbs.append("电子发票;")
+                        sbs.add("电子发票;")
                     }
                     9 -> {
-                        sbs.append("坏果包赔;")
+                        sbs.add("坏果包赔;")
                     }
                     11 -> {
-                        sbs.append("闪电退款;")
+                        sbs.add("闪电退款;")
                     }
                     12 -> {
-                        sbs.append("24小时发货;")
+                        sbs.add("24小时发货;")
                     }
                     13 -> {
-                        sbs.append("48小时发货;")
+                        sbs.add("48小时发货;")
                     }
                     17 -> {
-                        sbs.append("顺丰包邮;")
+                        sbs.add("顺丰包邮;")
                     }
                     18 -> {
-                        sbs.append("只换不修;")
+                        sbs.add("只换不修;")
                     }
                     19 -> {
-                        sbs.append("全国联保;")
+                        sbs.add("全国联保;")
                     }
                     20 -> {
-                        sbs.append("分期付款;")
+                        sbs.add("分期付款;")
                     }
                     24 -> {
-                        sbs.append("极速退款;")
+                        sbs.add("极速退款;")
                     }
                     25 -> {
-                        sbs.append("品质保障;")
+                        sbs.add("品质保障;")
                     }
                     26 -> {
-                        sbs.append("缺重包退;")
+                        sbs.add("缺重包退;")
                     }
                     27 -> {
-                        sbs.append("当日发货;")
+                        sbs.add("当日发货;")
                     }
                     28 -> {
-                        sbs.append("可定制化;")
+                        sbs.add("可定制化;")
                     }
                     29 -> {
-                        sbs.append("预约配送;")
+                        sbs.add("预约配送;")
                     }
                     1000001 -> {
-                        sbs.append("正品发票;")
+                        sbs.add("正品发票;")
                     }
                     1000002 -> {
-                        sbs.append("送货入户并安装;")
+                        sbs.add("送货入户并安装;")
                     }
                     else -> {
 
@@ -316,9 +360,33 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                 }
 
             }
-            return sbs.toString()
+            if(sbs.size >= 4){
+                spShouyi.text = sbs[0]
+                spShouyi2.text = sbs[1]
+                spShouyi3.text = sbs[2]
+                spShouyi4.text = sbs[3]
+            }
+            if(sbs.size >= 3){
+                spShouyi.text = sbs[0]
+                spShouyi2.text = sbs[1]
+                spShouyi3.text = sbs[2]
+                spShouyi4.visibility = View.INVISIBLE
+            }
+            if(sbs.size >= 2){
+                spShouyi.text = sbs[0]
+                spShouyi2.text = sbs[1]
+                spShouyi3.visibility = View.INVISIBLE
+                spShouyi4.visibility = View.INVISIBLE
+            }
+            if(sbs.size >= 1){
+                spShouyi.text = sbs[0]
+                spShouyi2.visibility = View.INVISIBLE
+                spShouyi3.visibility = View.INVISIBLE
+                spShouyi4.visibility = View.INVISIBLE
+            }
+        }else{
+            shangPinFw.visibility = View.GONE
         }
-        return "空空如也..."
     }
 
     override fun onStart() {
@@ -352,6 +420,12 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         //meBanner.setBannerTitles(images);
         //banner设置方法全部调用完毕时最后调用
         meBanner.start()
+        //这里初始化商品详情
+        shangpinList.layoutManager = LinearLayoutManager(this@ShangPinContains,RecyclerView.VERTICAL,false)
+        val adapterSp = ShangPinXqAdapter(R.layout.item_shangpin_xiangqing,imgUrls)
+        shangpinList.adapter = adapterSp
+        shangpinList.setPadding(0,0,0,botShangpin.height+3)
+        adapterSp.notifyDataSetChanged()
     }
 
 

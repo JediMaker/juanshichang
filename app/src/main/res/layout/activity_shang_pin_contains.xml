@@ -12,7 +12,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <androidx.core.widget.NestedScrollView
+        <com.example.juanshichang.widget.MyScrollView
                 android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -149,6 +149,7 @@
                             android:textColor="@color/main_text"
                             android:textSize="40px"/>
                     <LinearLayout
+                            android:id="@+id/spYhj"
                             android:background="@drawable/details_coupon"
                             android:layout_marginTop="35px"
                             android:orientation="horizontal"
@@ -227,7 +228,7 @@
                                         android:layout_width="0dp"
                                         android:layout_weight="1"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginRight="380px"
+                                        android:layout_marginRight="250px"
                                         android:singleLine="true"
                                         android:ellipsize="end"
                                         android:textColor="@color/main_text"
@@ -271,7 +272,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
-                                        android:text="宝贝描述:"
+                                        android:text="宝贝描述: "
                                         android:textSize="23px"/>
                                 <TextView
                                         android:id="@+id/desc_txt"
@@ -285,7 +286,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
-                                        android:text="卖家服务:"
+                                        android:text="卖家服务: "
                                         android:textSize="23px"/>
                                 <TextView
                                         android:id="@+id/serv_txt"
@@ -299,7 +300,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
-                                        android:text="物流服务:"
+                                        android:text="物流服务: "
                                         android:textSize="23px"/>
                                 <TextView
                                         android:id="@+id/lgst_txt"
@@ -322,6 +323,7 @@
                 </LinearLayout>
                 <!--快递-->
                 <LinearLayout
+                        android:id="@+id/shangPinFw"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="35px"
@@ -337,7 +339,6 @@
                             android:id="@+id/spShouyi"
                             android:drawablePadding="3px"
                             android:drawableLeft="@drawable/details_icon1"
-                            android:drawableStart="@drawable/details_icon1"
                             tools:text="正品保障"
                             android:maxLines="1"
                             android:ellipsize="end"
@@ -354,7 +355,6 @@
                             android:id="@+id/spShouyi2"
                             android:drawablePadding="3px"
                             android:drawableLeft="@drawable/details_icon1"
-                            android:drawableStart="@drawable/details_icon1"
                             tools:text="破损包退"
                             android:maxLines="1"
                             android:ellipsize="end"
@@ -371,7 +371,6 @@
                             android:id="@+id/spShouyi3"
                             android:drawablePadding="3px"
                             android:drawableLeft="@drawable/details_icon1"
-                            android:drawableStart="@drawable/details_icon1"
                             tools:text="极速退款"
                             android:maxLines="1"
                             android:ellipsize="end"
@@ -388,7 +387,6 @@
                             android:id="@+id/spShouyi4"
                             android:drawablePadding="3px"
                             android:drawableLeft="@drawable/details_icon1"
-                            android:drawableStart="@drawable/details_icon1"
                             tools:text="退货运费险"
                             android:maxLines="1"
                             android:ellipsize="end"
@@ -546,14 +544,15 @@
                                 android:layout_width="9px"
                                 android:layout_height="9px"/>
                     </LinearLayout>
-                    <ListView
+                    <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/shangpinList"
                             android:scrollbars="none"
+                            android:nestedScrollingEnabled="false"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"></ListView>
+                            android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+        </com.example.juanshichang.widget.MyScrollView>
     </com.zhy.autolayout.AutoLinearLayout>
 
     <LinearLayout
@@ -654,6 +653,7 @@
     </LinearLayout>
     <View
             android:id="@+id/goTop"
+            android:visibility="gone"
             android:layout_above="@+id/botShangpin"
             android:layout_alignParentRight="true"
             android:layout_marginRight="54px"

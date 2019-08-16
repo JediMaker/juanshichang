@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/ff_back"
+        android:orientation="vertical"
+        tools:context=".activity.EarningsActivity">
+    <!--<ImageView-->
+            <!--android:scaleType="fitXY"-->
+            <!--android:src="@drawable/profit_bgm"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+    <LinearLayout
+            android:id="@+id/isOne"
+            android:background="@drawable/profit_bgm"
+            android:orientation="vertical"
+            android:paddingBottom="95px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <com.zhy.autolayout.AutoRelativeLayout
+                android:layout_marginTop="40px"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <!--ff_ret-->
+            <View
+                    android:id="@+id/EaRet"
+                    android:background="@drawable/ret_n"
+                    android:layout_alignBottom="@+id/EaTitle"
+                    android:layout_marginLeft="45px"
+                    android:layout_marginBottom="15px"
+                    android:layout_width="63px"
+                    android:layout_height="43px"/>
+            <TextView
+                    android:id="@+id/EaTitle"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:text="我的收益"
+                    android:textSize="50px"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </com.zhy.autolayout.AutoRelativeLayout>
+        <TextView
+                android:id="@+id/balanceZh"
+                android:layout_marginTop="85px"
+                android:layout_gravity="center"
+                tools:text="¥100.88"
+                android:textStyle="normal"
+                android:textColor="@color/white"
+                android:textSize="94px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:layout_gravity="center"
+                tools:text="账户余额（元）"
+                android:textStyle="normal"
+                android:textColor="@color/white"
+                android:textSize="35px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/putForward"
+                android:background="@drawable/earning_put_but"
+                android:layout_marginTop="90px"
+                android:layout_gravity="center"
+                android:text="提现"
+                android:textStyle="normal"
+                android:textColor="@color/white"
+                android:textSize="46px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/isTwo"
+            android:background="@color/white"
+            android:layout_below="@+id/isOne"
+            android:orientation="vertical"
+            android:paddingLeft="45px"
+            android:paddingRight="45px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+                android:id="@+id/datSy"
+                android:paddingTop="32px"
+                android:paddingBottom="25px"
+                android:textStyle="bold"
+                android:drawablePadding="20px"
+                android:drawableLeft="@drawable/profit_sun"
+                android:text="日预估收益"
+                android:textSize="40px"
+                android:textColor="@color/main_text"
+                android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+        <View
+                android:background="@color/set_linear"
+                android:layout_width="match_parent" android:layout_height="2px"/>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <View
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/profit_today"
+                    android:layout_width="46px" android:layout_height="77px"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <TextView
+                                android:id="@+id/todFk"
+                                style="@style/EarningText"
+                                tools:text = "付款笔数\n¥0"
+                        />
+                </LinearLayout>
+                <View   android:background="@color/line"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="2px" android:layout_height="45px"/>
+                <LinearLayout android:layout_width="0dp"
+                              android:layout_weight="1"
+                              android:layout_height="wrap_content">
+                    <TextView
+                            android:id="@+id/todSy"
+                            style="@style/EarningText"
+                            tools:text = "预估收益\n¥0"
+                    />
+                </LinearLayout>
+                <View   android:background="@color/line"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="2px" android:layout_height="45px"/>
+                <LinearLayout android:layout_width="0dp"
+                              android:layout_weight="1"
+                              android:layout_height="wrap_content">
+                    <TextView
+                            android:id="@+id/todQt"
+                            style="@style/EarningText"
+                            tools:text = "其它\n¥0"
+                            />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+        <View
+                android:background="@color/set_linear"
+                android:layout_width="match_parent" android:layout_height="2px"/>
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <View
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/profit_yesterday"
+                    android:layout_width="46px" android:layout_height="77px"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                    <TextView
+                            android:id="@+id/ytodFk"
+                            style="@style/EarningText"
+                            tools:text = "付款笔数\n¥0"
+                    />
+                </LinearLayout>
+                <View   android:background="@color/line"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="2px" android:layout_height="45px"/>
+                <LinearLayout android:layout_width="0dp"
+                              android:layout_weight="1"
+                              android:layout_height="wrap_content">
+                    <TextView
+                            android:id="@+id/ytodSy"
+                            style="@style/EarningText"
+                            tools:text = "预估收益\n¥0"
+                    />
+                </LinearLayout>
+                <View   android:background="@color/line"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="2px" android:layout_height="45px"/>
+                <LinearLayout android:layout_width="0dp"
+                              android:layout_weight="1"
+                              android:layout_height="wrap_content">
+                    <TextView
+                            android:id="@+id/ytodQt"
+                            style="@style/EarningText"
+                            tools:text = "其它\n¥0"
+                    />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+    <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/isThree"
+            android:background="@color/white"
+            android:layout_below="@+id/isTwo"
+            android:layout_marginTop="29px"
+            android:orientation="vertical"
+            android:paddingLeft="45px"
+            android:paddingRight="45px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+                android:id="@+id/monthSy"
+                android:paddingTop="32px"
+                android:paddingBottom="25px"
+                android:textStyle="bold"
+                android:drawablePadding="20px"
+                android:drawableLeft="@drawable/profit_moon"
+                android:text="月预估收益"
+                android:textSize="40px"
+                android:textColor="@color/main_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <View
+                android:background="@color/set_linear"
+                android:layout_width="match_parent" android:layout_height="2px"/>
+        <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                    <TextView
+                            android:id="@+id/monFk"
+                            style="@style/EarningText"
+                            tools:text = "付款笔数\n¥0"
+                    />
+                </LinearLayout>
+                <View   android:background="@color/line"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="2px" android:layout_height="45px"/>
+                <LinearLayout android:layout_width="0dp"
+                              android:layout_weight="1"
+                              android:layout_height="wrap_content">
+                    <TextView
+                            android:id="@+id/monSy"
+                            style="@style/EarningText"
+                            tools:text = "预估收益\n¥0"
+                    />
+                </LinearLayout>
+                <View   android:background="@color/line"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="2px" android:layout_height="45px"/>
+                <LinearLayout android:layout_width="0dp"
+                              android:layout_weight="1"
+                              android:layout_height="wrap_content">
+                    <TextView
+                            android:id="@+id/monQt"
+                            style="@style/EarningText"
+                            tools:text = "其它\n¥0"
+                    />
+                </LinearLayout>
+            </LinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <TextView
+            android:id="@+id/syDetail"
+            android:layout_marginTop="29px"
+            android:layout_below="@+id/isThree"
+            android:text="收益结算明细"
+            android:textColor="@color/main_text"
+            android:textSize="35px"
+            style="@style/NotitleButton"
+            />
+    <View
+            android:id="@+id/isV1"
+            android:layout_below="@+id/syDetail"
+            android:layout_marginLeft="46px"
+            android:layout_marginRight="46px"
+            android:background="@color/set_linear"
+            android:layout_width="match_parent" android:layout_height="2px"/>
+    <TextView
+            android:id="@+id/putRecord"
+            android:layout_below="@+id/isV1"
+            android:text="提现记录"
+            android:textColor="@color/main_text"
+            android:textSize="35px"
+            style="@style/NotitleButton"
+            />
+</com.zhy.autolayout.AutoRelativeLayout>

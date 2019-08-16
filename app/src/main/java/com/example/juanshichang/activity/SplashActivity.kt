@@ -14,6 +14,7 @@ import com.example.juanshichang.MyApp
 import com.example.juanshichang.R
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.utils.JumpPermissionManagement
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.yanzhenjie.permission.AndPermission
@@ -33,6 +34,7 @@ class SplashActivity : FragmentActivity() {
     }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
         var GxmQ:Boolean = MyApp.sp.getBoolean("FIRST", true)
         val edit = MyApp.sp.edit()
         edit.putString("appkey","0371.ml.appkey")
