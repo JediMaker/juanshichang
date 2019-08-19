@@ -51,34 +51,33 @@ public class SpUtil {
     }
     public void setUser(User entity ){
         SharedPreferences.Editor editor=sp.edit();
-//        editor.putString("userid",entity.getUserid());
-//        editor.putString("level",entity.getLevel());
-//        editor.putString("usertype",entity.getUsertype());
-//        editor.putString("realname",entity.getRealname());
         editor.putString("usertoken",entity.getUsertoken());
-//        editor.putString("facepicurl",entity.getFacepicurl());
-//        editor.putString("paypassword",entity.getPaypassword());
 //        editor.putString("userimaccid",entity.getUserimaccid()); //todo 新添
 //        editor.putString("userimtoken",entity.getUserimtoken());
-        editor.putString("userage",entity.getUserage());
-        editor.putString("useravatar",entity.getUseravatar());
-        editor.putString("username",entity.getUsername());
+//        editor.putString("userage",entity.getUserage());
+        editor.putString("avatar",entity.getAvatar());
+        editor.putString("nickname",entity.getNick_name());
+        editor.putFloat("balance",entity.getBalance());
+        editor.putFloat("currentdaybenefit",entity.getCurrent_day_benefit());
+        editor.putFloat("currentmonthbenefit",entity.getCurrent_month_benefit());
+        editor.putFloat("lastdaybenefit",entity.getLast_day_benefit());
+        editor.putLong("frominviteuserid",entity.getFrom_invite_userid());
+        editor.putString("invitecode",entity.getInvite_code());
         editor.commit();
     }
     public User  getUser(){
         User entity=new  User();
-//        entity.setUserid(sp.getString("userid",""));
-//        entity.setLevel(sp.getString("level",""));
-//        entity.setUsertype(sp.getString("usertype",""));
-//        entity.setRealname(sp.getString("realname",""));
         entity.setUsertoken(sp.getString("usertoken",""));
-        entity.setUserage(sp.getString("userage",""));
-        entity.setUseravatar(sp.getString("useravatar",""));
-        entity.setUsername(sp.getString("username",""));
-//        entity.setFacepicurl(sp.getString("facepicurl",""));
-//        entity.setPaypassword(sp.getString("paypassword",""));
-//        entity.setUserimaccid(sp.getString("userimaccid",""));
-//        entity.setUserimtoken(sp.getString("userimtoken",""));
+
+//        entity.setUserage(sp.getString("userage",""));
+        entity.setAvatar(sp.getString("avatar",""));
+        entity.setNick_name(sp.getString("nickname",""));
+        entity.setBalance(sp.getFloat("balance",0));
+        entity.setCurrent_day_benefit(sp.getFloat("currentdaybenefit",0));
+        entity.setCurrent_month_benefit(sp.getFloat("currentmonthbenefit",0));
+        entity.setLast_day_benefit(sp.getFloat("lastdaybenefit",0));
+        entity.setFrom_invite_userid(sp.getLong("frominviteuserid",0));
+        entity.setInvite_code(sp.getString("invitecode",""));
         return entity;
     }
 

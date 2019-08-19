@@ -31,4 +31,5 @@
     <color name="reg_dialog_but">#0378FE</color>
     <color name="set_linear">#DDDDDD</color>
     <color name="shangpin_tit">#FFDDDC</color>
+    <color name="orders_state">#78D5A0</color>
 </resources>

@@ -64,11 +64,11 @@ class SearcheActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             mbackLayout -> {//返回
-                ToastUtil.showToast(this@SearcheActivity, "大侠 你又要离开了吗 ┭┮﹏┭┮")
+                ToastUtil.showToast(this@SearcheActivity, "返回")
                 finish()
             }
             etsearch -> {//搜索框
-                ToastUtil.showToast(this@SearcheActivity, "大侠 你终于来啦!!!")
+                ToastUtil.showToast(this@SearcheActivity, "开始搜索")
             }
             mSearchBt -> {//搜索按钮
                 val str = getEditText()
@@ -79,7 +79,7 @@ class SearcheActivity : BaseActivity(), View.OnClickListener {
                     startActivity(intent)
                     finish()
                 }else{
-                    ToastUtil.showToast(this@SearcheActivity, "主人 你想找什么嘛!!!")
+                    ToastUtil.showToast(this@SearcheActivity, "请输入关键字搜索!!!")
                 }
 
             }

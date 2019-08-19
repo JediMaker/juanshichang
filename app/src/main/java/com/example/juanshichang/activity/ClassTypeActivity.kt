@@ -57,7 +57,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
                             } else {
                                 val str = getEditText()
                                 page++
-                                cargoList(Api.Pdd, str, page)
+                                cargoList(Api.Pdd, str, page,20,1) //
                                 adapter?.loadMoreComplete()
                             }
                         }
@@ -66,7 +66,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
             }, mTypeClassView)
             mTypeClassView.layoutManager = grid
             mTypeClassView.adapter = adapter
-            cargoList(Api.Pdd, keyWord.trim(), page)
+            cargoList(Api.Pdd, keyWord.trim(), page,20,1)
         } else {
             ToastUtil.showToast(this@ClassTypeActivity, "哎呀  出错啦!!!")
             finish()
@@ -104,7 +104,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
                 val str = getEditText()
                 if (!TextUtils.isEmpty(str)) {
                     page = 1
-                    cargoList(Api.Pdd, str, page)
+                    cargoList(Api.Pdd, str, page,20,1)
                 } else {
                     ToastUtil.showToast(this@ClassTypeActivity, "大侠 你想找什么")
                 }
@@ -119,8 +119,8 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
     /**
      *  商品搜索
      */
-    private fun cargoList(servicer: String, keyword: String, page: Int) {
-        HttpManager.getInstance().post(Api.SEARCH, Parameter.getSearchMap(servicer, keyword, page), object :
+    private fun cargoList(servicer: String, keyword: String, page: Int,page_size:Int,sort_type:Int) {
+        HttpManager.getInstance().post(Api.SEARCH, Parameter.getSearchMap(servicer, keyword, page,page_size,sort_type), object :
             Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
@@ -178,7 +178,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     val str = getEditText()
                     page++
-                    cargoList(Api.Pdd, str, page)
+                    cargoList(Api.Pdd, str, page,20,1)
                     adapter?.loadMoreComplete()
                 }
             }

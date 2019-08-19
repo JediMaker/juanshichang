@@ -148,6 +148,13 @@ class Util {
             sf = SimpleDateFormat("MM-dd") //yyyy年MM月dd日
             return sf!!.format(d)
         }
-
+        /*时间戳转换成字符窜*/
+        fun getTimedate(time:Long):String{
+            sf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//            @SuppressWarnings("unused")
+//            long lcc = Long.valueOf(time);
+            val str:String = sf!!.format(Date(time*1000L))
+            return str
+        }
     }
 }

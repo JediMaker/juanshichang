@@ -15,7 +15,7 @@ interface Api {
         //登录
         val LOGIN = "/login"
         //用户信息 login
-        val USERINFO = "/user/info"
+        val USERINFO = "/user/info"   //todo 有更改的接口
         //商品搜索 unlogin
         val SEARCH = "/apiserver/search"
         //商品详情查询
@@ -36,6 +36,15 @@ interface Api {
         val THEME = "/index/theme"
         //发送验证码
         val SMSSEND = "/smssend"
+        //订单
+        val ORDERS = "/user/orders"
+        //粉丝
+        val FANS = "/user/fans"
+        //收益
+        val BENFIT = "/user/benefit"
+        //用户信息
+        val SETTINGS = "/user/settings"
+
 
         //servicer 关键字
         val Pdd = "pdd"

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="45px"
+                                    android:paddingRight="45px"
+                                    android:paddingTop="20px"
+                                    android:paddingBottom="5px"
+                                    android:background="@color/ff_back"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+    <!--ff_back-->
+    <androidx.cardview.widget.CardView
+            android:background="@color/line"
+            app:cardCornerRadius="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <com.zhy.autolayout.AutoLinearLayout
+                android:paddingLeft="28px"
+                android:paddingRight="28px"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+            <RelativeLayout
+                    android:orientation="horizontal"
+                    android:paddingTop="25px"
+                    android:paddingBottom="20px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/t1"
+                        android:layout_centerVertical="true"
+                        android:text="创建: "
+                        android:textSize="31px"
+                        android:textColor="@color/main_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/createDate"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/t1"
+                        tools:text="2018-09-31   25:61"
+                        android:textSize="31px"
+                        android:textColor="@color/main_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:visibility="gone"
+                        android:id="@+id/ordersStateOne"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:text="已付款"
+                        android:textSize="35px"
+                        android:textColor="@color/orders_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:visibility="gone"
+                        android:id="@+id/ordersStateTwo"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:text="已失效"
+                        android:textSize="35px"
+                        android:textColor="@color/home_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <View   android:background="@color/set_linear"
+                    android:layout_width="match_parent" android:layout_height="2px"/>
+            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                        android:id="@+id/ordersImage"
+                        android:layout_marginTop="26px"
+                        android:layout_marginBottom="28px"
+                        app:qmui_corner_radius="5dp"
+                        android:layout_width="240px"
+                        android:layout_height="240px"/>
+                <TextView
+                        android:id="@+id/ordersTitle"
+                        android:textStyle="bold"
+                        tools:text="呵呵呵呵呵呵呵呵呵呵呵呵哈哈哈哈哈哈就安静安静带劲啊售票的奖品为契机"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:layout_marginLeft="28px"
+                        android:layout_marginTop="36px"
+                        android:textSize="40px"
+                        android:textColor="@color/main_text"
+                        android:layout_toRightOf="@+id/ordersImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/ordersPrice"
+                        android:textStyle="bold"
+                        tools:text="￥32.8"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_marginLeft="28px"
+                        android:layout_marginTop="45px"
+                        android:textSize="40px"
+                        android:textColor="@color/label_color"
+                        android:layout_toRightOf="@+id/ordersImage"
+                        android:layout_below="@+id/ordersTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/ordersZq"
+                        android:layout_marginTop="60px"
+                        android:layout_below="@+id/ordersTitle"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/orders_but"
+                        tools:text="赚佣12.26元"
+                        android:textSize="23px"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </RelativeLayout>
+            <View   android:background="@color/set_linear"
+                    android:layout_width="match_parent" android:layout_height="2px"/>
+            <LinearLayout
+                    android:paddingTop="20px"
+                    android:paddingBottom="25px"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView
+                        android:text="订单编号 :  "
+                        android:textSize="31px"
+                        android:textColor="@color/home_gray"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/ordersNum"
+                        tools:text="8846434846434"
+                        android:textSize="31px"
+                        android:textColor="@color/home_gray"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+    </androidx.cardview.widget.CardView>
+</com.zhy.autolayout.AutoFrameLayout>

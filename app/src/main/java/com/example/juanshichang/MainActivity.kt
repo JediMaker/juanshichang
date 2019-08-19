@@ -1,6 +1,7 @@
 package com.example.juanshichang
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.text.TextUtils
@@ -16,11 +17,13 @@ import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
+import com.example.juanshichang.bean.UserBean
 import com.example.juanshichang.fragment.*
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.Gson
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.yanzhenjie.permission.AndPermission
 import kotlinx.android.synthetic.main.activity_main.*
@@ -34,9 +37,6 @@ import rx.Subscriber
  * @文件作用:  首页面
  */
 class MainActivity : BaseActivity() {
-    companion object {
-        private const val CAM_CODE = 101
-    }
     private var fragmentList: MutableList<Fragment>? = null
     private var oneFragment: OneFragment? = null
     private var twoFragment: TwoFragment? = null
@@ -165,8 +165,8 @@ class MainActivity : BaseActivity() {
         vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
         val token = SpUtil.getIstance().user.usertoken
         Log.e("token", "本地的token值为:" + token)
-        if (token != "" && TextUtils.isEmpty(token)) {
-            downUser("login")
+        if (token != "" && !TextUtils.isEmpty(token)) {
+            downUser("login",this@MainActivity)
         }
     }
 
@@ -256,46 +256,59 @@ class MainActivity : BaseActivity() {
 
         })
     }
+    companion object {
+        private const val CAM_CODE = 101
+        /**
+         * 获取用户信息
+         */
+        public fun downUser(typeLogin: String,context:Context) {
+            HttpManager.getInstance().post(Api.USERINFO, Parameter.fengMap(typeLogin), object : Subscriber<String>() {
+                override fun onNext(str: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(str)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(context, jsonObj!!.optString(JsonParser.JSON_MSG))
+                        } else {
+                            /*val data = jsonObj!!.getJSONObject("data")
+    //                        val age: String = data.getString("age")
+                            val avatar: String = data.getString("avatar")
+                            val name: String = data.getString("name")
+                            var user = SpUtil.getIstance().user
+    //                        user.userage = age
+                            user.avatar = avatar
+                            user.nick_name = name*/
+                            val data:UserBean.UserBeans = Gson().fromJson(str,UserBean.UserBeans::class.java)
+                            val item = data.data
+                            var user = SpUtil.getIstance().user
+                            user.avatar = item.avatar
+                            user.balance = item.balance
+                            user.current_day_benefit = item.current_day_benefit
+                            user.current_month_benefit = item.current_month_benefit
+                            user.last_day_benefit = item.last_day_benefit
+                            user.from_invite_userid = item.from_invite_userid.toLong()
+                            user.invite_code = item.invite_code
+                            user.nick_name = item.nick_name
+                            SpUtil.getIstance().user = user //写入
 
-
-    /**
-     * 获取用户信息
-     */
-    private fun downUser(typeLogin: String) {
-        HttpManager.getInstance().post(Api.USERINFO, Parameter.fengMap(typeLogin), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject? = null
-                    try {
-                        jsonObj = JSONObject(str)
-                    } catch (e: JSONException) {
-                        e.printStackTrace();
-                    }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(this@MainActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val data = jsonObj!!.getJSONObject("data")
-                        val age: String = data.getString("age")
-                        val avatar: String = data.getString("avatar")
-                        val name: String = data.getString("name")
-                        var user = SpUtil.getIstance().user
-                        user.userage = age
-                        user.useravatar = avatar
-                        user.username = name
-                        SpUtil.getIstance().user = user //写入
-                        Log.e("userInfo", "获取用户信息成功:年龄:$age 头像地址:$avatar 昵称:$name")
+                        }
                     }
                 }
-            }
 
-            override fun onCompleted() {
-                Log.e("onCompleted", "用户信息请求完成!")
-            }
+                override fun onCompleted() {
+                    Log.e("onCompleted", "用户信息请求完成!")
+                }
 
-            override fun onError(e: Throwable?) {
-                Log.e("onError", "用户信息请求错误!")
-            }
-        })
+                override fun onError(e: Throwable?) {
+                    Log.e("onError", "用户信息请求错误!")
+                }
+            })
+        }
     }
+
 }
 
