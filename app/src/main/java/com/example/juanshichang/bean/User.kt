@@ -11,7 +11,7 @@ class User : Serializable {
 //    public var level: String? = null//用户等级
 //    public var usertype: String? = null//是否开通 商户
 //    public var realname: String? = null
-    public var usertoken: String? = null  //token
+    var usertoken: String? = null  //token
     //    public var facepicurl: String? = null
 //    public var paypassword: String? = null
 //    private var userimaccid: String? = null // IM 用户id

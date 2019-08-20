@@ -108,7 +108,7 @@ class Parameter {
             Collections.sort(list)
             var sbs = StringBuffer()
             for (i in 0 until list.size) {
-                if (i == list.size - 1) {
+                if (i == list.size-1) {
                     sbs.append(list[i])
                 } else {
                     sbs.append(list[i] + "&")
@@ -331,6 +331,17 @@ class Parameter {
             if(limit != 20){
                 map.put("limit", "$limit")
             }
+            return map
+        }
+        /***
+         * 修改用户信息
+         * @param nickname
+         */
+        fun getUpdInfo(nickname:String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("nickname=$nickname")
+            var map = fengMap("login")
+            map.put("nickname",nickname)
             return map
         }
     }

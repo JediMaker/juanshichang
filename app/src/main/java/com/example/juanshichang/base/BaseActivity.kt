@@ -185,7 +185,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
          */
         fun goStartActivity(context: Context, bundle: Bundle, activity:BaseActivity) {
             var intent = Intent()
-            intent.setClass(context, activity.javaClass)
+            intent.setClass(context, activity::class.java)
             if (!bundle.isEmpty) {
                 intent.putExtra("BUNDLE", bundle)
             }
@@ -193,7 +193,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
         }
         fun goStartActivity(context: Context,activity:BaseActivity) {
             var intent = Intent()
-            intent.setClass(context, activity.javaClass)
+            intent.setClass(context, activity::class.java)
             context.startActivity(intent)
         }
         fun goStartActivity(context: Context,intent:Intent) {

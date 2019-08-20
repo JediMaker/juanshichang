@@ -16,5 +16,6 @@ class OrdersAdapter(layouts: Int) : BaseQuickAdapter<OrdersBean.Data, BaseViewHo
             ?.setText(R.id.ordersZq,"赚佣"+data?.promotion_rate+"元") //待运算
             ?.setText(R.id.ordersNum,data?.order_sn)
         GlideUtil.loadImage(mContext,data?.goods_thumbnail_url,help?.getView(R.id.ordersImage))
+        help?.setText(R.id.ordersStateOne,data?.order_status_desc)
     }
 }

@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission
@@ -25,18 +26,26 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.OrderFormActivity">
-        </activity>
-        <activity android:name=".activity.EarningsActivity">
-        </activity>
-
         <meta-data
                 android:name="design_width"
                 android:value="1080"/>
         <meta-data
                 android:name="design_height"
                 android:value="1920"/>
-
+        <provider android:authorities="com.tencent.lg.fileProvider"
+                  android:name="androidx.core.content.FileProvider"
+                  android:exported="false"
+                  android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+        <activity android:name=".activity.FansActivity">
+        </activity>
+        <activity android:name=".activity.OrderFormActivity">
+        </activity>
+        <activity android:name=".activity.EarningsActivity">
+        </activity>
         <activity
                 android:name=".activity.Reg2LogActivity"
                 android:launchMode="singleTask"

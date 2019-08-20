@@ -1,7 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                     xmlns:app="http://schemas.android.com/apk/res-auto"
+                                     xmlns:tools="http://schemas.android.com/tools"
+                                     android:paddingLeft="44px"
+                                     android:paddingRight="44px"
+                                     android:background="@color/white"
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content">
+    <View
+            android:id="@+id/vOne"
+            android:background="#DDDDDD"
+            android:layout_width="match_parent" android:layout_height="1px"/>
+    <LinearLayout
+            android:layout_below="@+id/vOne"
+            android:orientation="horizontal"
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+                android:id="@+id/fansIv"
+                android:layout_marginTop="24px"
+                android:layout_marginBottom="24px"
+                app:qmui_is_circle="true"
+                android:layout_width="145px"
+                android:layout_height="145px"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:paddingLeft="30px"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            <TextView
+                    android:id="@+id/fansPhone"
+                    tools:text="156****4661"
+                    android:textColor="@color/main_text"
+                    android:textSize="42px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:id="@+id/fansDate"
+                    android:layout_marginTop="10px"
+                    tools:text="19-12-21 88:88:82"
+                    android:textColor="@color/home_gray"
+                    android:textSize="36px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <TextView
+                android:id="@+id/fansFSum"
+                android:gravity="center_vertical|right"
+                tools:text="已推42人"
+                android:drawableRight="@drawable/details_next"
+                android:drawablePadding="20px"
+                android:textColor="@color/main_text"
+                android:textSize="42px"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
 
-</com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoRelativeLayout>

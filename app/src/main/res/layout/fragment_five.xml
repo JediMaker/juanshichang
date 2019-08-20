@@ -39,21 +39,25 @@
             android:layout_marginTop="45px"
             android:layout_width="match_parent" 
             android:layout_height="wrap_content">
+        <!--app:qmui_is_circle="true"-->
         <com.qmuiteam.qmui.widget.QMUIRadiusImageView
                 android:id="@+id/ffUserImage"
-                app:qmui_is_circle="true"
+                app:qmui_corner_radius="45dp"
                 android:src="@drawable/head_img_def"
                 android:layout_width="173px"
                 android:layout_height="173px"/>
         <TextView
                 android:id="@+id/ffUserName"
                 android:layout_marginLeft="30px"
+                android:layout_marginRight="65px"
                 android:layout_marginTop="27px"
                 android:layout_toRightOf="@+id/ffUserImage"
                 tools:text="昵称"
                 android:textSize="46px"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/main_text"
-                android:layout_width="200px"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         <LinearLayout
                 android:layout_below="@+id/ffUserName"

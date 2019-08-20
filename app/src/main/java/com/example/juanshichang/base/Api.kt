@@ -44,8 +44,10 @@ interface Api {
         val BENFIT = "/user/benefit"
         //用户信息
         val SETTINGS = "/user/settings"
-
-
+        //修改头像
+        val SETAVATER = "/user/settings/upload_avatar"
+        //修改昵称
+        val SETINFO = "/user/settings/update_info"
         //servicer 关键字
         val Pdd = "pdd"
         val TaoBao = "taobao"

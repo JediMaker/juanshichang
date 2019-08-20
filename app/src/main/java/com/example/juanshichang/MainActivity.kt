@@ -165,7 +165,7 @@ class MainActivity : BaseActivity() {
         vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
         val token = SpUtil.getIstance().user.usertoken
         Log.e("token", "本地的token值为:" + token)
-        if (token != "" && !TextUtils.isEmpty(token)) {
+        if (token != null && !TextUtils.isEmpty(token)) {
             downUser("login",this@MainActivity)
         }
     }

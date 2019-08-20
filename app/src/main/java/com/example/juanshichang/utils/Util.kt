@@ -2,13 +2,12 @@ package com.example.juanshichang.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.media.MediaCodec
+import android.os.Environment
 import android.provider.Settings
 import android.text.TextUtils
-import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
-import java.math.BigDecimal
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -35,7 +34,6 @@ class Util {
                 }
 
             }
-
             return deviceId
         }
 
@@ -144,9 +142,12 @@ class Util {
         private var  sf: SimpleDateFormat? = null
         /*时间戳转换成字符窜*/
         fun getDateToString(time:Long):String{
-            val d = Date(time)
-            sf = SimpleDateFormat("MM-dd") //yyyy年MM月dd日
-            return sf!!.format(d)
+//            val d = Date(time)
+//            sf = SimpleDateFormat("MM-dd") //yyyy年MM月dd日
+//            return sf!!.format(d)
+            sf = SimpleDateFormat("MM-dd")
+            val str:String = sf!!.format(Date(time*1000L))
+            return str
         }
         /*时间戳转换成字符窜*/
         fun getTimedate(time:Long):String{
@@ -155,6 +156,43 @@ class Util {
 //            long lcc = Long.valueOf(time);
             val str:String = sf!!.format(Date(time*1000L))
             return str
+        }
+        /*时间戳转换成字符窜*/
+        fun getTimedateTwo(time:Long):String{
+            sf = SimpleDateFormat("yyyy-MM-dd")
+//            @SuppressWarnings("unused")
+//            long lcc = Long.valueOf(time);
+            val str:String = sf!!.format(Date(time*1000L))
+            return str
+        }
+        /** 手机 字符 加密**/
+        fun getPhoneNTransition(mobile: String):String{
+            val str = mobile
+            var sb = StringBuilder()
+            if(mobile.length>0){
+                for (i in 0 .. str.length-1){
+                    if(i<3 || i>7){
+                        sb.append(str[i])
+                    }
+                    sb.append("*")
+                }
+            }
+            return sb.toString()
+        }
+
+        /**
+         * 生成图片保存地址工具类
+         */
+        fun createImageFile(context:Context): File?{
+            try {
+                val timeStamp:String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                val imageFileName = "IMG_" + timeStamp
+                val dir:File =  context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+                return File.createTempFile(imageFileName,".png",dir)
+            }catch (e:Exception){
+
+            }
+            return null
         }
     }
 }
