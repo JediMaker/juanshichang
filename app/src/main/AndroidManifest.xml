@@ -32,7 +32,7 @@
         <meta-data
                 android:name="design_height"
                 android:value="1920"/>
-        <provider android:authorities="com.tencent.lg.fileProvider"
+        <provider android:authorities="com.example.juanshichang.fileProvider"
                   android:name="androidx.core.content.FileProvider"
                   android:exported="false"
                   android:grantUriPermissions="true">

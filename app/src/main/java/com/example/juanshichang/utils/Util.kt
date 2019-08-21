@@ -12,6 +12,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import android.graphics.Bitmap
+import java.io.ByteArrayOutputStream
+import android.graphics.BitmapFactory
+
+
+
 
 /**
  * @作者: yzq
@@ -194,5 +200,6 @@ class Util {
             }
             return null
         }
+
     }
 }

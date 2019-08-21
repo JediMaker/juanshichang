@@ -42,7 +42,7 @@
         <!--app:qmui_is_circle="true"-->
         <com.qmuiteam.qmui.widget.QMUIRadiusImageView
                 android:id="@+id/ffUserImage"
-                app:qmui_corner_radius="45dp"
+                app:qmui_is_circle="true"
                 android:src="@drawable/head_img_def"
                 android:layout_width="173px"
                 android:layout_height="173px"/>
