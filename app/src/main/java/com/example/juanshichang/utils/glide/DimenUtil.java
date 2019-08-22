@@ -1,6 +1,5 @@
 package com.example.juanshichang.utils.glide;
 
-
 import com.example.juanshichang.MyApp;
 
 /**

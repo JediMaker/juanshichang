@@ -17,7 +17,7 @@ interface Api {
         //用户信息 login
         val USERINFO = "/user/info"   //todo 有更改的接口
         //商品搜索 unlogin
-        val SEARCH = "/apiserver/search"
+        val SEARCH = "/search"
         //商品详情查询
         val SEARCHDETAIL = "/apiserver/goodsdetail"
         // 商品分享链接 必须登录  login

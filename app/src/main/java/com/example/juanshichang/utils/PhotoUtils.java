@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import com.example.juanshichang.activity.SettingActivity;
 
 import java.io.File;
 import java.util.List;
@@ -48,7 +49,7 @@ public class PhotoUtils {
         }
         intentCamera.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         //将拍照结果保存至photo_file的Uri中，不保留在相册中
-//        intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+//        intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, imageUri); 不指定文件路径
         activity.startActivityForResult(intentCamera, requestCode);
     }
 
@@ -232,5 +233,19 @@ public class PhotoUtils {
      */
     private static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+
+    //todo New add
+    public static boolean isFolderExists(String strFolder) {
+        File file = new File(strFolder);
+        if (!file.exists()) {
+            if(file.mkdirs()) { //mkdir() 只能在已经存在的目录中创建创建文件夹。mkdirs() 可以在不存在的目录中创建文件夹。诸如：a\\b,既可以创建多级目录。
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 }

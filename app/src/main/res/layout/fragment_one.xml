@@ -77,6 +77,22 @@
 
         </RelativeLayout>
         <!--android:overScrollMode="never"-->
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/oneTab"
+                android:layout_alignParentBottom="true"
+                app:tabIndicatorHeight="6px"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabBackground="@null"
+                android:background="@null"
+                app:tabIndicatorColor="@color/white"
+                app:tabSelectedTextColor="@color/white"
+                app:tabTextAppearance="@style/OrderTabLayoutTextAppearance"
+                app:tabTextColor="@color/white"
+                app:tabIndicatorFullWidth="false"
+                app:tabGravity="center"
+                app:tabMode="scrollable"
+                android:layout_width="match_parent"
+                android:layout_height="100px"></com.google.android.material.tabs.TabLayout>
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/mSwipeRefreshLayout"
                 android:layout_width="match_parent"

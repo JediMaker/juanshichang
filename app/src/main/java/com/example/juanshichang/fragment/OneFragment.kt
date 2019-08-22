@@ -8,7 +8,6 @@ import android.os.Handler
 import android.os.Message
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -24,12 +23,10 @@ import com.example.juanshichang.adapter.HomeAdapter
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.http.HttpManager
-import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
+import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
-import com.qmuiteam.qmui.util.QMUIDisplayHelper.getStatusBarHeight
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper
-import kotlinx.android.synthetic.main.fragment_one.*
+import kotlinx.coroutines.Runnable
 import org.jetbrains.anko.runOnUiThread
 import org.json.JSONObject
 import rx.Subscriber
@@ -49,10 +46,12 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
      }*/
     var next: Int = 1
     var nextSize = 5
+    var tabData:List<TabOneBean.Category>? = null
     var rvData = mutableListOf<MainRecyclerBean.Theme>()
     var mainList = arrayListOf<HomeEntity>()
     var homeAdapter: HomeAdapter? = null
     var hr: RecyclerView? = null
+    var oneTab:TabLayout? =null
     var mSwipeRefreshLayout:SwipeRefreshLayout? = null
     var bHome: HomeEntity? = null
     var gHome: HomeEntity? = null
@@ -61,19 +60,28 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            if (msg.what == 1) {
-                if (b != 1 && g != 1 && r != 1) {
-                    mainList.add(bHome!!)
-                    mainList.add(gHome!!)
-                    mainList.add(rHome!!)
-                    homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
-                    homeAdapter?.setEnableLoadMore(true)
-                    onCreate(null)
-                    b = 1
-                    g = 1
-                    r = 1
-                } else {
-                    this.sendEmptyMessageDelayed(1, 100)
+            when(msg.what){
+                1->{
+                    if (b != 1 && g != 1 && r != 1) {
+                        mainList.add(bHome!!)
+                        mainList.add(gHome!!)
+                        mainList.add(rHome!!)
+                        homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
+                        homeAdapter?.setEnableLoadMore(true)
+                        onCreate(null)
+                        b = 1
+                        g = 1
+                        r = 1
+                    } else {
+                        this.sendEmptyMessageDelayed(1, 100)
+                    }
+                }
+                2->{
+                    if(tabData!=null){
+                        setTab(tabData)
+                    }else{
+                        sendEmptyMessageDelayed(2, 50)
+                    }
                 }
             }
         }
@@ -85,13 +93,16 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
 
     override fun initViews(savedInstanceState: Bundle) {
         MyApp.requestPermission(mContext!!)
+        getOneT(0)
         getBanner()
         getGrid()
         getRecycler(2, next)
+        handler.sendEmptyMessageDelayed(2, 50)
         handler.sendEmptyMessageDelayed(1, 100) //延时 100 ms
     }
 
     override fun initData() {
+        oneTab = mBaseView?.findViewById<TabLayout>(R.id.oneTab)
         hr = mBaseView?.findViewById<RecyclerView>(R.id.home_recycler)
         mSwipeRefreshLayout = mBaseView?.findViewById<SwipeRefreshLayout>(R.id.mSwipeRefreshLayout)
         //初始化 adapter
@@ -239,7 +250,39 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
 
         })
     }
+    //获取列表数据 unlogin
+    fun getOneT(parent_id:Int){
+        HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id),object : Subscriber<String>() {
+            override fun onNext(str: String?) {
+                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                    var jsonObj: JSONObject = JSONObject(str)
+                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
+                    } else {
+                        val data = Gson().fromJson(str,TabOneBean.TabOneBeans::class.java)
+                        val list = data.data.category_list
+                        if(list.size!=0){
+                            tabData = list
+                            oneTab!!.post(object :Runnable{
+                                override fun run() {
+                                    setTab(list)
+                                    Log.e("tastaaa2",""+list?.size)
+                                }
+                            })
+                        }
+                    }
+                }
+            }
 
+            override fun onCompleted() {
+                Log.e("onCompleted", "Tab加载完成!")
+            }
+
+            override fun onError(e: Throwable?) {
+                Log.e("onError", "Tab加载失败!"+e)
+            }
+        })
+    }
     companion object {
         var WebUrl: String? = null
         //获取链接 跳转
@@ -283,90 +326,50 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
                         }
                     })
         }
-    }
+        fun getTwoT(parent_id:Int,context:Context){
+            HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id),object : Subscriber<String>() {
+                override fun onNext(str: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        var jsonObj: JSONObject = JSONObject(str)
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(context, jsonObj.optString(JsonParser.JSON_MSG))
+                        } else {
 
-    //废弃的方法
-    private fun setGrid(gridList: List<GridItemBean.Channel>) {
-        /*var gridAdapter = MainGridAdapter(this.mContext!!, gridList)
-        val size = gridList.size   //动态设置列数
-        var column = 0
-        if (size % 2 != 0) {
-            val l = size / 2 as Int
-            column = l + 1
-        } else {
-            column = size / 2 as Int
-        }
-        main_gridView.numColumns = column
-        main_gridView.adapter = gridAdapter
-        gridAdapter.notifyDataSetChanged()
-        main_gridView.onItemClick { p0, p1, p, p3 ->
-            if (gridList[p].type.equals("link")) {
-                WebUrl = null
-                getWebLink(gridList[p].channel_id, mContext!!)
-            } else if (gridList[p].type.equals("goods")) {
-                var intent = Intent(mContext!!, PromotionActivity::class.java)
-                intent.putExtra("channel_id", gridList[p].channel_id)
-                startActivity(intent)
-            } else {
-                ToastUtil.showToast(mContext!!, "不存在的类型:" + gridList[p].type)
-            }
-        }*/
-    }
-
-    var imgs: MutableList<MainBannerBean.Banner>? = null
-    //废弃的方法 和 参数
-    private fun setBanner(bannerList: List<MainBannerBean.Banner>) {
-        /*//随机数
-        imgs = mutableListOf()
-        var imgUrls: MutableList<String> = mutableListOf() //设置返回数据如果多于5 则 只随机抽取5张轮播 否则 显示全部
-        if (bannerList.size > 5) {
-            imgs?.clear()
-            while (imgs?.size!! < 5) {
-                var r = (0 until bannerList.size).random()// (0…10).random() === (0 until 11).random()
-                if (!imgs!!.contains(bannerList[r])) {
-                    imgs?.add(bannerList[r])
+                        }
+                    }
                 }
-            }
-        } else {
-            imgs?.clear()
-            imgs?.addAll(bannerList)
-        }
-        for (index in 0 until imgs!!.size) {
-            imgUrls.add(imgs!![index].image_url)
-        }
 
-//        main_banner.visibility = View.VISIBLE
-        main_banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR) //显示数字指示器
-        //设置指示器位置（当banner模式中有指示器时）
-        main_banner.setIndicatorGravity(BannerConfig.LEFT)//指示器居右
-        //设置图片加载器
-        main_banner.setImageLoader(GlideImageLoader())
-        //设置图片集合
-        main_banner.setImages(imgUrls)
-        //设置动画效果
-        main_banner.setBannerAnimation(Transformer.Default)
-        //设置轮播图片间隔时间（不设置默认为2000）
-        main_banner.setDelayTime(4500)
-        //设置是否自动轮播（不设置则默认自动）
-        main_banner.isAutoPlay(true)
-        //设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
-        //meBanner.setBannerTitles(images);
-        //点击事件请放到start()前
-        main_banner.setOnBannerListener(OnBannerListener {
-            if (imgs!![it].type.equals("goods")) {
-                var intent = Intent(this.mContext!!, PromotionActivity::class.java)
-                intent.putExtra("banner_id", imgs!![it].banner_id.toLong())
-                startActivity(intent)
-            } else {
-                ToastUtil.showToast(this.mContext!!, "这个商品类型异常,快去看日志...")
-                Log.e(
-                    "shopping",
-                    "id:" + imgs!![it].banner_id + "  type" + imgs!![it].type
-                ) //1.列表
-            }
-        })
-        //banner设置方法全部调用完毕时最后调用
-        main_banner.start()*/
+                override fun onCompleted() {
+                    Log.e("onCompleted", "Tab2加载完成!")
+                }
+
+                override fun onError(e: Throwable?) {
+                    Log.e("onError", "Tab2加载失败!"+e)
+                }
+            })
+        }
+        fun getThreeT(parent_id:Int,context:Context){
+            HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id),object : Subscriber<String>() {
+                override fun onNext(str: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        var jsonObj: JSONObject = JSONObject(str)
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(context, jsonObj.optString(JsonParser.JSON_MSG))
+                        } else {
+
+                        }
+                    }
+                }
+
+                override fun onCompleted() {
+                    Log.e("onCompleted", "Tab3加载完成!")
+                }
+
+                override fun onError(e: Throwable?) {
+                    Log.e("onError", "Tab3加载失败!"+e)
+                }
+            })
+        }
     }
 
 
@@ -420,7 +423,29 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
         }
         return HomeEntity()
     }
+    private fun setTab(tabData: List<TabOneBean.Category>?) {
+        ToastUtil.showToast(mContext!!,""+tabData?.size)
+        if(tabData!=null){
+            oneTab?.addTab(oneTab?.newTab()!!.setText("这是一个测试"))
+            for (i in 0 until tabData.size){
+                oneTab?.addTab(oneTab?.newTab()!!.setText(tabData[i].name))
+            }
+        }
+        oneTab?.addOnTabSelectedListener(mTabLayoutBottom)
+    }
+    private val mTabLayoutBottom = object : TabLayout.OnTabSelectedListener {
+        override fun onTabReselected(p0: TabLayout.Tab?) {
 
+        }
+
+        override fun onTabUnselected(p0: TabLayout.Tab?) {
+
+        }
+
+        override fun onTabSelected(t: TabLayout.Tab?) {
+            ToastUtil.showToast(mContext!!,"走到了"+t?.position)
+        }
+    }
     /**
      * 下拉刷新
      */

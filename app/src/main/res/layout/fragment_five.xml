@@ -9,7 +9,7 @@
         android:paddingRight="46px"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.FiveFragment">
+        tools:context=".fragment.FourFragment">
     <!--android:fitsSystemWindows="true"-->
     <!-- TODO: Update blank fragment layout -->
     <com.zhy.autolayout.AutoRelativeLayout

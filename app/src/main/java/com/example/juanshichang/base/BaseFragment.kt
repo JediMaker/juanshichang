@@ -2,16 +2,14 @@ package com.example.juanshichang.base
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Looper
-import android.os.MessageQueue
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+
 import butterknife.ButterKnife
-import com.example.juanshichang.R
-import com.example.juanshichang.utils.StatusBarUtil
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+
 
 abstract class BaseFragment : Fragment(){
     var mContext: BaseActivity? = null

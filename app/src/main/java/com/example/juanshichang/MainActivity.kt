@@ -24,8 +24,6 @@ import com.example.juanshichang.utils.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper
-import com.yanzhenjie.permission.AndPermission
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -41,8 +39,8 @@ class MainActivity : BaseActivity() {
     private var oneFragment: OneFragment? = null
     private var twoFragment: TwoFragment? = null
     private var threeFragment: ThreeFragment? = null
-//    private var fourFragment: FourFragment? = null  //设计五个页面 现保留至四个
-    private var fiveFragment: FiveFragment? = null
+//    private var fourFragment: OneOtherFragment? = null  //设计五个页面 现保留至四个
+    private var fourFragment: FourFragment? = null
     private var normalAdapter: NormalAdapter? = null
     override fun getContentView(): Int {
         return R.layout.activity_main
@@ -54,14 +52,12 @@ class MainActivity : BaseActivity() {
         oneFragment = OneFragment()
         twoFragment = TwoFragment()
         threeFragment = ThreeFragment()
-//        fourFragment = FourFragment()
-        fiveFragment = FiveFragment()
+        fourFragment = FourFragment()
 
         fragmentList?.add(oneFragment!!)
         fragmentList?.add(twoFragment!!)
         fragmentList?.add(threeFragment!!)
-//        fragmentList?.add(fourFragment!!)
-        fragmentList?.add(fiveFragment!!)
+        fragmentList?.add(fourFragment!!)
 //            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request
         MyApp.requestPermission(this@MainActivity)
     }
@@ -160,13 +156,13 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initData() {
-        normalAdapter = NormalAdapter(supportFragmentManager, fragmentList!!)
+        normalAdapter = NormalAdapter(supportFragmentManager, fragmentList!!)//supportFragmentManager
         vp_main.adapter = normalAdapter
         vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
         val token = SpUtil.getIstance().user.usertoken
         Log.e("token", "本地的token值为:" + token)
         if (token != null && !TextUtils.isEmpty(token)) {
-            downUser("login",this@MainActivity)
+            downUser(this@MainActivity)
         }
     }
 
@@ -261,8 +257,8 @@ class MainActivity : BaseActivity() {
         /**
          * 获取用户信息
          */
-        public fun downUser(typeLogin: String,context:Context) {
-            HttpManager.getInstance().post(Api.USERINFO, Parameter.fengMap(typeLogin), object : Subscriber<String>() {
+        public fun downUser(context:Context) {
+            HttpManager.getInstance().post(Api.USERINFO, Parameter.getBenefitMap(), object : Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject? = null
