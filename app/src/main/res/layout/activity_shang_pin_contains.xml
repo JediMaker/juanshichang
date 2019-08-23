@@ -120,11 +120,13 @@
                                     android:textColor="@color/txt_gray"
                                     android:textSize="34px"/>
                             <View
+                                    android:visibility="gone"
                                     android:layout_gravity="center_vertical"
                                     android:background="@color/txt_gray"
                                     android:layout_width="2px"
                                     android:layout_height="29px"/>
                             <TextView
+                                    android:visibility="gone"
                                     android:id="@+id/spWz"
                                     android:gravity="bottom"
                                     android:paddingLeft="15px"
@@ -323,6 +325,7 @@
                 </LinearLayout>
                 <!--快递-->
                 <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/shangPinFw"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -561,7 +564,7 @@
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20px"
+            android:paddingTop="8px"
             android:background="@color/white"
             android:weightSum="1">
 
@@ -616,8 +619,8 @@
         </LinearLayout>
 
         <LinearLayout
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="8px"
+                android:paddingBottom="8px"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
@@ -629,19 +632,19 @@
                     android:id="@+id/spJia"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.4"
+                    android:layout_weight="0.45"
                     android:background="@drawable/but_left"
                     android:gravity="center"
                     android:textStyle="normal"
                     android:text="分享\n(收益14.67元)"
                     android:textColor="@color/white"
-                    android:textSize="31px"/>
+                    android:textSize="32px"/>
 
             <TextView
                     android:id="@+id/spGou"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
+                    android:layout_weight="0.45"
                     android:background="@drawable/but_right"
                     android:gravity="center"
                     android:textStyle="normal"

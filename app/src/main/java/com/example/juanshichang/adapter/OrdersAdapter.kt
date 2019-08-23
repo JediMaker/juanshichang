@@ -12,8 +12,8 @@ class OrdersAdapter(layouts: Int) : BaseQuickAdapter<OrdersBean.Data, BaseViewHo
     override fun convert(help: BaseViewHolder?, data: OrdersBean.Data?) {
         help?.setText(R.id.createDate,Util.getTimedate(data?.create_time!!.toLong()))
             ?.setText(R.id.ordersTitle,data?.goods_name)
-            ?.setText(R.id.ordersPrice,"￥"+Util.getFloatPrice(data?.goods_price!!.toLong()))
-            ?.setText(R.id.ordersZq,"赚佣"+data?.promotion_rate+"元") //待运算
+            ?.setText(R.id.ordersPrice,"￥"+Util.getFloatPrice(data?.order_amount!!.toLong()))
+            ?.setText(R.id.ordersZq,"赚佣"+Util.getFloatPrice(data?.promotion_amount.toLong())+"元") //待运算
             ?.setText(R.id.ordersNum,data?.order_sn)
         GlideUtil.loadImage(mContext,data?.goods_thumbnail_url,help?.getView(R.id.ordersImage))
         help?.setText(R.id.ordersStateOne,data?.order_status_desc)

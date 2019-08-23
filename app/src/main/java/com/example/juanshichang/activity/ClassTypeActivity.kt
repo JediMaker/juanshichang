@@ -16,6 +16,7 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.CLB
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
 
@@ -41,11 +42,12 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
+        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
         if (null != getIntent().getStringExtra("keyword")) {
             keyWord = intent.getStringExtra("keyword")
             etsearch.setText(keyWord.toCharArray(), 0, keyWord.length)
             val grid = GridLayoutManager(this@ClassTypeActivity, 2)
-            adapter = CargoListAdapter(R.layout.item_type, goodsList, this@ClassTypeActivity)
+            adapter = CargoListAdapter(R.layout.item_banner_pro, goodsList, this@ClassTypeActivity) //item_type
             adapter?.openLoadAnimation()//  （默认为渐显效果） 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
             adapter?.emptyView = View.inflate(this, R.layout.activity_not_null, null)
             adapter?.setOnLoadMoreListener(object : BaseQuickAdapter.RequestLoadMoreListener {

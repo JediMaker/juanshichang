@@ -201,5 +201,21 @@ class Util {
             return null
         }
 
+        /**
+         * @param min_group_price 最少拼团价
+         * @param coupon_discount 优惠劵面额
+         * @param promotion_rate  佣金比列
+         * @param istype  类型
+         */
+        fun getProportion(min_group_price:Long,coupon_discount:Long,promotion_rate:Int,istype:Boolean):String{
+            var t:Long= 0
+            if(istype){//有券
+                t = min_group_price - coupon_discount
+            }else{
+                t = min_group_price
+            }
+            val lastP = promotion_rate*t/1000
+            return getFloatPrice(lastP.toLong())
+        }
     }
 }

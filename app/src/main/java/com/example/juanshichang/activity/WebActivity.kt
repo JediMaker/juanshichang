@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.utils.AutoLayoutActivity
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.widget.IsInternet
 import kotlinx.android.synthetic.main.activity_not_car.*
 import kotlinx.android.synthetic.main.activity_web.*
@@ -26,6 +27,7 @@ class WebActivity : AutoLayoutActivity(), View.OnClickListener {
     var mobile_url: String? = null
     var zoom_controll: ZoomButtonsController? = null
     private fun initData() {
+        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
         mGoGuangguangTV.setOnClickListener(this)
         mReturnView.setOnClickListener(this)
         mCloseView.setOnClickListener(this)

@@ -59,6 +59,7 @@ class SDB{
         var has_mall_coupon: Boolean = false,
         var lgst_pct: Any? = null,
         var lgst_txt: String = "",
+        var mall_logo:String = "",
         var mall_coupon_discount_pct: Int = 0,
         var mall_coupon_end_time: Int = 0,
         var mall_coupon_id: Int = 0,

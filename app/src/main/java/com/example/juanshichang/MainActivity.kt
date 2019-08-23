@@ -39,7 +39,7 @@ class MainActivity : BaseActivity() {
     private var oneFragment: OneFragment? = null
     private var twoFragment: TwoFragment? = null
     private var threeFragment: ThreeFragment? = null
-//    private var fourFragment: OneOtherFragment? = null  //设计五个页面 现保留至四个
+//    private var oFragment: OneOtherFragment? = null  //设计五个页面 现保留至四个
     private var fourFragment: FourFragment? = null
     private var normalAdapter: NormalAdapter? = null
     override fun getContentView(): Int {
@@ -53,7 +53,7 @@ class MainActivity : BaseActivity() {
         twoFragment = TwoFragment()
         threeFragment = ThreeFragment()
         fourFragment = FourFragment()
-
+//        oFragment = OneOtherFragment()
         fragmentList?.add(oneFragment!!)
         fragmentList?.add(twoFragment!!)
         fragmentList?.add(threeFragment!!)

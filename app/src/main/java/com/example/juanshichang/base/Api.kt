@@ -48,6 +48,8 @@ interface Api {
         val SETAVATER = "/user/settings/upload_avatar"
         //修改昵称
         val SETINFO = "/user/settings/update_info"
+        //列表
+        val CATEGORY = "/category"
         //servicer 关键字
         val Pdd = "pdd"
         val TaoBao = "taobao"

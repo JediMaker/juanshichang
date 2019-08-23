@@ -15,6 +15,7 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.BannnerDetailBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.google.gson.Gson
@@ -28,7 +29,7 @@ import rx.Subscriber
  * @创建日期: 2019/7/31 16:21
  * @文件作用:首页 banner 活动商品 列表
  */
-class PromotionActivity : BaseActivity() {
+class PromotionActivity : BaseActivity(),View.OnClickListener {
     //    var banner_id: Long = 0
     val banner_id_def: Long = 0
     var offset: Int = 0
@@ -39,6 +40,8 @@ class PromotionActivity : BaseActivity() {
     }
 
     override fun initView() {
+        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
+        proRet.setOnClickListener(this)
         if (banner_id_def != intent.getLongExtra("id", 0) && null != intent.getStringExtra("idName")) {
             val id = intent.getLongExtra("id", 0)
             val idName = intent.getStringExtra("idName").toString().trim()  //idName 仅供参考  后面请求数据 有 type 为约束
@@ -110,7 +113,13 @@ class PromotionActivity : BaseActivity() {
         })
     }
 
-
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.proRet ->{
+                finish()
+            }
+        }
+    }
     //从首页Banner进入的请求 传入商品列表id
     private fun searchDetailListBanner(banner_id: Long, type: Int) { //Banner 为 1,graid 为 2 ,recycler大图 为3
         var url: String? = null
@@ -147,6 +156,15 @@ class PromotionActivity : BaseActivity() {
                             goodsList.addAll(goods2)
                             this@PromotionActivity.runOnUiThread(object : Runnable {
                                 override fun run() {
+                                    if(type == 1){
+                                        proTitle.text = bannnerDetailBean.data.banner_name
+                                    }
+                                    if(type == 2){
+                                        proTitle.text = bannnerDetailBean.data.channel_name
+                                    }
+                                    if(type == 3){ //THEME
+                                        proTitle.text = bannnerDetailBean.data.theme_name
+                                    }
                                     adapter?.notifyDataSetChanged()
                                 }
                             })

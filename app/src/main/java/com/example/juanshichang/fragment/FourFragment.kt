@@ -92,9 +92,9 @@ class FourFragment : BaseFragment() {
         GlideUtil.loadHeadImage(mContext!!,user?.avatar,fi)
         fiv?.text = user?.invite_code
         ft?.text = user?.nick_name
-        top?.text = ""+user?.balance
-        isMon?.text = ""+user?.current_month_benefit
-        isDay?.text = ""+user?.current_day_benefit
+        top?.text = ""+Util.getFloatPrice(user?.balance!!.toLong())
+        isMon?.text = ""+Util.getFloatPrice(user?.current_month_benefit!!.toLong())
+        isDay?.text = ""+Util.getFloatPrice(user?.current_day_benefit!!.toLong())
         myUser = user
     }
     var timers: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE,888){

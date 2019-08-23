@@ -3,6 +3,7 @@
     <color name="colorPrimary">#FD3837</color>
     <color name="colorPrimaryDark">#FF3938</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="transparentM">#00000000</color>
     <color name="reg_dialog">#000000</color>
     <color name="main_text">#222222</color>
     <color name="txt_hei">#333333</color>

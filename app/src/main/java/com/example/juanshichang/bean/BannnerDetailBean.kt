@@ -8,6 +8,9 @@ class BannnerDetailBean {
     )
 
     data class Data(
+        var theme_name:String? = "",
+        var channel_name:String? = "",
+        var banner_name:String? = "",
         var list: List<X> = listOf()
     )
 

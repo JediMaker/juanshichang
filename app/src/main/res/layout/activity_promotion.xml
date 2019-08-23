@@ -8,8 +8,34 @@
         android:background="@color/white"
         android:orientation="vertical"
         tools:context=".activity.PromotionActivity">
+    <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_marginTop="20px"
+            android:layout_marginBottom="20px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <!--ff_ret-->
+        <View
+                android:id="@+id/proRet"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ff_ret"
+                android:layout_marginLeft="45px"
+                android:layout_marginBottom="15px"
+                android:layout_width="63px"
+                android:layout_height="43px"/>
+        <TextView
+                android:id="@+id/proTitle"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                tools:text="我的收益"
+                android:textSize="45px"
+                android:textColor="@color/main_text"
+                android:layout_width="500px"
+                android:ellipsize="end"
+                android:layout_height="wrap_content"/>
+    </com.zhy.autolayout.AutoRelativeLayout>
     <!--按钮-->
     <LinearLayout
+            android:visibility="gone"
             android:id="@+id/btn_goods_zbj_title"
             android:layout_width="match_parent"
             android:layout_height="128px"

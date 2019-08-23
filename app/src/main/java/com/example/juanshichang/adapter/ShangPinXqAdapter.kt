@@ -9,6 +9,6 @@ import kotlinx.android.synthetic.main.item_shangpin_xiangqing.view.*
 
 class ShangPinXqAdapter(layoutResId: Int,spStr:MutableList<String>):BaseQuickAdapter<String,BaseViewHolder>(layoutResId,spStr){
     override fun convert(viewHolder: BaseViewHolder?, str: String?) {
-        GlideUtil.loadImage(mContext,str,viewHolder?.getView(R.id.sPIv),1) //设置高清图ARGB_8888
+        GlideUtil.loadImage(mContext,str,viewHolder?.getView(R.id.sPIv),2) //设置高清图ARGB_8888
     }
 }

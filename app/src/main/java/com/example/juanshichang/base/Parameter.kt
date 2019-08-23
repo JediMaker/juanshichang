@@ -345,18 +345,6 @@ class Parameter {
             map.put("nickname",nickname)
             return map
         }
-
-        /**
-         * 修改用户头像
-         * @param baseBt
-         */
-        fun getUpdIcon(baseBt:String): HashMap<String, String>{
-            baseList.clear()
-            baseList.add("file=$baseBt")
-            var map = fengMap("login")
-            map.put("file",baseBt)
-            return map
-        }
         /**
          * 获取首页Tab等数据
          */

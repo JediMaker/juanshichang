@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.ScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
@@ -35,6 +36,7 @@ import com.google.gson.Gson
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import kotlinx.android.synthetic.main.activity_shang_pin_contains.*
+import kotlinx.coroutines.Runnable
 import org.json.JSONObject
 import rx.Subscriber
 
@@ -93,6 +95,15 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         spJia.setOnClickListener(this)  //分享
         spGou.setOnClickListener(this) //领劵
         goTop.setOnClickListener(this) //回顶部
+        sPYHlq.setOnClickListener(this) //立即领劵
+//        botShangpin.post(object :Runnable{
+//            override fun run() {
+//                Log.e("kuangao"," 分享 宽："+spJia.width+" 高："+spJia.measuredHeight)
+//                Log.e("kuangao","领劵 宽："+spGou.measuredWidth+" 高："+spGou.measuredHeight)
+//                Log.e("kuangao","父布局 宽："+botShangpin.width+" 高："+botShangpin.measuredHeight)
+//            }
+//        })
+
     }
 
     override fun onClick(view: View?) {
@@ -148,9 +159,23 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                     goStartActivity(this@ShangPinContains, Reg2LogActivity())
                 }
             }
+            sPYHlq->{ //立即领劵
+                if (Util.hasLogin()) {
+                    val intent = Intent(this@ShangPinContains, WebActivity::class.java)
+                    if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)) {
+                        intent.putExtra("mobile_short_url", goodsPromotionUrl?.mobile_short_url)
+                    }
+                    if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_url)) {
+                        intent.putExtra("mobile_url", goodsPromotionUrl?.mobile_url)
+                    }
+                    startActivity(intent)
+                } else {
+                    goStartActivity(this@ShangPinContains, Reg2LogActivity())
+                }
+            }
             spGou -> {
                 if (Util.hasLogin()) {
-                    var intent = Intent(this@ShangPinContains, WebActivity::class.java)
+                    val intent = Intent(this@ShangPinContains, WebActivity::class.java)
                     if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)) {
                         intent.putExtra("mobile_short_url", goodsPromotionUrl?.mobile_short_url)
                     }
@@ -251,9 +276,13 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
     private fun setData(goods: SDB.GoodsDetail) {
         setBanner(goods.goods_gallery_urls as MutableList<String>) // 初始化bannner
         spName.text = goods.goods_name //名称
-        spJinEr.text = Util.getFloatPrice(goods.min_group_price.toLong()) //最低价sku的拼团价，单位为分
+        spJinEr.text = Util.getFloatPrice((goods.min_group_price-goods.coupon_discount).toLong()) //最低价sku的拼团价，单位为分
         original_cost_view.text = Util.getFloatPrice(goods.min_normal_price.toLong()) //最低价sku的单买价，单位为分
-        getTags(goods.service_tags)//服务
+        shangPinFw.post(object : Runnable{
+            override fun run() {
+                getTags(goods.service_tags)//服务
+            }
+        })
         spjian.text = goods.sales_tip //销量
         desc_txt.text = goods.desc_txt //描述分
         serv_txt.text = goods.serv_txt //服务分
@@ -276,15 +305,15 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                 spGou.text = "立即购买"
             }
         }
-        val promotionRate = Util.getFloatPrice(goods.promotion_rate.toLong())
+        val promotionRate = Util.getProportion(goods.min_group_price.toLong(),goods.coupon_discount.toLong(),goods.promotion_rate,goods.has_coupon)
         sPSY.text = "收益:$promotionRate"
         spJia.text = "分享\n(收益$promotionRate 元)"
-        GlideUtil.loadImage(this,goods.goods_thumbnail_url,shop_img)
+        GlideUtil.loadImage(this,goods.mall_logo,shop_img)
 
         //获取SocllView的高度  ScrollView组件只允许一个子View，可以利用这一个特性，获取子View的高度即所要的ScrollView的整体高度
         nestedScrollView.setOnScrollListener(object : MyScrollView.OnScrollListener{
             override fun onScroll(scrollY: Int) {
-                if(scrollY > 450){
+                if(scrollY > 800){
                     goTop.visibility = View.VISIBLE
                 }else{
                     goTop.visibility = View.GONE
@@ -293,7 +322,8 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         })
     }
     private fun getTags(serviceTags: List<Int>){  //返回支持的服务
-        if (serviceTags.size != 0) {
+        if (serviceTags.size != 0 && !TextUtils.isEmpty(serviceTags.toString())) {
+
             var sbs: ArrayList<String> = ArrayList()
             for (index in 1 until serviceTags.size) {
                 when (serviceTags[index]) {
@@ -355,35 +385,34 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                         sbs.add("送货入户并安装;")
                     }
                     else -> {
-
+                        sbs.add("全场正品")
                     }
                 }
-
             }
-            if(sbs.size >= 4){
-                spShouyi.text = sbs[0]
-                spShouyi2.text = sbs[1]
-                spShouyi3.text = sbs[2]
-                spShouyi4.text = sbs[3]
-            }
-            if(sbs.size >= 3){
-                spShouyi.text = sbs[0]
-                spShouyi2.text = sbs[1]
-                spShouyi3.text = sbs[2]
-                spShouyi4.visibility = View.INVISIBLE
-            }
-            if(sbs.size >= 2){
-                spShouyi.text = sbs[0]
-                spShouyi2.text = sbs[1]
-                spShouyi3.visibility = View.INVISIBLE
-                spShouyi4.visibility = View.INVISIBLE
-            }
-            if(sbs.size >= 1){
+            shangPinFw.visibility = View.VISIBLE
+             if(sbs.size == 1){
                 spShouyi.text = sbs[0]
                 spShouyi2.visibility = View.INVISIBLE
                 spShouyi3.visibility = View.INVISIBLE
                 spShouyi4.visibility = View.INVISIBLE
-            }
+            }else if(sbs.size == 2){
+                spShouyi.text = sbs[0]
+                spShouyi2.text = sbs[1]
+                spShouyi3.visibility = View.INVISIBLE
+                spShouyi4.visibility = View.INVISIBLE
+            }else if(sbs.size == 3){
+                spShouyi.text = sbs[0]
+                spShouyi2.text = sbs[1]
+                spShouyi3.text = sbs[2]
+                spShouyi4.visibility = View.INVISIBLE
+            }else if(sbs.size >= 4){
+                spShouyi.text = sbs[0]
+                spShouyi2.text = sbs[1]
+                spShouyi3.text = sbs[2]
+                spShouyi4.text = sbs[3]
+            }else{
+                 shangPinFw.visibility = View.GONE
+             }
         }else{
             shangPinFw.visibility = View.GONE
         }
@@ -421,11 +450,18 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         //banner设置方法全部调用完毕时最后调用
         meBanner.start()
         //这里初始化商品详情
-        shangpinList.layoutManager = LinearLayoutManager(this@ShangPinContains,RecyclerView.VERTICAL,false)
-        val adapterSp = ShangPinXqAdapter(R.layout.item_shangpin_xiangqing,imgUrls)
-        shangpinList.adapter = adapterSp
-        shangpinList.setPadding(0,0,0,botShangpin.height+3)
-        adapterSp.notifyDataSetChanged()
+        shangpinList.post(object:Runnable{
+            override fun run() {
+                shangpinList.layoutManager = LinearLayoutManager(this@ShangPinContains,RecyclerView.VERTICAL,false)
+                //瀑布流加载图片
+//        shangpinList.layoutManager = StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
+                val adapterSp = ShangPinXqAdapter(R.layout.item_shangpin_xiangqing,imgUrls)
+                shangpinList.adapter = adapterSp
+                shangpinList.setHasFixedSize(false)
+                shangpinList.setPadding(0,0,0,botShangpin.height+3)
+                adapterSp.notifyDataSetChanged()
+            }
+        })
     }
 
 

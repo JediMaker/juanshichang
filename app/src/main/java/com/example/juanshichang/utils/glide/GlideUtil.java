@@ -3,10 +3,8 @@ package com.example.juanshichang.utils.glide;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.graphics.*;
+import android.util.Log;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
@@ -24,6 +22,8 @@ import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 
 import java.security.MessageDigest;
+
+import static com.bumptech.glide.request.target.Target.SIZE_ORIGINAL;
 
 /**
  * Created by Administrator on 2018/3/27/027.
@@ -80,9 +80,20 @@ public class GlideUtil {
             if(type!=0){
                 options.format(DecodeFormat.PREFER_ARGB_8888);
             }
-            Glide.with(mContext).load(url)
-                    .apply(options)
-                    .into(mImageView);
+            if(type == 2){
+                int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
+                Glide.with(mContext).load(url)
+                        .override(screenWidth,SIZE_ORIGINAL)
+                        .apply(options)
+                        .centerCrop()
+                        .into(mImageView);
+
+            }else {
+                Glide.with(mContext).load(url)
+                        .apply(options)
+                        .into(mImageView);
+            }
+
         } catch (Exception e) {
 
         }
@@ -244,5 +255,20 @@ public class GlideUtil {
         } catch (Exception e) {
 
         }
+    }
+
+    public static int[] getImageWidthHeight(String path){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+        /**
+         * 最关键在此，把options.inJustDecodeBounds = true;
+         * 这里再decodeFile()，返回的bitmap为空，但此时调用options.outHeight时，已经包含了图片的高了
+         */
+        options.inJustDecodeBounds = true;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options); // 此时返回的bitmap为null
+        /**
+         *options.outHeight为原始图片的高
+         */
+        return new int[]{options.outWidth,options.outHeight};
     }
 }

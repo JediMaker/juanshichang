@@ -23,10 +23,12 @@ import com.example.juanshichang.adapter.HomeAdapter
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.TabCreateUtils
 import com.example.juanshichang.utils.ToastUtil
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import kotlinx.coroutines.Runnable
+import net.lucode.hackware.magicindicator.MagicIndicator
 import org.jetbrains.anko.runOnUiThread
 import org.json.JSONObject
 import rx.Subscriber
@@ -51,7 +53,7 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
     var mainList = arrayListOf<HomeEntity>()
     var homeAdapter: HomeAdapter? = null
     var hr: RecyclerView? = null
-    var oneTab:TabLayout? =null
+    var mainTab: MagicIndicator? = null
     var mSwipeRefreshLayout:SwipeRefreshLayout? = null
     var bHome: HomeEntity? = null
     var gHome: HomeEntity? = null
@@ -79,6 +81,7 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
                 2->{
                     if(tabData!=null){
                         setTab(tabData)
+                        sendEmptyMessage(1)
                     }else{
                         sendEmptyMessageDelayed(2, 50)
                     }
@@ -98,11 +101,11 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
         getGrid()
         getRecycler(2, next)
         handler.sendEmptyMessageDelayed(2, 50)
-        handler.sendEmptyMessageDelayed(1, 100) //延时 100 ms
+//        handler.sendEmptyMessageDelayed(1, 100) //延时 100 ms
     }
 
     override fun initData() {
-        oneTab = mBaseView?.findViewById<TabLayout>(R.id.oneTab)
+        mainTab = mBaseView?.findViewById<MagicIndicator>(R.id.mainTab)
         hr = mBaseView?.findViewById<RecyclerView>(R.id.home_recycler)
         mSwipeRefreshLayout = mBaseView?.findViewById<SwipeRefreshLayout>(R.id.mSwipeRefreshLayout)
         //初始化 adapter
@@ -252,7 +255,7 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
     }
     //获取列表数据 unlogin
     fun getOneT(parent_id:Int){
-        HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id),object : Subscriber<String>() {
+        HttpManager.getInstance().post(Api.CATEGORY,Parameter.getTabData(parent_id),object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject = JSONObject(str)
@@ -263,12 +266,11 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
                         val list = data.data.category_list
                         if(list.size!=0){
                             tabData = list
-                            oneTab!!.post(object :Runnable{
-                                override fun run() {
-                                    setTab(list)
-                                    Log.e("tastaaa2",""+list?.size)
-                                }
-                            })
+//                            mainTab!!.post(object :Runnable{
+//                                override fun run() {
+//                                    setTab(list)
+//                                }
+//                            })
                         }
                     }
                 }
@@ -424,26 +426,18 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
         return HomeEntity()
     }
     private fun setTab(tabData: List<TabOneBean.Category>?) {
-        ToastUtil.showToast(mContext!!,""+tabData?.size)
+        val dataTab = ArrayList<String>()
         if(tabData!=null){
-            oneTab?.addTab(oneTab?.newTab()!!.setText("这是一个测试"))
+            dataTab.add("精选")
             for (i in 0 until tabData.size){
-                oneTab?.addTab(oneTab?.newTab()!!.setText(tabData[i].name))
+                dataTab.add(tabData[i].name)
             }
-        }
-        oneTab?.addOnTabSelectedListener(mTabLayoutBottom)
-    }
-    private val mTabLayoutBottom = object : TabLayout.OnTabSelectedListener {
-        override fun onTabReselected(p0: TabLayout.Tab?) {
+            Log.e("tastaaa2",""+dataTab.size)
+            TabCreateUtils.setOrangeTab(mContext!!,mainTab,dataTab,object : TabCreateUtils.onTitleClickListener {
+                override fun onTitleClick(index: Int) {
 
-        }
-
-        override fun onTabUnselected(p0: TabLayout.Tab?) {
-
-        }
-
-        override fun onTabSelected(t: TabLayout.Tab?) {
-            ToastUtil.showToast(mContext!!,"走到了"+t?.position)
+                }
+            })
         }
     }
     /**

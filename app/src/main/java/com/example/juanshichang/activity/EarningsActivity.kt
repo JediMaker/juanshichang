@@ -14,6 +14,7 @@ import com.example.juanshichang.bean.OrdersBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.Util
 import com.google.gson.Gson
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_earnings.*
@@ -89,16 +90,16 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
     }
     private fun setUiData(){
         if(benefit!=null){
-            balanceZh.text =  "¥"+benefit!!.balance //账户余额
+            balanceZh.text =  "¥"+Util.getFloatPrice(benefit!!.balance.toLong()) //账户余额
             todFk.text = "付款笔数\n"+benefit!!.current_day_order_paid
-            todSy.text = "预估收益\n¥"+benefit!!.current_day_pre_benefit
-            todQt.text = "其它\n¥"+benefit!!.current_day_other
+            todSy.text = "预估收益\n¥"+Util.getFloatPrice(benefit!!.current_day_pre_benefit.toLong())
+            todQt.text = "其它\n¥"+Util.getFloatPrice(benefit!!.current_day_other.toLong())
             ytodFk.text = "付款笔数\n"+benefit!!.last_day_order_paid
-            ytodSy.text = "预估收益\n¥"+benefit!!.last_day_pre_benefit
-            ytodQt.text = "其它\n¥"+benefit!!.last_day_other
-            monFk.text = "上月收益\n¥"+benefit!!.last_month_benefit
-            monSy.text = "预估收益\n¥"+benefit!!.current_month_benefit
-            monQt.text = "其它\n¥"+benefit!!.current_month_pre_benefit
+            ytodSy.text = "预估收益\n¥"+Util.getFloatPrice(benefit!!.last_day_pre_benefit.toLong())
+            ytodQt.text = "其它\n¥"+Util.getFloatPrice(benefit!!.last_day_other.toLong())
+            monFk.text = "上月收益\n¥"+Util.getFloatPrice(benefit!!.last_month_benefit.toLong())
+            monSy.text = "预估收益\n¥"+Util.getFloatPrice(benefit!!.current_month_pre_benefit.toLong())
+            monQt.text = "其它\n¥"+Util.getFloatPrice(benefit!!.current_month_other.toLong())
         }else{
             getBenefit()
         }

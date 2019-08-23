@@ -10,6 +10,7 @@ import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.example.juanshichang.R
 import com.example.juanshichang.base.BaseActivity
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_searche.*
 import kotlinx.android.synthetic.main.activity_seek_bar.*
@@ -26,6 +27,7 @@ class SearcheActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
+        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
         etsearch.setOnClickListener(this)
         mbackLayout.setOnClickListener(this)
         mSearchBt.setOnClickListener(this)

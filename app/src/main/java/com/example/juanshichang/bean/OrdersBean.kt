@@ -18,7 +18,7 @@ data class Data(
     var modify_at: Int = 0,
     var order_amount: Int = 0,
     var order_sn: String = "",
-    var order_status: Int = 0,
+    var order_status: Int = 0,  //
     var order_status_desc: String = "",
     var pay_time: Int = 0,
     var promotion_amount: Int = 0,
