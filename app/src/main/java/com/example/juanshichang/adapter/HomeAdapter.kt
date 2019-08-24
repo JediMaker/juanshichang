@@ -206,6 +206,7 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
                 BaseActivity.goStartActivity(mContext, intent)
             } else {
                 ToastUtil.showToast(this.mContext!!, "这个商品类型异常,快去看日志...")
+                Log.i("shopping","异常地址：")
                 Log.e(
                     "shopping",
                     "id:" + imgs!![it].banner_id + "  type" + imgs!![it].type

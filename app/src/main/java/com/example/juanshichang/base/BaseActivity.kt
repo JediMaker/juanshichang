@@ -25,6 +25,7 @@ import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.IsInternet
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.trello.rxlifecycle2.LifecycleProvider
 import com.trello.rxlifecycle2.LifecycleTransformer
 import com.trello.rxlifecycle2.RxLifecycle
@@ -38,6 +39,7 @@ import java.util.*
 abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEvent> {
     private val lifecycleSubject = BehaviorSubject.create<ActivityEvent>()
     var myApp : MyApp? = null
+    var myLoading:QMUITipDialog? = null
     protected abstract fun getContentView(): Int
     protected abstract fun initView()
     protected abstract fun initData()
@@ -169,6 +171,11 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
         super.onDestroy()
         unbinder?.unbind()
         lifecycleSubject.onNext(ActivityEvent.DESTROY)
+    }
+    // My New Add
+    fun showMyLoadD(){
+        myLoading = QMUITipDialog.Builder(this).create(false)
+        myLoading
     }
     companion object{
         /**失败：对应叉号 */

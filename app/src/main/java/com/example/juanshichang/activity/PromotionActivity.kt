@@ -31,7 +31,7 @@ import rx.Subscriber
  */
 class PromotionActivity : BaseActivity(),View.OnClickListener {
     //    var banner_id: Long = 0
-    val banner_id_def: Long = 0
+    val banner_id_def: Long = Long.MAX_VALUE
     var offset: Int = 0
     var adapter: PromotionListAdapter? = null
     var goodsList = mutableListOf<BannnerDetailBean.X>()
@@ -70,6 +70,7 @@ class PromotionActivity : BaseActivity(),View.OnClickListener {
             searchDetailListBanner(id, type)
         } else {
             ToastUtil.showToast(this@PromotionActivity, "数据异常 请稍后重试!!!")
+            Log.i("shopping","异常地址："+intent.getLongExtra("id", 0))
             finish()
         }
         /*if (banner_id_def != intent.getLongExtra("banner_id", 0)) {
