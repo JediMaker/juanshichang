@@ -74,7 +74,6 @@ android {
 static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -93,8 +92,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     //引入腾讯UI框架
-    implementation 'com.qmuiteam:qmui:1.2.0'
-    implementation 'com.qmuiteam:arch:0.3.1'
+    implementation 'com.qmuiteam:qmui:1.4.0' //1.2.0
+//    implementation 'com.qmuiteam:arch:0.6.1' //0.3.1
+    implementation "com.qmuiteam:arch:$qmui_arch_version"
+//    kapt "com.qmuiteam:arch-compiler:$qmui_arch_version" // use annotationProcessor if java
     //Banner
     api 'com.youth.banner:banner:1.4.10'
     //第三方Tab

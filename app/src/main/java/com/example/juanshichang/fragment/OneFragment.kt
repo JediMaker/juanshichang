@@ -6,31 +6,36 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import android.widget.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import butterknife.OnClick
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.example.juanshichang.MyApp
 
 import com.example.juanshichang.R
+import com.example.juanshichang.activity.ClassTypeActivity
 import com.example.juanshichang.activity.SearcheActivity
 import com.example.juanshichang.activity.WebActivity
-import com.example.juanshichang.adapter.HomeAdapter
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.CustomViewPager
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.TabCreateUtils
 import com.example.juanshichang.utils.ToastUtil
-import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
-import kotlinx.coroutines.Runnable
+import kotlinx.android.synthetic.main.fragment_one.*
 import net.lucode.hackware.magicindicator.MagicIndicator
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
+import org.jetbrains.anko.activityManager
 import org.jetbrains.anko.runOnUiThread
 import org.json.JSONObject
+import org.w3c.dom.Text
 import rx.Subscriber
 
 /**
@@ -38,50 +43,28 @@ import rx.Subscriber
  * @创建日期: 2019/7/17 16:52
  * @文件作用: 首页
  */
-class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
-    /* override fun onCreateView(
-         inflater: LayoutInflater, container: ViewGroup?,
-         savedInstanceState: Bundle?
-     ): View? {
-         // Inflate the layout for this fragment
-         return inflater.inflate(R.layout.fragment_one, container, false)
-     }*/
-    var next: Int = 1
-    var nextSize = 5
-    var tabData:List<TabOneBean.Category>? = null
-    var rvData = mutableListOf<MainRecyclerBean.Theme>()
-    var mainList = arrayListOf<HomeEntity>()
-    var homeAdapter: HomeAdapter? = null
-    var hr: RecyclerView? = null
-    var mainTab: MagicIndicator? = null
-    var mSwipeRefreshLayout:SwipeRefreshLayout? = null
-    var bHome: HomeEntity? = null
-    var gHome: HomeEntity? = null
-    var rHome: HomeEntity? = null
-    var addHome: HomeEntity? = null
+class OneFragment : BaseFragment(){
+
+    private var tabData:List<TabOneBean.Category>? = null
+    private var mOr:RelativeLayout? = null
+    private var mTl:LinearLayout? = null
+    private var tEdit:EditText? = null
+    private var tSearch:TextView? = null
+    private var mainBack:ImageView? = null
+    private var mainTab: MagicIndicator? = null
+    private var mainVp:CustomViewPager? = null
+    private var tabAp:CommonNavigatorAdapter? = null
+    private var mainAdapter: NormalAdapter? = null
+    private var fragmentList:ArrayList<Fragment>? = null
+    private var oneFragment: SelectionFragment? = null
+    private var twoFragment: OneOtherFragment? = null
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when(msg.what){
-                1->{
-                    if (b != 1 && g != 1 && r != 1) {
-                        mainList.add(bHome!!)
-                        mainList.add(gHome!!)
-                        mainList.add(rHome!!)
-                        homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
-                        homeAdapter?.setEnableLoadMore(true)
-                        onCreate(null)
-                        b = 1
-                        g = 1
-                        r = 1
-                    } else {
-                        this.sendEmptyMessageDelayed(1, 100)
-                    }
-                }
                 2->{
                     if(tabData!=null){
                         setTab(tabData)
-                        sendEmptyMessage(1)
                     }else{
                         sendEmptyMessageDelayed(2, 50)
                     }
@@ -96,48 +79,31 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
 
     override fun initViews(savedInstanceState: Bundle) {
         MyApp.requestPermission(mContext!!)
+        mainTab = mBaseView?.findViewById<MagicIndicator>(R.id.mainTab)
+        mainVp = mBaseView?.findViewById<CustomViewPager>(R.id.vpOne)
+        mainBack = mBaseView?.findViewById<ImageView>(R.id.mainBack)
+        //头部空间 1
+        mOr = mBaseView?.findViewById<RelativeLayout>(R.id.homeRelatie)
+        //2
+        mTl = mBaseView?.findViewById<LinearLayout>(R.id.mainT)
+        tEdit = mBaseView?.findViewById<EditText>(R.id.mainTEdit)
+        tSearch = mBaseView?.findViewById<TextView>(R.id.mainTSearch)
+        mainVp?.setPagingEnabled(false) //设置ViewPager不可滑动
         getOneT(0)
-        getBanner()
-        getGrid()
-        getRecycler(2, next)
-        handler.sendEmptyMessageDelayed(2, 50)
-//        handler.sendEmptyMessageDelayed(1, 100) //延时 100 ms
+        fragmentList = arrayListOf()
+        oneFragment = SelectionFragment()
+        twoFragment = OneOtherFragment()
+        fragmentList!!.add(oneFragment!!)
+        fragmentList!!.add(twoFragment!!)
+        mainAdapter = NormalAdapter(childFragmentManager,fragmentList as List<Fragment>)
+        mainVp?.adapter = mainAdapter
     }
 
     override fun initData() {
-        mainTab = mBaseView?.findViewById<MagicIndicator>(R.id.mainTab)
-        hr = mBaseView?.findViewById<RecyclerView>(R.id.home_recycler)
-        mSwipeRefreshLayout = mBaseView?.findViewById<SwipeRefreshLayout>(R.id.mSwipeRefreshLayout)
-        //初始化 adapter
-        homeAdapter = HomeAdapter(mainList)
-        //Add
-        /**
-         * 渐显 ALPHAIN
-         * 缩放 SCALEIN
-         * 从下到上 SLIDEIN_BOTTOM
-         * 从左到右 SLIDEIN_LEFT
-         * 从右到左 SLIDEIN_RIGHT
-         */
-        homeAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM) //SCALEIN
-        homeAdapter?.setOnLoadMoreListener(this, hr)//设置加载更多
-        mSwipeRefreshLayout?.setOnRefreshListener(this)
-        //默认第一次加载会进入回调，如果不需要可以配置
-        homeAdapter?.disableLoadMoreIfNotFullPage()
-        //当列表滑动到倒数第N个Item的时候(默认是1)回调onLoadMoreRequested方法
-        homeAdapter?.setPreLoadNumber(1)
-        //初始化 RecyclerView
-        //解决数据加载不完的问题
-        hr?.setNestedScrollingEnabled(false)
-        //当知道Adapter内Item的改变不会影响RecyclerView宽高的时候，可以设置为true让RecyclerView避免重新计算大小
-        hr?.setHasFixedSize(true)
-        //解决数据加载完成后, 没有停留在顶部的问题
-        hr?.setFocusable(false)
-        val lm = LinearLayoutManager(mContext!!, RecyclerView.VERTICAL, false)
-        hr?.layoutManager = lm
-        hr?.adapter = homeAdapter
+        handler.sendEmptyMessageDelayed(2, 50)
     }
 
-    @OnClick(R.id.etsearchs,R.id.scan_home,R.id.message_home)
+    @OnClick(R.id.etsearchs,R.id.scan_home,R.id.message_home,R.id.mainTSearch)
     fun onViewClicked(v: View) {
         when (v.id) {
             R.id.etsearchs -> {
@@ -145,116 +111,78 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
                 //...
                 startActivity(intent)
             }
+            R.id.mainTSearch ->{
+                val str = getEditText()
+                if(!TextUtils.isEmpty(str)){
+                    var intent = Intent(mContext!!, ClassTypeActivity::class.java)
+                    intent.putExtra("keyword",str)
+                    startActivity(intent)
+                    tEdit?.text = null
+                }else{
+                    ToastUtil.showToast(mContext!!, "请输入搜索关键字")
+                }
+            }
+            R.id.scan_home ->{ //扫一扫
+                ToastUtil.showToast(mContext!!,"程序猿小哥 扫一扫 日夜赶工中...")
+            }
+            R.id.message_home ->{ //消息
+                ToastUtil.showToast(mContext!!,"程序猿小哥 消息 日夜赶工中...")
+            }
             else -> {
                 ToastUtil.showToast(mContext!!,"程序猿小哥 日夜赶工中...")
             }
         }
     }
-
-    override fun onStart() {
-        super.onStart()
-//        main_banner.startAutoPlay()
+    private fun getEditText(): String {//获取Edit数据
+        val text = tEdit?.text.toString().trim()
+        if (text.length > 0 && !TextUtils.isEmpty(text)) {
+            return text
+        }
+        return ""
     }
+    override fun onResume() {
+        super.onResume()
+        //判空 重走
+        if(fragmentList == null){
+            fragmentList = arrayListOf()
+            if(oneFragment == null){
+                oneFragment = SelectionFragment()
+            }
+            if(twoFragment == null){
+                twoFragment = OneOtherFragment()
+            }
+            fragmentList!!.add(oneFragment!!)
+            fragmentList!!.add(twoFragment!!)
+        }
+        if(mainVp == null){
+            mainVp = mBaseView?.findViewById<CustomViewPager>(R.id.vpOne)
+            mainAdapter = NormalAdapter(childFragmentManager,fragmentList as List<Fragment>)
+            //写入
+            mainAdapter = NormalAdapter(childFragmentManager,fragmentList as List<Fragment>)
+            mainVp?.adapter = mainAdapter
+        }
+        //Viewpager 滑动 监听 todo 已废弃！！！
+        mainVp?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
 
-    override fun onStop() {
-        super.onStop()
-//        main_banner.stopAutoPlay()
-    }
-
-    private fun getBanner() {
-        HttpManager.getInstance().post(Api.MAINBANNER, Parameter.getMainBannerMap(), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject = JSONObject(str)
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(this@OneFragment.mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val Data = Gson().fromJson(str, MainBannerBean.MainBannerBeans::class.java)
-                        val bannerList = Data.data.banner_list
-                        bHome = setBanner2(bannerList)
-                    }
-                }
             }
 
-            override fun onCompleted() {
-                Log.e("onCompleted", "Banner加载完成!")
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
             }
 
-            override fun onError(e: Throwable?) {
-                getBanner()
-                Log.e("onError", "Banner加载失败!" + e)
-            }
-        })
-    }
+            override fun onPageSelected(position: Int) {
 
-    private fun getRecycler(theme_goods_count: Int, next: Int) {
-        HttpManager.getInstance()
-            .post(Api.THEMELIST, Parameter.getRecyclerMap(theme_goods_count), object : Subscriber<String>() {
-                override fun onNext(str: String?) {
-                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                        var jsonObj: JSONObject = JSONObject(str)
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                            ToastUtil.showToast(this@OneFragment.mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
-                        } else {
-                            if (next == 1) {
-                                rvData.clear()
-                            }
-                            val Data = Gson().fromJson(str, MainRecyclerBean.MainRecyclerBeans::class.java)
-                            val recyclerList = Data.data.theme_list
-                            //此处进行处理 默认预加载五条
-                            if (recyclerList.size >= 5) {
-                                val goData = arrayListOf<MainRecyclerBean.Theme>()
-                                for (index in 0 until 5) {
-                                    goData.add(recyclerList[index])
-                                }
-                                rHome = setRv2(goData)
-                            } else {
-                                rHome = setRv2(recyclerList)
-                            }
-                            rvData.addAll(recyclerList) //todo 需要 不可注释...
-                        }
-                    }
-                }
-
-                override fun onCompleted() {
-                    Log.e("onCompleted", "Recycler加载完成!")
-                }
-
-                override fun onError(e: Throwable?) {
-                    getRecycler(theme_goods_count, next)
-                    Log.e("onError", "Recycler加载失败!" + e)
-                }
-            })
-    }
-
-    private fun getGrid() {
-        HttpManager.getInstance().post(Api.CHANNELLIST, Parameter.getMainBannerMap(), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject? = JSONObject(str)
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(this@OneFragment.mContext!!, jsonObj!!.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val data = Gson().fromJson(str, GridItemBean.GridItemBeans::class.java)
-                        val gridList = data.data.channel_list
-                        gHome = setGrid2(gridList)
-                    }
-                }
-            }
-
-            override fun onCompleted() {
-                Log.e("onCompleted", "Grid加载完成!")
-            }
-
-            override fun onError(e: Throwable?) {
-                getGrid()
-                Log.e("onError", "Grid加载失败!" + e)
             }
 
         })
     }
     //获取列表数据 unlogin
-    fun getOneT(parent_id:Int){
+    private fun getOneT(parent_id:Int){
         HttpManager.getInstance().post(Api.CATEGORY,Parameter.getTabData(parent_id),object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
@@ -374,57 +302,6 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
         }
     }
 
-
-    var b = 1
-    var g = 1
-    var r = 1
-    private fun setRv2(recyclerList: List<MainRecyclerBean.Theme>): HomeEntity {
-        rHome = null
-        if (recyclerList != null && recyclerList.size > 0) {
-            var entity = HomeEntity(HomeEntity.TYPE_RECYCLER)
-            for (index in 0 until recyclerList.size) {
-                val r = recyclerList[index]
-                if (!entity.recyclers!!.contains(r)) {
-                    entity.recyclers!!.add(r)
-                }
-            }
-            r = 2
-            return entity
-        }
-        return HomeEntity()
-    }
-
-    private fun setGrid2(gridList: List<GridItemBean.Channel>): HomeEntity {
-        gHome = null
-        if (gridList != null && gridList.size > 0) {
-            var entity = HomeEntity(HomeEntity.TYPE_GRID)
-            for (index in 0 until gridList.size) {
-                val g = gridList[index]
-                if (!entity.grids!!.contains(g)) {
-                    entity.grids!!.add(g)
-                }
-            }
-            g = 2
-            return entity
-        }
-        return HomeEntity()
-    }
-
-    private fun setBanner2(bannerList: List<MainBannerBean.Banner>): HomeEntity {
-        bHome = null
-        if (bannerList != null && bannerList.size > 0) {
-            var entity = HomeEntity(HomeEntity.TYPE_BANNER)
-            for (index in 0 until bannerList.size) {
-                val b = bannerList[index]
-                if (!entity.banners!!.contains(b)) {
-                    entity.banners!!.add(b)
-                }
-            }
-            b = 2
-            return entity
-        }
-        return HomeEntity()
-    }
     private fun setTab(tabData: List<TabOneBean.Category>?) {
         val dataTab = ArrayList<String>()
         if(tabData!=null){
@@ -433,78 +310,39 @@ class OneFragment : BaseFragment(), BaseQuickAdapter.RequestLoadMoreListener, Sw
                 dataTab.add(tabData[i].name)
             }
             Log.e("tastaaa2",""+dataTab.size)
-            TabCreateUtils.setOrangeTab(mContext!!,mainTab,dataTab,object : TabCreateUtils.onTitleClickListener {
+            tabAp =TabCreateUtils.setOrangeTab(mContext!!,mainTab,dataTab,object : TabCreateUtils.onTitleClickListener {
                 override fun onTitleClick(index: Int) {
-
+                    if(index == 0){
+                        mTl?.visibility = View.GONE
+                        mOr?.visibility = View.VISIBLE
+                        mainBack?.visibility = View.VISIBLE
+                        mainVp?.currentItem = 0
+                        StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.colorPrimary)
+                    } else{
+                        mOr?.visibility = View.GONE
+                        mTl?.visibility = View.VISIBLE
+                        mainBack?.visibility = View.INVISIBLE
+                        mainVp?.currentItem = 1
+                        StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.white)
+                    }
                 }
             })
+
         }
     }
-    /**
-     * 下拉刷新
-     */
-    override fun onRefresh() {
-        //刷新的时候禁止加载更多
-        homeAdapter?.setEnableLoadMore(false)
-        hr?.postDelayed(object : Runnable{
-            override fun run() {
-                homeAdapter?.b_i = 1
-                homeAdapter?.g_i = 1
-                homeAdapter?.r_i = 1
-                nextSize = 5
-                mainList.clear()
-                getBanner()
-                getGrid()
-                getRecycler(2, next)
-                Log.e("onLoadMoreRequested","nextSize:$nextSize")
-                Log.e("onLoadMoreRequested","sendEmptyMessage:1")
-                //更新数据
-                handler.sendEmptyMessage(1)
-                //刷新完成取消刷新动画
-                mSwipeRefreshLayout?.setRefreshing(false)
-                //刷新完成重新开启加载更多
-                homeAdapter?.setEnableLoadMore(true)
-            }
-        },1000)//刷新延迟
-    }
+    //适配器
+    internal inner class NormalAdapter(fm: FragmentManager,fragmentList: List<Fragment>) :
+        FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    /**
-     * 上拉加载更多
-     */
-    override fun onLoadMoreRequested() {
-        val numSize = rvData.size
-        val oldNextSize = nextSize
-        Log.e("onLoadMoreRequested","nextSize:$nextSize   oldNextSize:$oldNextSize  rvData.size"+rvData.size)
-        addHome = null
-        if((numSize - nextSize) <= 1){
-            nextSize += 1
-        }else{
-            if ((numSize - nextSize) % 2 != 0) {
-                nextSize += 3
-            }else{
-                nextSize += 2
-            }
+        override fun getItem(position: Int): Fragment {
+            return fragmentList!![position]
         }
-        Log.e("onLoadMoreRequested2","nextSize:$nextSize")
-        val addData = arrayListOf<MainRecyclerBean.Theme>()
-        hr?.postDelayed(object : Runnable{
-            override fun run() {
-                if (nextSize <= rvData.size) {
-                    for (index in oldNextSize until nextSize) {
-                        addData.add(rvData[index])
-                    }
-                    homeAdapter?.recyclerAddData(addData)
-                    //数据加载完成
-                    homeAdapter?.loadMoreComplete()
-                } else {
-                    //数据加载完毕
-                    homeAdapter?.loadMoreEnd()
-                }
-            }
-        },1500)
+
+        override fun getCount(): Int {
+            return fragmentList!!.size
+        }
 
     }
-
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)

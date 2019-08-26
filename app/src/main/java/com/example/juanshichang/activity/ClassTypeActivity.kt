@@ -1,12 +1,10 @@
 package com.example.juanshichang.activity
 
 import android.content.Intent
-import android.content.Intent.getIntent
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -25,10 +23,7 @@ import com.google.gson.Gson
 
 import kotlinx.android.synthetic.main.activity_class_type.*
 import kotlinx.android.synthetic.main.activity_seek_bar.*
-import kotlinx.android.synthetic.main.fragment_one.*
 import kotlinx.coroutines.Runnable
-import org.jetbrains.anko.image
-import org.jetbrains.anko.imageResource
 import org.json.JSONObject
 import rx.Subscriber
 

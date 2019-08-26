@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.KeyEvent
 import android.widget.TextView
@@ -173,9 +174,18 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
         lifecycleSubject.onNext(ActivityEvent.DESTROY)
     }
     // My New Add
-    fun showMyLoadD(){
-        myLoading = QMUITipDialog.Builder(this).create(false)
-        myLoading
+    /**
+     * @param icon  图片
+     * @param title 标题
+     * @param iscancelable 是否可点击取消  该对象为 myLoading
+     */
+    fun showMyLoadD(icon:Int,title:String,iscancelable:Boolean){
+        if(title=="" || TextUtils.isEmpty(title)){
+            myLoading = QMUITipDialog.Builder(this).setIconType(icon).create(iscancelable)
+        }else{
+            myLoading = QMUITipDialog.Builder(this).setIconType(icon).setTipWord(title).create(iscancelable)
+        }
+        myLoading?.show()
     }
     companion object{
         /**失败：对应叉号 */

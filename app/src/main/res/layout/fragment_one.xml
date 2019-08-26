@@ -7,6 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".fragment.OneFragment">
     <ImageView
+            android:id="@+id/mainBack"
             android:background="@color/white"
             android:src="@drawable/mback"
             android:scaleType="centerCrop"
@@ -19,12 +20,16 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+        <include
+                android:id="@+id/mainT"
+                android:visibility="gone"
+                layout="@layout/main_searchbox_two"/>
         <RelativeLayout
                 android:id="@+id/homeRelatie"
                 android:layout_width="match_parent"
                 android:layout_height="150px"
         >
-            <!--返回-->
+
             <View
                     android:id="@+id/scan_home"
                     android:layout_width="78px"
@@ -82,18 +87,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="80px"></net.lucode.hackware.magicindicator.MagicIndicator>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/mSwipeRefreshLayout"
+        <com.example.juanshichang.utils.CustomViewPager
+                android:id="@+id/vpOne"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/home_recycler"
-                        android:scrollbars="none"
-                        android:overScrollMode="never"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                </androidx.recyclerview.widget.RecyclerView>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
     </LinearLayout>
 </com.zhy.autolayout.AutoFrameLayout>

@@ -75,11 +75,11 @@ public class TabCreateUtils {
     public interface onTitleClickListener{
         void onTitleClick(int index);
     }
-    public static void setOrangeTab(Context context,MagicIndicator magicIndicator, List<String> tabNames ,onTitleClickListener listener) {
+    public static CommonNavigatorAdapter setOrangeTab(Context context,MagicIndicator magicIndicator, List<String> tabNames ,onTitleClickListener listener) {
         FragmentContainerHelper mFragmentContainerHelper = new FragmentContainerHelper();
         CommonNavigator commonNavigator = new CommonNavigator(context);
-        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
-
+        CommonNavigatorAdapter cA = new CommonNavigatorAdapter() {
+            private int type = 0;
             @Override
             public int getCount() {
                 return tabNames == null ? 0 : tabNames.size();
@@ -89,18 +89,22 @@ public class TabCreateUtils {
             public IPagerTitleView getTitleView(Context context, final int index) {
                 //自定义
                 SelectBigPagerTitleView colorTransitionPagerTitleView = new SelectBigPagerTitleView (context);
-                colorTransitionPagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.qmui_config_color_50_white));
-                colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.white));
 //                colorTransitionPagerTitleView.setTextSize(16); //不再设置
+                setTextColor(colorTransitionPagerTitleView);
                 colorTransitionPagerTitleView.setText(tabNames.get(index));
                 Log.e("titles",tabNames.get(index));
 //                colorTransitionPagerTitleView.setPadding();
                 colorTransitionPagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(index!=0){
-                            colorTransitionPagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.qmui_config_color_50_white));
-                            colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.white));
+                        if(index!=0 && type == 0){ //点击了其它 条目  之前为第一条 刷新
+                            type = index;
+                            notifyDataSetChanged();
+                        }else if(index == 0 && type!=0){//点击了第一条  之前为其它 条目 刷新
+                            type = 0;
+                            notifyDataSetChanged();
+                        }else {  //此判断 目的 避免性能过度消耗
+                            type = index;
                         }
                         mFragmentContainerHelper.handlePageSelected(index);
                         if (listener!=null)listener.onTitleClick(index);
@@ -116,16 +120,37 @@ public class TabCreateUtils {
 
             @Override
             public IPagerIndicator getIndicator(Context context) {
+                return getTypeindicator(context);
+            }
+            //设置指示器
+            private LinePagerIndicator getTypeindicator(Context context){
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setMode(LinePagerIndicator.MODE_EXACTLY);//MODE_WRAP_CONTENT
                 indicator.setLineWidth(32);
-                indicator.setColors(ContextCompat.getColor(context, R.color.white));
+//                indicator.setColors(ContextCompat.getColor(context, R.color.white));
                 indicator.setRoundRadius(3);
-                return indicator;
+                if(type == 0){ //默认
+                    indicator.setColors(ContextCompat.getColor(context, R.color.white));
+                }else {
+                    indicator.setColors(ContextCompat.getColor(context, R.color.indicatorRed));
+                }
+                return  indicator;
             }
-        });
+            //设置字体 颜色...
+            private void setTextColor(SelectBigPagerTitleView colorTransitionPagerTitleView){
+                if(type == 0){
+                    colorTransitionPagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.qmui_config_color_50_white));
+                    colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.white));
+                }else {
+                    colorTransitionPagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.qmui_config_color_50_pure_black));
+                    colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.main_text));
+                }
+            }
+        };
+        commonNavigator.setAdapter(cA);
 //        commonNavigator.setAdjustMode(true); //过多 会引起问题
         magicIndicator.setNavigator(commonNavigator);
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
+        return cA;
     }
 }

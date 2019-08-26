@@ -28,6 +28,7 @@ import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.GlideImageLoader
+import com.example.juanshichang.utils.ShareUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
@@ -39,6 +40,7 @@ import kotlinx.android.synthetic.main.activity_shang_pin_contains.*
 import kotlinx.coroutines.Runnable
 import org.json.JSONObject
 import rx.Subscriber
+import java.lang.Exception
 
 class ShangPinContains : BaseActivity(), View.OnClickListener {
     var goods_id: Long = 0 //从正常列表进入
@@ -96,13 +98,6 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         spGou.setOnClickListener(this) //领劵
         goTop.setOnClickListener(this) //回顶部
         sPYHlq.setOnClickListener(this) //立即领劵
-//        botShangpin.post(object :Runnable{
-//            override fun run() {
-//                Log.e("kuangao"," 分享 宽："+spJia.width+" 高："+spJia.measuredHeight)
-//                Log.e("kuangao","领劵 宽："+spGou.measuredWidth+" 高："+spGou.measuredHeight)
-//                Log.e("kuangao","父布局 宽："+botShangpin.width+" 高："+botShangpin.measuredHeight)
-//            }
-//        })
 
     }
 
@@ -132,25 +127,35 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
             }
             spJia -> {
                 if (Util.hasLogin()) {
-                    if (null == goodsPromotionUrl) {
-                        sharePath(1, goods_id, Api.Pdd)
-                    } else {
-                        if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)) {
-                            mClipData =
-                                ClipData.newPlainText("Label", goodsPromotionUrl?.mobile_short_url)// 创建URL型ClipData
-                            cm?.setPrimaryClip(mClipData!!)  // 将ClipData内容放到系统剪贴板里
-                            ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板s")
+
+                    try {
+                        if (null == goodsPromotionUrl) {
+                            sharePath(1, goods_id, Api.Pdd)
+                        }else{
+                            ShareUtil.shareText(this,"劵市场",goodsPromotionUrl?.mobile_short_url,"商品分享")
+                        }
+                    }catch (e:Exception){
+                        //分享弹窗失败 就复制到粘贴板、
+                        if (null == goodsPromotionUrl) {
+                            sharePath(1, goods_id, Api.Pdd)
                         } else {
-                            if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_url)) {
+                            if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)) {
                                 mClipData =
-                                    ClipData.newPlainText(
-                                        "Label",
-                                        goodsPromotionUrl?.mobile_url
-                                    )// 创建URL型ClipData
+                                    ClipData.newPlainText("Label", goodsPromotionUrl?.mobile_short_url)// 创建URL型ClipData
                                 cm?.setPrimaryClip(mClipData!!)  // 将ClipData内容放到系统剪贴板里
-                                ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板L")
+                                ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板s")
                             } else {
-                                ToastUtil.showToast(this@ShangPinContains, "暂无可复制内容")
+                                if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_url)) {
+                                    mClipData =
+                                        ClipData.newPlainText(
+                                            "Label",
+                                            goodsPromotionUrl?.mobile_url
+                                        )// 创建URL型ClipData
+                                    cm?.setPrimaryClip(mClipData!!)  // 将ClipData内容放到系统剪贴板里
+                                    ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板L")
+                                } else {
+                                    ToastUtil.showToast(this@ShangPinContains, "暂无可复制内容")
+                                }
                             }
                         }
                     }

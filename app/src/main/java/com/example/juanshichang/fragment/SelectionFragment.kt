@@ -46,16 +46,18 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
     var bHome: HomeEntity? = null
     var gHome: HomeEntity? = null
     var rHome: HomeEntity? = null
-    var addHome: HomeEntity? = null
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when(msg.what){
                 1->{
                     if (b != 1 && g != 1 && r != 1) {
-                        mainList.add(bHome!!)
-                        mainList.add(gHome!!)
-                        mainList.add(rHome!!)
+                        if(mainList.size!=0){
+                            mainList.clear()
+                        }
+                        mainList.add(0,bHome!!)
+                        mainList.add(1,gHome!!)
+                        mainList.add(2,rHome!!)
                         homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
                         homeAdapter?.setEnableLoadMore(true)
                         onCreate(null)
@@ -89,7 +91,6 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
     override fun onLoadMoreRequested() {
         val numSize = rvData.size
         val oldNextSize = nextSize
-        addHome = null
         if((numSize - nextSize) <= 1){
             nextSize += 1
         }else{
@@ -114,7 +115,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
                     homeAdapter?.loadMoreEnd()
                 }
             }
-        },3000)
+        },2500)
     }
     //下拉刷新
     override fun onRefresh() {
@@ -130,8 +131,6 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
                 getBanner()
                 getGrid()
                 getRecycler(2, next)
-                Log.e("onLoadMoreRequested","nextSize:$nextSize")
-                Log.e("onLoadMoreRequested","sendEmptyMessage:1")
                 //更新数据
                 handler.sendEmptyMessage(1)
                 //刷新完成取消刷新动画

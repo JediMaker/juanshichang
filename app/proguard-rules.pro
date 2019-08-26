@@ -19,16 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
-#Glide
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.module.AppGlideModule
--keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 #万能适配器
 -keep class com.chad.library.adapter.** {
 *;
@@ -39,7 +29,3 @@
      <init>(...);
 }
 -keepattributes InnerClasses
-# banner 的混淆代码
--keep class com.youth.banner.** {
-    *;
- }

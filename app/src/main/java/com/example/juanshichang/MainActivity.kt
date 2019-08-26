@@ -66,7 +66,7 @@ class MainActivity : BaseActivity() {
     private fun setBottomView() {
 //        val xpp = resources.getXml(R.drawable.selector_tab_color)
 //        val csl = ColorStateList.createFromXml(resources,xpp)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // todo 此处 待确定 版本
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) { // todo 此处 待确定 版本 预设25...
             //如果SDK版本过低 就关闭 滑动事件 并启用 较Low 的旧版本状态栏
 //            val view = android.support.design.widget.BottomNavigationView(this@MainActivity)
             vp_main.setPagingEnabled(false)
@@ -137,11 +137,12 @@ class MainActivity : BaseActivity() {
 
         override fun onTabSelected(p0: TabLayout.Tab?) {
             vp_main.currentItem = p0!!.position
-            if(p0.position != 3){
+            if(p0.position == 0){
                 StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
+            }else{
+                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
             }
             if (p0.position == 3) {
-                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
                 if (!Util.hasLogin()) {
                     val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
                     intent.putExtra("type",Reg2LogActivity.LOGINCODE)
@@ -226,11 +227,12 @@ class MainActivity : BaseActivity() {
 
             override fun onPageSelected(position: Int) {
                 // todo new add
-                if(position != 3){
+                if(position != 0){
+                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
+                }else{
                     StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
                 }
                 if (position == 3) {
-                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
                     if (!Util.hasLogin()) {
                         val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
                         intent.putExtra("type",Reg2LogActivity.LOGINCODE)
