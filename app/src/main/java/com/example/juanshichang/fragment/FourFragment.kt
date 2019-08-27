@@ -131,6 +131,8 @@ class FourFragment : BaseFragment() {
                 MainActivity.downUser(mContext!!)
                 timers.start()
             }
+        }else{
+            //todo 可以在这里进行未登陆判断
         }
     }
     //这个方法过时了 不好使

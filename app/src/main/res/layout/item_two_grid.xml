@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:paddingLeft="11px"
+        android:paddingRight="11px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+                android:id="@+id/gIv"
+                android:src="@drawable/c_error"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="240px"
+                android:layout_height="240px"/>
+        <TextView
+                android:id="@+id/gTit"
+                android:paddingTop="12px"
+                android:paddingBottom="18px"
+                android:layout_gravity="center_horizontal"
+                tools:text="休闲零食"
+                android:textSize="36px"
+                android:textColor="@color/main_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+</com.zhy.autolayout.AutoLinearLayout>

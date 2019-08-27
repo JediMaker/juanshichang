@@ -44,7 +44,7 @@ import rx.Subscriber
  * @文件作用: 首页
  */
 class OneFragment : BaseFragment(){
-
+    private var tabIndicator:Int = 0 //Tab 下标值
     private var tabData:List<TabOneBean.Category>? = null
     private var mOr:RelativeLayout? = null
     private var mTl:LinearLayout? = null
@@ -53,7 +53,6 @@ class OneFragment : BaseFragment(){
     private var mainBack:ImageView? = null
     private var mainTab: MagicIndicator? = null
     private var mainVp:CustomViewPager? = null
-    private var tabAp:CommonNavigatorAdapter? = null
     private var mainAdapter: NormalAdapter? = null
     private var fragmentList:ArrayList<Fragment>? = null
     private var oneFragment: SelectionFragment? = null
@@ -79,6 +78,10 @@ class OneFragment : BaseFragment(){
 
     override fun initViews(savedInstanceState: Bundle) {
         MyApp.requestPermission(mContext!!)
+        //判断 设置状态栏颜色
+        if(tabIndicator!=0){
+            StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.white)
+        }
         mainTab = mBaseView?.findViewById<MagicIndicator>(R.id.mainTab)
         mainVp = mBaseView?.findViewById<CustomViewPager>(R.id.vpOne)
         mainBack = mBaseView?.findViewById<ImageView>(R.id.mainBack)
@@ -96,11 +99,11 @@ class OneFragment : BaseFragment(){
         fragmentList!!.add(oneFragment!!)
         fragmentList!!.add(twoFragment!!)
         mainAdapter = NormalAdapter(childFragmentManager,fragmentList as List<Fragment>)
-        mainVp?.adapter = mainAdapter
+//        mainVp?.adapter = mainAdapter //迁移至 Resume 解决 状态栏问题
     }
 
     override fun initData() {
-        handler.sendEmptyMessageDelayed(2, 50)
+//        handler.sendEmptyMessageDelayed(2, 50) //迁移至 Resume 解决 状态栏问题
     }
 
     @OnClick(R.id.etsearchs,R.id.scan_home,R.id.message_home,R.id.mainTSearch)
@@ -154,11 +157,17 @@ class OneFragment : BaseFragment(){
             fragmentList!!.add(oneFragment!!)
             fragmentList!!.add(twoFragment!!)
         }
+        mTl?.visibility = View.GONE
+        mOr?.visibility = View.VISIBLE
+        mainBack?.visibility = View.VISIBLE
+        handler.sendEmptyMessageDelayed(2, 50)
         if(mainVp == null){
             mainVp = mBaseView?.findViewById<CustomViewPager>(R.id.vpOne)
             mainAdapter = NormalAdapter(childFragmentManager,fragmentList as List<Fragment>)
             //写入
             mainAdapter = NormalAdapter(childFragmentManager,fragmentList as List<Fragment>)
+            mainVp?.adapter = mainAdapter
+        }else{
             mainVp?.adapter = mainAdapter
         }
         //Viewpager 滑动 监听 todo 已废弃！！！
@@ -183,7 +192,7 @@ class OneFragment : BaseFragment(){
     }
     //获取列表数据 unlogin
     private fun getOneT(parent_id:Int){
-        HttpManager.getInstance().post(Api.CATEGORY,Parameter.getTabData(parent_id),object : Subscriber<String>() {
+        HttpManager.getInstance().post(Api.CATEGORY,Parameter.getTabData(parent_id,0),object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject = JSONObject(str)
@@ -194,11 +203,6 @@ class OneFragment : BaseFragment(){
                         val list = data.data.category_list
                         if(list.size!=0){
                             tabData = list
-//                            mainTab!!.post(object :Runnable{
-//                                override fun run() {
-//                                    setTab(list)
-//                                }
-//                            })
                         }
                     }
                 }
@@ -257,7 +261,7 @@ class OneFragment : BaseFragment(){
                     })
         }
         fun getTwoT(parent_id:Int,context:Context){
-            HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id),object : Subscriber<String>() {
+            HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id,1),object : Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject = JSONObject(str)
@@ -279,7 +283,7 @@ class OneFragment : BaseFragment(){
             })
         }
         fun getThreeT(parent_id:Int,context:Context){
-            HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id),object : Subscriber<String>() {
+            HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id,1),object : Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject = JSONObject(str)
@@ -309,8 +313,7 @@ class OneFragment : BaseFragment(){
             for (i in 0 until tabData.size){
                 dataTab.add(tabData[i].name)
             }
-            Log.e("tastaaa2",""+dataTab.size)
-            tabAp =TabCreateUtils.setOrangeTab(mContext!!,mainTab,dataTab,object : TabCreateUtils.onTitleClickListener {
+            TabCreateUtils.setOrangeTab(mContext!!,mainTab,dataTab,object : TabCreateUtils.onTitleClickListener {
                 override fun onTitleClick(index: Int) {
                     if(index == 0){
                         mTl?.visibility = View.GONE
@@ -325,6 +328,7 @@ class OneFragment : BaseFragment(){
                         mainVp?.currentItem = 1
                         StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.white)
                     }
+                    tabIndicator = index
                 }
             })
 

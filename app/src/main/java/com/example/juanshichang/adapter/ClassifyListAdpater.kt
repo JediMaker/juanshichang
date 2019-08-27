@@ -13,13 +13,12 @@ import com.zhy.autolayout.AutoRelativeLayout
 import org.jetbrains.anko.backgroundColorResource
 import org.jetbrains.anko.textColorResource
 
-class ClassifyListAdpater(context:Context, data:List<TabOneBean.Category>) : BaseAdapter() {
-    var data:List<TabOneBean.Category>? = null
+class ClassifyListAdpater(context:Context) : BaseAdapter() {
+    var data:List<TabOneBean.Category>? = ArrayList()
     var context:Context? = null
     var selected:Int = 0
     init {
         this.context = context
-        this.data = data
     }
     override fun getView(p: Int, convertView: View?, vp: ViewGroup?): View {
         var holder:ViewHolder? = null
@@ -79,5 +78,9 @@ class ClassifyListAdpater(context:Context, data:List<TabOneBean.Category>) : Bas
         var aR:AutoRelativeLayout? = null
         var v:View? = null
         var tv:TextView? = null
+    }
+    public fun setDatas(datas:List<TabOneBean.Category>){
+        this.data = datas
+        notifyDataSetChanged()
     }
 }

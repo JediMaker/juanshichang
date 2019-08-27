@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.health.TimerStat
 import android.text.TextUtils
 import android.util.Log
 import android.view.MenuItem
@@ -28,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
+import java.util.*
 
 /**
  * @作者: yzq
@@ -308,5 +310,22 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    var isExit:Boolean = false
+    override fun onBackPressed() {
+//        super.onBackPressed()
+        var tExit:Timer? = null
+        if(!isExit){
+            isExit = true
+            ToastUtil.showToast(this,"再来一次 退出App")
+            tExit = Timer()
+            tExit.schedule(object : TimerTask(){
+                override fun run() {
+                    isExit = false
+                }
+            },2000)
+        }else{
+            ActivityManager().exit()
+        }
+    }
 }
 

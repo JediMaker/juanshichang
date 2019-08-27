@@ -42,7 +42,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
     var hr: RecyclerView? = null
     var mSwipeRefreshLayout: SwipeRefreshLayout? = null
     var nextSize = 5
-    var next: Int = 1
+    var next: Int = 1  //这个 字段 设计目的 为了 加载更多 拉取页面 但是 ... 后天数据一次性给到 故 此字段闲置
     var bHome: HomeEntity? = null
     var gHome: HomeEntity? = null
     var rHome: HomeEntity? = null
@@ -79,13 +79,19 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
 
     override fun onResume() {
         super.onResume()
+        //写在这里 无论 切换回来 还是 息屏唤醒 都会 请求网络... 增加流量消耗
+//        getBanner()
+//        getGrid()
+//        getRecycler(2, next)
+//        handler.sendEmptyMessageDelayed(1,50)
+        //迁移至于initData....
+    }
+    private fun initData() {
+        setRecycler()
         getBanner()
         getGrid()
         getRecycler(2, next)
         handler.sendEmptyMessageDelayed(1,50)
-    }
-    private fun initData() {
-        setRecycler()
     }
     //上滑加载更多
     override fun onLoadMoreRequested() {

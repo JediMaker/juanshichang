@@ -82,6 +82,11 @@ class MainGridAdapter(context: Context, data: List<GridItemBean.Channel>) : Base
                     .fallback( R.drawable.m8) //url为空的时候,显示的图片
                     .into(holder.iv)
             }
+            else ->{
+
+                Glide.with(context!!).load(datas!![p].image_url)
+                    .into(holder.iv)
+            }
         }
 
         return view!!

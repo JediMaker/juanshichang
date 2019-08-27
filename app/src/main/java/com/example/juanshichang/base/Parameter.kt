@@ -349,12 +349,16 @@ class Parameter {
         }
         /**
          * 获取首页Tab等数据
+         * @param parent_id def 0
+         * @param with_image def 0 决定是否带图 带图 为 1
          */
-        fun getTabData(parent_id:Int): HashMap<String, String>{
+        fun getTabData(parent_id:Int,with_image:Int): HashMap<String, String>{
             baseList.clear()
             baseList.add("parent_id=$parent_id")
-            var map = fengMap("unlogin")
+            baseList.add("with_image=$with_image")
+            val map = fengMap("unlogin")
             map.put("parent_id","$parent_id")
+            map.put("with_image","$with_image")
             return map
         }
     }

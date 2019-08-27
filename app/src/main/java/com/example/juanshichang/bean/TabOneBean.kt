@@ -1,19 +1,20 @@
 package com.example.juanshichang.bean
 
 class TabOneBean {
-        data class TabOneBeans(
-        var `data`: Data = Data(),
-        var errmsg: String = "",
-        var errno: Int = 0
-        )
+    data class TabOneBeans(
+        val `data`: Data,
+        val errmsg: String,
+        val errno: Int
+    )
 
     data class Data(
-        var category_list: List<Category> = listOf()
+        val category_list: List<Category>,
+        val category_name: String
     )
 
     data class Category(
-        var category_id: Int = 0,
-        var image: String = "",
-        var name: String = ""
+        val category_id: Int,
+        val image: String,
+        val name: String
     )
 }
