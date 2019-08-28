@@ -76,11 +76,9 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         meBanner.visibility = View.INVISIBLE
         if (goods_id_def != intent.getLongExtra("goods_id", 0)) { //&& null != intent.getStringExtra("mall_name")
             goods_id = intent.getLongExtra("goods_id", 0)
-//            mall_name = intent.getStringExtra("mall_name")
             searchDetailList(Api.Pdd, goods_id)
         } else if(goods_id_def != intent.getLongExtra("theme_id", 0)){ //从banner 传入  todo
             theme_id = intent.getLongExtra("theme_id", 0)
-//            searchDetailListBanner(theme_id)
         } else {
             ToastUtil.showToast(this@ShangPinContains, "数据传输错误,请稍后重试!!!")
             finish()
@@ -98,7 +96,6 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         spGou.setOnClickListener(this) //领劵
         goTop.setOnClickListener(this) //回顶部
         sPYHlq.setOnClickListener(this) //立即领劵
-
     }
 
     override fun onClick(view: View?) {

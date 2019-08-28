@@ -42,7 +42,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
     var hr: RecyclerView? = null
     var mSwipeRefreshLayout: SwipeRefreshLayout? = null
     var nextSize = 5
-    var next: Int = 1  //这个 字段 设计目的 为了 加载更多 拉取页面 但是 ... 后天数据一次性给到 故 此字段闲置
+    var next: Int = 1  //这个 字段 设计目的 为了 加载更多 拉取页面 但是 ... 后台数据一次性给到 故 此字段闲置
     var bHome: HomeEntity? = null
     var gHome: HomeEntity? = null
     var rHome: HomeEntity? = null
@@ -59,8 +59,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
                         mainList.add(1,gHome!!)
                         mainList.add(2,rHome!!)
                         homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
-                        homeAdapter?.setEnableLoadMore(true)
-                        onCreate(null)
+//                        homeAdapter?.setEnableLoadMore(true)
                         b = 1
                         g = 1
                         r = 1
@@ -160,7 +159,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
          * 从左到右 SLIDEIN_LEFT
          * 从右到左 SLIDEIN_RIGHT
          */
-        homeAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM) //SCALEIN
+        homeAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT) //SCALEIN
         homeAdapter?.setOnLoadMoreListener(this, hr)//设置加载更多
         mSwipeRefreshLayout?.setOnRefreshListener(this)
         //默认第一次加载会进入回调，如果不需要可以配置
@@ -178,7 +177,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
         hr?.layoutManager = lm
         hr?.adapter = homeAdapter
     }
-    //todo 数据写入
+    //todo 数据写入  数据类型 转换
     var b = 1
     var g = 1
     var r = 1

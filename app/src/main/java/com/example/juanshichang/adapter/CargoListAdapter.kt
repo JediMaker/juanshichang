@@ -7,7 +7,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.example.juanshichang.R
 import com.example.juanshichang.bean.BannnerDetailBean
-import com.example.juanshichang.bean.CLB
+import com.example.juanshichang.bean.CargoListBean
 import com.example.juanshichang.utils.TransformationUtils
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.UtilsBigDecimal
@@ -15,14 +15,9 @@ import com.example.juanshichang.utils.glide.GlideUtil
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.util.QMUIViewHelper
 
-class CargoListAdapter(layoutResId: Int, data: MutableList<CLB.Goods>?, context: Context) :
-    BaseQuickAdapter<CLB.Goods, BaseViewHolder>(layoutResId, data) {
-    var  mContexts:Context? = null
-    init {
-        this.mContexts = context
-    }
-
-    override fun convert(helper: BaseViewHolder?, item: CLB.Goods?) {
+class CargoListAdapter(layoutResId: Int, data: MutableList<CargoListBean.Goods>?) :
+    BaseQuickAdapter<CargoListBean.Goods, BaseViewHolder>(layoutResId, data) {
+    override fun convert(helper: BaseViewHolder?, item: CargoListBean.Goods?) {
         /*helper?.setText(R.id.mTypeNumTv, "¥"+Util.getFloatPrice(item!!.min_group_price.toLong())) // 现价
             ?.setText(R.id.mTypeNumTvs, "¥"+Util.getFloatPrice(item?.min_normal_price.toLong()))  //原价
             ?.setText(R.id.mTypeIV, item!!.goods_name)  //标题
@@ -46,7 +41,7 @@ class CargoListAdapter(layoutResId: Int, data: MutableList<CLB.Goods>?, context:
             else -> return "未知"
         }
     }
-    fun getIsVisible(helper: BaseViewHolder, isTrue:Boolean, item: CLB.Goods){ //type == 0 左边 else 1 右边
+    fun getIsVisible(helper: BaseViewHolder, isTrue:Boolean, item: CargoListBean.Goods){ //type == 0 左边 else 1 右边
         if(!isTrue){//没有优惠劵
             helper.setVisible(R.id.left_juan,false)
             helper.setText(R.id.left_right_label,"预估收益"+Util.getProportion(item.min_group_price.toLong(),0,item.promotion_rate,false)+"元")

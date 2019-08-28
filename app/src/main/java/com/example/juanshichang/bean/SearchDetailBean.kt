@@ -38,7 +38,7 @@ class SDB{
         var clt_cpn_start_time: Any? = null,
         var coupon_discount: Int = 0,
         var coupon_end_time: Int = 0,
-        var coupon_id: Int = 0,
+        var coupon_id: Long = 0,
         var coupon_min_order_amount: Int = 0,
         var coupon_remain_quantity: Int = 0,
         var coupon_start_time: Int = 0,

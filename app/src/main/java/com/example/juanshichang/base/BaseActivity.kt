@@ -172,6 +172,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
         super.onDestroy()
         unbinder?.unbind()
         lifecycleSubject.onNext(ActivityEvent.DESTROY)
+        ActivityManager.getInstance().removeActivity(this)
     }
     // My New Add
     /**

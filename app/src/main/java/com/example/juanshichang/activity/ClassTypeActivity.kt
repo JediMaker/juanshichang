@@ -15,7 +15,7 @@ import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
-import com.example.juanshichang.bean.CLB
+import com.example.juanshichang.bean.CargoListBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
@@ -37,7 +37,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
     var adapter: CargoListAdapter? = null
     var page: Int = 1
     var type: Int = 0
-    var goodsList = mutableListOf<CLB.Goods>()
+    var goodsList = mutableListOf<CargoListBean.Goods>()
     override fun getContentView(): Int {
         return R.layout.activity_class_type
     }
@@ -48,7 +48,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
             keyWord = intent.getStringExtra("keyword")
             etsearch.setText(keyWord.toCharArray(), 0, keyWord.length)
             val grid = GridLayoutManager(this@ClassTypeActivity, 2)
-            adapter = CargoListAdapter(R.layout.item_banner_pro, goodsList, this@ClassTypeActivity) //item_type
+            adapter = CargoListAdapter(R.layout.item_banner_pro, goodsList) //item_type
             adapter?.openLoadAnimation()//  （默认为渐显效果） 默认提供5种方法（渐显、缩放、从下到上，从左到右、从右到左）
             adapter?.emptyView = View.inflate(this, R.layout.activity_not_null, null)
             adapter?.setOnLoadMoreListener(object : BaseQuickAdapter.RequestLoadMoreListener {
@@ -166,7 +166,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
                             ToastUtil.showToast(this@ClassTypeActivity, jsonObj.optString(JsonParser.JSON_MSG))
                         } else { //fastjson 解析
 //                        val cargoListBean:CargoListBean = JSON.parseObject(str,CargoListBean::class.java)
-                            val cargoListBean: CLB.CargoListBean = Gson().fromJson(str, CLB.CargoListBean::class.java)
+                            val cargoListBean: CargoListBean.CargoListBeans = Gson().fromJson(str, CargoListBean.CargoListBeans::class.java)
                             val goodsBean = cargoListBean.data.goods_search_response.goods_list  // 商品列表
                             if (page == 1) {
                                 goodsList.clear()

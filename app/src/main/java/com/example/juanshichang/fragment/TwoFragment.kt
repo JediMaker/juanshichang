@@ -2,6 +2,7 @@ package com.example.juanshichang.fragment
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
@@ -13,15 +14,14 @@ import android.widget.ListView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import butterknife.OnClick
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
+import com.example.juanshichang.activity.LookAllActivity
 import com.example.juanshichang.adapter.ClassifyListAdpater
 import com.example.juanshichang.adapter.TwoRecyclerAdapter
-import com.example.juanshichang.base.Api
-import com.example.juanshichang.base.BaseFragment
-import com.example.juanshichang.base.JsonParser
-import com.example.juanshichang.base.Parameter
+import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.TabOneBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.SpUtil
@@ -121,12 +121,18 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
             ) {
                 when(view?.id){
                     R.id.twoLowAllR->{
-                        ToastUtil.showToast(mContext!!,"查看全部："+listData!![leftSelect].name)
+                        if(listData!=null && listData?.size!! > leftSelect){
+                            val intent:Intent = Intent(mContext!!,LookAllActivity::class.java)
+                            intent.putExtra("category_id",listData!![leftSelect].category_id)
+                            intent.putExtra("itemtype",0)
+                            BaseActivity.goStartActivity(mContext!!,intent)
+                        }
                     }
                 }
             }
         })
     }
+
     //下拉刷新
     override fun onRefresh() {
         mList?.postDelayed(object : Runnable{
@@ -218,6 +224,7 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
                             override fun run() {
                                 recyclerData?.add(data)
                                 mRA?.setNewData(recyclerData)
+                                mRA?.setIsId(parent_id) //请求的父id
                             }
                         })
                     }
