@@ -50,6 +50,8 @@ interface Api {
         val SETINFO = "/user/settings/update_info"
         //列表
         val CATEGORY = "/category"
+        //消息
+        val MESSAGELIST = "/message_list"
         //servicer 关键字
         val Pdd = "pdd"
         val TaoBao = "taobao"

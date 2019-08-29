@@ -80,7 +80,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
      * 登录
      */
     private fun logGo(phone: String, ps: String) {
-        HttpManager.getInstance().post(Api.LOGIN, Parameter.getRegisterMap(phone, ps), object : Subscriber<String>() {
+        HttpManager.getInstance().post(Api.LOGIN, Parameter.getLoginMap(phone, ps), object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null

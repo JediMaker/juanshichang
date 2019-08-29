@@ -160,6 +160,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
          * 从右到左 SLIDEIN_RIGHT
          */
         homeAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT) //SCALEIN
+        homeAdapter?.emptyView = View.inflate(context, R.layout.activity_not_null, null)
         homeAdapter?.setOnLoadMoreListener(this, hr)//设置加载更多
         mSwipeRefreshLayout?.setOnRefreshListener(this)
         //默认第一次加载会进入回调，如果不需要可以配置
@@ -299,7 +300,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
         HttpManager.getInstance().post(Api.CHANNELLIST, Parameter.getMainBannerMap(), object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject? = JSONObject(str)
+                    val jsonObj: JSONObject? = JSONObject(str)
                     if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
                         ToastUtil.showToast(context!!, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {

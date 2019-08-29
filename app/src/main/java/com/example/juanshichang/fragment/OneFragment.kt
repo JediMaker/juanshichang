@@ -1,8 +1,11 @@
 package com.example.juanshichang.fragment
 
 
+import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -19,15 +22,14 @@ import com.example.juanshichang.MyApp
 
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.ClassTypeActivity
+import com.example.juanshichang.activity.MessageActivity
 import com.example.juanshichang.activity.SearcheActivity
 import com.example.juanshichang.activity.WebActivity
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.http.HttpManager
-import com.example.juanshichang.utils.CustomViewPager
-import com.example.juanshichang.utils.StatusBarUtil
-import com.example.juanshichang.utils.TabCreateUtils
-import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.*
+import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_one.*
 import net.lucode.hackware.magicindicator.MagicIndicator
@@ -37,34 +39,35 @@ import org.jetbrains.anko.runOnUiThread
 import org.json.JSONObject
 import org.w3c.dom.Text
 import rx.Subscriber
+import java.io.IOException
 
 /**
  * @作者: yzq
  * @创建日期: 2019/7/17 16:52
  * @文件作用: 首页
  */
-class OneFragment : BaseFragment(){
-    private var tabIndicator:Int = 0 //Tab 下标值
-    private var tabData:List<TabOneBean.Category>? = null
-    private var mOr:RelativeLayout? = null
-    private var mTl:LinearLayout? = null
-    private var tEdit:EditText? = null
-    private var tSearch:TextView? = null
-    private var mainBack:ImageView? = null
+class OneFragment : BaseFragment() {
+    private var tabIndicator: Int = 0 //Tab 下标值
+    private var tabData: List<TabOneBean.Category>? = null
+    private var mOr: RelativeLayout? = null
+    private var mTl: LinearLayout? = null
+    private var tEdit: EditText? = null
+    private var tSearch: TextView? = null
+    private var mainBack: ImageView? = null
     private var mainTab: MagicIndicator? = null
-    private var mainVp:CustomViewPager? = null
+    private var mainVp: CustomViewPager? = null
     private var mainAdapter: NormalAdapter? = null
-    private var fragmentList:ArrayList<Fragment>? = null
+    private var fragmentList: ArrayList<Fragment>? = null
     private var oneFragment: SelectionFragment? = null
     private var twoFragment: OneOtherFragment? = null
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            when(msg.what){
-                2->{
-                    if(tabData!=null){
+            when (msg.what) {
+                2 -> {
+                    if (tabData != null) {
                         setTab(tabData)
-                    }else{
+                    } else {
                         sendEmptyMessageDelayed(2, 50)
                     }
                 }
@@ -79,7 +82,7 @@ class OneFragment : BaseFragment(){
     override fun initViews(savedInstanceState: Bundle) {
         MyApp.requestPermission(mContext!!)
         //判断 设置状态栏颜色
-        if(tabIndicator!=0){
+        if (tabIndicator != 0) {
             StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.white)
         }
         mainTab = mBaseView?.findViewById<MagicIndicator>(R.id.mainTab)
@@ -98,7 +101,7 @@ class OneFragment : BaseFragment(){
         twoFragment = OneOtherFragment()
         fragmentList!!.add(oneFragment!!)
         fragmentList!!.add(twoFragment!!)
-        mainAdapter = NormalAdapter(childFragmentManager,fragmentList as List<Fragment>)
+        mainAdapter = NormalAdapter(childFragmentManager, fragmentList as List<Fragment>)
 //        mainVp?.adapter = mainAdapter //迁移至 Resume 解决 状态栏问题
     }
 
@@ -106,7 +109,8 @@ class OneFragment : BaseFragment(){
 //        handler.sendEmptyMessageDelayed(2, 50) //迁移至 Resume 解决 状态栏问题
     }
 
-    @OnClick(R.id.etsearchs,R.id.scan_home,R.id.message_home,R.id.mainTSearch)
+    @SuppressLint("WrongConstant")
+    @OnClick(R.id.etsearchs, R.id.scan_home, R.id.message_home, R.id.mainTSearch)
     fun onViewClicked(v: View) {
         when (v.id) {
             R.id.etsearchs -> {
@@ -114,28 +118,29 @@ class OneFragment : BaseFragment(){
                 //...
                 startActivity(intent)
             }
-            R.id.mainTSearch ->{
+            R.id.mainTSearch -> {
                 val str = getEditText()
-                if(!TextUtils.isEmpty(str)){
+                if (!TextUtils.isEmpty(str)) {
                     var intent = Intent(mContext!!, ClassTypeActivity::class.java)
-                    intent.putExtra("keyword",str)
+                    intent.putExtra("keyword", str)
                     startActivity(intent)
                     tEdit?.text = null
-                }else{
+                } else {
                     ToastUtil.showToast(mContext!!, "请输入搜索关键字")
                 }
             }
-            R.id.scan_home ->{ //扫一扫
-                ToastUtil.showToast(mContext!!,"程序猿小哥 扫一扫 日夜赶工中...")
+            R.id.scan_home -> { //扫一扫
+                ScanUtil.toWeChatScanDirect(mContext!!)
             }
-            R.id.message_home ->{ //消息
-                ToastUtil.showToast(mContext!!,"程序猿小哥 消息 日夜赶工中...")
+            R.id.message_home -> { //消息
+                BaseActivity.goStartActivity(mContext!!,MessageActivity())
             }
             else -> {
-                ToastUtil.showToast(mContext!!,"程序猿小哥 日夜赶工中...")
+                ToastUtil.showToast(mContext!!, "程序猿小哥 日夜赶工中...")
             }
         }
     }
+
     private fun getEditText(): String {//获取Edit数据
         val text = tEdit?.text.toString().trim()
         if (text.length > 0 && !TextUtils.isEmpty(text)) {
@@ -143,15 +148,16 @@ class OneFragment : BaseFragment(){
         }
         return ""
     }
+
     override fun onResume() {
         super.onResume()
         //判空 重走
-        if(fragmentList == null){
+        if (fragmentList == null) {
             fragmentList = arrayListOf()
-            if(oneFragment == null){
+            if (oneFragment == null) {
                 oneFragment = SelectionFragment()
             }
-            if(twoFragment == null){
+            if (twoFragment == null) {
                 twoFragment = OneOtherFragment()
             }
             fragmentList!!.add(oneFragment!!)
@@ -161,17 +167,17 @@ class OneFragment : BaseFragment(){
         mOr?.visibility = View.VISIBLE
         mainBack?.visibility = View.VISIBLE
         handler.sendEmptyMessageDelayed(2, 50)
-        if(mainVp == null){
+        if (mainVp == null) {
             mainVp = mBaseView?.findViewById<CustomViewPager>(R.id.vpOne)
-            mainAdapter = NormalAdapter(childFragmentManager,fragmentList as List<Fragment>)
+            mainAdapter = NormalAdapter(childFragmentManager, fragmentList as List<Fragment>)
             //写入
-            mainAdapter = NormalAdapter(childFragmentManager,fragmentList as List<Fragment>)
+            mainAdapter = NormalAdapter(childFragmentManager, fragmentList as List<Fragment>)
             mainVp?.adapter = mainAdapter
-        }else{
+        } else {
             mainVp?.adapter = mainAdapter
         }
         //Viewpager 滑动 监听 todo 已废弃！！！
-        mainVp?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        mainVp?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -190,33 +196,36 @@ class OneFragment : BaseFragment(){
 
         })
     }
+
     //获取列表数据 unlogin
-    private fun getOneT(parent_id:Int){
-        HttpManager.getInstance().post(Api.CATEGORY,Parameter.getTabData(parent_id,0),object : Subscriber<String>() {
-            override fun onNext(str: String?) {
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject = JSONObject(str)
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val data = Gson().fromJson(str,TabOneBean.TabOneBeans::class.java)
-                        val list = data.data.category_list
-                        if(list.size!=0){
-                            tabData = list
+    private fun getOneT(parent_id: Int) {
+        HttpManager.getInstance()
+            .post(Api.CATEGORY, Parameter.getTabData(parent_id, 0), object : Subscriber<String>() {
+                override fun onNext(str: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        var jsonObj: JSONObject = JSONObject(str)
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
+                        } else {
+                            val data = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
+                            val list = data.data.category_list
+                            if (list.size != 0) {
+                                tabData = list
+                            }
                         }
                     }
                 }
-            }
 
-            override fun onCompleted() {
-                Log.e("onCompleted", "Tab加载完成!")
-            }
+                override fun onCompleted() {
+                    Log.e("onCompleted", "Tab加载完成!")
+                }
 
-            override fun onError(e: Throwable?) {
-                Log.e("onError", "Tab加载失败!"+e)
-            }
-        })
+                override fun onError(e: Throwable?) {
+                    Log.e("onError", "Tab加载失败!" + e)
+                }
+            })
     }
+
     companion object {
         var WebUrl: String? = null
         //获取链接 跳转
@@ -231,7 +240,10 @@ class OneFragment : BaseFragment(){
                             if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                                 var jsonObj: JSONObject = JSONObject(str)
                                 if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                                    ToastUtil.showToast(context, jsonObj.optString(JsonParser.JSON_MSG))
+                                    ToastUtil.showToast(
+                                        context,
+                                        jsonObj.optString(JsonParser.JSON_MSG)
+                                    )
                                 } else {
                                     val jsonObjs = jsonObj.getJSONObject("data")
                                     Log.e("kkkkk", jsonObjs.toString())
@@ -244,7 +256,10 @@ class OneFragment : BaseFragment(){
 //                            })
                                     context.runOnUiThread {
                                         var intent = Intent(context, WebActivity::class.java)
-                                        intent.putExtra("mobile_short_url", WebUrl!!.trim())  //todo 偷天换日法
+                                        intent.putExtra(
+                                            "mobile_short_url",
+                                            WebUrl!!.trim()
+                                        )  //todo 偷天换日法
                                         BaseActivity.goStartActivity(context, intent)
                                     }
                                 }
@@ -260,82 +275,52 @@ class OneFragment : BaseFragment(){
                         }
                     })
         }
-        fun getTwoT(parent_id:Int,context:Context){
-            HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id,1),object : Subscriber<String>() {
-                override fun onNext(str: String?) {
-                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                        var jsonObj: JSONObject = JSONObject(str)
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                            ToastUtil.showToast(context, jsonObj.optString(JsonParser.JSON_MSG))
-                        } else {
-
-                        }
-                    }
-                }
-
-                override fun onCompleted() {
-                    Log.e("onCompleted", "Tab2加载完成!")
-                }
-
-                override fun onError(e: Throwable?) {
-                    Log.e("onError", "Tab2加载失败!"+e)
-                }
-            })
-        }
-        fun getThreeT(parent_id:Int,context:Context){
-            HttpManager.getInstance().post(Api.CHANNEL,Parameter.getTabData(parent_id,1),object : Subscriber<String>() {
-                override fun onNext(str: String?) {
-                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                        var jsonObj: JSONObject = JSONObject(str)
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                            ToastUtil.showToast(context, jsonObj.optString(JsonParser.JSON_MSG))
-                        } else {
-
-                        }
-                    }
-                }
-
-                override fun onCompleted() {
-                    Log.e("onCompleted", "Tab3加载完成!")
-                }
-
-                override fun onError(e: Throwable?) {
-                    Log.e("onError", "Tab3加载失败!"+e)
-                }
-            })
-        }
     }
 
     private fun setTab(tabData: List<TabOneBean.Category>?) {
         val dataTab = ArrayList<String>()
-        if(tabData!=null){
+        if (tabData != null) {
             dataTab.add("精选")
-            for (i in 0 until tabData.size){
+            for (i in 0 until tabData.size) {
                 dataTab.add(tabData[i].name)
             }
-            TabCreateUtils.setOrangeTab(mContext!!,mainTab,dataTab,object : TabCreateUtils.onTitleClickListener {
-                override fun onTitleClick(index: Int) {
-                    if(index == 0){
-                        mTl?.visibility = View.GONE
-                        mOr?.visibility = View.VISIBLE
-                        mainBack?.visibility = View.VISIBLE
-                        mainVp?.currentItem = 0
-                        StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.colorPrimary)
-                    } else{
-                        mOr?.visibility = View.GONE
-                        mTl?.visibility = View.VISIBLE
-                        mainBack?.visibility = View.INVISIBLE
-                        mainVp?.currentItem = 1
-                        StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.white)
+            TabCreateUtils.setOrangeTab(
+                mContext!!,
+                mainTab,
+                dataTab,
+                object : TabCreateUtils.onTitleClickListener {
+                    override fun onTitleClick(index: Int) {
+                        if (index == 0) {
+                            mTl?.visibility = View.GONE
+                            mOr?.visibility = View.VISIBLE
+                            mainBack?.visibility = View.VISIBLE
+                            mainVp?.currentItem = 0
+                            StatusBarUtil.addStatusViewWithColor(
+                                this@OneFragment.activity,
+                                R.color.colorPrimary
+                            )
+                        } else {
+                            mOr?.visibility = View.GONE
+                            mTl?.visibility = View.VISIBLE
+                            mainBack?.visibility = View.INVISIBLE
+                            mainVp?.currentItem = 1
+                            StatusBarUtil.addStatusViewWithColor(
+                                this@OneFragment.activity,
+                                R.color.white
+                            )
+                            //这里添加广播事件时间
+                            val tabDataid = tabData[index - 1].category_id
+                            LiveDataBus.get().with("main_tab").value = "$tabDataid"
+                        }
+                        tabIndicator = index
                     }
-                    tabIndicator = index
-                }
-            })
+                })
 
         }
     }
+
     //适配器
-    internal inner class NormalAdapter(fm: FragmentManager,fragmentList: List<Fragment>) :
+    internal inner class NormalAdapter(fm: FragmentManager, fragmentList: List<Fragment>) :
         FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
@@ -347,6 +332,7 @@ class OneFragment : BaseFragment(){
         }
 
     }
+
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)

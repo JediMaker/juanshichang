@@ -1,7 +1,9 @@
 package com.example.juanshichang.utils
 
 import android.annotation.SuppressLint
+import android.content.ContentResolver
 import android.content.Context
+import android.content.res.Resources
 import android.os.Environment
 import android.provider.Settings
 import android.text.TextUtils
@@ -15,8 +17,7 @@ import java.util.regex.Pattern
 import android.graphics.Bitmap
 import java.io.ByteArrayOutputStream
 import android.graphics.BitmapFactory
-
-
+import android.net.Uri
 
 
 /**
@@ -171,6 +172,14 @@ class Util {
             val str:String = sf!!.format(Date(time*1000L))
             return str
         }
+        /*时间戳转换成字符窜*/
+        fun getTimedateThree(time:Long):String{
+            sf = SimpleDateFormat("HH:mm:ss")
+//            @SuppressWarnings("unused")
+//            long lcc = Long.valueOf(time);
+            val str:String = sf!!.format(Date(time*1000L))
+            return str
+        }
         /** 手机 字符 加密**/
         fun getPhoneNTransition(mobile: String):String{
             val str = mobile
@@ -200,7 +209,18 @@ class Util {
             }
             return null
         }
-
+        //
+        /**
+         * 得到资源文件中图片的Uri地址
+         * todo 废弃
+         * @param id  资源id
+         * @return Uri 地址
+         */
+        fun getUriFormDrawableRes(context: Context,id:Int):Uri{
+            val resources:Resources = context.resources
+            val path:String = ContentResolver.SCHEME_ANDROID_RESOURCE+"://"+resources.getResourcePackageName(id)+"/"+resources.getResourceTypeName(id)+"/"+resources.getResourceEntryName(id)
+            return Uri.parse(path)
+        }
         /**
          * @param min_group_price 最少拼团价
          * @param coupon_discount 优惠劵面额

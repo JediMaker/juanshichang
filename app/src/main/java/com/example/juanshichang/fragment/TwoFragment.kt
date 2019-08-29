@@ -68,6 +68,7 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
          * 从右到左 SLIDEIN_RIGHT
          */
         mRA?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT)
+        mRA?.emptyView = View.inflate(context, R.layout.activity_not_null, null)
         val lm = LinearLayoutManager(context!!, RecyclerView.VERTICAL, false)
         mRecycler?.layoutManager = lm
         mRecycler?.adapter = mRA
@@ -169,8 +170,8 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
             Parameter.getTabData(parent_id,0),object : Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                        var jsonObj: JSONObject = JSONObject(str)
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        val jsonObj: JSONObject = JSONObject(str)
+                        if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
                             ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
                         } else {
                             val data = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
@@ -210,12 +211,12 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
         HttpManager.getInstance().post(Api.CATEGORY,Parameter.getTabData(parent_id,1),object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject = JSONObject(str)
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                    val jsonObj: JSONObject = JSONObject(str)
+                    if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
                         ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
                     } else {
                         val bean = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
-                        val data = bean.data
+                        val data = bean.data  //todo 设置使用这个数据结构是为了应对多条目的问题
                         if(recyclerData == null){
                             recyclerData = ArrayList()
                         }

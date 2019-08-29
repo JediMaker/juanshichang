@@ -1,5 +1,6 @@
 package com.example.juanshichang.base
 
+import android.text.TextUtils
 import android.util.Log
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.MyApp.Companion.getMD5uuid
@@ -133,7 +134,7 @@ class Parameter {
         /**
          * 注册/登录
          */
-        fun getRegisterMap(mobile: String, password: String): HashMap<String, String> {
+        fun getLoginMap(mobile: String, password: String): HashMap<String, String> {
             baseList.clear()
             baseList.add("mobile=$mobile")
             baseList.add("password=$password")
@@ -143,6 +144,27 @@ class Parameter {
             return map
         }
 
+        fun getRegisterMap(mobile: String, password: String,invite_code:String,sms_code:String): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("mobile=$mobile")
+            baseList.add("password=$password")
+            baseList.add("sms_code=$sms_code")
+            if(TextUtils.isEmpty(invite_code)){
+                baseList.add("invite_code=D7FCA2")
+            }else{
+                baseList.add("invite_code=$invite_code")
+            }
+            var map = fengMap("unlogin")
+            map.put("mobile", mobile)
+            map.put("password", password)
+            map.put("sms_code", sms_code)
+            if(TextUtils.isEmpty(invite_code)){
+                map.put("invite_code", "D7FCA2")
+            }else{
+                map.put("invite_code", invite_code)
+            }
+            return map
+        }
         /**
          * 商品搜索 pdd
          * @param servicer  只能为以下之一:pdd,taobao,jd

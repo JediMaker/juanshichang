@@ -98,6 +98,34 @@ public class GlideUtil {
 
         }
     }
+    public static void loadImage(Context mContext, int id, ImageView mImageView,int type) {
+        try {
+            RequestOptions options = new RequestOptions();
+            options.transform(new StaggeredBitmapTransform(MyApp.app))
+//                    .placeholder(R.drawable.c_placeholderlong)
+                    .error(R.drawable.c_error)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+            if(type!=0){
+                options.format(DecodeFormat.PREFER_ARGB_8888);
+            }
+            if(type == 2){
+                int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
+                Glide.with(mContext).load(id)
+                        .override(screenWidth,SIZE_ORIGINAL)
+                        .apply(options)
+                        .centerCrop()
+                        .into(mImageView);
+
+            }else {
+                Glide.with(mContext).load(id)
+                        .apply(options)
+                        .into(mImageView);
+            }
+
+        } catch (Exception e) {
+
+        }
+    }
     /**
      * 加载长图
      *

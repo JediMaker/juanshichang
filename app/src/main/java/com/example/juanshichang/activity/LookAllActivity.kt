@@ -36,12 +36,12 @@ import rx.Subscriber
  * create-date:2019/8/28 12:40
  */
 class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
-    var category_id:Int = 0
-    var itemType:Int = 0
-    var categoryidDef:Int = Int.MAX_VALUE
-    var categoryList:ArrayList<String>? = null
-    var recyclerAdapter: CargoListAdapter? = null
-    var recyclerData:ArrayList<CargoListBean.Goods>? = null
+    private var category_id:Int = 0
+    private var itemType:Int = 0
+    private var categoryidDef:Int = Int.MAX_VALUE
+    private var categoryList:ArrayList<String>? = null
+    private var recyclerAdapter: CargoListAdapter? = null
+    private var recyclerData:ArrayList<CargoListBean.Goods>? = null
     override fun getContentView(): Int {
         return R.layout.activity_look_all
     }
@@ -62,6 +62,7 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
              * 从右到左 SLIDEIN_RIGHT
              */
             recyclerAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
+            recyclerAdapter?.emptyView = View.inflate(this, R.layout.activity_not_null, null)
             LaRefresh.setOnRefreshListener(this)
             //当列表滑动到倒数第N个Item的时候(默认是1)回调onLoadMoreRequested方法
             recyclerAdapter?.setPreLoadNumber(2)
@@ -88,7 +89,6 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
                     startActivity(intent)
                 } else {
                     ToastUtil.showToast(this@LookAllActivity, "数据发生未知错误,请稍后重试!!!")
-                    finish()
                 }
             }
         })

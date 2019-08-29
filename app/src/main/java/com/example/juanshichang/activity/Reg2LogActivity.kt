@@ -103,10 +103,12 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.registBut -> {//注册按钮
                 if (goRegister()) {
-                    val phone = regPhone.text.toString()
-                    val ps = regPassword.text.toString()
+                    val phone = regPhone.text.toString().trim()
+                    val ps = regPassword.text.toString().trim()
+                    val sms = yzCode.text.toString().trim()
+                    val invite = regInviteCode.text.toString().trim()
                     ToastUtil.showToast(this@Reg2LogActivity, "登录...")
-                    regGo(phone, ps)
+                    regGo(phone, ps,invite,sms)
                 }
             }
             R.id.mRCheckBoxX -> {//用户协议选中
@@ -221,8 +223,8 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
      * 注册
      * @return 返回验证码
      */
-    private fun regGo(phone: String, ps: String) {
-        HttpManager.getInstance().post(Api.USER, Parameter.getRegisterMap(phone, ps), object : Subscriber<String>() {
+    private fun regGo(phone: String, ps: String,invite_code:String,sms_code:String) {
+        HttpManager.getInstance().post(Api.USER, Parameter.getRegisterMap(phone, ps,invite_code,sms_code), object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
@@ -260,7 +262,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
      * 登录
      */
     private fun logGo(phone: String, ps: String) {
-        HttpManager.getInstance().post(Api.LOGIN, Parameter.getRegisterMap(phone, ps), object : Subscriber<String>() {
+        HttpManager.getInstance().post(Api.LOGIN, Parameter.getLoginMap(phone, ps), object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null

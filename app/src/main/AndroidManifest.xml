@@ -26,7 +26,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.LookAllActivity"></activity>
+        <activity android:name=".activity.MessageActivity"></activity>
+        <activity android:name=".activity.LookAllActivity" />
 
         <meta-data
                 android:name="design_width"
@@ -45,28 +46,28 @@
                     android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activity.FansActivity"></activity>
-        <activity android:name=".activity.OrderFormActivity"></activity>
-        <activity android:name=".activity.EarningsActivity"></activity>
+        <activity android:name=".activity.FansActivity" />
+        <activity android:name=".activity.OrderFormActivity" />
+        <activity android:name=".activity.EarningsActivity" />
         <activity
                 android:name=".activity.Reg2LogActivity"
                 android:launchMode="singleTask"
-                android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".activity.PromotionActivity"></activity>
-        <activity android:name=".activity.SettingActivity"></activity>
-        <activity android:name=".activity.WebActivity"></activity>
+                android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activity.PromotionActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.WebActivity" />
         <activity
                 android:name=".activity.ShangPinContains"
-                android:launchMode="singleTask"></activity>
+                android:launchMode="singleTask" />
         <activity
                 android:name=".activity.ClassTypeActivity"
-                android:launchMode="singleTask"></activity>
+                android:launchMode="singleTask" />
         <activity
                 android:name=".activity.SearcheActivity"
-                android:launchMode="singleTask"></activity>
+                android:launchMode="singleTask" />
         <activity
                 android:name=".activity.LoginActivity"
-                android:launchMode="singleTask"></activity>
+                android:launchMode="singleTask" />
         <activity
                 android:name=".activity.SplashActivity"
                 android:launchMode="singleTask">

@@ -12,6 +12,14 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_width="240px"
                 android:layout_height="240px"/>
+        <ImageView
+                android:visibility="gone"
+                android:id="@+id/gIv2"
+                android:src="@drawable/c_error"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="48px"
+                android:layout_width="144px"
+                android:layout_height="144px"/>
         <TextView
                 android:id="@+id/gTit"
                 android:paddingTop="12px"
