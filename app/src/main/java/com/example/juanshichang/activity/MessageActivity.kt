@@ -44,7 +44,7 @@ class MessageActivity : BaseActivity(), View.OnClickListener{
             mesRecycler.adapter = mAdapter
             getMesList(this@MessageActivity)
         }else{
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this,Reg2LogActivity::class.java)
             intent.putExtra("type",1)
             BaseActivity.goStartActivity(this,intent)
             ToastUtil.showToast(this@MessageActivity,"请登录...")

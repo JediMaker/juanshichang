@@ -102,11 +102,11 @@ class OneFragment : BaseFragment() {
         fragmentList!!.add(oneFragment!!)
         fragmentList!!.add(twoFragment!!)
         mainAdapter = NormalAdapter(childFragmentManager, fragmentList as List<Fragment>)
-//        mainVp?.adapter = mainAdapter //迁移至 Resume 解决 状态栏问题
+        mainVp?.adapter = mainAdapter   //  从 onResume移回
     }
 
     override fun initData() {
-//        handler.sendEmptyMessageDelayed(2, 50) //迁移至 Resume 解决 状态栏问题
+        handler.sendEmptyMessageDelayed(2, 50)
     }
 
     @SuppressLint("WrongConstant")
@@ -121,7 +121,7 @@ class OneFragment : BaseFragment() {
             R.id.mainTSearch -> {
                 val str = getEditText()
                 if (!TextUtils.isEmpty(str)) {
-                    var intent = Intent(mContext!!, ClassTypeActivity::class.java)
+                    val intent = Intent(mContext!!, ClassTypeActivity::class.java)
                     intent.putExtra("keyword", str)
                     startActivity(intent)
                     tEdit?.text = null
@@ -163,17 +163,12 @@ class OneFragment : BaseFragment() {
             fragmentList!!.add(oneFragment!!)
             fragmentList!!.add(twoFragment!!)
         }
-        mTl?.visibility = View.GONE
-        mOr?.visibility = View.VISIBLE
-        mainBack?.visibility = View.VISIBLE
-        handler.sendEmptyMessageDelayed(2, 50)
+
         if (mainVp == null) {
             mainVp = mBaseView?.findViewById<CustomViewPager>(R.id.vpOne)
             mainAdapter = NormalAdapter(childFragmentManager, fragmentList as List<Fragment>)
             //写入
             mainAdapter = NormalAdapter(childFragmentManager, fragmentList as List<Fragment>)
-            mainVp?.adapter = mainAdapter
-        } else {
             mainVp?.adapter = mainAdapter
         }
         //Viewpager 滑动 监听 todo 已废弃！！！
@@ -255,7 +250,7 @@ class OneFragment : BaseFragment() {
 //                                startActivity(intent)
 //                            })
                                     context.runOnUiThread {
-                                        var intent = Intent(context, WebActivity::class.java)
+                                        val intent = Intent(context, WebActivity::class.java)
                                         intent.putExtra(
                                             "mobile_short_url",
                                             WebUrl!!.trim()
@@ -295,19 +290,15 @@ class OneFragment : BaseFragment() {
                             mOr?.visibility = View.VISIBLE
                             mainBack?.visibility = View.VISIBLE
                             mainVp?.currentItem = 0
-                            StatusBarUtil.addStatusViewWithColor(
-                                this@OneFragment.activity,
-                                R.color.colorPrimary
-                            )
+                            LiveDataBus.get().with("topisone").value = true
+                            LiveDataBus.get().with("mainTopStatusView").value = R.color.colorPrimary
                         } else {
                             mOr?.visibility = View.GONE
                             mTl?.visibility = View.VISIBLE
                             mainBack?.visibility = View.INVISIBLE
                             mainVp?.currentItem = 1
-                            StatusBarUtil.addStatusViewWithColor(
-                                this@OneFragment.activity,
-                                R.color.white
-                            )
+                            LiveDataBus.get().with("topisone").value = false
+                            LiveDataBus.get().with("mainTopStatusView").value = R.color.white
                             //这里添加广播事件时间
                             val tabDataid = tabData[index - 1].category_id
                             LiveDataBus.get().with("main_tab").value = "$tabDataid"

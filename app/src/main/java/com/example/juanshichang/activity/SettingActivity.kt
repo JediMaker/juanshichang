@@ -34,6 +34,7 @@ import com.example.juanshichang.bean.FansBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.utils.glide.GlideUtil
+import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
@@ -90,7 +91,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                             SpUtil.getIstance().getDelete()
                             Util.removeCookie(this@SettingActivity)
                             ToastUtil.showToast(this@SettingActivity, "清理完成")
-                            BaseActivity.goStartActivity(this@SettingActivity, MainActivity())
+                            LiveDataBus.get().with("mainGo").value =  0
                             finish()
                         }
 

@@ -250,7 +250,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
             }
 
             override fun onError(e: Throwable?) {
-                getBanner()
+//                getBanner()
                 Log.e("onError", "Banner加载失败!" + e)
             }
         })
@@ -290,7 +290,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
                 }
 
                 override fun onError(e: Throwable?) {
-                    getRecycler(theme_goods_count, next)
+//                    getRecycler(theme_goods_count, next)
                     Log.e("onError", "Recycler加载失败!" + e)
                 }
             })
@@ -316,7 +316,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
             }
 
             override fun onError(e: Throwable?) {
-                getGrid()
+//                getGrid()
                 Log.e("onError", "Grid加载失败!" + e)
             }
 

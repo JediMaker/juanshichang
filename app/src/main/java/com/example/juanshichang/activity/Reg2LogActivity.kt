@@ -21,6 +21,7 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
+import com.example.juanshichang.widget.LiveDataBus
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_reg2_log.*
@@ -62,6 +63,9 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             timerLogin.start()
         }else{
             timerLogin.start()
+        }
+        if(""!=intent.getStringExtra("one")){ //从个人中心 页面跳转的处理
+            LiveDataBus.get().with("mainGo").value =  0
         }
     }
 

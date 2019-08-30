@@ -134,7 +134,7 @@ class OneOtherFragment : BaseFragment() {
         priceImg =  mBaseView?.findViewById<ImageView>(R.id.priceImg)
         earnImg =  mBaseView?.findViewById<ImageView>(R.id.earnImg)
         topGrid = mBaseView?.findViewById<RecyclerView>(R.id.topGrid)
-        topGrid?.layoutManager = GridLayoutManager(mContext!!,4)
+        topGrid?.layoutManager = GridLayoutManager(mContext!!,4) as RecyclerView.LayoutManager?
         topData = ArrayList()
         topRA = TwoGridAdapterT(topData!!)
         topGrid?.adapter = topRA

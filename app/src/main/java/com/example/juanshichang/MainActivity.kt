@@ -12,6 +12,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.example.juanshichang.activity.Reg2LogActivity
 import com.example.juanshichang.base.Api
@@ -22,6 +23,7 @@ import com.example.juanshichang.bean.UserBean
 import com.example.juanshichang.fragment.*
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
+import com.example.juanshichang.widget.LiveDataBus
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
@@ -44,6 +46,9 @@ class MainActivity : BaseActivity() {
 //    private var oFragment: OneOtherFragment? = null  //设计五个页面 现保留至四个
     private var fourFragment: FourFragment? = null
     private var normalAdapter: NormalAdapter? = null
+    var bus =  LiveDataBus.get()
+    // 用于确定 首页面Tab 是否处在第一个
+    private var topTabIsOne:Boolean = true
     override fun getContentView(): Int {
         return R.layout.activity_main
     }
@@ -62,6 +67,12 @@ class MainActivity : BaseActivity() {
         fragmentList?.add(fourFragment!!)
 //            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request
         MyApp.requestPermission(this@MainActivity)
+        bus.with("mainTopStatusView",Int::class.java)
+            .observe(this,object : Observer<Int>{
+                override fun onChanged(t: Int?) {
+                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, t!!)
+                }
+            })
     }
 
     @SuppressLint("ResourceType")
@@ -78,6 +89,11 @@ class MainActivity : BaseActivity() {
             view.visibility = View.VISIBLE
             setGoogleBottom()
         }
+        bus.with("topisone",Boolean::class.java).observe(this,object : Observer<Boolean>{
+            override fun onChanged(t: Boolean?) {
+                topTabIsOne = t!!
+            }
+        })
     }
 
     private val mBottomNavigationView = BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -100,14 +116,14 @@ class MainActivity : BaseActivity() {
             }
             R.id.me -> {
                 vp_main.currentItem = 3
-                if (!Util.hasLogin()) {
+                /*if (!Util.hasLogin()) { //登录检查
                     val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
                     intent.putExtra("type",Reg2LogActivity.LOGINCODE)
                     BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
                     finish()
                 } else {
                     ToastUtil.showToast(this@MainActivity, "登录检查通过2")
-                }
+                }*/
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -140,11 +156,17 @@ class MainActivity : BaseActivity() {
         override fun onTabSelected(p0: TabLayout.Tab?) {
             vp_main.currentItem = p0!!.position
             if(p0.position == 0){
-                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
+                if(topTabIsOne){
+                    bus.with("mainTopStatusView").value = R.color.colorPrimary
+                }else{
+                    bus.with("mainTopStatusView").value = R.color.white
+                }
+//                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
             }else{
-                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
+                bus.with("mainTopStatusView").value = R.color.white
+//                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
             }
-            if (p0.position == 3) {
+            /*if (p0.position == 3) {  //登录检查
                 if (!Util.hasLogin()) {
                     val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
                     intent.putExtra("type",Reg2LogActivity.LOGINCODE)
@@ -153,7 +175,7 @@ class MainActivity : BaseActivity() {
                 } else {
                     ToastUtil.showToast(this@MainActivity, "登录检查通过3")
                 }
-            }
+            }*/
         }
 
     }
@@ -183,7 +205,7 @@ class MainActivity : BaseActivity() {
     }
 
     /**
-     *  腾讯底部栏舍弃 - 采用原生底部栏
+     *  采用原生底部栏
      */
     private fun setTecentBottom() {
         views.addTab(views.newTab().setText(R.string.first).setIcon(R.drawable.tab_one))
@@ -204,10 +226,16 @@ class MainActivity : BaseActivity() {
             }
 
         })
+        //这是一个返回首页的 广播
+        bus.with("mainGo",Int::class.java).observe(this,object : Observer<Int>{
+            override fun onChanged(t: Int?) {
+                views.getTabAt(t!!)?.isSelected
+            }
+        })
     }
 
     /**
-     *  原生谷歌官方底部栏
+     *  原生谷歌官方菜单栏
      */
     private fun setGoogleBottom() {
 //        val view = com.google.android.material.bottomnavigation.BottomNavigationView(this@MainActivity)
@@ -230,20 +258,24 @@ class MainActivity : BaseActivity() {
             override fun onPageSelected(position: Int) {
                 // todo new add
                 if(position != 0){
-                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
+                    bus.with("mainTopStatusView").value = R.color.white
+//                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
                 }else{
-                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
+                    if(topTabIsOne){
+                        bus.with("mainTopStatusView").value = R.color.colorPrimary
+                    }else{
+                        bus.with("mainTopStatusView").value = R.color.white
+                    }
+//                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
                 }
-                if (position == 3) {
+                /*if (position == 3) {  //todo 登录检查
                     if (!Util.hasLogin()) {
                         val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
                         intent.putExtra("type",Reg2LogActivity.LOGINCODE)
                         BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
                         finish()
-                    } else {
-                        ToastUtil.showToast(this@MainActivity, "登录检查通过1")
                     }
-                }
+                }*/
                 // new add
                 if (menuItem != null) {
                     menuItem!!.isChecked = false
@@ -253,7 +285,14 @@ class MainActivity : BaseActivity() {
                 menuItem = view.getMenu().getItem(position)
                 menuItem!!.isChecked = true
             }
-
+        })
+        //这是一个返回首页的 广播
+        bus.with("mainGo",Int::class.java).observe(this,object : Observer<Int>{
+            override fun onChanged(t: Int?) {
+                vp_main.currentItem = t!!
+                menuItem?.isChecked = false
+                view.getMenu().getItem(t).isChecked = true
+            }
         })
     }
     companion object {
@@ -308,6 +347,7 @@ class MainActivity : BaseActivity() {
                 }
             })
         }
+
     }
 
     var isExit:Boolean = false

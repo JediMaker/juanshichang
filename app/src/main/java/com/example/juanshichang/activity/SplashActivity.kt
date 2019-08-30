@@ -9,16 +9,18 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.FragmentActivity
+import androidx.viewpager.widget.ViewPager
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.R
 import com.example.juanshichang.base.BaseActivity
-import com.example.juanshichang.utils.JumpPermissionManagement
-import com.example.juanshichang.utils.StatusBarUtil
-import com.example.juanshichang.utils.ToastUtil
-import com.example.juanshichang.utils.Util
+import com.example.juanshichang.utils.*
 import com.yanzhenjie.permission.AndPermission
+import com.youth.banner.BannerConfig
+import com.youth.banner.Transformer
+import com.youth.banner.listener.OnBannerListener
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.android.synthetic.main.home_banner_item.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
 /**
@@ -34,15 +36,15 @@ class SplashActivity : FragmentActivity() {
     }*/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
+//        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
         var GxmQ:Boolean = MyApp.sp.getBoolean("FIRST", true)
         val edit = MyApp.sp.edit()
         edit.putString("appkey","0371.ml.appkey")
-        edit.commit()
+        edit.apply()
         setContentView(R.layout.activity_splash)
         if(GxmQ){ //第一次登录
 //            setContentView(R.layout.activity_splash)
-            frame.visibility = View.VISIBLE
+            setBanner()
             //首次登录 拿取appKey
             MyApp.requestPermission(this@SplashActivity)
         }else{
@@ -73,5 +75,48 @@ class SplashActivity : FragmentActivity() {
             ToastUtil.showToast(this@SplashActivity,"大侠 尚未登录 如何畅游江湖")
         }
         finish()
+    }
+    private fun setBanner(){
+        tv.visibility = View.INVISIBLE
+        val dataList:List<Int> = mutableListOf(R.drawable.spone,R.drawable.sptwo,R.drawable.spthree)
+        sBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR) //显示数字指示器
+        //设置指示器位置（当banner模式中有指示器时）
+        sBanner.setIndicatorGravity(BannerConfig.CENTER)//指示器居右
+        //设置图片加载器
+        sBanner.setImageLoader(GlideImageLoader(1))
+        //设置动画效果
+        sBanner.setBannerAnimation(Transformer.ZoomOutSlide)
+        sBanner.setImages(dataList)
+        sBanner.setOnBannerListener(object : OnBannerListener{
+            override fun OnBannerClick(position: Int) { //点击事件监听
+
+            }
+        })
+        var oldP:Int = 0
+        sBanner.setOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+                Log.e("eeeeee1","11:$state")
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+
+                Log.e("eeeeee","1:$position  2:$positionOffset  3:$positionOffsetPixels")
+            }
+
+            override fun onPageSelected(position: Int) {
+                if(dataList.size-1 == position){
+                    tv.visibility = View.VISIBLE
+                }else{
+                    tv.visibility = View.INVISIBLE
+                }
+                oldP = position
+            }
+
+        })
+        sBanner.start()
     }
 }
