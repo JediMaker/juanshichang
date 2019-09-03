@@ -17,6 +17,8 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.OrdersBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
+import com.example.juanshichang.utils.ToastTool
 import com.example.juanshichang.utils.ToastUtil
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
@@ -86,7 +88,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
         }
 
         override fun onTabSelected(t: TabLayout.Tab?) {
-            ToastUtil.showToast(this@OrderFormActivity,"点击到了"+t?.position)
+            ToastTool.showToast(this@OrderFormActivity,"点击到了"+t?.position)
         }
     }
     private fun getOrders(offset:Int,limit:Int){
@@ -109,11 +111,11 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "订单加载完成!")
+                LogTool.e("onCompleted", "订单加载完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "订单加载失败!" + e)
+                LogTool.e("onError", "订单加载失败!" + e)
             }
 
         })

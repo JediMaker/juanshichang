@@ -2,12 +2,12 @@
 <com.zhy.autolayout.AutoFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:paddingLeft="45px"
-        android:paddingRight="45px"
         android:paddingTop="10px"
         android:paddingBottom="10px"
+        android:paddingLeft="45px"
+        android:paddingRight="45px"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
     <!--    app:contentPaddingBottom="" 内容的下Padding-->
     <!--    app:cardBackgroundColor=""设置背景色-->
     <!--    app:cardMaxElevation="" 设置Z轴最大高度值-->
@@ -19,6 +19,8 @@
     <!--    app:contentPaddingRight="" 内容的右Padding-->
     <!--    app:contentPaddingBottom="" 内容的下Padding-->
         <androidx.cardview.widget.CardView
+                app:cardUseCompatPadding="true"
+                app:cardPreventCornerOverlap="false"
                 android:layout_marginTop="10px"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="5dp"
@@ -60,7 +62,7 @@
                 <View
                         android:background="@color/set_linear"
                         android:layout_width="match_parent"
-                        android:layout_height="2px"/>
+                        android:layout_height="1px"/>
                 <TextView
                         android:id="@+id/botTit"
                         android:paddingBottom="14px"

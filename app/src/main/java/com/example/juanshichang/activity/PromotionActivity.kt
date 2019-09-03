@@ -15,6 +15,7 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.BannnerDetailBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
@@ -175,11 +176,11 @@ class PromotionActivity : BaseActivity(),View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "促销加载完成!")
+                LogTool.e("onCompleted", "促销加载完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "促销加载失败!" + e)
+                LogTool.e("onError", "促销加载失败!" + e)
             }
         })
     }

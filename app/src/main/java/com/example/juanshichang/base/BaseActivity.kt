@@ -276,6 +276,12 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
         val fragments = RegisterDialog(title,content,sureBtnText,cancleBtnText,callback,isCanceled)
         fragments.show(this.getSupportFragmentManager(), null)
     }
+    //这是改变确定键颜色的方法
+    fun showRegisterDialog(title:String,content:String,sureBtnText:String,sureColor:Int,cancleBtnText:String,callback: BaseActivity.DialogCallback,isCanceled:Boolean) {
+        val fragments = RegisterDialog(title,content,sureBtnText,cancleBtnText,callback,isCanceled)
+        fragments.setSureColor(sureColor)
+        fragments.show(this.getSupportFragmentManager(), null)
+    }
     /**
      * 对话框回调
      * @author yl

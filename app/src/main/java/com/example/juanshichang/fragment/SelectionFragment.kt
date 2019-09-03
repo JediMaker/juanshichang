@@ -14,14 +14,17 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.example.juanshichang.MainActivity
 
 import com.example.juanshichang.R
 import com.example.juanshichang.adapter.HomeAdapter
 import com.example.juanshichang.base.Api
+import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
 import com.qmuiteam.qmui.arch.QMUIFragment
@@ -46,6 +49,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
     var bHome: HomeEntity? = null
     var gHome: HomeEntity? = null
     var rHome: HomeEntity? = null
+    var base:BaseActivity? = null
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -64,7 +68,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
                         g = 1
                         r = 1
                     } else {
-                        this.sendEmptyMessageDelayed(1, 50)
+                        sendEmptyMessageDelayed(1, 20)
                     }
                 }
             }
@@ -125,6 +129,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
     //下拉刷新
     override fun onRefresh() {
         //刷新的时候禁止加载更多
+        base?.showProgressDialog()
         homeAdapter?.setEnableLoadMore(false)
         hr?.postDelayed(object : Runnable{
             override fun run() {
@@ -246,12 +251,12 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "Banner加载完成!")
+                LogTool.e("onCompleted", "Banner加载完成!")
             }
 
             override fun onError(e: Throwable?) {
 //                getBanner()
-                Log.e("onError", "Banner加载失败!" + e)
+                LogTool.e("onError", "Banner加载失败!" + e)
             }
         })
     }
@@ -286,12 +291,12 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "Recycler加载完成!")
+                    LogTool.e("onCompleted", "Recycler加载完成!")
                 }
 
                 override fun onError(e: Throwable?) {
 //                    getRecycler(theme_goods_count, next)
-                    Log.e("onError", "Recycler加载失败!" + e)
+                    LogTool.e("onError", "Recycler加载失败!" + e)
                 }
             })
     }
@@ -312,12 +317,12 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "Grid加载完成!")
+                LogTool.e("onCompleted", "Grid加载完成!")
             }
 
             override fun onError(e: Throwable?) {
 //                getGrid()
-                Log.e("onError", "Grid加载失败!" + e)
+                LogTool.e("onError", "Grid加载失败!" + e)
             }
 
         })

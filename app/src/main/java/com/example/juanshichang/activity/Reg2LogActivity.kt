@@ -252,11 +252,11 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "注册请求完成!")
+                LogTool.e("onCompleted", "注册请求完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "注册请求错误!" + e)
+                LogTool.e("onError", "注册请求错误!" + e)
                 ToastUtil.showToast(this@Reg2LogActivity, "注册失败,请稍后重试!")
             }
         })
@@ -280,7 +280,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理
-                        Log.e("token", token)
+                        LogTool.e("LogToken", token)
                         var user = SpUtil.getIstance().user
                         user.usertoken = token
                         SpUtil.getIstance().user = user //写入
@@ -297,11 +297,11 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "登录请求完成!")
+                LogTool.e("onCompleted", "登录请求完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "登录请求错误!" + e)
+                LogTool.e("onError", "登录请求错误!" + e)
             }
 
         })
@@ -322,9 +322,9 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                         ToastUtil.showToast(context, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
-                        Log.e("zxcv","Date: "+data.toString())
+                        LogTool.e("zxcv","Date: "+data.toString())
                         mSmsCode = data.getString("sms_code")  //注册返回Token不做处理
-                        Log.e("zxcv","sms_code: "+mSmsCode.toString())
+                        LogTool.e("zxcv","sms_code: "+mSmsCode.toString())
                         if (mSmsCode != "") {
                             timer.start()
                             ToastUtil.showToast(context, "验证码请求完成,请注意查收消息")
@@ -335,12 +335,12 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "验证码请求完成!")
+                LogTool.e("onCompleted", "验证码请求完成!")
             }
 
             override fun onError(e: Throwable?) {
                 mSmsCode = ""
-                Log.e("onError", "验证码请求错误!" + e)
+                LogTool.e("onError", "验证码请求错误!" + e)
                 ToastUtil.showToast(context, "验证码发送失败,请稍后重试!!!")
             }
         })
@@ -391,8 +391,8 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                 return false
         }
         if(!mSmsCode!!.equals(yzCode) || yzCode.length != mSmsCode!!.length){
-            Log.e("zxcv","mSmsCode:$mSmsCode")
-            Log.e("zxcv","yzCode:$yzCode")
+            LogTool.e("zxcv","mSmsCode:$mSmsCode")
+            LogTool.e("zxcv","yzCode:$yzCode")
             return false
         }
         if (ps.length < 6) {

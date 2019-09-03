@@ -100,7 +100,6 @@ public class TabCreateUtils {
 //                colorTransitionPagerTitleView.setTextSize(16); //不再设置
                 setTextColor(colorTransitionPagerTitleView);
                 colorTransitionPagerTitleView.setText(tabNames.get(index));
-                Log.e("titles", tabNames.get(index));
 //                colorTransitionPagerTitleView.setPadding();
                 colorTransitionPagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -188,7 +187,6 @@ public class TabCreateUtils {
 //                colorTransitionPagerTitleView.setTextSize(16); //不再设置
                 setTextColor(colorTransitionPagerTitleView);
                 colorTransitionPagerTitleView.setText(tabNames.get(index));
-                Log.e("titles", tabNames.get(index));
 //                colorTransitionPagerTitleView.setPadding();
                 colorTransitionPagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override

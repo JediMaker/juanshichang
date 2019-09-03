@@ -12,6 +12,7 @@ import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.BenefitBean
 import com.example.juanshichang.bean.OrdersBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
@@ -79,11 +80,11 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "收益加载完成!")
+                LogTool.e("onCompleted", "收益加载完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "收益加载失败!" + e)
+                LogTool.e("onError", "收益加载失败!" + e)
             }
 
         })

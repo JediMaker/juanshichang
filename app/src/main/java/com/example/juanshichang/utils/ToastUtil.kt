@@ -10,7 +10,7 @@ import android.widget.Toast
  */
 class ToastUtil {
     companion object{
-        private var sToast:Toast? = null
+        internal var sToast:Toast? = null
 
         fun showToast(context: Context, text: String) {
             showToastInner(context, text, Toast.LENGTH_SHORT)

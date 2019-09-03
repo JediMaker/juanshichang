@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.utils.AutoLayoutActivity
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.widget.IsInternet
 import kotlinx.android.synthetic.main.activity_not_car.*
@@ -131,7 +132,7 @@ class WebActivity : AutoLayoutActivity(), View.OnClickListener {
                     mNotWebLayout.visibility = View.GONE
                     mRWebLayout.visibility = View.VISIBLE
                 }
-                Log.e("web",url)
+                LogTool.e("web",url)
                 try {
                     if (url!!.startsWith("weixin://") //微信
                         || url!!.startsWith("alipays://") //支付宝
@@ -170,7 +171,7 @@ class WebActivity : AutoLayoutActivity(), View.OnClickListener {
                     mNotWebLayout.visibility = View.GONE
                     mRWebLayout.visibility = View.VISIBLE
                 }
-                Log.e("web2",url)
+                LogTool.e("web2",url.toString())
                 try {
                     if (url!!.startsWith("weixin://") //微信
                         || url!!.startsWith("alipays://") //支付宝

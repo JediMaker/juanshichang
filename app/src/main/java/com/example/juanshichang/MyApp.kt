@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import androidx.multidex.MultiDex
 import com.example.juanshichang.utils.JumpPermissionManagement
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.MD5Utils
@@ -22,6 +23,8 @@ import java.util.*
 open class MyApp : Application() {
 
     companion object {
+        //todo 正式包 isDebug 一定要修改为 false ！！！
+        val isDebug:Boolean = true
         lateinit var app: MyApp
         lateinit var sp: SharedPreferences
         lateinit var applicationContext: Context
@@ -46,12 +49,12 @@ open class MyApp : Application() {
 //            if (TextUtils.isEmpty(smi)) {
 //                smi = "jscApp"
 //            }
-//            Log.e("smi",smi)
+//            LogTool.e("smi",smi)
             val uuid:UUID = UUID.randomUUID() //更改为随机生成uuid
             val str = uuid.toString()
-            Log.e("uuidStr",str)
+            LogTool.e("uuidStr",str)
             val uuidStr = str.replace("-", "")
-            Log.e("uuidStrRep",uuidStr)
+            LogTool.e("uuidStrRep",uuidStr)
             return MD5Utils.getMD5Str(uuidStr)
         }
         /**
@@ -59,11 +62,11 @@ open class MyApp : Application() {
          */
         fun getMD5uuid():String{
             var uuid:String = sp.getString("uu","")!!
-            Log.e("uuidc",uuid)
+            LogTool.e("uuidc",uuid)
             if(TextUtils.isEmpty(uuid) && uuid == ""){
                 uuid = md5Uuid()
                 sp.edit().putString("uu",uuid).apply()
-                Log.e("uuidc2",uuid)
+                LogTool.e("uuidc2",uuid)
             }
             return uuid
         }
@@ -84,7 +87,9 @@ open class MyApp : Application() {
             }).start()
         }
     }
-
+    fun getIsDebug():Boolean{
+        return isDebug
+    }
     override fun onCreate() {
         super.onCreate()
         sp = getSharedPreferences("GXm", Activity.MODE_PRIVATE)

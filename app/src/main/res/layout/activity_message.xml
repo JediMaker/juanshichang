@@ -3,6 +3,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activity.MessageActivity">
@@ -73,6 +74,7 @@
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mesRecycler"
             android:scrollbars="none"
+            android:background="@color/ff_back"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

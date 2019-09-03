@@ -17,9 +17,7 @@ import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.MessageBean
 import com.example.juanshichang.bean.TabOneBean
 import com.example.juanshichang.http.HttpManager
-import com.example.juanshichang.utils.StatusBarUtil
-import com.example.juanshichang.utils.ToastUtil
-import com.example.juanshichang.utils.Util
+import com.example.juanshichang.utils.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_message.*
 import kotlinx.coroutines.Runnable
@@ -28,6 +26,7 @@ import rx.Subscriber
 
 class MessageActivity : BaseActivity(), View.OnClickListener{
     private var mAdapter:MessageAdapter? = null
+    private var messageData:ArrayList<MessageBean.Message>? = null
     override fun getContentView(): Int {
         return R.layout.activity_message
     }
@@ -37,25 +36,30 @@ class MessageActivity : BaseActivity(), View.OnClickListener{
         MsRet.setOnClickListener(this) //返回
         titClose.setOnClickListener(this) //关闭
         titOpen.setOnClickListener(this) // 打开
-        if(Util.hasLogin()){
+        if(NotifyUtil.isPermissonOpen(this)){ //判断 是否显示顶部通知
+            popHint.visibility = View.GONE
+            ToastTool.showToast(this,"已有通知权限 关闭显示框")
+        }
+//        if(Util.hasLogin()){
             mAdapter = MessageAdapter()
             mAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
             mAdapter?.emptyView = View.inflate(this, R.layout.activity_not_null, null)
             mesRecycler.adapter = mAdapter
             getMesList(this@MessageActivity)
-        }else{
-            val intent = Intent(this,Reg2LogActivity::class.java)
-            intent.putExtra("type",1)
-            BaseActivity.goStartActivity(this,intent)
-            ToastUtil.showToast(this@MessageActivity,"请登录...")
-            finish()
-        }
+//        }else{
+//            val intent = Intent(this,Reg2LogActivity::class.java)
+//            intent.putExtra("type",1)
+//            BaseActivity.goStartActivity(this,intent)
+//            ToastUtil.showToast(this@MessageActivity,"请登录...")
+//            finish()
+//        }
     }
 
     override fun initData() {
         mAdapter?.setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener{
-            override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, i: Int) {
+                ToastTool.showToast(this@MessageActivity,"点击了第 ${i+1} 条消息")
+                NotifyUtil.sendSimpleNotify(this@MessageActivity,messageData!![i].title,messageData!![i].content)
             }
         })
     }
@@ -68,14 +72,14 @@ class MessageActivity : BaseActivity(), View.OnClickListener{
                 popHint.visibility = View.GONE
             }
             R.id.titOpen->{
-
+                NotifyUtil.openPermissionSetting(this)
             }
         }
     }
 
-    private fun getMesList(context: Context) {
+    private fun getMesList(context: Context) { //消息列表无需登录
         HttpManager.getInstance()
-            .post(Api.MESSAGELIST, Parameter.getBenefitMap(), object : Subscriber<String>() {
+            .post(Api.MESSAGELIST, Parameter.getMainBannerMap(), object : Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject = JSONObject(str)
@@ -87,6 +91,12 @@ class MessageActivity : BaseActivity(), View.OnClickListener{
                             mesRecycler.post(object : Runnable{
                                 override fun run() {
                                     mAdapter?.setNewData(list)
+                                    if (messageData == null){
+                                        messageData = ArrayList()
+                                    }else{
+                                        messageData?.clear()
+                                    }
+                                    messageData?.addAll(list)
                                 }
                             })
                         }
@@ -94,11 +104,11 @@ class MessageActivity : BaseActivity(), View.OnClickListener{
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "消息列表加载完成!")
+                    LogTool.e("onCompleted", "消息列表加载完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    Log.e("onError", "消息列表加载失败!" + e)
+                    LogTool.e("onError", "消息列表加载失败!" + e)
                 }
             })
     }

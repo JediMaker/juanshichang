@@ -7,11 +7,12 @@
     android:background="@android:color/transparent"
     android:gravity="center"
     >
+<!--    @drawable/anim_progress_loading-->
     <ImageView
         android:id="@+id/loadingImageView"
         android:layout_width="200px"
         android:layout_height="200px"
-        android:background="@drawable/anim_progress_loading"
+        android:background="@drawable/loding"
         />
 
     <TextView

@@ -18,6 +18,7 @@ import com.example.juanshichang.bean.*
 import com.example.juanshichang.fragment.OneFragment.Companion.WebUrl
 import com.example.juanshichang.fragment.OneFragment.Companion.getWebLink
 import com.example.juanshichang.utils.GlideImageLoader
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
@@ -203,7 +204,7 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
                 BaseActivity.goStartActivity(mContext, intent)
             } else {
                 ToastUtil.showToast(this.mContext!!, "这个商品类型异常,快去看日志...")
-                Log.e(
+                LogTool.e(
                     "shopping",
                     "id:" + imgs!![it].banner_id + "  type" + imgs!![it].type
                 ) //1.列表

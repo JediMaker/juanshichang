@@ -8,9 +8,7 @@ import android.os.CountDownTimer
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.AbsListView
-import android.widget.AdapterView
-import android.widget.ListView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,13 +16,16 @@ import butterknife.OnClick
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
+import com.example.juanshichang.activity.ClassTypeActivity
 import com.example.juanshichang.activity.LookAllActivity
 import com.example.juanshichang.adapter.ClassifyListAdpater
 import com.example.juanshichang.adapter.TwoRecyclerAdapter
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.TabOneBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
+import com.example.juanshichang.utils.ToastTool
 import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
 import kotlinx.coroutines.Runnable
@@ -39,6 +40,9 @@ import kotlin.collections.ArrayList
  * @文件作用: 学院页面
  */
 class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
+    private var mTl: LinearLayout? = null
+    private var tEdit: EditText? = null
+    private var tSearch: TextView? = null
     var mTSwipeRefreshLayout: SwipeRefreshLayout? = null
     private var mList: ListView? = null
     private var mLA: ClassifyListAdpater? = null
@@ -52,6 +56,9 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
     }
 
     override fun initViews(savedInstanceState: Bundle) {
+        mTl = mBaseView?.findViewById<LinearLayout>(R.id.mainTwo) //头部搜索框
+        tEdit = mBaseView?.findViewById<EditText>(R.id.mainTEdit)
+        tSearch = mBaseView?.findViewById<TextView>(R.id.mainTSearch)
         mTSwipeRefreshLayout = mBaseView?.findViewById<SwipeRefreshLayout>(R.id.mTSwipeRefreshLayout)
         mList = mBaseView?.findViewById<ListView>(R.id.mList)
         listData = ArrayList()
@@ -73,7 +80,22 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
         mRecycler?.layoutManager = lm
         mRecycler?.adapter = mRA
     }
-
+    @OnClick(R.id.mainTSearch)
+    fun thisOnClick(v:View){
+        when(v.id){
+            R.id.mainTSearch ->{
+                val str = getEditText()
+                if (!TextUtils.isEmpty(str)) {
+                    val intent = Intent(mContext!!, ClassTypeActivity::class.java)
+                    intent.putExtra("keyword", str)
+                    startActivity(intent)
+                    tEdit?.text = null
+                } else {
+                    ToastUtil.showToast(mContext!!, "搜索关键字不能为空")
+                }
+            }
+        }
+    }
     override fun initData() {
         mTSwipeRefreshLayout?.setOnRefreshListener(this)
         getOneT(0,leftSelect)
@@ -157,11 +179,19 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
                     isRefresh = false
                 }
             },2000)
-            ToastUtil.showToast(mContext!!,"双击刷新 当前条目")
+            ToastTool.showToast(mContext!!,"双击刷新 当前条目")
         }else{
             onRefresh() // 调用刷新
             isRefresh = false
         }
+    }
+    //获取 输入框数据
+    private fun getEditText(): String {//获取Edit数据
+        val text = tEdit?.text.toString().trim()
+        if (text.length > 0 && !TextUtils.isEmpty(text)) {
+            return text
+        }
+        return ""
     }
     //网络请求
     private fun getOneT(parent_id:Int,leftSelect:Int){
@@ -198,11 +228,11 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "T - Tab加载完成!")
+                    LogTool.e("onCompleted", "T - Tab加载完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    Log.e("onError", "T - Tab加载失败!"+e)
+                    LogTool.e("onError", "T - Tab加载失败!"+e)
                 }
             })
     }
@@ -233,11 +263,11 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "T - Tab2加载完成!")
+                LogTool.e("onCompleted", "T - Tab2加载完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "T - Tab2加载失败!"+e)
+                LogTool.e("onError", "T - Tab2加载失败!"+e)
             }
         })
     }

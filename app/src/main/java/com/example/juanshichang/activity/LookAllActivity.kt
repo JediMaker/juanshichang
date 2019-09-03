@@ -17,10 +17,7 @@ import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.CargoListBean
 import com.example.juanshichang.bean.TabOneBean
 import com.example.juanshichang.http.HttpManager
-import com.example.juanshichang.utils.ActivityManager
-import com.example.juanshichang.utils.StatusBarUtil
-import com.example.juanshichang.utils.TabCreateUtils
-import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_look_all.*
 import kotlinx.android.synthetic.main.fragment_one.*
@@ -169,11 +166,11 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "T - Tab2加载完成!")
+                    LogTool.e("onCompleted", "T - Tab2加载完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    Log.e("onError", "T - Tab2加载失败!"+e)
+                    LogTool.e("onError", "T - Tab2加载失败!"+e)
                 }
             })
     }
@@ -211,11 +208,11 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "商品请求完成!")
+                    LogTool.e("onCompleted", "商品请求完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    Log.e("onError", "商品请求错误!" + e)
+                    LogTool.e("onError", "商品请求错误!" + e)
                 }
 
             })
@@ -239,6 +236,7 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
                     mRequestId = data[index-1].category_id
                     cargoList(page,mRequestId)
                 }
+                LaTitle.text = categoryList!![index]
             }
         })
         if(itemType!=0){

@@ -24,6 +24,7 @@ import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.CargoListBean
 import com.example.juanshichang.bean.TabOneBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.LiveDataBus
@@ -148,7 +149,7 @@ class OneOtherFragment : BaseFragment() {
             .with("main_tab",String::class.java)
             .observe(this,object : Observer<String>{
                 override fun onChanged(t: String?) {
-                    Log.e("yyyyyyy","监听到了消息:"+t)
+                    LogTool.e("yyyyyyy","监听到了消息:"+t)
                     FathPage = t?.toInt()!!
                     returnState()
                     getTwoT(FathPage)
@@ -190,11 +191,11 @@ class OneOtherFragment : BaseFragment() {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "T - Tab2加载完成!")
+                LogTool.e("onCompleted", "T - Tab2加载完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "T - Tab2加载失败!"+e)
+                LogTool.e("onError", "T - Tab2加载失败!"+e)
             }
         })
     }
@@ -231,11 +232,11 @@ class OneOtherFragment : BaseFragment() {
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "商品请求完成!")
+                    LogTool.e("onCompleted", "商品请求完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    Log.e("onError", "商品请求错误!" + e)
+                    LogTool.e("onError", "商品请求错误!" + e)
                 }
 
             })

@@ -12,6 +12,7 @@ import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
@@ -94,8 +95,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理
-                        Log.e("token",token)
-                        var user = SpUtil.getIstance().user
+                        LogTool.e("LogToken",token)
+                        val user = SpUtil.getIstance().user
                         user.usertoken = token
                         SpUtil.getIstance().user = user //写入
                         if (token != "" && !TextUtils.isEmpty(token)) {
@@ -108,11 +109,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted","登录请求完成!")
+                LogTool.e("onCompleted","登录请求完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError","登录请求错误!"+e)
+                LogTool.e("onError","登录请求错误!"+e)
             }
 
         })

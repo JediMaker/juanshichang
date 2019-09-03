@@ -17,7 +17,9 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.CargoListBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.StatusBarUtil
+import com.example.juanshichang.utils.ToastTool
 import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
 
@@ -112,7 +114,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
                     page = 1
                     cargoList(str, page, 20, type, 0)
                 } else {
-                    ToastUtil.showToast(this@ClassTypeActivity, "大侠 你想找什么")
+                    ToastTool.showToast(this@ClassTypeActivity, "大侠 你想找什么")
                 }
 
             }
@@ -193,11 +195,11 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "搜索商品完成!")
+                    LogTool.e("onCompleted", "搜索商品完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    Log.e("onError", "搜索商品请求错误!" + e)
+                    LogTool.e("onError", "搜索商品请求错误!" + e)
                 }
 
             })

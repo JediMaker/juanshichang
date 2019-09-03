@@ -198,7 +198,7 @@ class OneFragment : BaseFragment() {
             .post(Api.CATEGORY, Parameter.getTabData(parent_id, 0), object : Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                        var jsonObj: JSONObject = JSONObject(str)
+                        val jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
                             ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
                         } else {
@@ -212,11 +212,11 @@ class OneFragment : BaseFragment() {
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "Tab加载完成!")
+                    LogTool.e("onCompleted", "Tab加载完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    Log.e("onError", "Tab加载失败!" + e)
+                    LogTool.e("onError", "Tab加载失败!" + e)
                 }
             })
     }
@@ -241,9 +241,9 @@ class OneFragment : BaseFragment() {
                                     )
                                 } else {
                                     val jsonObjs = jsonObj.getJSONObject("data")
-                                    Log.e("kkkkk", jsonObjs.toString())
+                                    LogTool.e("web kkkkk", jsonObjs.toString())
                                     WebUrl = jsonObjs.getString("url")
-                                    Log.e("kkkkk", WebUrl.toString())
+                                    LogTool.e("web kkkkk", WebUrl.toString())
 //                            context.runOnUiThread(Runnable {
 //                                var intent = Intent(context,WebActivity::class.java)
 //                                intent.putExtra("mobile_short_url",WebUrl!!.trim())  //todo 偷天换日法
@@ -262,11 +262,11 @@ class OneFragment : BaseFragment() {
                         }
 
                         override fun onCompleted() {
-                            Log.e("onCompleted", "Banner加载完成!")
+                            LogTool.e("onCompleted", "Banner加载完成!")
                         }
 
                         override fun onError(e: Throwable?) {
-                            Log.e("onError", "Banner加载失败!")
+                            LogTool.e("onError", "Banner加载失败!")
                         }
                     })
         }

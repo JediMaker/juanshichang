@@ -122,7 +122,7 @@ class MainActivity : BaseActivity() {
                     BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
                     finish()
                 } else {
-                    ToastUtil.showToast(this@MainActivity, "登录检查通过2")
+                    ToastTool.showToast(this@MainActivity, "登录检查通过2")
                 }*/
                 return@OnNavigationItemSelectedListener true
             }
@@ -185,7 +185,7 @@ class MainActivity : BaseActivity() {
         vp_main.adapter = normalAdapter
         vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
         val token = SpUtil.getIstance().user.usertoken
-        Log.e("token", "本地的token值为:" + token)
+        LogTool.e("token", "本地的token值为:" + token)
         if (token != null && !TextUtils.isEmpty(token)) {
             downUser(this@MainActivity)
         }
@@ -339,11 +339,11 @@ class MainActivity : BaseActivity() {
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "用户信息请求完成!")
+                    LogTool.e("onCompleted", "用户信息请求完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    Log.e("onError", "用户信息请求错误!")
+                    LogTool.e("onError", "用户信息请求错误!")
                 }
             })
         }

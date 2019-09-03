@@ -37,7 +37,7 @@ class SplashActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
-        var GxmQ:Boolean = MyApp.sp.getBoolean("FIRST", true)
+        val GxmQ:Boolean = MyApp.sp.getBoolean("FIRST", true)
         val edit = MyApp.sp.edit()
         edit.putString("appkey","0371.ml.appkey")
         edit.apply()
@@ -48,6 +48,8 @@ class SplashActivity : FragmentActivity() {
             //首次登录 拿取appKey
             MyApp.requestPermission(this@SplashActivity)
         }else{
+            splash_img.visibility = View.VISIBLE
+            tv.visibility = View.VISIBLE
             //各个第三方的初始化 以及获取版本信息
             Handler().postDelayed(Runnable{
                 goActivity(this@SplashActivity)
@@ -62,7 +64,7 @@ class SplashActivity : FragmentActivity() {
                 MyApp.sp.edit().putBoolean("FIRST", false).apply()
             }
             goActivity(this@SplashActivity)
-            Handler().removeCallbacksAndMessages(0)
+            finish()
         }
     }
 
@@ -72,12 +74,12 @@ class SplashActivity : FragmentActivity() {
         }else{
 //            BaseActivity.goStartActivity(context,LoginActivity())
             BaseActivity.goStartActivity(context,MainActivity())
-            ToastUtil.showToast(this@SplashActivity,"大侠 尚未登录 如何畅游江湖")
+            ToastTool.showToast(this@SplashActivity,"大侠 尚未登录 如何畅游江湖")
         }
         finish()
     }
     private fun setBanner(){
-        tv.visibility = View.INVISIBLE
+        sBanner.visibility = View.VISIBLE
         val dataList:List<Int> = mutableListOf(R.drawable.spone,R.drawable.sptwo,R.drawable.spthree)
         sBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR) //显示数字指示器
         //设置指示器位置（当banner模式中有指示器时）
@@ -95,7 +97,7 @@ class SplashActivity : FragmentActivity() {
         var oldP:Int = 0
         sBanner.setOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
-                Log.e("eeeeee1","11:$state")
+                LogTool.e("eeeeee1","11:$state")
             }
 
             override fun onPageScrolled(
@@ -104,12 +106,13 @@ class SplashActivity : FragmentActivity() {
                 positionOffsetPixels: Int
             ) {
 
-                Log.e("eeeeee","1:$position  2:$positionOffset  3:$positionOffsetPixels")
+                LogTool.e("eeeeee","1:$position  2:$positionOffset  3:$positionOffsetPixels")
             }
 
             override fun onPageSelected(position: Int) {
                 if(dataList.size-1 == position){
                     tv.visibility = View.VISIBLE
+                    tv.text = "进入应用"
                 }else{
                     tv.visibility = View.INVISIBLE
                 }
@@ -118,5 +121,10 @@ class SplashActivity : FragmentActivity() {
 
         })
         sBanner.start()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Handler().removeCallbacksAndMessages(0)
     }
 }

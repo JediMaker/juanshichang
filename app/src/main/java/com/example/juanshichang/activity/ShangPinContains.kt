@@ -27,10 +27,7 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.http.HttpManager
-import com.example.juanshichang.utils.GlideImageLoader
-import com.example.juanshichang.utils.ShareUtil
-import com.example.juanshichang.utils.ToastUtil
-import com.example.juanshichang.utils.Util
+import com.example.juanshichang.utils.*
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.MyScrollView
 import com.google.gson.Gson
@@ -228,11 +225,11 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "商品详情加载完成1!")
+                LogTool.e("onCompleted", "商品详情加载完成1!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "商品详情加载失败1!" + e)
+                LogTool.e("onError", "商品详情加载失败1!" + e)
             }
         })
     }
@@ -265,11 +262,11 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "分享链接加载完成!")
+                    LogTool.e("onCompleted", "分享链接加载完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    Log.e("onError", "分享链接加载失败!" + e)
+                    LogTool.e("onError", "分享链接加载失败!" + e)
                 }
 
             })

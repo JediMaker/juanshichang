@@ -11,6 +11,7 @@ import androidx.core.widget.addTextChangedListener
 import com.example.juanshichang.R
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.utils.StatusBarUtil
+import com.example.juanshichang.utils.ToastTool
 import com.example.juanshichang.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_searche.*
 import kotlinx.android.synthetic.main.activity_seek_bar.*
@@ -66,17 +67,17 @@ class SearcheActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             mbackLayout -> {//返回
-                ToastUtil.showToast(this@SearcheActivity, "返回")
+                ToastTool.showToast(this@SearcheActivity, "返回")
                 finish()
             }
             etsearch -> {//搜索框
-                ToastUtil.showToast(this@SearcheActivity, "开始搜索")
+                ToastTool.showToast(this@SearcheActivity, "开始搜索")
             }
             mSearchBt -> {//搜索按钮
                 val str = getEditText()
                 if(!TextUtils.isEmpty(str)){
-                    ToastUtil.showToast(this@SearcheActivity, "开始寻找...")
-                    var intent = Intent(this@SearcheActivity,ClassTypeActivity::class.java)
+                    ToastTool.showToast(this@SearcheActivity, "开始寻找...")
+                    val intent = Intent(this@SearcheActivity,ClassTypeActivity::class.java)
                     intent.putExtra("keyword",str)
                     startActivity(intent)
                     finish()

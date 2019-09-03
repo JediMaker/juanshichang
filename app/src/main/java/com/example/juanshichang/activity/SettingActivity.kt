@@ -74,10 +74,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             unlogin -> { //退出登录
-                this.showDialog(
-                    BaseActivity.TOAST_WARN,
-                    "确认退出吗？",
-                    "确定",
+                this.showRegisterDialog(
+                    "提示",
+                    "确认退出登录吗？",
+                    "退出",
+                        R.color.indicatorRed,
                     "取消",
                     object : BaseActivity.DialogCallback {
                         override fun sure() {
@@ -86,12 +87,12 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                                     Glide.get(this@SettingActivity).clearDiskCache()//磁盘缓存清理
                                 }
                             }.start()
-                            Log.e("uuid", "执行清理程序")
-                            MyApp.sp.edit().remove("uu").commit()
+                            LogTool.e("uuid", "执行清理程序")
+                            MyApp.sp.edit().remove("uu").apply() //延时清理
                             SpUtil.getIstance().getDelete()
                             Util.removeCookie(this@SettingActivity)
                             ToastUtil.showToast(this@SettingActivity, "清理完成")
-                            LiveDataBus.get().with("mainGo").value =  0
+                            LiveDataBus.get().with("mainGo").value =  0 //发送返回主界面广播
                             finish()
                         }
 
@@ -99,7 +100,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
 
                         }
 
-                    })
+                    },false)
             }
             setRet -> {
                 this@SettingActivity.finish()
@@ -144,11 +145,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "用户Set加载完成!")
+                LogTool.e("onCompleted", "用户Set加载完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "用户Set加载失败!" + e)
+                LogTool.e("onError", "用户Set加载失败!" + e)
             }
 
         })
@@ -282,9 +283,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             dialog.dismiss()
         })
         uNDialog?.addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
-            val newName = uNDialog?.editText?.text
-            if (!newName?.equals(userName)!!) {
-                if (newName != null && !TextUtils.isEmpty(newName)) {
+            val newName = uNDialog?.editText?.text.toString()
+            if (!newName.equals(userName.toString())) {
+                if (!TextUtils.isEmpty(newName) && newName!="") {
                     if (newName.length > 10) {
                         ToastUtil.showToast(this@SettingActivity, "昵称过长 请重新设置")
                         uNDialog?.editText?.setText("")
@@ -342,7 +343,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                         SpUtil.getIstance().user = user
                         this@SettingActivity.runOnUiThread(object : Runnable {
                             override fun run() {
-                                ToastUtil.showToast(this@SettingActivity, "昵称修改成功")
+                                ToastTool.showToast(this@SettingActivity, "昵称修改成功")
                                 userName = nickname
                             }
                         })
@@ -351,11 +352,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "昵称修改加载完成!")
+                LogTool.e("onCompleted", "昵称修改加载完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "昵称修改加载失败!" + e)
+                LogTool.e("onError", "昵称修改加载失败!" + e)
                 this@SettingActivity.runOnUiThread(object : Runnable {
                     override fun run() {
                         ToastUtil.showToast(this@SettingActivity, "昵称修改失败,请稍后重试")
@@ -398,11 +399,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted", "头像修改完成!")
+                LogTool.e("onCompleted", "头像修改完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "头像修改失败!" + e)
+                LogTool.e("onError", "头像修改失败!" + e)
                 this@SettingActivity.runOnUiThread(object : Runnable {
                     override fun run() {
                         dismissProgressDialog()

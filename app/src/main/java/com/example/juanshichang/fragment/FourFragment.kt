@@ -11,6 +11,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.lifecycle.Observer
 import butterknife.OnClick
 import com.example.juanshichang.MainActivity
 
@@ -25,6 +26,7 @@ import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.LiveDataBus
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_five.*
 import kotlinx.coroutines.Runnable
 
@@ -43,11 +45,20 @@ class FourFragment : BaseFragment() {
     }
 
     override fun initViews(savedInstanceState: Bundle) {
-
+        setUiData(SpUtil.getIstance().user)
     }
 
     override fun initData() {
+
         cm = mContext?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        //当接收到该 广播 并且 没有登录 就表示 用户 退出了登录
+        LiveDataBus.get().with("mainGo",Int::class.java).observe(this,object : Observer<Int> {
+            override fun onChanged(t: Int?) {
+                if (!Util.hasLogin()) {
+                    goNet = 0
+                }
+            }
+        })
     }
 
     @OnClick(R.id.ffUserSet, R.id.ffCopy, R.id.earnings, R.id.orderForm, R.id.myFans, R.id.myInvite)
