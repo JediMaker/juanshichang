@@ -139,10 +139,10 @@
 
                     </LinearLayout>
                     <!-- 名称-->
+<!--                    android:drawablePadding="12px"-->
+<!--                    android:drawableLeft="@drawable/details_icon3"-->
                     <TextView
                             android:id="@+id/spName"
-                            android:drawableLeft="@drawable/details_icon3"
-                            android:drawablePadding="12px"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"

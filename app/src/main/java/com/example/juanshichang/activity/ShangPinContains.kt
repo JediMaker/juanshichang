@@ -43,7 +43,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
     var goods_id: Long = 0 //从正常列表进入
     var theme_id: Long = 0  //Banner进入
     //    var mall_name: String? = null //店铺名称
-    val goods_id_def: Long = 0
+    val goods_id_def: Long = Long.MAX_VALUE
     var goods: SDB.GoodsDetail? = null
     var goodsPromotionUrl: PSP.GoodsPromotionUrl? = null
     var cm: ClipboardManager? = null
@@ -54,12 +54,32 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
             when (msg.what) {
                 1 -> {
                     mClipData =
-                        ClipData.newPlainText("Label", goodsPromotionUrl?.mobile_short_url)// 创建URL型ClipData
+                        ClipData.newPlainText(
+                            "Label",
+                            goodsPromotionUrl?.mobile_short_url
+                        )// 创建URL型ClipData
                     cm?.setPrimaryClip(mClipData!!)  // 将ClipData内容放到系统剪贴板里
                     ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板ds")
                 }
                 2 -> {
                     ToastUtil.showToast(this@ShangPinContains, "该商品暂无分享链接")
+                }
+                3 -> {
+                    if (goods != null) {
+                        setData(goods!!,2)
+                        LogTool.e("shangping_net", "handler 刷新了一次")
+                        sendEmptyMessageDelayed(4,500)
+                    } else {
+                        searchDetailList(Api.Pdd, goods_id)
+                        ToastTool.showToast(this@ShangPinContains, "又一次请求网络")
+                        LogTool.e("shangping_net", "重新请求网络")
+                    }
+                }
+                4->{
+                    if(goods?.goods_gallery_urls?.size!! > 0){
+                        setRecycler(goods?.goods_gallery_urls as MutableList<String>)
+                        LogTool.e("shangping_net", "handler 刷新了一次 Recycler")
+                    }
                 }
             }
         }
@@ -71,11 +91,19 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
         meBanner.visibility = View.INVISIBLE
-        if (goods_id_def != intent.getLongExtra("goods_id", 0)) { //&& null != intent.getStringExtra("mall_name")
-            goods_id = intent.getLongExtra("goods_id", 0)
+        if (goods_id_def != intent.getLongExtra(
+                "goods_id",
+                Long.MAX_VALUE
+            )
+        ) { //&& null != intent.getStringExtra("mall_name")
+            goods_id = intent.getLongExtra("goods_id", Long.MAX_VALUE)
             searchDetailList(Api.Pdd, goods_id)
-        } else if(goods_id_def != intent.getLongExtra("theme_id", 0)){ //从banner 传入  todo
-            theme_id = intent.getLongExtra("theme_id", 0)
+        } else if (goods_id_def != intent.getLongExtra(
+                "theme_id",
+                Long.MAX_VALUE
+            )
+        ) { //从banner 传入  todo
+            theme_id = intent.getLongExtra("theme_id", Long.MAX_VALUE)
         } else {
             ToastUtil.showToast(this@ShangPinContains, "数据传输错误,请稍后重试!!!")
             finish()
@@ -100,8 +128,8 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
             mbackLayouts -> {
                 finish()
             }
-            goTop ->{
-                nestedScrollView.post(object:kotlinx.coroutines.Runnable {
+            goTop -> {
+                nestedScrollView.post(object : kotlinx.coroutines.Runnable {
                     override fun run() {
                         nestedScrollView.fullScroll(ScrollView.FOCUS_UP) //// 滚动至顶部  FOCUS_DOWN 滚动到底部
                     }
@@ -125,17 +153,25 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                     try {
                         if (null == goodsPromotionUrl) {
                             sharePath(1, goods_id, Api.Pdd)
-                        }else{
-                            ShareUtil.shareText(this,"劵市场",goodsPromotionUrl?.mobile_short_url,"商品分享")
+                        } else {
+                            ShareUtil.shareText(
+                                this,
+                                "劵市场",
+                                goodsPromotionUrl?.mobile_short_url,
+                                "商品分享"
+                            )
                         }
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         //分享弹窗失败 就复制到粘贴板、
                         if (null == goodsPromotionUrl) {
                             sharePath(1, goods_id, Api.Pdd)
                         } else {
                             if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)) {
                                 mClipData =
-                                    ClipData.newPlainText("Label", goodsPromotionUrl?.mobile_short_url)// 创建URL型ClipData
+                                    ClipData.newPlainText(
+                                        "Label",
+                                        goodsPromotionUrl?.mobile_short_url
+                                    )// 创建URL型ClipData
                                 cm?.setPrimaryClip(mClipData!!)  // 将ClipData内容放到系统剪贴板里
                                 ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板s")
                             } else {
@@ -158,7 +194,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                     goStartActivity(this@ShangPinContains, Reg2LogActivity())
                 }
             }
-            sPYHlq->{ //立即领劵
+            sPYHlq -> { //立即领劵
                 if (Util.hasLogin()) {
                     val intent = Intent(this@ShangPinContains, WebActivity::class.java)
                     if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)) {
@@ -199,85 +235,108 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
 //    }
     //正常列表进入获取商品详细信息
     private fun searchDetailList(servicer: String, goods_id: Long) {
-        HttpManager.getInstance().post(Api.SEARCHDETAIL, Parameter.getSearchDetailsMap(servicer, goods_id), object :
-            Subscriber<String>() {
-            override fun onNext(str: String?) {
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject? = null
-                    jsonObj = JSONObject(str)
-                    if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(this@ShangPinContains, jsonObj.optString(JsonParser.JSON_MSG))
-                    } else {
-                        var searchDetailBean = Gson().fromJson(str, SDB.SearchDetailBean::class.java)
-                        goods = searchDetailBean.data.goods_detail_response.goods_details.get(0)
-                        if (null != goods) {
-                            this@ShangPinContains.runOnUiThread(object : Runnable {
-                                override fun run() {
-                                    setData(goods!!)
-                                }
-                            })
-                        }
-                        if (Util.hasLogin()) {
-                            sharePath(0, goods_id, Api.Pdd)
-                        }
-                    }
-                }
-            }
-
-            override fun onCompleted() {
-                LogTool.e("onCompleted", "商品详情加载完成1!")
-            }
-
-            override fun onError(e: Throwable?) {
-                LogTool.e("onError", "商品详情加载失败1!" + e)
-            }
-        })
-    }
-    /**
-     * 获取分享链接 必须登录
-     */
-    private fun sharePath(isHandler: Int, goods_id: Long, servicer: String) { //不为0 则启动handler刷新
         HttpManager.getInstance()
-            .post(Api.SHARE, Parameter.getShareMap("login", goods_id, servicer), object : Subscriber<String>() {
+            .post(Api.SEARCHDETAIL, Parameter.getSearchDetailsMap(servicer, goods_id), object :
+                Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject? = null
                         jsonObj = JSONObject(str)
                         if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                            ToastUtil.showToast(this@ShangPinContains, jsonObj.optString(JsonParser.JSON_MSG))
+                            ToastUtil.showToast(
+                                this@ShangPinContains,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
                         } else {
-//                        val pddSharePath: PddSharePath = Gson().fromJson(str, PddSharePath::class.java)
-                            val pddSharePath = Gson().fromJson(str, PSP.PddSharePath::class.java)
-                            goodsPromotionUrl =
-                                pddSharePath.data.goods_promotion_url_generate_response.goods_promotion_url_list[0]
-                            if (null != goodsPromotionUrl && isHandler != 0) {
-                                handler.sendEmptyMessage(1)
+                            var searchDetailBean =
+                                Gson().fromJson(str, SDB.SearchDetailBean::class.java)
+                            goods = searchDetailBean.data.goods_detail_response.goods_details.get(0)
+                            if (null != goods) {
+                                this@ShangPinContains.runOnUiThread(object : Runnable {
+                                    override fun run() {
+                                        setData(goods!!,1)
+                                        handler.sendEmptyMessageDelayed(3, 300)
+                                    }
+                                })
                             }
-                            if (null == goodsPromotionUrl) {
-                                handler.sendEmptyMessage(2)
+                            if (Util.hasLogin()) {
+                                sharePath(0, goods_id, Api.Pdd)
                             }
                         }
                     }
-
                 }
 
                 override fun onCompleted() {
-                    LogTool.e("onCompleted", "分享链接加载完成!")
+                    LogTool.e("onCompleted", "商品详情加载完成1!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    LogTool.e("onError", "分享链接加载失败!" + e)
+                    LogTool.e("onError", "商品详情加载失败1!" + e)
                 }
-
             })
     }
 
-    private fun setData(goods: SDB.GoodsDetail) {
-        setBanner(goods.goods_gallery_urls as MutableList<String>) // 初始化bannner
-        spName.text = goods.goods_name //名称
-        spJinEr.text = Util.getFloatPrice((goods.min_group_price-goods.coupon_discount).toLong()) //最低价sku的拼团价，单位为分
-        original_cost_view.text = Util.getFloatPrice(goods.min_normal_price.toLong()) //最低价sku的单买价，单位为分
-        shangPinFw.post(object : Runnable{
+    /**
+     * 获取分享链接 必须登录
+     */
+    private fun sharePath(isHandler: Int, goods_id: Long, servicer: String) { //不为0 则启动handler刷新
+        HttpManager.getInstance()
+            .post(
+                Api.SHARE,
+                Parameter.getShareMap("login", goods_id, servicer),
+                object : Subscriber<String>() {
+                    override fun onNext(str: String?) {
+                        if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                            var jsonObj: JSONObject? = null
+                            jsonObj = JSONObject(str)
+                            if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                                ToastUtil.showToast(
+                                    this@ShangPinContains,
+                                    jsonObj.optString(JsonParser.JSON_MSG)
+                                )
+                            } else {
+//                        val pddSharePath: PddSharePath = Gson().fromJson(str, PddSharePath::class.java)
+                                val pddSharePath =
+                                    Gson().fromJson(str, PSP.PddSharePath::class.java)
+                                goodsPromotionUrl =
+                                    pddSharePath.data.goods_promotion_url_generate_response.goods_promotion_url_list[0]
+                                if (null != goodsPromotionUrl && isHandler != 0) {
+                                    handler.sendEmptyMessage(1)
+                                }
+                                if (null == goodsPromotionUrl) {
+                                    handler.sendEmptyMessage(2)
+                                }
+                            }
+                        }
+
+                    }
+
+                    override fun onCompleted() {
+                        LogTool.e("onCompleted", "分享链接加载完成!")
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        LogTool.e("onError", "分享链接加载失败!" + e)
+                    }
+
+                })
+    }
+
+    private fun setData(goods: SDB.GoodsDetail,type:Int) {
+        if(type == 1){
+            setBanner(goods.goods_gallery_urls as MutableList<String>) // 初始化bannner
+        }
+//        spName.text = goods.goods_name //名称
+        spName.text = TextAndPictureUtil.getText(
+            this@ShangPinContains,
+            goods.goods_name,
+            R.drawable.details_icon3
+        )
+        spJinEr.text =
+            Util.getFloatPrice((goods.min_group_price - goods.coupon_discount).toLong()) //最低价sku的拼团价，单位为分
+        original_cost_view.text =
+            Util.getFloatPrice(goods.min_normal_price.toLong()) //最低价sku的单买价，单位为分
+        shangPinFw.post(object : Runnable {
             override fun run() {
                 getTags(goods.service_tags)//服务
             }
@@ -288,43 +347,52 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         lgst_txt.text = goods.lgst_txt //物流分
         shop_name.text = goods.mall_name //店铺名
         shangPinJs.text = goods.goods_desc //介绍
-        if(!goods.has_coupon){ //是否有优惠劵
+        if (!goods.has_coupon) { //是否有优惠劵
             spYhj.visibility = View.GONE
             spGou.text = "立即购买"
-        }else{
+        } else {
             //这里可以判断 用户优惠劵 是否过期....
-            if((goods.coupon_total_quantity - goods.coupon_remain_quantity) < goods.coupon_total_quantity){ //总数 和 剩余
+            if ((goods.coupon_total_quantity - goods.coupon_remain_quantity) < goods.coupon_total_quantity) { //总数 和 剩余
                 val juan = Util.getIntPrice(goods.coupon_discount.toLong())
                 sPYHme.text = "$juan 元优惠劵"
-                sPYHDate.text = "有效日期:" + Util.getDateToString(goods.coupon_start_time.toLong())+"到"+Util.getDateToString(goods.coupon_end_time.toLong())
+                sPYHDate.text =
+                    "有效日期:" + Util.getDateToString(goods.coupon_start_time.toLong()) + "到" + Util.getDateToString(
+                        goods.coupon_end_time.toLong()
+                    )
                 spGou.text = "立即购买\n(省$juan 元)"
-            }else{ //这里进行优惠劵数量为0的处理
+            } else { //这里进行优惠劵数量为0的处理
                 //暂时设置为隐藏吧!!!
                 spYhj.visibility = View.GONE
                 spGou.text = "立即购买"
             }
         }
-        val promotionRate = Util.getProportion(goods.min_group_price.toLong(),goods.coupon_discount.toLong(),goods.promotion_rate,goods.has_coupon)
+        val promotionRate = Util.getProportion(
+            goods.min_group_price.toLong(),
+            goods.coupon_discount.toLong(),
+            goods.promotion_rate,
+            goods.has_coupon
+        )
         sPSY.text = "收益:$promotionRate"
         spJia.text = "分享\n(收益$promotionRate 元)"
-        GlideUtil.loadImage(this,goods.mall_logo,shop_img)
+        GlideUtil.loadImage(this, goods.mall_logo, shop_img)
 
         //获取SocllView的高度  ScrollView组件只允许一个子View，可以利用这一个特性，获取子View的高度即所要的ScrollView的整体高度
-        nestedScrollView.setOnScrollListener(object : MyScrollView.OnScrollListener{
+        nestedScrollView.setOnScrollListener(object : MyScrollView.OnScrollListener {
             override fun onScroll(scrollY: Int) {
-                if(scrollY > 800){
+                if (scrollY > 800) {
                     goTop.visibility = View.VISIBLE
-                }else{
+                } else {
                     goTop.visibility = View.GONE
                 }
             }
         })
     }
-    private fun getTags(serviceTags: List<Int>){  //返回支持的服务
-        if (serviceTags.size != 0 && !TextUtils.isEmpty(serviceTags.toString())) {
 
-            var sbs: ArrayList<String> = ArrayList()
-            for (index in 1 until serviceTags.size) {
+    private fun getTags(serviceTags: List<Int>?) {  //返回支持的服务
+        if (serviceTags != null && serviceTags.size != 0) { //!TextUtils.isEmpty(serviceTags.toString())
+            val sbs: ArrayList<String> = ArrayList()
+            for (index in 0 until serviceTags.size) {
+                LogTool.e("shangping_net", "卖家服务  ${serviceTags[index]}")
                 when (serviceTags[index]) {
                     4 -> {
                         sbs.add("送货入户并安装;")
@@ -389,30 +457,30 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                 }
             }
             shangPinFw.visibility = View.VISIBLE
-             if(sbs.size == 1){
+            if (sbs.size == 1) {
                 spShouyi.text = sbs[0]
                 spShouyi2.visibility = View.INVISIBLE
                 spShouyi3.visibility = View.INVISIBLE
                 spShouyi4.visibility = View.INVISIBLE
-            }else if(sbs.size == 2){
+            } else if (sbs.size == 2) {
                 spShouyi.text = sbs[0]
                 spShouyi2.text = sbs[1]
                 spShouyi3.visibility = View.INVISIBLE
                 spShouyi4.visibility = View.INVISIBLE
-            }else if(sbs.size == 3){
+            } else if (sbs.size == 3) {
                 spShouyi.text = sbs[0]
                 spShouyi2.text = sbs[1]
                 spShouyi3.text = sbs[2]
                 spShouyi4.visibility = View.INVISIBLE
-            }else if(sbs.size >= 4){
+            } else if (sbs.size >= 4) {
                 spShouyi.text = sbs[0]
                 spShouyi2.text = sbs[1]
                 spShouyi3.text = sbs[2]
                 spShouyi4.text = sbs[3]
-            }else{
-                 shangPinFw.visibility = View.GONE
-             }
-        }else{
+            } else {
+                shangPinFw.visibility = View.GONE
+            }
+        } else {
             shangPinFw.visibility = View.GONE
         }
     }
@@ -449,20 +517,23 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         //banner设置方法全部调用完毕时最后调用
         meBanner.start()
         //这里初始化商品详情
-        shangpinList.post(object:Runnable{
+        setRecycler(imgUrls)
+    }
+    private fun setRecycler(imgUrls: MutableList<String>){
+        shangpinList.post(object : Runnable {
             override fun run() {
-                shangpinList.layoutManager = LinearLayoutManager(this@ShangPinContains,RecyclerView.VERTICAL,false)
+                shangpinList.layoutManager =
+                    LinearLayoutManager(this@ShangPinContains, RecyclerView.VERTICAL, false)
                 //瀑布流加载图片
 //        shangpinList.layoutManager = StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
-                val adapterSp = ShangPinXqAdapter(R.layout.item_shangpin_xiangqing,imgUrls)
+                val adapterSp = ShangPinXqAdapter(R.layout.item_shangpin_xiangqing, imgUrls)
                 shangpinList.adapter = adapterSp
                 shangpinList.setHasFixedSize(false)
-                shangpinList.setPadding(0,0,0,botShangpin.height+3)
+                shangpinList.setPadding(0, 0, 0, botShangpin.height + 3)
                 adapterSp.notifyDataSetChanged()
             }
         })
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

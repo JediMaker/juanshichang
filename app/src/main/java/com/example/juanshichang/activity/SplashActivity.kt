@@ -26,10 +26,9 @@ import org.jetbrains.anko.sdk27.coroutines.onClick
 /**
  * @作者: yzq
  * @创建日期: 2019/7/17 11:31
- * @文件作用:
+ * @文件作用: 首页面
  */
-class SplashActivity : FragmentActivity() {
-
+class SplashActivity : FragmentActivity(),View.OnClickListener {
     /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
@@ -44,30 +43,27 @@ class SplashActivity : FragmentActivity() {
         setContentView(R.layout.activity_splash)
         if(GxmQ){ //第一次登录
 //            setContentView(R.layout.activity_splash)
-            setBanner()
+            BaseActivity.goStartActivity(this@SplashActivity,GuideActivity())
+            finish()
             //首次登录 拿取appKey
-            MyApp.requestPermission(this@SplashActivity)
         }else{
             splash_img.visibility = View.VISIBLE
             tv.visibility = View.VISIBLE
             //各个第三方的初始化 以及获取版本信息
             Handler().postDelayed(Runnable{
                 goActivity(this@SplashActivity)
-//                BaseActivity.goStartActivity(this@SplashActivity,MainActivity())
-//                finish()
             },3000)
         }
-        tv.setOnClickListener {
-//            BaseActivity.goStartActivity(this@SplashActivity,MainActivity())
-//            finish()
-            if(GxmQ){
-                MyApp.sp.edit().putBoolean("FIRST", false).apply()
+        tv.setOnClickListener(this)
+    }
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.tv ->{
+                goActivity(this@SplashActivity)
+                finish()
             }
-            goActivity(this@SplashActivity)
-            finish()
         }
     }
-
     private fun goActivity(context: Context) {
         if(Util.hasLogin()){
             BaseActivity.goStartActivity(context,MainActivity())
@@ -77,50 +73,6 @@ class SplashActivity : FragmentActivity() {
             ToastTool.showToast(this@SplashActivity,"大侠 尚未登录 如何畅游江湖")
         }
         finish()
-    }
-    private fun setBanner(){
-        sBanner.visibility = View.VISIBLE
-        val dataList:List<Int> = mutableListOf(R.drawable.spone,R.drawable.sptwo,R.drawable.spthree)
-        sBanner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR) //显示数字指示器
-        //设置指示器位置（当banner模式中有指示器时）
-        sBanner.setIndicatorGravity(BannerConfig.CENTER)//指示器居右
-        //设置图片加载器
-        sBanner.setImageLoader(GlideImageLoader(1))
-        //设置动画效果
-        sBanner.setBannerAnimation(Transformer.ZoomOutSlide)
-        sBanner.setImages(dataList)
-        sBanner.setOnBannerListener(object : OnBannerListener{
-            override fun OnBannerClick(position: Int) { //点击事件监听
-
-            }
-        })
-        var oldP:Int = 0
-        sBanner.setOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-            override fun onPageScrollStateChanged(state: Int) {
-                LogTool.e("eeeeee1","11:$state")
-            }
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-
-                LogTool.e("eeeeee","1:$position  2:$positionOffset  3:$positionOffsetPixels")
-            }
-
-            override fun onPageSelected(position: Int) {
-                if(dataList.size-1 == position){
-                    tv.visibility = View.VISIBLE
-                    tv.text = "进入应用"
-                }else{
-                    tv.visibility = View.INVISIBLE
-                }
-                oldP = position
-            }
-
-        })
-        sBanner.start()
     }
 
     override fun onDestroy() {

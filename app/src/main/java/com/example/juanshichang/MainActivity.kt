@@ -211,7 +211,7 @@ class MainActivity : BaseActivity() {
         views.addTab(views.newTab().setText(R.string.first).setIcon(R.drawable.tab_one))
         views.addTab(views.newTab().setText(R.string.study).setIcon(R.drawable.tab_two))
 //        views.addTab(views.newTab().setText(R.string.store).setIcon(R.drawable.tab_three))
-        views.addTab(views.newTab().setText(R.string.community).setIcon(R.drawable.tab_three))
+        views.addTab(views.newTab().setText(R.string.community).setIcon(R.drawable.tab_three_t))
         views.addTab(views.newTab().setText(R.string.me).setIcon(R.drawable.tab_four))
         views.addOnTabSelectedListener(mTabLayoutBottom)
         vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

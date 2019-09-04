@@ -26,7 +26,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.MessageActivity"></activity>
+        <activity android:name=".activity.GuideActivity"
+                android:configChanges="orientation|keyboardHidden"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity android:name=".activity.MessageActivity" />
         <activity android:name=".activity.LookAllActivity" />
 
         <meta-data

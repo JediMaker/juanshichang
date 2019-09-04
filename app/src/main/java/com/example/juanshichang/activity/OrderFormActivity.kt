@@ -27,7 +27,11 @@ import kotlinx.android.synthetic.main.activity_order_form.*
 import kotlinx.android.synthetic.main.activity_order_form.view.*
 import org.json.JSONObject
 import rx.Subscriber
-
+/**
+ * @作者：yzq
+ * @创建时间：2019/9/3 16:32
+ * @文件作用: 订单
+ */
 class OrderFormActivity : BaseActivity(), View.OnClickListener {
     private var ordersListData:ArrayList<OrdersBean.Data>? = null
     private var ordersAdpater:OrdersAdapter ? = null

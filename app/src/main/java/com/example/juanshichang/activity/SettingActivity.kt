@@ -279,7 +279,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         uNDialog?.setTitle("昵称")
         uNDialog?.setPlaceholder("在此输入您的昵称") //Hint
         uNDialog?.addAction("取消", QMUIDialogAction.ActionListener { dialog, index ->
-            ToastUtil.showToast(this@SettingActivity, "昵称未修改")
+            ToastTool.showToast(this@SettingActivity, "取消修改")
             dialog.dismiss()
         })
         uNDialog?.addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
@@ -290,6 +290,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                         ToastUtil.showToast(this@SettingActivity, "昵称过长 请重新设置")
                         uNDialog?.editText?.setText("")
                     } else {
+                        showProgressDialog()  //
                         setNewName(newName.toString().trim())
                         dialog.dismiss()
                     }
@@ -297,7 +298,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                     ToastUtil.showToast(this@SettingActivity, "昵称不能为空")
                 }
             } else {
-                ToastUtil.showToast(this@SettingActivity, "昵称未做修改")
+                ToastUtil.showToast(this@SettingActivity, "昵称未修改")
+                dialog.dismiss()
             }
         })
         uNDialog?.create()
@@ -345,6 +347,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                             override fun run() {
                                 ToastTool.showToast(this@SettingActivity, "昵称修改成功")
                                 userName = nickname
+                                dismissProgressDialog()
                             }
                         })
                     }

@@ -17,7 +17,7 @@
 
     <item
             android:id="@+id/community"
-            android:icon="@drawable/tab_three"
+            android:icon="@drawable/tab_three_t"
             android:title="@string/community" />
     <item
             android:id="@+id/me"
