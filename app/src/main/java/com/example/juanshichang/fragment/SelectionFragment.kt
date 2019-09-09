@@ -59,14 +59,18 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
                         if(mainList.size!=0){
                             mainList.clear()
                         }
-                        mainList.add(0,bHome!!)
-                        mainList.add(1,gHome!!)
-                        mainList.add(2,rHome!!)
-                        homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
+                        synchronized(SelectionFragment::class){
+                            mainList.add(0,bHome!!)
+                            mainList.add(1,gHome!!)
+                            mainList.add(2,rHome!!)
+                            homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
+                        }
 //                        homeAdapter?.setEnableLoadMore(true)
                         b = 1
                         g = 1
                         r = 1
+                        homeAdapter?.emptyView = View.inflate(context, R.layout.activity_not_null, null)
+                        base?.dismissProgressDialog()
                     } else {
                         sendEmptyMessageDelayed(1, 20)
                     }
@@ -90,6 +94,8 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
         //迁移至于initData....
     }
     private fun initData() {
+        base = this.activity as BaseActivity
+        base?.showProgressDialog()
         setRecycler()
         getBanner()
         getGrid()
@@ -129,24 +135,26 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
     //下拉刷新
     override fun onRefresh() {
         //刷新的时候禁止加载更多
-        base?.showProgressDialog()
+//        base?.showProgressDialog()
         homeAdapter?.setEnableLoadMore(false)
         hr?.postDelayed(object : Runnable{
             override fun run() {
-                homeAdapter?.b_i = 1
-                homeAdapter?.g_i = 1
-                homeAdapter?.r_i = 1
-                nextSize = 5
-                mainList.clear()
-                getBanner()
-                getGrid()
-                getRecycler(2, next)
-                //更新数据
-                handler.sendEmptyMessage(1)
-                //刷新完成取消刷新动画
-                mSwipeRefreshLayout?.setRefreshing(false)
-                //刷新完成重新开启加载更多
-                homeAdapter?.setEnableLoadMore(true)
+                synchronized(SelectionFragment::class){
+                    homeAdapter?.b_i = 1
+                    homeAdapter?.g_i = 1
+                    homeAdapter?.r_i = 1
+                    nextSize = 5
+                    mainList.clear()
+                    getBanner()
+                    getGrid()
+                    getRecycler(2, next)
+                    //更新数据
+                    handler.sendEmptyMessage(1)
+                    //刷新完成取消刷新动画
+                    mSwipeRefreshLayout?.setRefreshing(false)
+                    //刷新完成重新开启加载更多
+                    homeAdapter?.setEnableLoadMore(true)
+                }
             }
         },1000)//刷新延迟
     }
@@ -165,7 +173,6 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
          * 从右到左 SLIDEIN_RIGHT
          */
         homeAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT) //SCALEIN
-        homeAdapter?.emptyView = View.inflate(context, R.layout.activity_not_null, null)
         homeAdapter?.setOnLoadMoreListener(this, hr)//设置加载更多
         mSwipeRefreshLayout?.setOnRefreshListener(this)
         //默认第一次加载会进入回调，如果不需要可以配置

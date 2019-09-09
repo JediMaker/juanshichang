@@ -226,7 +226,7 @@ public class TabCreateUtils {
             }
         };
         commonNavigator.setAdapter(cA);
-        if(tabNames.size()<6){ //todo 设置... 此处有坑
+        if(tabNames.size()<4){ //todo 设置... 此处有坑
             commonNavigator.setAdjustMode(true); //过多 会引起问题
         }
         magicIndicator.setNavigator(commonNavigator);

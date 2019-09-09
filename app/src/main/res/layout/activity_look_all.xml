@@ -32,8 +32,6 @@
     </com.zhy.autolayout.AutoRelativeLayout>
     <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/LaTab"
-            android:paddingLeft="45px"
-            android:paddingRight="45px"
             android:layout_width="match_parent"
             android:layout_height="78px"></net.lucode.hackware.magicindicator.MagicIndicator>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

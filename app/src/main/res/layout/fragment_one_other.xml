@@ -116,12 +116,12 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true">
-
+<!--                        销量-->
                         <TextView
                                 android:id="@+id/timeTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="销量"
+                                android:text="收益"
                                 android:textColor="@color/home_gray"
                                 android:textSize="42px" />
 

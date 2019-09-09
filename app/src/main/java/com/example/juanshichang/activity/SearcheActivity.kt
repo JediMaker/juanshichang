@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import com.example.juanshichang.R
 import com.example.juanshichang.base.BaseActivity
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastTool
 import com.example.juanshichang.utils.ToastUtil
@@ -71,7 +73,16 @@ class SearcheActivity : BaseActivity(), View.OnClickListener {
                 finish()
             }
             etsearch -> {//搜索框
-                ToastTool.showToast(this@SearcheActivity, "开始搜索")
+                val str = getEditText()
+                if(!TextUtils.isEmpty(str)){
+                    ToastTool.showToast(this@SearcheActivity, "开始寻找...")
+                    val intent = Intent(this@SearcheActivity,ClassTypeActivity::class.java)
+                    intent.putExtra("keyword",str)
+                    startActivity(intent)
+                    finish()
+                }else{
+                    LogTool.e("onclick","点击了搜索 但是没卵用....")
+                }
             }
             mSearchBt -> {//搜索按钮
                 val str = getEditText()

@@ -57,14 +57,17 @@ class OneOtherFragment : BaseFragment() {
     private var botPage:Int = 1  //这个是页码
     private var FathPage:Int = 1 //接收父类 的category_id默认为1
     private var bottype:Int = 0  //这个 对应 sort_type 字段
+    private var base:BaseActivity? = null
     override fun getLayoutId(): Int {
         return  R.layout.fragment_one_other
     }
 
     override fun initViews(savedInstanceState: Bundle) {
+        base = this.activity as BaseActivity
         isBindView()
     }
     override fun initData() {
+
     }
 
     override fun onResume() {
@@ -115,13 +118,23 @@ class OneOtherFragment : BaseFragment() {
                 }
             }
             R.id.iearnBt ->{ //5-销量升序 6销量降序 todo 销量 此处和 ClassTypeActivity 有出入
-                var earntype: Int = 5
+                /*var earntype: Int = 5
                 if (!earnState) {
                     earntype = 5
                     earnState = true
                     goDefState(bottype, earntype)
                 }else{
                     earntype = 6
+                    earnState = false
+                    goDefState(bottype, earntype)
+                }*/
+                var earntype: Int = 13
+                if (!earnState) {
+                    earntype = 13
+                    earnState = true
+                    goDefState(bottype, earntype)
+                }else{
+                    earntype = 14
                     earnState = false
                     goDefState(bottype, earntype)
                 }
@@ -151,7 +164,10 @@ class OneOtherFragment : BaseFragment() {
                 override fun onChanged(t: String?) {
                     LogTool.e("yyyyyyy","监听到了消息:"+t)
                     FathPage = t?.toInt()!!
-                    returnState()
+                    returnState() //恢复筛选按钮状态
+                    base?.showProgressDialog()
+                    isProEnd = 0
+                    //网络请求
                     getTwoT(FathPage)
                     cargoList(1,bottype,FathPage)
                     topBView?.visibility = View.INVISIBLE
@@ -160,7 +176,7 @@ class OneOtherFragment : BaseFragment() {
             })
 
     }
-
+    private var isProEnd:Int = 0
     //网络请求
     // 二级页面 请求
     private fun getTwoT(parent_id:Int){
@@ -192,6 +208,10 @@ class OneOtherFragment : BaseFragment() {
 
             override fun onCompleted() {
                 LogTool.e("onCompleted", "T - Tab2加载完成!")
+                isProEnd ++
+                if(isProEnd == 2){
+                    base?.dismissProgressDialog()
+                }
             }
 
             override fun onError(e: Throwable?) {
@@ -233,6 +253,10 @@ class OneOtherFragment : BaseFragment() {
 
                 override fun onCompleted() {
                     LogTool.e("onCompleted", "商品请求完成!")
+                    isProEnd ++
+                    if(isProEnd == 2){
+                        base?.dismissProgressDialog()
+                    }
                 }
 
                 override fun onError(e: Throwable?) {
@@ -250,10 +274,10 @@ class OneOtherFragment : BaseFragment() {
         if (oldType != NewType) {
             if (oldType != 0 && NewType != 0) {
                 if (NewType + 1 == oldType || NewType - 1 == oldType) { //todo 此处取巧...
-                    if (oldType == 5 && NewType == 6) {
+                    if (oldType == 13 && NewType == 14) {
                         earnImg?.drawable?.level = 2
                     }
-                    if (oldType == 6 && NewType == 5) {
+                    if (oldType == 14 && NewType == 13) {
                         earnImg?.drawable?.level = 1
                     }
                     if (oldType == 10 && NewType == 9) {
@@ -262,7 +286,7 @@ class OneOtherFragment : BaseFragment() {
                     if (oldType == 9 && NewType == 10) {
                         priceImg?.drawable?.level = 2
                     }
-                }else if (oldType == 5 || oldType == 6) {
+                }else if (oldType == 13 || oldType == 14) {
                     earnState = false
                     earnImg?.drawable?.level = 0
                     if(NewType == 9){
@@ -271,7 +295,7 @@ class OneOtherFragment : BaseFragment() {
                 }else if (oldType == 9 || oldType == 10) {
                     priceState = false
                     priceImg?.drawable?.level = 0
-                    if(NewType == 5){
+                    if(NewType == 13){
                         earnImg?.drawable?.level = 1
                     }
                 }
@@ -283,7 +307,7 @@ class OneOtherFragment : BaseFragment() {
                 fenLeiTv?.isEnabled = true
             } else if (oldType == 0) {
                 fenLeiTv?.isEnabled = false
-                if (NewType == 5) {
+                if (NewType == 13) {
                     earnImg?.drawable?.level = 1
                 }
                 if (NewType == 9) {

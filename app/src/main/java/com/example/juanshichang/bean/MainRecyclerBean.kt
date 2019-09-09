@@ -56,7 +56,7 @@ class MainRecyclerBean : MultiItemEntity {
         var lgst_txt: String? = null,
         var mall_coupon_discount_pct: Int = 0,
         var mall_coupon_end_time: Int = 0,
-        var mall_coupon_id: Int = 0,
+        var mall_coupon_id: Long = 0,
         var mall_coupon_max_discount_amount: Int = 0,
         var mall_coupon_min_order_amount: Int = 0,
         var mall_coupon_remain_quantity: Int = 0,

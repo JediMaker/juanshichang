@@ -20,10 +20,7 @@ import com.example.juanshichang.dialog.HandyDialog
 import com.example.juanshichang.dialog.LoadingProgressDialog
 import com.example.juanshichang.dialog.RegisterDialog
 import com.example.juanshichang.dialog.ToastDialog
-import com.example.juanshichang.utils.ActivityManager
-import com.example.juanshichang.utils.AutoLayoutActivity
-import com.example.juanshichang.utils.StatusBarUtil
-import com.example.juanshichang.utils.Util
+import com.example.juanshichang.utils.*
 import com.example.juanshichang.widget.IsInternet
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
@@ -202,7 +199,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
          * @Class<BaseActivity>   传入跳向A界面 A界面
          */
         fun goStartActivity(context: Context, bundle: Bundle, activity:BaseActivity) {
-            var intent = Intent()
+            val intent = Intent()
             intent.setClass(context, activity::class.java)
             if (!bundle.isEmpty) {
                 intent.putExtra("BUNDLE", bundle)
@@ -210,7 +207,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
             context.startActivity(intent)
         }
         fun goStartActivity(context: Context,activity:BaseActivity) {
-            var intent = Intent()
+            val intent = Intent()
             intent.setClass(context, activity::class.java)
             context.startActivity(intent)
         }
@@ -271,6 +268,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
 
     /**
      * 这是一个高仿的....
+     * 取消 文字 为 null 则按钮 隐藏
      */
     fun showRegisterDialog(title:String,content:String,sureBtnText:String,cancleBtnText:String,callback: BaseActivity.DialogCallback,isCanceled:Boolean) {
         val fragments = RegisterDialog(title,content,sureBtnText,cancleBtnText,callback,isCanceled)
@@ -296,6 +294,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
 
     fun showProgressDialog() {
         try {
+            LogTool.e("ifCurrentActivityTopStack","${Util.ifCurrentActivityTopStack(this)}")
             if (progressdialog != null && progressdialog!!.isShowing()) {
 
             } else if (progressdialog != null && !progressdialog!!.isShowing()) {
@@ -315,6 +314,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
             }
         } catch (e: Exception) {
             // TODO: handle exception
+            LogTool.e("progressdialog",e.toString())
         }
 
     }
@@ -326,6 +326,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
             if (progressdialog != null)
                 progressdialog = null
         } catch (e: Exception) {
+            LogTool.e("progressdialogd",e.toString())
         }
 
     }

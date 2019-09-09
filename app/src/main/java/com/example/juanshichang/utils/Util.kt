@@ -1,6 +1,7 @@
 package com.example.juanshichang.utils
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.content.ContentResolver
 import android.content.Context
 import android.content.res.Resources
@@ -18,6 +19,7 @@ import android.graphics.Bitmap
 import java.io.ByteArrayOutputStream
 import android.graphics.BitmapFactory
 import android.net.Uri
+import com.example.juanshichang.base.BaseActivity
 
 
 /**
@@ -56,13 +58,13 @@ class Util {
          * @return
          */
         @SuppressLint("NewApi")
-        fun ifCurrentActivityTopStack(activity: AutoLayoutActivity?): Boolean {
+       fun ifCurrentActivityTopStack(activity: AutoLayoutActivity?): Boolean {
             if (activity == null || activity.isFinishing)
                 return false
-            val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
-            val name = manager.getRunningTasks(1)[0].topActivity?.getClassName()
-//            return name.equals(activity::class.java.name)
-            return name!!.equals(activity.javaClass.name)
+            val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val name = manager.getRunningTasks(1).get(0).topActivity?.getClassName()
+//            return name.equals(activity.javaClass.name)
+            return name!!.equals(activity::class.java.name)
         }
 
         /***
@@ -71,7 +73,7 @@ class Util {
          */
         fun validateMobile(mobile: String): Boolean {
             val p = Pattern.compile("^(1)\\d{10}$")
-            var m: Matcher = p.matcher(mobile)
+            val m: Matcher = p.matcher(mobile)
             return m.matches()
         }
 
@@ -186,10 +188,11 @@ class Util {
             var sb = StringBuilder()
             if(mobile.length>0){
                 for (i in 0 .. str.length-1){
-                    if(i<3 || i>7){
+                    if(i<3 || i>6){ //保留 前三位 后四位
                         sb.append(str[i])
+                    }else{
+                        sb.append("*")
                     }
-                    sb.append("*")
                 }
             }
             return sb.toString()
