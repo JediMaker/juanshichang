@@ -2,11 +2,8 @@ package com.example.juanshichang
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Build
-import android.os.health.TimerStat
 import android.text.TextUtils
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -14,13 +11,15 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import com.example.juanshichang.activity.Reg2LogActivity
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.UserBean
-import com.example.juanshichang.fragment.*
+import com.example.juanshichang.fragment.FourFragment
+import com.example.juanshichang.fragment.OneFragment
+import com.example.juanshichang.fragment.ThreeFragment
+import com.example.juanshichang.fragment.TwoFragment
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.widget.LiveDataBus
@@ -115,7 +114,10 @@ class MainActivity : BaseActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.me -> {
-                vp_main.currentItem = 3
+                if(Util.hasLogin(this)){
+                    vp_main.currentItem = 3
+                    return@OnNavigationItemSelectedListener true
+                }
                 /*if (!Util.hasLogin()) { //登录检查
                     val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
                     intent.putExtra("type",Reg2LogActivity.LOGINCODE)
@@ -124,7 +126,7 @@ class MainActivity : BaseActivity() {
                 } else {
                     ToastTool.showToast(this@MainActivity, "登录检查通过2")
                 }*/
-                return@OnNavigationItemSelectedListener true
+                return@OnNavigationItemSelectedListener false
             }
         }
         false
@@ -154,28 +156,24 @@ class MainActivity : BaseActivity() {
         }
 
         override fun onTabSelected(p0: TabLayout.Tab?) {
-            vp_main.currentItem = p0!!.position
-            if(p0.position == 0){
+            if(p0?.position == 0){
                 if(topTabIsOne){
                     bus.with("mainTopStatusView").value = R.color.colorPrimary
                 }else{
                     bus.with("mainTopStatusView").value = R.color.white
                 }
 //                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
+            }else if(p0?.position == 3){
+                if(!Util.hasLogin(this@MainActivity)){
+                    return
+                }else{
+                    bus.with("mainTopStatusView").value = R.color.white
+                }
             }else{
                 bus.with("mainTopStatusView").value = R.color.white
 //                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
             }
-            /*if (p0.position == 3) {  //登录检查
-                if (!Util.hasLogin()) {
-                    val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
-                    intent.putExtra("type",Reg2LogActivity.LOGINCODE)
-                    BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
-                    finish()
-                } else {
-                    ToastUtil.showToast(this@MainActivity, "登录检查通过3")
-                }
-            }*/
+            vp_main.currentItem = p0!!.position
         }
 
     }
@@ -238,25 +236,39 @@ class MainActivity : BaseActivity() {
      *  原生谷歌官方菜单栏
      */
     private fun setGoogleBottom() {
-//        val view = com.google.android.material.bottomnavigation.BottomNavigationView(this@MainActivity)
-//        view.isItemHorizontalTranslationEnabled = false  //设置为false时，动画即消失 New
-//        view.labelVisibilityMode  = LabelVisibilityMode.LABEL_VISIBILITY_LABELED  // labeled 、auto、unlabeled 、selected  新API中...
-//        view.inflateMenu(R.menu.navigation)
-//        view.itemTextColor = csl
-//        view.itemIconTintList = csl
-//        view.itemBackground = null
+        var oldpositionOffset = 0f
         view.setOnNavigationItemSelectedListener(mBottomNavigationView)
         var menuItem: MenuItem? = null
         vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-
+                oldpositionOffset = 0f
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                if(position == 2 && positionOffset > oldpositionOffset && oldpositionOffset!=0f){
+                    if (!Util.hasLogin(this@MainActivity)){
+                        vp_main.currentItem = 2
+//                        LiveDataBus.get().with("mainGo").value =  2  //这设置 没有登录的页面停留
+                        return
+                    }
+                }
+                oldpositionOffset = positionOffset
             }
 
             override fun onPageSelected(position: Int) {
-                // todo new add
+                LogTool.e("vpmain3","position:$position")
+                // new add
+                if(position == 3 && !Util.hasLogin()){
+                    return
+                }else{
+                    if (menuItem != null) {
+                        menuItem!!.isChecked = false
+                    } else {
+                        view.getMenu().getItem(0).isChecked = false
+                    }
+                    menuItem = view.getMenu().getItem(position)
+                    menuItem!!.isChecked = true
+                }
                 if(position != 0){
                     bus.with("mainTopStatusView").value = R.color.white
 //                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
@@ -268,22 +280,6 @@ class MainActivity : BaseActivity() {
                     }
 //                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
                 }
-                /*if (position == 3) {  //todo 登录检查
-                    if (!Util.hasLogin()) {
-                        val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
-                        intent.putExtra("type",Reg2LogActivity.LOGINCODE)
-                        BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
-                        finish()
-                    }
-                }*/
-                // new add
-                if (menuItem != null) {
-                    menuItem!!.isChecked = false
-                } else {
-                    view.getMenu().getItem(0).isChecked = false
-                }
-                menuItem = view.getMenu().getItem(position)
-                menuItem!!.isChecked = true
             }
         })
         //这是一个返回首页的 广播

@@ -2,17 +2,12 @@ package com.example.juanshichang.activity
 
 import android.content.Context
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.View
-import android.view.WindowManager
-import androidx.core.text.trimmedLength
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.base.Api
@@ -25,14 +20,12 @@ import com.example.juanshichang.widget.LiveDataBus
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_reg2_log.*
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.login_item.*
 import kotlinx.android.synthetic.main.regist_item.*
 import org.jetbrains.anko.backgroundResource
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
-import java.util.*
 
 /**
  * @作者: yzq
@@ -64,7 +57,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         }else{
             timerLogin.start()
         }
-        if(""!=intent.getStringExtra("one")){ //从个人中心 页面跳转的处理
+        if(null!=intent.getStringExtra("one")){ //从个人中心 页面跳转的处理
             LiveDataBus.get().with("mainGo").value =  0
         }
     }

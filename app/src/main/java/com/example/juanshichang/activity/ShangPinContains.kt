@@ -4,20 +4,13 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Handler
 import android.os.Message
-import android.text.Layout
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.bumptech.glide.Glide
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.adapter.ShangPinXqAdapter
@@ -25,19 +18,22 @@ import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
-import com.example.juanshichang.bean.*
+import com.example.juanshichang.bean.PSP
+import com.example.juanshichang.bean.SDB
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.MyScrollView
 import com.google.gson.Gson
+import com.umeng.socialize.UMShareAPI
+import com.umeng.socialize.UMShareListener
+import com.umeng.socialize.bean.SHARE_MEDIA
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import kotlinx.android.synthetic.main.activity_shang_pin_contains.*
 import kotlinx.coroutines.Runnable
 import org.json.JSONObject
 import rx.Subscriber
-import java.lang.Exception
 
 class ShangPinContains : BaseActivity(), View.OnClickListener {
     var goods_id: Long = 0 //从正常列表进入
@@ -148,43 +144,64 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                 ToastUtil.showToast(this@ShangPinContains, "暂未开放收藏入口")
             }
             spJia -> {
+                //分享思路 UM分享 -> 原生分享 -> 复制到粘贴板
                 if (Util.hasLogin()) {
-
                     try {
                         if (null == goodsPromotionUrl) {
                             sharePath(1, goods_id, Api.Pdd)
-                        } else {
-                            ShareUtil.shareText(
-                                this,
-                                "劵市场",
-                                goodsPromotionUrl?.mobile_short_url,
-                                "商品分享"
-                            )
+                        } else {//UM分享
+                            UMShareUtil.getShareSingle().openUi2Web(this,goodsPromotionUrl?.mobile_short_url.toString(),"https://b-ssl.duitang.com/uploads/item/201608/03/20160803105542_Yx2Am.jpeg","商品分享",goods?.goods_name.toString(),object : UMShareListener{
+                                override fun onResult(p0: SHARE_MEDIA?) {
+
+                                }
+
+                                override fun onCancel(p0: SHARE_MEDIA?) {
+                                    ToastUtil.showToast(this@ShangPinContains,"取消分享")
+                                }
+
+                                override fun onError(p0: SHARE_MEDIA?, p1: Throwable?) {
+                                    ToastUtil.showToast(this@ShangPinContains,"分享错误")
+                                }
+
+                                override fun onStart(p0: SHARE_MEDIA?) {
+
+                                }
+                            })
                         }
                     } catch (e: Exception) {
-                        //分享弹窗失败 就复制到粘贴板、
-                        if (null == goodsPromotionUrl) {
-                            sharePath(1, goods_id, Api.Pdd)
-                        } else {
-                            if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)) {
-                                mClipData =
-                                    ClipData.newPlainText(
-                                        "Label",
-                                        goodsPromotionUrl?.mobile_short_url
-                                    )// 创建URL型ClipData
-                                cm?.setPrimaryClip(mClipData!!)  // 将ClipData内容放到系统剪贴板里
-                                ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板s")
+                        LogTool.e("error", e.toString())
+                        try { //系统原生分享
+                            ShareUtil.shareText(
+                                this,
+                                "劵市场","${goods?.goods_name.toString()} : ${goodsPromotionUrl?.mobile_short_url}  质优价廉,确定不来看看?",
+                                "商品分享"
+                            )
+                        } catch (e: Exception) {
+                            LogTool.e("error", e.toString())
+                            //分享弹窗失败 就复制到粘贴板、
+                            if (null == goodsPromotionUrl) {
+                                sharePath(1, goods_id, Api.Pdd)
                             } else {
-                                if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_url)) {
+                                if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_short_url)) {
                                     mClipData =
                                         ClipData.newPlainText(
                                             "Label",
-                                            goodsPromotionUrl?.mobile_url
+                                            goodsPromotionUrl?.mobile_short_url
                                         )// 创建URL型ClipData
                                     cm?.setPrimaryClip(mClipData!!)  // 将ClipData内容放到系统剪贴板里
-                                    ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板L")
+                                    ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板s")
                                 } else {
-                                    ToastUtil.showToast(this@ShangPinContains, "暂无可复制内容")
+                                    if (!TextUtils.isEmpty(goodsPromotionUrl?.mobile_url)) {
+                                        mClipData =
+                                            ClipData.newPlainText(
+                                                "Label",
+                                                goodsPromotionUrl?.mobile_url
+                                            )// 创建URL型ClipData
+                                        cm?.setPrimaryClip(mClipData!!)  // 将ClipData内容放到系统剪贴板里
+                                        ToastUtil.showToast(this@ShangPinContains, "已复制到粘贴板L")
+                                    } else {
+                                        ToastUtil.showToast(this@ShangPinContains, "暂无可复制内容")
+                                    }
                                 }
                             }
                         }
@@ -538,5 +555,11 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        //键入友盟回调
+        UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data)
     }
 }

@@ -5,21 +5,19 @@ import android.app.ActivityManager
 import android.content.ContentResolver
 import android.content.Context
 import android.content.res.Resources
+import android.net.Uri
 import android.os.Environment
 import android.provider.Settings
 import android.text.TextUtils
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
+import com.example.juanshichang.activity.Reg2LogActivity
+import com.example.juanshichang.base.BaseActivity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import android.graphics.Bitmap
-import java.io.ByteArrayOutputStream
-import android.graphics.BitmapFactory
-import android.net.Uri
-import com.example.juanshichang.base.BaseActivity
 
 
 /**
@@ -78,6 +76,17 @@ class Util {
         }
 
         /**
+         * 判断是否已经登陆  没有 直接跳转
+         */
+        fun hasLogin(context: Context): Boolean {
+            if (TextUtils.isEmpty(SpUtil.getIstance().user.usertoken)) {
+                BaseActivity.goStartActivity(context, Reg2LogActivity())
+                return false
+            }
+            return true
+        }
+
+        /**
          * 判断是否已经登陆
          */
         fun hasLogin(): Boolean {
@@ -86,7 +95,6 @@ class Util {
             }
             return true
         }
-
         /**
          * 根据拼多多接口特性
          * 自定义的 数据接口

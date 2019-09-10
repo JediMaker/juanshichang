@@ -2,54 +2,42 @@ package com.example.juanshichang.activity
 
 import android.Manifest
 import android.app.Activity
-import android.app.ActivityManager
 import android.content.ContentResolver
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
-import androidx.core.content.FileProvider
-import androidx.core.net.toFile
 import com.bumptech.glide.Glide
-import com.example.juanshichang.MainActivity
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.R
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
-import com.example.juanshichang.bean.FansBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.LiveDataBus
-import com.google.gson.Gson
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction
 import com.yanzhenjie.permission.AndPermission
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.coroutines.Runnable
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
 import rx.Subscriber
 import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
 
 class SettingActivity : BaseActivity(), View.OnClickListener {
     private var userName: String? = null

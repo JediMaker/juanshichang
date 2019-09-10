@@ -5,18 +5,16 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.os.Build
 import android.text.TextUtils
-import android.util.Log
-import android.view.View
 import androidx.multidex.MultiDex
 import com.example.juanshichang.utils.JumpPermissionManagement
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
-import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.MD5Utils
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager
+import com.umeng.commonsdk.UMConfigure
+import com.umeng.socialize.PlatformConfig
 import com.yanzhenjie.permission.AndPermission
 import java.util.*
 
@@ -33,6 +31,7 @@ open class MyApp : Application() {
             Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
 //        Manifest.permission.RECORD_AUDIO
@@ -96,6 +95,12 @@ open class MyApp : Application() {
         app = this
         Companion.applicationContext = this
         QMUISwipeBackActivityManager.init(this)  //初始化 腾讯QMUI_Android
+        //友盟相关平台配置，如果不配置会调不起来相关界面
+        PlatformConfig.setWeixin("","")//微信APPID和AppSecret
+        PlatformConfig.setQQZone("","")//QQAPPID和AppSecret
+        PlatformConfig.setSinaWeibo("","","")//微博  微博APPID  微博APPSecret  微博的后台配置回调地址
+        UMConfigure.setLogEnabled(BuildConfig.DEBUG) //是否开启日志
+        UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE,null)
     }
 
     override fun attachBaseContext(base: Context?) {

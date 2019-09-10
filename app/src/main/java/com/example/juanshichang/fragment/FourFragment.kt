@@ -10,11 +10,9 @@ import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import butterknife.OnClick
 import com.example.juanshichang.MainActivity
-
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.*
 import com.example.juanshichang.base.BaseActivity
@@ -26,9 +24,6 @@ import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.LiveDataBus
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_five.*
-import kotlinx.coroutines.Runnable
 
 /**
  * @作者: yzq
@@ -152,11 +147,11 @@ class FourFragment : BaseFragment() {
         }else{
             if(goNet != 0){
                 ToastUtil.showToast(mContext!!,"登录态丢失  请重新登录")
+                val intent  = Intent(mContext!!, Reg2LogActivity::class.java)
+                intent.putExtra("type", Reg2LogActivity.LOGINCODE) // 显示登录
+                intent.putExtra("one","1")
+                BaseActivity.goStartActivity(mContext!!,intent)
             }
-            val intent  = Intent(mContext!!,Reg2LogActivity::class.java)
-            intent.putExtra("type",Reg2LogActivity.LOGINCODE) // 显示登录
-            intent.putExtra("one","1")
-            BaseActivity.goStartActivity(mContext!!,intent)
         }
     }
 
