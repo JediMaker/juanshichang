@@ -53,7 +53,7 @@ class UMShareUtil {
         web.description = description //描述
         web.setThumb(image) //设置缩略图
         //微信 QQ 微博
-        ShareAction(activity).withText("劵市场").withMedia(web).setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.QQ,SHARE_MEDIA.SINA)
+        ShareAction(activity).withText("劵市场").withMedia(web).setDisplayList(SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.WEIXIN_FAVORITE,SHARE_MEDIA.QQ,SHARE_MEDIA.SINA)
             .setCallback(umShareListener).open()
     }
 

@@ -1,10 +1,7 @@
 package com.example.juanshichang.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +12,6 @@ import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.FansBean
-import com.example.juanshichang.bean.OrdersBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastTool
@@ -67,7 +63,7 @@ class FansActivity : BaseActivity(), View.OnClickListener {
             override fun run() {
                 getFans(0, 20)
             }
-        },3500)
+        },900)
     }
 
     override fun onClick(v: View?) {

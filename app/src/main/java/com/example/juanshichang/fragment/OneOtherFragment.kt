@@ -3,12 +3,10 @@ package com.example.juanshichang.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,20 +17,14 @@ import com.example.juanshichang.activity.LookAllActivity
 import com.example.juanshichang.activity.ShangPinContains
 import com.example.juanshichang.adapter.CargoListAdapter
 import com.example.juanshichang.adapter.TwoGridAdapterT
-import com.example.juanshichang.adapter.TwoRecyclerAdapter
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.CargoListBean
 import com.example.juanshichang.bean.TabOneBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
-import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
-import com.trello.rxlifecycle2.android.RxLifecycleAndroid.bindView
-import kotlinx.android.synthetic.main.activity_class_type.*
-import kotlinx.android.synthetic.main.activity_look_all.*
-import kotlinx.android.synthetic.main.fragment_two.*
 import kotlinx.coroutines.Runnable
 import org.json.JSONObject
 import rx.Subscriber
@@ -43,6 +35,7 @@ import rx.Subscriber
  * @文件作用: 主页面的其它页面
  */
 class OneOtherFragment : BaseFragment() {
+    private var emptyView:View? = null
     private var topBView:View? = null
     private var topCheckLinear:LinearLayout? = null
     private var fenLeiTv:TextView? = null //综合
@@ -55,7 +48,7 @@ class OneOtherFragment : BaseFragment() {
     private var botAdapter: CargoListAdapter? = null
     private var botData:ArrayList<CargoListBean.Goods>? = null
     private var botPage:Int = 1  //这个是页码
-    private var FathPage:Int = 1 //接收父类 的category_id默认为1
+    private var FathPage:Int = Int.MAX_VALUE //接收父类 的category_id默认为1
     private var bottype:Int = 0  //这个 对应 sort_type 字段
     private var base:BaseActivity? = null
     override fun getLayoutId(): Int {
@@ -142,6 +135,7 @@ class OneOtherFragment : BaseFragment() {
         }
     }
     private fun isBindView() {
+        emptyView = mBaseView?.findViewById(R.id.empty)
         topBView = mBaseView?.findViewById<View>(R.id.topBView)
         topCheckLinear = mBaseView?.findViewById<LinearLayout>(R.id.topCheckLinear)
         fenLeiTv =  mBaseView?.findViewById<TextView>(R.id.fenLeiTv)
@@ -156,6 +150,7 @@ class OneOtherFragment : BaseFragment() {
         botGrid?.layoutManager = GridLayoutManager(mContext!!,2)
         botData = ArrayList()
         botAdapter = CargoListAdapter(R.layout.item_banner_pro,botData)
+        botAdapter?.emptyView = View.inflate(mContext, R.layout.activity_not_null, null)
         botGrid?.adapter = botAdapter
         //注册 广播监听
         LiveDataBus.get()
@@ -163,15 +158,19 @@ class OneOtherFragment : BaseFragment() {
             .observe(this,object : Observer<String>{
                 override fun onChanged(t: String?) {
                     LogTool.e("yyyyyyy","监听到了消息:"+t)
-                    FathPage = t?.toInt()!!
-                    returnState() //恢复筛选按钮状态
-                    base?.showProgressDialog()
-                    isProEnd = 0
-                    //网络请求
-                    getTwoT(FathPage)
-                    cargoList(1,bottype,FathPage)
-                    topBView?.visibility = View.INVISIBLE
-                    topCheckLinear?.visibility = View.INVISIBLE
+                    if(t?.toInt()!=FathPage){ //判断是否重复点击同一条目
+                        FathPage = t?.toInt()!!
+                        base?.showProgressDialog()
+                        isProEnd = 0
+                        topBView?.visibility = View.INVISIBLE  //页面隐藏
+                        topCheckLinear?.visibility = View.INVISIBLE
+                        topGrid?.visibility = View.INVISIBLE
+                        botGrid?.visibility = View.INVISIBLE
+                        emptyView?.visibility = View.VISIBLE
+                        returnState() //恢复筛选按钮状态
+                        getTwoT(FathPage)//网络请求
+                        cargoList(1,bottype,FathPage)
+                    }
                 }
             })
 
@@ -198,7 +197,9 @@ class OneOtherFragment : BaseFragment() {
                         topData?.add(addItem())
                         topGrid?.post(object : Runnable{
                             override fun run() {
+                                emptyView?.visibility = View.GONE
                                 topRA?.notifyDataSetChanged()
+                                topGrid?.visibility = View.VISIBLE
                                 topBView?.visibility = View.VISIBLE //显示
                             }
                         })
@@ -243,8 +244,10 @@ class OneOtherFragment : BaseFragment() {
                             botData?.addAll(goodsBean)
                             botGrid?.post(object : Runnable{
                                 override fun run() {
-                                    topCheckLinear?.visibility = View.VISIBLE
+                                    emptyView?.visibility = View.GONE
                                     botAdapter?.notifyDataSetChanged()
+                                    botGrid?.visibility = View.VISIBLE
+                                    topCheckLinear?.visibility = View.VISIBLE
                                 }
                             })
                         }
@@ -272,6 +275,9 @@ class OneOtherFragment : BaseFragment() {
     private fun goDefState(oldType: Int, NewType: Int) {
         //更改为 默认 状态 专用
         if (oldType != NewType) {
+            //设置列表变动
+            botData?.clear()
+            botAdapter?.notifyDataSetChanged()
             if (oldType != 0 && NewType != 0) {
                 if (NewType + 1 == oldType || NewType - 1 == oldType) { //todo 此处取巧...
                     if (oldType == 13 && NewType == 14) {

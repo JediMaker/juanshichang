@@ -3,7 +3,6 @@ package com.example.juanshichang.base
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.KeyEvent
@@ -20,7 +19,10 @@ import com.example.juanshichang.dialog.HandyDialog
 import com.example.juanshichang.dialog.LoadingProgressDialog
 import com.example.juanshichang.dialog.RegisterDialog
 import com.example.juanshichang.dialog.ToastDialog
-import com.example.juanshichang.utils.*
+import com.example.juanshichang.utils.ActivityManager
+import com.example.juanshichang.utils.AutoLayoutActivity
+import com.example.juanshichang.utils.LogTool
+import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.IsInternet
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
@@ -290,7 +292,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
     }
 
     //加载
-    protected var progressdialog: LoadingProgressDialog? = null
+    var progressdialog: LoadingProgressDialog? = null //protected
 
     fun showProgressDialog() {
         try {

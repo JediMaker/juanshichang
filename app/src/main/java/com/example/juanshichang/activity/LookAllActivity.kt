@@ -1,9 +1,6 @@
 package com.example.juanshichang.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -17,11 +14,12 @@ import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.CargoListBean
 import com.example.juanshichang.bean.TabOneBean
 import com.example.juanshichang.http.HttpManager
-import com.example.juanshichang.utils.*
+import com.example.juanshichang.utils.LogTool
+import com.example.juanshichang.utils.StatusBarUtil
+import com.example.juanshichang.utils.TabCreateUtils
+import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_look_all.*
-import kotlinx.android.synthetic.main.fragment_one.*
-import kotlinx.android.synthetic.main.fragment_two.*
 import kotlinx.coroutines.Runnable
 import org.json.JSONObject
 import rx.Subscriber
@@ -47,7 +45,8 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
         LaRet.setOnClickListener(this)
         if(categoryidDef != intent.getIntExtra("category_id",Int.MAX_VALUE)){
             category_id = intent.getIntExtra("category_id",Int.MAX_VALUE)
-            itemType = intent.getIntExtra("itemtype",Int.MAX_VALUE)  // 全部为 0
+            itemType = intent.getIntExtra("itemtype",0)  // 全部为 0
+            showProgressDialog()
             LaRecycler.layoutManager = GridLayoutManager(this,2)
             recyclerData = ArrayList()
             recyclerAdapter = CargoListAdapter(R.layout.item_banner_pro,recyclerData)
@@ -150,7 +149,7 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
                             }
                             LaTab?.post(object : Runnable{
                                 override fun run() {
-                                    setTabData(data)
+                                    setTabData(data,bean.data.category_name)
                                     //todo 这里进行默认请求变更
                                     if(itemType == 0){
                                         mRequestId = parent_id
@@ -202,6 +201,7 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
                                 }else{
                                     recyclerAdapter?.notifyDataSetChanged()
                                 }
+                                dismissProgressDialog()
                             }
                         }
                     }
@@ -217,26 +217,33 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
 
             })
     }
-    var mRequestId:Int = 0
-    var page:Int = 1
-    private fun setTabData(data: List<TabOneBean.Category>) {
-        categoryList?.add("全部")
+    private var mRequestId:Int = 0
+    private var page:Int = 1
+    private var oldIndex:Int = 0
+    private fun setTabData(data: List<TabOneBean.Category>,tit:String) {
+        categoryList?.add(tit)
         for (i in 0 until data.size){
             categoryList?.add(data[i].name)
         }
         TabCreateUtils.setOrangeTabT(this@LookAllActivity,LaTab,categoryList,object : TabCreateUtils.onTitleClickListener {
             override fun onTitleClick(index: Int) {
-                page = 1
-                if(index==0){
-                    LaTab.onPageSelected(0)
-                    cargoList(page,category_id)
-                    mRequestId = category_id
-                }else{
-                    LaTab.onPageSelected(index)
-                    mRequestId = data[index-1].category_id
-                    cargoList(page,mRequestId)
+                if(oldIndex!=index){
+                    recyclerData?.clear()
+                    recyclerAdapter?.notifyDataSetChanged()
+                    showProgressDialog()
+                    page = 1
+                    if(index==0){
+                        LaTab.onPageSelected(0)
+                        cargoList(page,category_id)
+                        mRequestId = category_id
+                    }else{
+                        LaTab.onPageSelected(index)
+                        mRequestId = data[index-1].category_id
+                        cargoList(page,mRequestId)
+                    }
+                    LaTitle.text = categoryList!![index]
+                    oldIndex = index
                 }
-                LaTitle.text = categoryList!![index]
             }
         })
         if(itemType!=0){

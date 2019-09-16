@@ -1,11 +1,7 @@
 package com.example.juanshichang.adapter
 
 import android.content.Intent
-import android.os.Build
 import android.text.TextUtils
-import android.view.View
-import android.widget.GridView
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -14,7 +10,6 @@ import com.example.juanshichang.R
 import com.example.juanshichang.activity.LookAllActivity
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.bean.TabOneBean
-import com.example.juanshichang.utils.ToastUtil
 
 class TwoRecyclerAdapter:
     BaseQuickAdapter<TabOneBean.Data, BaseViewHolder>(R.layout.item_two_recycler){
@@ -35,8 +30,9 @@ class TwoRecyclerAdapter:
 //            grid.isFocusable = false  //拒绝获取焦点
             gridAdp?.setOnItemClickListener(BaseQuickAdapter.OnItemClickListener { adapter, view, position ->
                 val intent: Intent = Intent(mContext!!, LookAllActivity::class.java)
-                intent.putExtra("category_id",fatherid)
-                intent.putExtra("itemtype",position+1)
+                // fatherid 是父类 id
+                intent.putExtra("category_id",item.category_list[position].category_id)
+                intent.putExtra("itemtype",0)
                 BaseActivity.goStartActivity(mContext!!,intent)
             })
         }

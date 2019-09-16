@@ -98,7 +98,7 @@ open class MyApp : Application() {
         //友盟相关平台配置，如果不配置会调不起来相关界面
         PlatformConfig.setWeixin("","")//微信APPID和AppSecret
         PlatformConfig.setQQZone("","")//QQAPPID和AppSecret
-        PlatformConfig.setSinaWeibo("","","")//微博  微博APPID  微博APPSecret  微博的后台配置回调地址
+        PlatformConfig.setSinaWeibo("","","http://sns.whalecloud.com")//微博  微博APPID  微博APPSecret  微博的后台配置回调地址
         UMConfigure.setLogEnabled(BuildConfig.DEBUG) //是否开启日志
         UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE,null)
     }

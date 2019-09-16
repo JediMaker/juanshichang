@@ -1,11 +1,7 @@
 package com.example.juanshichang.activity
 
-import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +20,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_order_form.*
-import kotlinx.android.synthetic.main.activity_order_form.view.*
 import kotlinx.coroutines.Runnable
 import org.json.JSONObject
 import rx.Subscriber
@@ -64,7 +59,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
             override fun run() {
                 getOrders(0,20)
             }
-        },3500)
+        },900)
     }
 
     override fun onClick(v: View?) {
@@ -89,6 +84,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
         orRet.setOnClickListener(this)
         orSearch.setOnClickListener(this)
     }
+    private var oldTab:Int = 0
     private val mTabLayoutBottom = object : TabLayout.OnTabSelectedListener {
         override fun onTabReselected(p0: TabLayout.Tab?) {
 
@@ -98,48 +94,54 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
         }
 
         override fun onTabSelected(t: TabLayout.Tab?) {
-            if(ordersListData!=null && ordersListData?.size!=0){
-                showProgressDialog()
-                LogTool.e("text","${t?.text}")
-                ordTast.postDelayed(object : Runnable{
-                    override fun run() {
-                        when(t?.text){
-                            "全部" ->{
-                                ordersAdpater?.setNewData(ordersListData)
-                            }
-                            "已付款" ->{
-                                val d = getTabData("已付款")
-                                if (d!=null){
-                                    ordersAdpater?.setNewData(d)
-                                }else{
-                                    ordersAdpater?.setNewData(null)
-                                    ToastTool.showToast(this@OrderFormActivity,"暂无数据")
+            if(t?.position!=oldTab){
+                if(ordersListData!=null && ordersListData?.size!=0){
+                    showProgressDialog()
+                    ordersAdpater?.setNewData(null)
+                    LogTool.e("text","${t?.text}")
+                    ordTast.postDelayed(object : Runnable{
+                        override fun run() {
+                            when(t?.text){
+                                "全部" ->{
+                                    ordersAdpater?.setNewData(ordersListData)
+                                }
+                                "已付款" ->{
+                                    val d = getTabData("已付款")
+                                    if (d!=null){
+                                        ordersAdpater?.setNewData(d)
+                                    }else{
+                                        ordersAdpater?.setNewData(null)
+                                        ToastTool.showToast(this@OrderFormActivity,"暂无数据")
+                                    }
+                                }
+                                "已结算" ->{
+                                    val d = getTabData("已结算")
+                                    if (d!=null){
+                                        ordersAdpater?.setNewData(d)
+                                    }else{
+                                        ordersAdpater?.setNewData(null)
+                                        ToastTool.showToast(this@OrderFormActivity,"暂无数据")
+                                    }
+                                }
+                                "已失效" ->{
+                                    val d = getTabData("已失效")
+                                    if (d!=null){
+                                        ordersAdpater?.setNewData(d)
+                                    }else{
+                                        ordersAdpater?.setNewData(null)
+                                        ToastTool.showToast(this@OrderFormActivity,"暂无数据")
+                                    }
                                 }
                             }
-                            "已结算" ->{
-                                val d = getTabData("已结算")
-                                if (d!=null){
-                                    ordersAdpater?.setNewData(d)
-                                }else{
-                                    ordersAdpater?.setNewData(null)
-                                    ToastTool.showToast(this@OrderFormActivity,"暂无数据")
-                                }
-                            }
-                            "已失效" ->{
-                                val d = getTabData("已失效")
-                                if (d!=null){
-                                    ordersAdpater?.setNewData(d)
-                                }else{
-                                    ordersAdpater?.setNewData(null)
-                                    ToastTool.showToast(this@OrderFormActivity,"暂无数据")
-                                }
-                            }
+                            dismissProgressDialog()
                         }
-                        dismissProgressDialog()
-                    }
-                },2000)
+                    },1000)
+                }else{
+                    ToastUtil.showToast(this@OrderFormActivity,"您还没有任何订单")
+                }
+                oldTab = t?.position!!
             }else{
-                ToastUtil.showToast(this@OrderFormActivity,"暂无数据")
+                ToastTool.showToast(this@OrderFormActivity,"您已在该列表下")
             }
         }
     }

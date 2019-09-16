@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:orientation="vertical"
-             android:background="@color/white"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".fragment.OneOtherFragment">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context=".fragment.OneOtherFragment">
+
     <com.example.juanshichang.widget.MyScrollView
             android:id="@+id/otherScoll"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         <com.zhy.autolayout.AutoLinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/topGrid"
-                    android:scrollbars="none"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none" />
+
             <View
-                    android:visibility="invisible"
                     android:id="@+id/topBView"
-                    android:background="@color/ff_back"
                     android:layout_width="match_parent"
-                    android:layout_height="25px"/>
+                    android:layout_height="25px"
+                    android:background="@color/ff_back"
+                    android:visibility="invisible" />
             <!--按钮-->
             <LinearLayout
                     android:id="@+id/topCheckLinear"
-                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white">
+                    android:background="@color/white"
+                    android:visibility="visible">
 
                 <RelativeLayout
                         android:id="@+id/zongheBt"
-                        android:paddingTop="40px"
-                        android:paddingBottom="40px"
                         android:layout_width="0px"
                         android:layout_height="match_parent"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        android:paddingTop="40px"
+                        android:paddingBottom="40px">
 
                     <RelativeLayout
                             android:layout_width="wrap_content"
@@ -51,14 +55,15 @@
                                 android:id="@+id/fenLeiTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginTop="0dp"
                                 android:lines="1"
                                 android:maxLength="4"
                                 android:text="综合"
                                 android:textColor="@drawable/top_txt_color"
-                                android:textSize="42px" android:layout_marginTop="0dp" android:layout_alignParentTop="true"/>
+                                android:textSize="42px" />
 
                         <ImageView
-                                android:visibility="gone"
                                 android:id="@+id/fenLeiImg"
                                 android:layout_width="40px"
                                 android:layout_height="28px"
@@ -66,7 +71,8 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="10px"
                                 android:layout_toRightOf="@+id/fenLeiTv"
-                                android:src="@drawable/c_share_jians" />
+                                android:src="@drawable/c_share_jians"
+                                android:visibility="gone" />
                     </RelativeLayout>
                 </RelativeLayout>
 
@@ -116,7 +122,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_centerVertical="true">
-<!--                        销量-->
+                        <!--                        销量-->
                         <TextView
                                 android:id="@+id/timeTv"
                                 android:layout_width="wrap_content"
@@ -140,11 +146,16 @@
             <!-- 底部Recycler -->
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/botGrid"
-                    android:scrollbars="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:paddingLeft="30px"
                     android:paddingRight="30px"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:scrollbars="none" />
         </com.zhy.autolayout.AutoLinearLayout>
     </com.example.juanshichang.widget.MyScrollView>
+
+    <include
+            android:id="@+id/empty"
+            layout="@layout/activity_not_null"
+            android:visibility="gone" />
 </com.zhy.autolayout.AutoFrameLayout>
