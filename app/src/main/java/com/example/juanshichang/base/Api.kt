@@ -52,6 +52,12 @@ interface Api {
         val CATEGORY = "/category"
         //消息
         val MESSAGELIST = "/message_list"
+        //支付宝提现
+        val WITHDRAW = "/user/withdraw"
+        //提现列表
+        val HISTORY = "/user/withdraw/history"
+        //修改提现账户
+        val UPDZFB = "/user/withdraw/update_alipay_account"
         //servicer 关键字
         val Pdd = "pdd"
         val TaoBao = "taobao"

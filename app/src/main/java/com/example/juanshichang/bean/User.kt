@@ -25,6 +25,6 @@ class User : Serializable {
     var last_day_benefit:Float = 0f //昨天收益
     var from_invite_userid:Long? = 0 //邀请用户id
     var invite_code:String? = null  //邀请码
-
+    var ali_pay_account:String? = null  //用户提现账户
 
 }

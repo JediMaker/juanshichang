@@ -2,10 +2,9 @@ package com.example.juanshichang.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import com.example.juanshichang.MyApp;
 import com.example.juanshichang.bean.User;
-
-import java.lang.reflect.Member;
 
 
 /**
@@ -63,6 +62,7 @@ public class SpUtil {
         editor.putFloat("lastdaybenefit",entity.getLast_day_benefit());
         editor.putLong("frominviteuserid",entity.getFrom_invite_userid());
         editor.putString("invitecode",entity.getInvite_code());
+        editor.putString("ali_pay_account",entity.getAli_pay_account());
         editor.commit();
     }
     public User  getUser(){
@@ -78,6 +78,7 @@ public class SpUtil {
         entity.setLast_day_benefit(sp.getFloat("lastdaybenefit",0));
         entity.setFrom_invite_userid(sp.getLong("frominviteuserid",0));
         entity.setInvite_code(sp.getString("invitecode",""));
+        entity.setAli_pay_account(sp.getString("ali_pay_account",""));
         return entity;
     }
 

@@ -1,7 +1,6 @@
 package com.example.juanshichang.base
 
 import android.text.TextUtils
-import android.util.Log
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.MyApp.Companion.getMD5uuid
 import com.example.juanshichang.utils.LogTool
@@ -372,6 +371,17 @@ class Parameter {
             baseList.add("nickname=$nickname")
             var map = fengMap("login")
             map.put("nickname",nickname)
+            return map
+        }
+        /***
+         * 修改用户支付宝
+         * @param ali_pay_account
+         */
+        fun getUpdZfb(ali_pay_account:String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("ali_pay_account=$ali_pay_account")
+            var map = fengMap("login")
+            map.put("ali_pay_account",ali_pay_account)
             return map
         }
         /**

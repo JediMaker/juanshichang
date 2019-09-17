@@ -1,8 +1,6 @@
 package com.example.juanshichang.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.util.Log
+import android.content.Intent
 import android.view.View
 import com.example.juanshichang.R
 import com.example.juanshichang.base.Api
@@ -10,10 +8,8 @@ import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.BenefitBean
-import com.example.juanshichang.bean.OrdersBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.LogTool
-import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.google.gson.Gson
@@ -41,6 +37,7 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
         EaRet.setOnClickListener(this)
         syDetail.setOnClickListener(this)
         putRecord.setOnClickListener(this)
+        putForward.setOnClickListener(this)
     }
 
     override fun initData() {
@@ -51,11 +48,18 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
             R.id.EaRet->{
                 finish()
             }
+            R.id.putForward ->{ //提现
+                val intent = Intent(this@EarningsActivity,TakeOutActivity::class.java)
+                intent.putExtra("type",1)
+                goStartActivity(this@EarningsActivity,intent)
+            }
             R.id.syDetail ->{//收益结算明细
                 ToastUtil.showToast(this@EarningsActivity,"暂未开放收益入口")
             }
             R.id.putRecord ->{//提现记录
-                ToastUtil.showToast(this@EarningsActivity,"暂未开放提现入口")
+                val intent = Intent(this@EarningsActivity,TakeOutActivity::class.java)
+                intent.putExtra("type",2)
+                goStartActivity(this@EarningsActivity,intent)
             }
         }
     }

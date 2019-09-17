@@ -18,7 +18,6 @@ import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.widget.LiveDataBus
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_reg2_log.*
 import kotlinx.android.synthetic.main.login_item.*
 import kotlinx.android.synthetic.main.regist_item.*
@@ -43,7 +42,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         val LOGINCODE:Int = 1
     }
     override fun initView() {
-        QMUIStatusBarHelper.translucent(this@Reg2LogActivity)
+//        QMUIStatusBarHelper.translucent(this@Reg2LogActivity)
 //        StatusBarUtil.addStatusViewWithColor(this@Reg2LogActivity, R.color.label_color)
         rRL.setPadding(0, QMUIDisplayHelper.getStatusBarHeight(this@Reg2LogActivity), 0, 0)
         SoftHideKeyBoardUtil.assistActivity(this@Reg2LogActivity)
