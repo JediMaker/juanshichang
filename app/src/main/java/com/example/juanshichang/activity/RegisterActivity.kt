@@ -16,6 +16,7 @@ import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
@@ -110,7 +111,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
      * 注册
      */
     private fun regGo(phone: String, ps: String) {
-        HttpManager.getInstance().post(Api.USER, Parameter.getRegisterMap(phone, ps), object : Subscriber<String>() {
+        HttpManager.getInstance().post(Api.USER, Parameter.getLoginMap(phone, ps), object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
@@ -133,11 +134,11 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted","注册请求完成!")
+                LogTool.e("onCompleted","注册请求完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onError", "注册请求错误!" + e)
+                LogTool.e("onError", "注册请求错误!" + e)
             }
         })
     }
@@ -146,7 +147,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
      * 登录
      */
     private fun logGo(phone: String, ps: String) {
-        HttpManager.getInstance().post(Api.LOGIN, Parameter.getRegisterMap(phone, ps), object : Subscriber<String>() {
+        HttpManager.getInstance().post(Api.LOGIN, Parameter.getLoginMap(phone, ps), object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
@@ -173,11 +174,11 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onCompleted() {
-                Log.e("onCompleted","登录请求完成!")
+                LogTool.e("onCompleted","登录请求完成!")
             }
 
             override fun onError(e: Throwable?) {
-                Log.e("onCompleted","登录请求错误!"+e)
+                LogTool.e("onCompleted","登录请求错误!"+e)
             }
 
         })

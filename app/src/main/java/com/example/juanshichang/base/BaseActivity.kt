@@ -3,7 +3,6 @@ package com.example.juanshichang.base
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.TextUtils
 import android.view.Gravity
 import android.view.KeyEvent
@@ -22,7 +21,7 @@ import com.example.juanshichang.dialog.RegisterDialog
 import com.example.juanshichang.dialog.ToastDialog
 import com.example.juanshichang.utils.ActivityManager
 import com.example.juanshichang.utils.AutoLayoutActivity
-import com.example.juanshichang.utils.StatusBarUtil
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.IsInternet
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
@@ -172,6 +171,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
         super.onDestroy()
         unbinder?.unbind()
         lifecycleSubject.onNext(ActivityEvent.DESTROY)
+        ActivityManager.getInstance().removeActivity(this)
     }
     // My New Add
     /**
@@ -201,7 +201,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
          * @Class<BaseActivity>   传入跳向A界面 A界面
          */
         fun goStartActivity(context: Context, bundle: Bundle, activity:BaseActivity) {
-            var intent = Intent()
+            val intent = Intent()
             intent.setClass(context, activity::class.java)
             if (!bundle.isEmpty) {
                 intent.putExtra("BUNDLE", bundle)
@@ -209,7 +209,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
             context.startActivity(intent)
         }
         fun goStartActivity(context: Context,activity:BaseActivity) {
-            var intent = Intent()
+            val intent = Intent()
             intent.setClass(context, activity::class.java)
             context.startActivity(intent)
         }
@@ -270,9 +270,16 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
 
     /**
      * 这是一个高仿的....
+     * 取消 文字 为 null 则按钮 隐藏
      */
     fun showRegisterDialog(title:String,content:String,sureBtnText:String,cancleBtnText:String,callback: BaseActivity.DialogCallback,isCanceled:Boolean) {
         val fragments = RegisterDialog(title,content,sureBtnText,cancleBtnText,callback,isCanceled)
+        fragments.show(this.getSupportFragmentManager(), null)
+    }
+    //这是改变确定键颜色的方法
+    fun showRegisterDialog(title:String,content:String,sureBtnText:String,sureColor:Int,cancleBtnText:String,callback: BaseActivity.DialogCallback,isCanceled:Boolean) {
+        val fragments = RegisterDialog(title,content,sureBtnText,cancleBtnText,callback,isCanceled)
+        fragments.setSureColor(sureColor)
         fragments.show(this.getSupportFragmentManager(), null)
     }
     /**
@@ -285,10 +292,11 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
     }
 
     //加载
-    protected var progressdialog: LoadingProgressDialog? = null
+    var progressdialog: LoadingProgressDialog? = null //protected
 
     fun showProgressDialog() {
         try {
+            LogTool.e("ifCurrentActivityTopStack","${Util.ifCurrentActivityTopStack(this)}")
             if (progressdialog != null && progressdialog!!.isShowing()) {
 
             } else if (progressdialog != null && !progressdialog!!.isShowing()) {
@@ -308,6 +316,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
             }
         } catch (e: Exception) {
             // TODO: handle exception
+            LogTool.e("progressdialog",e.toString())
         }
 
     }
@@ -319,6 +328,7 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
             if (progressdialog != null)
                 progressdialog = null
         } catch (e: Exception) {
+            LogTool.e("progressdialogd",e.toString())
         }
 
     }

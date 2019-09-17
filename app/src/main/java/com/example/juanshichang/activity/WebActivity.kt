@@ -12,9 +12,13 @@ import android.view.WindowManager
 import android.webkit.*
 import android.widget.ZoomButtonsController
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.ContextCompat.startActivity
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
+import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.utils.AutoLayoutActivity
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.widget.IsInternet
 import kotlinx.android.synthetic.main.activity_not_car.*
@@ -22,11 +26,11 @@ import kotlinx.android.synthetic.main.activity_web.*
 import java.lang.reflect.Method
 import kotlin.Exception
 
-class WebActivity : AutoLayoutActivity(), View.OnClickListener {
+class WebActivity : BaseActivity(), View.OnClickListener {
     var mobile_short_url: String? = null
     var mobile_url: String? = null
     var zoom_controll: ZoomButtonsController? = null
-    private fun initData() {
+    override fun initData() {
         StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
         mGoGuangguangTV.setOnClickListener(this)
         mReturnView.setOnClickListener(this)
@@ -39,11 +43,10 @@ class WebActivity : AutoLayoutActivity(), View.OnClickListener {
         } else {
             mNotWebLayout.visibility = View.GONE
             mRWebLayout.visibility = View.VISIBLE
-            initView()
         }
     }
 
-    private fun initView() {
+    override fun initView() {
         if (null != intent.getStringExtra("mobile_short_url")) {
             mobile_short_url = intent.getStringExtra("mobile_short_url")
             setWebView(mobile_short_url)
@@ -84,12 +87,14 @@ class WebActivity : AutoLayoutActivity(), View.OnClickListener {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
         initData()
+    }*/
+    override fun getContentView(): Int {
+        return R.layout.activity_web
     }
-
     private fun setWebView(urls: String?) {
         mWebView.loadUrl(urls)//加载web资源
         //控制webView 字体大小
@@ -131,7 +136,7 @@ class WebActivity : AutoLayoutActivity(), View.OnClickListener {
                     mNotWebLayout.visibility = View.GONE
                     mRWebLayout.visibility = View.VISIBLE
                 }
-                Log.e("web",url)
+                LogTool.e("web",url)
                 try {
                     if (url!!.startsWith("weixin://") //微信
                         || url!!.startsWith("alipays://") //支付宝
@@ -170,14 +175,14 @@ class WebActivity : AutoLayoutActivity(), View.OnClickListener {
                     mNotWebLayout.visibility = View.GONE
                     mRWebLayout.visibility = View.VISIBLE
                 }
-                Log.e("web2",url)
+                LogTool.e("web2",url.toString())
                 try {
                     if (url!!.startsWith("weixin://") //微信
                         || url!!.startsWith("alipays://") //支付宝
                         || url!!.startsWith("mailto://") //邮件
                         || url!!.startsWith("tel://")//电话
                         || url!!.startsWith("dianping://")//大众点评
-                        || url!!.startsWith("pinduoduo://")//拼多多
+//                        || url!!.startsWith("pinduoduo://")//拼多多   //todo 暂且忽略拼多多
                     //其他自定义的scheme
                     ) {
                         var intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))

@@ -9,6 +9,7 @@ android {
         applicationId "com.example.juanshichang"
         minSdkVersion 19
         targetSdkVersion 29
+        manifestPlaceholders = [qqappid: ""]
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
@@ -51,14 +52,19 @@ android {
     android.applicationVariants.all { variant ->
         // 更新至Android Studio 3.3 gradle 4.10.1
         variant.outputs.all {
-            outputFileName = "劵市场-${variant.versionCode}-${variant.versionName}-${releaseTime()}.apk" //Nanosic_OTA
+            outputFileName = "劵市场-${variant.versionCode}-${variant.versionName}-${releaseTime()}.apk"
+            //Nanosic_OTA
         }
     }
     dexOptions {
         jumboMode true
         javaMaxHeapSize "4g"
     }
-
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
 //        exclude 'META-INF/DEPENDENCIES'
@@ -76,13 +82,16 @@ static def releaseTime() {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.anko:anko:$anko_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'  //v7 包含 v4
+    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+
+    //v7 包含 v4
     implementation 'androidx.core:core-ktx:1.2.0-alpha02'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
-//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
@@ -93,29 +102,49 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     //引入腾讯UI框架
-    implementation 'com.qmuiteam:qmui:1.2.0'
-    implementation 'com.qmuiteam:arch:0.3.1'
+    implementation 'com.qmuiteam:qmui:1.4.0'
+
+    //1.2.0
+
+    //    implementation 'com.qmuiteam:arch:0.6.1' //0.3.1
+    implementation "com.qmuiteam:arch:$qmui_arch_version"
+
+    //    kapt "com.qmuiteam:arch-compiler:$qmui_arch_version" // use annotationProcessor if java
+
     //Banner
     api 'com.youth.banner:banner:1.4.10'
+
     //第三方Tab
     api 'com.github.hackware1993:MagicIndicator:1.5.0'
+
     //引入万能适配器
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45'
+
     //屏幕适配
     implementation 'com.zhy:autolayout:1.4.5'
+
     //解决重复类dex问题
-//    annotationProcessor 'com.android.support:multidex:1.0.0'
+
+    //    annotationProcessor 'com.android.support:multidex:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'androidx.multidex:multidex-instrumentation:2.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+
     //添加这行
-    implementation 'com.jakewharton:butterknife:10.1.0'  // New Add
+    implementation 'com.jakewharton:butterknife:10.1.0'
+
+    // New Add
     kapt 'com.jakewharton:butterknife-compiler:10.1.0'
+
     //添加这行
+
     //eventbus
     api 'org.greenrobot:eventbus:3.1.1'
-    kapt "org.greenrobot:eventbus-annotation-processor:3.1.1" // New Add
+    kapt "org.greenrobot:eventbus-annotation-processor:3.1.1"
+
+    // New Add
+
     //rxlifecycle2 避免内存泄漏
     api 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
     api 'com.trello.rxlifecycle2:rxlifecycle-android:2.1.0'
@@ -131,4 +160,16 @@ dependencies {
     api 'com.squareup.retrofit2:converter-scalars:2.6.0'
     api 'com.squareup.okhttp3:okhttp:4.0.1'
     api 'io.reactivex:rxandroid:1.2.1'
+
+    //友盟 分享  start
+//    implementation files('libs/SecurityEnvSDK-release-1.1.0.jar')
+//    implementation files('libs/utdid4all-1.1.5.3_proguard.jar')
+//    implementation files('libs/umeng-common-2.1.0.jar')
+//    implementation files('libs/umeng-share-core-6.9.6.jar')
+//    implementation files('libs/umeng-share-QQ-simplify-6.9.6.jar')
+//    implementation files('libs/umeng-share-sina-simplify-6.9.6.jar')
+//    implementation files('libs/umeng-share-wechat-simplify-6.9.6.jar')
+//    implementation files('libs/umeng-shareboard-widget-6.9.6.jar')
+//    implementation files('libs/umeng-sharetool-6.9.6.jar')
+    //友盟 分享  end
 }

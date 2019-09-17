@@ -19,7 +19,6 @@
                 android:layout_marginLeft="40px"
                 android:src="@drawable/i_light_back" />
     </RelativeLayout>
-
     <RelativeLayout
             android:layout_width="0px"
             android:layout_height="wrap_content"

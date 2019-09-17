@@ -1,30 +1,31 @@
 package com.example.juanshichang.fragment
 
 
-import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Message
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.entity.MultiItemEntity
-
 import com.example.juanshichang.R
 import com.example.juanshichang.adapter.HomeAdapter
 import com.example.juanshichang.base.Api
+import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
-import com.example.juanshichang.bean.*
+import com.example.juanshichang.bean.GridItemBean
+import com.example.juanshichang.bean.HomeEntity
+import com.example.juanshichang.bean.MainBannerBean
+import com.example.juanshichang.bean.MainRecyclerBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
 import com.qmuiteam.qmui.arch.QMUIFragment
+import kotlinx.coroutines.Runnable
 import org.jetbrains.anko.layoutInflater
 import org.json.JSONObject
 import rx.Subscriber
@@ -34,73 +35,95 @@ import rx.Subscriber
  * @创建日期: 2019/8/23 17:49
  * @文件作用: 首页 精选
  */
-class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
-    var seleView:View? = null
-    var rvData = mutableListOf<MainRecyclerBean.Theme>()
-    var mainList = arrayListOf<HomeEntity>()
-    var homeAdapter: HomeAdapter? = null
-    var hr: RecyclerView? = null
-    var mSwipeRefreshLayout: SwipeRefreshLayout? = null
-    var nextSize = 5
-    var next: Int = 1
-    var bHome: HomeEntity? = null
-    var gHome: HomeEntity? = null
-    var rHome: HomeEntity? = null
-    var addHome: HomeEntity? = null
-    var handler: Handler = object : Handler() {
+class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListener,
+    SwipeRefreshLayout.OnRefreshListener {
+    private var seleView: View? = null
+    private var rvData = mutableListOf<MainRecyclerBean.Theme>()
+    private var mainList = arrayListOf<HomeEntity>()
+    private var homeAdapter: HomeAdapter? = null
+    private var hr: RecyclerView? = null
+    private var mSwipeRefreshLayout: SwipeRefreshLayout? = null
+    private var nextSize = 5
+    private var next: Int = 1  //这个 字段 设计目的 为了 加载更多 拉取页面 但是 ... 后台数据一次性给到 故 此字段闲置
+    private var bHome: HomeEntity? = null
+    private var gHome: HomeEntity? = null
+    private var rHome: HomeEntity? = null
+    private var base: BaseActivity? = null
+    private var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            when(msg.what){
-                1->{
+            when (msg.what) {
+                1 -> {
+                    LogTool.e("tools_Sekection", "b：$b g:$g r:$r")
                     if (b != 1 && g != 1 && r != 1) {
-                        mainList.add(bHome!!)
-                        mainList.add(gHome!!)
-                        mainList.add(rHome!!)
-                        homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
-                        homeAdapter?.setEnableLoadMore(true)
-                        onCreate(null)
+                        if (mainList.size != 0) {
+                            mainList.clear()
+                        }
+                        synchronized(SelectionFragment::class) {
+                            mainList.add(0, bHome!!)
+                            mainList.add(1, gHome!!)
+                            mainList.add(2, rHome!!)
+                            homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
+                        }
+//                        homeAdapter?.setEnableLoadMore(true)
                         b = 1
                         g = 1
                         r = 1
-                    } else {
-                        this.sendEmptyMessageDelayed(1, 50)
+                        homeAdapter?.emptyView =
+                            View.inflate(context, R.layout.activity_not_null, null)
+                        base?.dismissProgressDialog()
+                        this.removeMessages(1)
                     }
+//                    else {
+//                        this.sendEmptyMessageDelayed(1, 20)
+//                    }
                 }
             }
         }
     }
+
     override fun onCreateView(): View {
-        seleView = context?.layoutInflater!!.inflate(R.layout.fragment_selection,null)
+        seleView = context?.layoutInflater!!.inflate(R.layout.fragment_selection, null)
         initData()
         return seleView!!
     }
 
     override fun onResume() {
         super.onResume()
+        //写在这里 无论 切换回来 还是 息屏唤醒 都会 请求网络... 增加流量消耗
+//        getBanner()
+//        getGrid()
+//        getRecycler(2, next)
+//        handler.sendEmptyMessageDelayed(1,50)
+        //迁移至于initData....
+    }
+
+    private fun initData() {
+        base = this.activity as BaseActivity
+        base?.showProgressDialog()
+        setRecycler()
         getBanner()
         getGrid()
         getRecycler(2, next)
-        handler.sendEmptyMessageDelayed(1,50)
+        timerLogin.start() //启动定时器
+        handler.sendEmptyMessageDelayed(1, 50)
     }
-    private fun initData() {
-        setRecycler()
-    }
+
     //上滑加载更多
     override fun onLoadMoreRequested() {
         val numSize = rvData.size
         val oldNextSize = nextSize
-        addHome = null
-        if((numSize - nextSize) <= 1){
+        if ((numSize - nextSize) <= 1) {
             nextSize += 1
-        }else{
+        } else {
             if ((numSize - nextSize) % 2 != 0) {
                 nextSize += 3
-            }else{
+            } else {
                 nextSize += 2
             }
         }
         val addData = arrayListOf<MainRecyclerBean.Theme>()
-        hr?.postDelayed(object : Runnable{
+        hr?.postDelayed(object : Runnable {
             override fun run() {
                 if (nextSize <= rvData.size) {
                     for (index in oldNextSize until nextSize) {
@@ -114,33 +137,36 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
                     homeAdapter?.loadMoreEnd()
                 }
             }
-        },3000)
+        }, 2500)
     }
+
     //下拉刷新
     override fun onRefresh() {
         //刷新的时候禁止加载更多
+//        base?.showProgressDialog()
         homeAdapter?.setEnableLoadMore(false)
-        hr?.postDelayed(object : Runnable{
+        hr?.postDelayed(object : Runnable {
             override fun run() {
-                homeAdapter?.b_i = 1
-                homeAdapter?.g_i = 1
-                homeAdapter?.r_i = 1
-                nextSize = 5
-                mainList.clear()
-                getBanner()
-                getGrid()
-                getRecycler(2, next)
-                Log.e("onLoadMoreRequested","nextSize:$nextSize")
-                Log.e("onLoadMoreRequested","sendEmptyMessage:1")
-                //更新数据
-                handler.sendEmptyMessage(1)
-                //刷新完成取消刷新动画
-                mSwipeRefreshLayout?.setRefreshing(false)
-                //刷新完成重新开启加载更多
-                homeAdapter?.setEnableLoadMore(true)
+                synchronized(SelectionFragment::class) {
+                    homeAdapter?.b_i = 1
+                    homeAdapter?.g_i = 1
+                    homeAdapter?.r_i = 1
+                    nextSize = 5
+                    mainList.clear()
+                    getBanner()
+                    getGrid()
+                    getRecycler(2, next)
+                    //更新数据
+                    handler.sendEmptyMessage(1)
+                    //刷新完成取消刷新动画
+                    mSwipeRefreshLayout?.setRefreshing(false)
+                    //刷新完成重新开启加载更多
+                    homeAdapter?.setEnableLoadMore(true)
+                }
             }
-        },1000)//刷新延迟
+        }, 1000)//刷新延迟
     }
+
     //todo界面初始化
     private fun setRecycler() {
         hr = seleView?.findViewById<RecyclerView>(R.id.home_recycler)
@@ -155,7 +181,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
          * 从左到右 SLIDEIN_LEFT
          * 从右到左 SLIDEIN_RIGHT
          */
-        homeAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM) //SCALEIN
+        homeAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT) //SCALEIN
         homeAdapter?.setOnLoadMoreListener(this, hr)//设置加载更多
         mSwipeRefreshLayout?.setOnRefreshListener(this)
         //默认第一次加载会进入回调，如果不需要可以配置
@@ -173,14 +199,15 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
         hr?.layoutManager = lm
         hr?.adapter = homeAdapter
     }
-    //todo 数据写入
+
+    //todo 数据写入  数据类型 转换
     var b = 1
     var g = 1
     var r = 1
     private fun setRv2(recyclerList: List<MainRecyclerBean.Theme>): HomeEntity {
         rHome = null
         if (recyclerList != null && recyclerList.size > 0) {
-            var entity = HomeEntity(HomeEntity.TYPE_RECYCLER)
+            val entity = HomeEntity(HomeEntity.TYPE_RECYCLER)
             for (index in 0 until recyclerList.size) {
                 val r = recyclerList[index]
                 if (!entity.recyclers!!.contains(r)) {
@@ -196,7 +223,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
     private fun setGrid2(gridList: List<GridItemBean.Channel>): HomeEntity {
         gHome = null
         if (gridList != null && gridList.size > 0) {
-            var entity = HomeEntity(HomeEntity.TYPE_GRID)
+            val entity = HomeEntity(HomeEntity.TYPE_GRID)
             for (index in 0 until gridList.size) {
                 val g = gridList[index]
                 if (!entity.grids!!.contains(g)) {
@@ -212,7 +239,7 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
     private fun setBanner2(bannerList: List<MainBannerBean.Banner>): HomeEntity {
         bHome = null
         if (bannerList != null && bannerList.size > 0) {
-            var entity = HomeEntity(HomeEntity.TYPE_BANNER)
+            val entity = HomeEntity(HomeEntity.TYPE_BANNER)
             for (index in 0 until bannerList.size) {
                 val b = bannerList[index]
                 if (!entity.banners!!.contains(b)) {
@@ -224,98 +251,133 @@ class SelectionFragment : QMUIFragment(),BaseQuickAdapter.RequestLoadMoreListene
         }
         return HomeEntity()
     }
+
     //todo 网络请求
     private fun getBanner() {
-        HttpManager.getInstance().post(Api.MAINBANNER, Parameter.getMainBannerMap(), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject = JSONObject(str)
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(context!!, jsonObj.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val Data = Gson().fromJson(str, MainBannerBean.MainBannerBeans::class.java)
-                        val bannerList = Data.data.banner_list
-                        bHome = setBanner2(bannerList)
-                    }
-                }
-            }
-
-            override fun onCompleted() {
-                Log.e("onCompleted", "Banner加载完成!")
-            }
-
-            override fun onError(e: Throwable?) {
-                getBanner()
-                Log.e("onError", "Banner加载失败!" + e)
-            }
-        })
-    }
-
-    private fun getRecycler(theme_goods_count: Int, next: Int) {
         HttpManager.getInstance()
-            .post(Api.THEMELIST, Parameter.getRecyclerMap(theme_goods_count), object : Subscriber<String>() {
+            .post(Api.MAINBANNER, Parameter.getMainBannerMap(), object : Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
                             ToastUtil.showToast(context!!, jsonObj.optString(JsonParser.JSON_MSG))
                         } else {
-                            if (next == 1) {
-                                rvData.clear()
-                            }
-                            val Data = Gson().fromJson(str, MainRecyclerBean.MainRecyclerBeans::class.java)
-                            val recyclerList = Data.data.theme_list
-                            //此处进行处理 默认预加载五条
-                            if (recyclerList.size >= 5) {
-                                val goData = arrayListOf<MainRecyclerBean.Theme>()
-                                for (index in 0 until 5) {
-                                    goData.add(recyclerList[index])
-                                }
-                                rHome = setRv2(goData)
-                            } else {
-                                rHome = setRv2(recyclerList)
-                            }
-                            rvData.addAll(recyclerList) //todo 需要 不可注释...
+                            val Data =
+                                Gson().fromJson(str, MainBannerBean.MainBannerBeans::class.java)
+                            val bannerList = Data.data.banner_list
+                            bHome = setBanner2(bannerList)
                         }
                     }
                 }
 
                 override fun onCompleted() {
-                    Log.e("onCompleted", "Recycler加载完成!")
+                    LogTool.e("onCompleted", "Banner加载完成!")
                 }
 
                 override fun onError(e: Throwable?) {
-                    getRecycler(theme_goods_count, next)
-                    Log.e("onError", "Recycler加载失败!" + e)
+//                getBanner()
+                    LogTool.e("onError", "Banner加载失败!" + e)
                 }
             })
     }
 
+    private fun getRecycler(theme_goods_count: Int, next: Int) {
+        HttpManager.getInstance()
+            .post(
+                Api.THEMELIST,
+                Parameter.getRecyclerMap(theme_goods_count),
+                object : Subscriber<String>() {
+                    override fun onNext(str: String?) {
+                        if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                            var jsonObj: JSONObject = JSONObject(str)
+                            if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                                ToastUtil.showToast(
+                                    context!!,
+                                    jsonObj.optString(JsonParser.JSON_MSG)
+                                )
+                            } else {
+                                if (next == 1) {
+                                    rvData.clear()
+                                }
+                                val Data = Gson().fromJson(
+                                    str,
+                                    MainRecyclerBean.MainRecyclerBeans::class.java
+                                )
+                                val recyclerList = Data.data.theme_list
+                                //此处进行处理 默认预加载五条
+                                if (recyclerList.size >= 5) {
+                                    val goData = arrayListOf<MainRecyclerBean.Theme>()
+                                    for (index in 0 until 5) {
+                                        goData.add(recyclerList[index])
+                                    }
+                                    rHome = setRv2(goData)
+                                } else {
+                                    rHome = setRv2(recyclerList)
+                                }
+                                rvData.addAll(recyclerList) //todo 需要 不可注释...
+                            }
+                        }
+                    }
+
+                    override fun onCompleted() {
+                        LogTool.e("onCompleted", "Recycler加载完成!")
+                    }
+
+                    override fun onError(e: Throwable?) {
+//                    getRecycler(theme_goods_count, next)
+                        LogTool.e("onError", "Recycler加载失败!" + e)
+                    }
+                })
+    }
+
     private fun getGrid() {
-        HttpManager.getInstance().post(Api.CHANNELLIST, Parameter.getMainBannerMap(), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject? = JSONObject(str)
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(context!!, jsonObj!!.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val data = Gson().fromJson(str, GridItemBean.GridItemBeans::class.java)
-                        val gridList = data.data.channel_list
-                        gHome = setGrid2(gridList)
+        HttpManager.getInstance()
+            .post(Api.CHANNELLIST, Parameter.getMainBannerMap(), object : Subscriber<String>() {
+                override fun onNext(str: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        val jsonObj: JSONObject? = JSONObject(str)
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(context!!, jsonObj!!.optString(JsonParser.JSON_MSG))
+                        } else {
+                            val data = Gson().fromJson(str, GridItemBean.GridItemBeans::class.java)
+                            val gridList = data.data.channel_list
+                            gHome = setGrid2(gridList)
+                        }
                     }
                 }
-            }
 
-            override fun onCompleted() {
-                Log.e("onCompleted", "Grid加载完成!")
-            }
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "Grid加载完成!")
+                }
 
-            override fun onError(e: Throwable?) {
-                getGrid()
-                Log.e("onError", "Grid加载失败!" + e)
-            }
+                override fun onError(e: Throwable?) {
+//                getGrid()
+                    LogTool.e("onError", "Grid加载失败!" + e)
+                }
 
-        })
+            })
+    }
+
+    //这个计时器用于轮询首次进入页面的是否成功刷新显示 超时没有成功显示 就关闭进度框 并 提示
+    var timerLogin: CountDownTimer = object : CountDownTimer(5000, 5000) {
+        override fun onFinish() {
+            if (b == 2 || g == 2 || r == 2) {
+                if(base?.progressdialog!!.isShowing()){
+                    base?.runOnUiThread(object : Runnable {
+                        override fun run() {
+                            base?.dismissProgressDialog()
+                            ToastUtil.showToast(this@SelectionFragment.context!!,"请稍后刷新 以获取最新优惠资讯")
+                            LogTool.e("tools_Sekection", "onTick  首次加载失败了")
+                            onRefresh()
+                        }
+                    })
+                }
+            }
+            LogTool.e("tools_Sekection", "onFinish  首次加载 轮询结束！！！")
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+        }
     }
 
     override fun onDestroy() {

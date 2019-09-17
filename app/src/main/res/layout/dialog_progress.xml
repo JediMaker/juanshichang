@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="@android:color/transparent"
     android:gravity="center"
     >
+<!--    @drawable/anim_progress_loadings-->
     <ImageView
         android:id="@+id/loadingImageView"
         android:layout_width="200px"
         android:layout_height="200px"
         android:background="@drawable/anim_progress_loading"
         />
-
+<!--    anim_progress_loadings-->
     <TextView
         android:id="@+id/id_tv_loadingmsg"
         android:layout_width="wrap_content"

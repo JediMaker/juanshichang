@@ -33,4 +33,6 @@
     <color name="set_linear">#DDDDDD</color>
     <color name="shangpin_tit">#FFDDDC</color>
     <color name="orders_state">#78D5A0</color>
+    <color name="indicatorRed">#F93736</color>
+    <color name="listcolor">#F06761</color>
 </resources>

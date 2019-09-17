@@ -1,17 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".fragment.TwoFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textSize="26sp"
-            android:textColor="@android:color/holo_red_dark"
-            android:text="学院"/>
-
-</RelativeLayout>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".fragment.TwoFragment">
+    <include
+            android:id="@+id/mainTwo"
+            android:visibility="visible"
+            layout="@layout/main_searchbox_two"/>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/mTSwipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <com.zhy.autolayout.AutoLinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <com.example.juanshichang.widget.MyRefreshListView
+                    android:id="@+id/mList"
+                    android:scrollbars="none"
+                    android:background="@color/ff_back"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/mRecycler"
+                    android:background="@color/white"
+                    android:scrollbars="none"
+                    android:layout_width="0dp"
+                    android:layout_weight="3.5"
+                    android:layout_height="match_parent"/>
+        </com.zhy.autolayout.AutoLinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</com.zhy.autolayout.AutoLinearLayout>

@@ -18,6 +18,7 @@ import com.example.juanshichang.bean.*
 import com.example.juanshichang.fragment.OneFragment.Companion.WebUrl
 import com.example.juanshichang.fragment.OneFragment.Companion.getWebLink
 import com.example.juanshichang.utils.GlideImageLoader
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
@@ -126,12 +127,9 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
     }
 
     private fun setGrid(item: HomeEntity, helper: BaseViewHolder?) {
-//        val home_gridView = helper!!.getView<AutoLinearLayout>(R.id.auto_2).home_gridView
         val home_gridView = helper!!.getView<GridView>(R.id.home_gridView)
-//        var grid = helper?.convertView!!.findViewById<GridView>(R.id.main_gridView)
-//        val grid = helper!!.itemView.find<GridView>(R.id.home_gridView)
+        gridList.clear()
         if (g_i == 1) {
-            gridList.clear()
             gridAdapter = MainGridAdapter(mContext, gridList)
             home_gridView.adapter = gridAdapter
             g_i = 2
@@ -168,15 +166,15 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
 
     private fun setBanner(item: HomeEntity, helper: BaseViewHolder?) {
         val main_banner = helper!!.getView<AutoLinearLayout>(R.id.auto_1).main_banner
+        imgUrls?.clear()
+        imgs?.clear()
         if (b_i == 1) {
-            imgUrls?.clear()
-            imgs?.clear()
             main_banner.visibility = View.VISIBLE
             main_banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR) //显示数字指示器
             //设置指示器位置（当banner模式中有指示器时）
             main_banner.setIndicatorGravity(BannerConfig.LEFT)//指示器居右
             //设置图片加载器
-            main_banner.setImageLoader(GlideImageLoader(1))
+            main_banner.setImageLoader(GlideImageLoader(0))
             //设置动画效果
             main_banner.setBannerAnimation(Transformer.Tablet)
             //设置轮播图片间隔时间（不设置默认为2000）
@@ -206,8 +204,7 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
                 BaseActivity.goStartActivity(mContext, intent)
             } else {
                 ToastUtil.showToast(this.mContext!!, "这个商品类型异常,快去看日志...")
-                Log.i("shopping","异常地址：")
-                Log.e(
+                LogTool.e(
                     "shopping",
                     "id:" + imgs!![it].banner_id + "  type" + imgs!![it].type
                 ) //1.列表

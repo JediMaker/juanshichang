@@ -1,8 +1,10 @@
 package com.example.juanshichang.base
 
+import android.text.TextUtils
 import android.util.Log
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.MyApp.Companion.getMD5uuid
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.widget.MD5Utils
 import java.util.*
@@ -25,7 +27,7 @@ class Parameter {
                 sign = MD5Utils.getMD5Str("|D|$str|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥  todo 待询问
             } else if (signType == 1) { //登录
                 sign = MD5Utils.getMD5Str("|D|$str|K|$usertoken")
-                Log.e("signLogin",sign)
+                LogTool.e("signLogin",sign)
             } else { //其它情况
                 sign = ""
             }
@@ -72,13 +74,13 @@ class Parameter {
             var sign: String = ""
             if (signType.equals("unlogin")) { //未登录
                 sign = MD5Utils.getMD5Str("|D|$fuji|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥  todo 待询问
-                Log.e("sign", "|D|$fuji|K|$appkey")
-                Log.e("sign", MD5Utils.getMD5Str("|D|$fuji|K|$appkey"))
+                LogTool.e("sign", "|D|$fuji|K|$appkey")
+                LogTool.e("sign", MD5Utils.getMD5Str("|D|$fuji|K|$appkey"))
             } else if (signType.equals("login")) { //登录
                 sign = MD5Utils.getMD5Str("|D|$fuji|K|$usertoken")
-//                Log.e("sign2", "$usertoken")
-//                Log.e("sign2", "|D|$fuji|K|$usertoken")
-//                Log.e("sign2", MD5Utils.getMD5Str("|D|$fuji|K|$usertoken"))
+//                LogTool.e("sign2", "$usertoken")
+//                LogTool.e("sign2", "|D|$fuji|K|$usertoken")
+//                LogTool.e("sign2", MD5Utils.getMD5Str("|D|$fuji|K|$usertoken"))
             } else if (signType.equals("special")) { //其它情况
                 sign = ""
             }
@@ -133,7 +135,7 @@ class Parameter {
         /**
          * 注册/登录
          */
-        fun getRegisterMap(mobile: String, password: String): HashMap<String, String> {
+        fun getLoginMap(mobile: String, password: String): HashMap<String, String> {
             baseList.clear()
             baseList.add("mobile=$mobile")
             baseList.add("password=$password")
@@ -143,6 +145,31 @@ class Parameter {
             return map
         }
 
+        fun getRegisterMap(mobile: String, password: String,invite_code:String,sms_code:String): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("mobile=$mobile")
+            baseList.add("password=$password")
+            baseList.add("sms_code=$sms_code")
+            if(TextUtils.isEmpty(invite_code)){
+                if(!MyApp.isDebug){
+                    baseList.add("invite_code=D7FCA2")
+                }
+            }else{
+                baseList.add("invite_code=$invite_code")
+            }
+            var map = fengMap("unlogin")
+            map.put("mobile", mobile)
+            map.put("password", password)
+            map.put("sms_code", sms_code)
+            if(TextUtils.isEmpty(invite_code)){
+                if(!MyApp.isDebug) {
+                    map.put("invite_code", "D7FCA2")
+                }
+            }else{
+                map.put("invite_code", invite_code)
+            }
+            return map
+        }
         /**
          * 商品搜索 pdd
          * @param servicer  只能为以下之一:pdd,taobao,jd
@@ -349,12 +376,16 @@ class Parameter {
         }
         /**
          * 获取首页Tab等数据
+         * @param parent_id def 0
+         * @param with_image def 0 决定是否带图 带图 为 1
          */
-        fun getTabData(parent_id:Int): HashMap<String, String>{
+        fun getTabData(parent_id:Int,with_image:Int): HashMap<String, String>{
             baseList.clear()
             baseList.add("parent_id=$parent_id")
-            var map = fengMap("unlogin")
+            baseList.add("with_image=$with_image")
+            val map = fengMap("unlogin")
             map.put("parent_id","$parent_id")
+            map.put("with_image","$with_image")
             return map
         }
     }

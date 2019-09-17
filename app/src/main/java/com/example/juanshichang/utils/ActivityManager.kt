@@ -20,7 +20,11 @@ class ActivityManager {
     fun addActivity(activity: Activity) {
         activityList.add(activity)
     }
-
+    // 删除Activity到容器中  New Add
+    fun removeActivity(activity: Activity) {
+        activityList.remove(activity)
+        activity.finish()
+    }
     fun close() {
         for (activity in activityList) {
             activity.finish()

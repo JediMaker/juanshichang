@@ -12,6 +12,9 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.juanshichang.R
 import com.example.juanshichang.base.BaseActivity
+import org.jetbrains.anko.textColor
+import org.jetbrains.anko.textColorResource
+import org.jetbrains.anko.textResource
 
 class RegisterDialog(title:String,content:String,sureBtnText:String,cancleBtnText:String,callback: BaseActivity.DialogCallback,isCanceled:Boolean) :DialogFragment(),View.OnClickListener{
     private var title: String? = null
@@ -28,7 +31,7 @@ class RegisterDialog(title:String,content:String,sureBtnText:String,cancleBtnTex
         this.mCallback = callback
         this.isCanceled = isCanceled //是否点击空白区域可取消
     }
-
+    private var sureColor:Int = R.color.reg_dialog_but  //这个是设置确定键颜色 的 拓展字段 默认
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.regist_base_dialog, null)
         val titleDialog = view.findViewById(R.id.titleDialog) as TextView
@@ -46,6 +49,9 @@ class RegisterDialog(title:String,content:String,sureBtnText:String,cancleBtnTex
         titleDialog.text = title
         contentDialog.text = content
         sureReg.text =  mSureBtnText
+        if(sureColor != R.color.reg_dialog_but){
+            sureReg.textColorResource = sureColor
+        }
         sureReg.setOnClickListener(this)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -62,5 +68,8 @@ class RegisterDialog(title:String,content:String,sureBtnText:String,cancleBtnTex
                 mCallback?.sure()
             }
         }
+    }
+    public fun setSureColor(Color:Int){
+        this.sureColor = Color
     }
 }

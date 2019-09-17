@@ -1,22 +1,23 @@
 package com.example.juanshichang.utils
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.content.ContentResolver
 import android.content.Context
+import android.content.res.Resources
+import android.net.Uri
 import android.os.Environment
 import android.provider.Settings
 import android.text.TextUtils
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
+import com.example.juanshichang.activity.Reg2LogActivity
+import com.example.juanshichang.base.BaseActivity
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import android.graphics.Bitmap
-import java.io.ByteArrayOutputStream
-import android.graphics.BitmapFactory
-
-
 
 
 /**
@@ -55,13 +56,13 @@ class Util {
          * @return
          */
         @SuppressLint("NewApi")
-        fun ifCurrentActivityTopStack(activity: AutoLayoutActivity?): Boolean {
+       fun ifCurrentActivityTopStack(activity: AutoLayoutActivity?): Boolean {
             if (activity == null || activity.isFinishing)
                 return false
-            val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
-            val name = manager.getRunningTasks(1)[0].topActivity?.getClassName()
-//            return name.equals(activity::class.java.name)
-            return name!!.equals(activity.javaClass.name)
+            val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val name = manager.getRunningTasks(1).get(0).topActivity?.getClassName()
+//            return name.equals(activity.javaClass.name)
+            return name!!.equals(activity::class.java.name)
         }
 
         /***
@@ -70,8 +71,19 @@ class Util {
          */
         fun validateMobile(mobile: String): Boolean {
             val p = Pattern.compile("^(1)\\d{10}$")
-            var m: Matcher = p.matcher(mobile)
+            val m: Matcher = p.matcher(mobile)
             return m.matches()
+        }
+
+        /**
+         * 判断是否已经登陆  没有 直接跳转
+         */
+        fun hasLogin(context: Context): Boolean {
+            if (TextUtils.isEmpty(SpUtil.getIstance().user.usertoken)) {
+                BaseActivity.goStartActivity(context, Reg2LogActivity())
+                return false
+            }
+            return true
         }
 
         /**
@@ -83,7 +95,6 @@ class Util {
             }
             return true
         }
-
         /**
          * 根据拼多多接口特性
          * 自定义的 数据接口
@@ -171,16 +182,25 @@ class Util {
             val str:String = sf!!.format(Date(time*1000L))
             return str
         }
+        /*时间戳转换成字符窜*/
+        fun getTimedateThree(time:Long):String{
+            sf = SimpleDateFormat("HH:mm:ss")
+//            @SuppressWarnings("unused")
+//            long lcc = Long.valueOf(time);
+            val str:String = sf!!.format(Date(time*1000L))
+            return str
+        }
         /** 手机 字符 加密**/
         fun getPhoneNTransition(mobile: String):String{
             val str = mobile
             var sb = StringBuilder()
             if(mobile.length>0){
                 for (i in 0 .. str.length-1){
-                    if(i<3 || i>7){
+                    if(i<3 || i>6){ //保留 前三位 后四位
                         sb.append(str[i])
+                    }else{
+                        sb.append("*")
                     }
-                    sb.append("*")
                 }
             }
             return sb.toString()
@@ -200,7 +220,18 @@ class Util {
             }
             return null
         }
-
+        //
+        /**
+         * 得到资源文件中图片的Uri地址
+         * todo 废弃
+         * @param id  资源id
+         * @return Uri 地址
+         */
+        fun getUriFormDrawableRes(context: Context,id:Int):Uri{
+            val resources:Resources = context.resources
+            val path:String = ContentResolver.SCHEME_ANDROID_RESOURCE+"://"+resources.getResourcePackageName(id)+"/"+resources.getResourceTypeName(id)+"/"+resources.getResourceEntryName(id)
+            return Uri.parse(path)
+        }
         /**
          * @param min_group_price 最少拼团价
          * @param coupon_discount 优惠劵面额
