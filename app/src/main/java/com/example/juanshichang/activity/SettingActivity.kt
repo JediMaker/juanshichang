@@ -396,6 +396,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 this@SettingActivity.runOnUiThread(object : Runnable {
                     override fun run() {
                         ToastUtil.showToast(this@SettingActivity, "昵称修改失败,请稍后重试")
+                        dismissProgressDialog()
                     }
                 })
             }

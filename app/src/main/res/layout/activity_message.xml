@@ -75,7 +75,6 @@
             android:id="@+id/mesRecycler"
             android:scrollbars="none"
             android:background="@color/ff_back"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 </com.zhy.autolayout.AutoLinearLayout>

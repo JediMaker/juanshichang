@@ -384,6 +384,17 @@ class Parameter {
             map.put("ali_pay_account",ali_pay_account)
             return map
         }
+        /***
+         * 申请提现
+         * @param amount
+         */
+        fun getTxZfb(amount:String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("amount=$amount")
+            var map = fengMap("login")
+            map.put("amount",amount)
+            return map
+        }
         /**
          * 获取首页Tab等数据
          * @param parent_id def 0
