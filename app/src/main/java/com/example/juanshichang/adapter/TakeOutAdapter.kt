@@ -15,6 +15,10 @@ class TakeOutAdapter() : BaseQuickAdapter<TakeOutBean.Withdraw, BaseViewHolder>(
         }
         if (item?.is_success.equals("1")){
             helper?.setText(R.id.it,"成功")
+        }else if(item?.is_success.equals("0")){
+            helper?.setText(R.id.it,"正在提现")
+        }else{
+            helper?.setText(R.id.it,"未知状态")
         }
         helper?.setText(R.id.ith,"¥${item?.amount}")
         helper?.setText(R.id.ifour, Util.getPhoneNTransition(item?.account!!))

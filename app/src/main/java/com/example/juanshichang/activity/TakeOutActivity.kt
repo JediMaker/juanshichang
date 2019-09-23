@@ -27,11 +27,11 @@ import rx.Subscriber
 /**
  * @作者：yzq
  * @创建时间：2019/9/17 18:15
- * @文件作用: 提现页面
+ * @文件作用: 提现页面 该页面中：把提现列表和提现申请页面组合在了一起....
  */
 class TakeOutActivity : BaseActivity(), View.OnClickListener{
     private var vType:Int = 0
-    private var userYe:Float? = 0f
+    private var userYe:Double? = 0.0
     private var txAdpater:TakeOutAdapter? = null
     private var txList:ArrayList<TakeOutBean.Withdraw>? = null
     override fun onClick(v: View?) {
@@ -111,8 +111,8 @@ class TakeOutActivity : BaseActivity(), View.OnClickListener{
     private fun setOneUi() {
         goTx.setOnClickListener(this)
         txClose.setOnClickListener(this)
-        userYe = SpUtil.getIstance().user.balance
-        baHint.text = "可提现余额${Util.getFloatPrice(SpUtil.getIstance().user.balance.toLong())}"
+        userYe = SpUtil.getIstance().user.balance.toDouble()
+        baHint.text = "可提现余额${Util.getFloatPrice(SpUtil.getIstance().user.balance)}"
         //给Edit添加监听事件
         val filters: InputFilter = (EditInputFilter())
         txMon.filters = arrayOf(filters)
@@ -147,16 +147,16 @@ class TakeOutActivity : BaseActivity(), View.OnClickListener{
     private fun txBut():Boolean{
         val aliPay = SpUtil.getIstance().user.ali_pay_account
         val edit = txMon.text.toString()
-        val editFlo = edit.toFloat()
+        if(edit=="" || TextUtils.isEmpty(edit)){
+            ToastTool.showToast(this@TakeOutActivity,"请输入提现金额")
+            return false
+        }
         if(aliPay=="" || TextUtils.isEmpty(aliPay)){
             ToastTool.showToast(this@TakeOutActivity,"请设置提现账户")
             goStartActivity(this@TakeOutActivity,SettingActivity())
             return false
         }
-        if(edit=="" || TextUtils.isEmpty(edit)){
-            ToastTool.showToast(this@TakeOutActivity,"请输入提现金额")
-            return false
-        }
+        val editFlo = edit.toDouble()
         if(editFlo < 0.1){
             ToastTool.showToast(this@TakeOutActivity,"提现金额不能少于0.1元")
             return false
@@ -180,17 +180,17 @@ class TakeOutActivity : BaseActivity(), View.OnClickListener{
                         ToastUtil.showToast(this@TakeOutActivity, jsonObj.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj.getJSONObject("data")
-                        val namount = data.getString("amount") //提现金额
-                        val balance = data.getString("balance") //余额
+                        val namount = data.getDouble("amount") //提现金额
+                        val balance = data.getDouble("balance") //余额
                         val account = data.getString("account") //账户
                         val user = SpUtil.getIstance().user
-                        user.balance = balance.toFloat()
+                        user.balance = UtilsBigDecimal.add(balance,0.0).toFloat()
                         SpUtil.getIstance().user = user
                         this@TakeOutActivity.runOnUiThread(object : Runnable {
                             override fun run() {
                                 txJe.text = "¥$namount"
                                 txZh.text = Util.getPhoneNTransition(account)
-                                dqYe.text = "¥${Util.getFloatPrice(balance.toLong()).toFloat()}"
+                                dqYe.text = "¥${UtilsBigDecimal.add(balance,0.0).toFloat()}"
                                 layoutOne.visibility = View.GONE
                                 layoutTwo.visibility = View.VISIBLE
                                 dismissProgressDialog()

@@ -79,6 +79,7 @@
                     android:textColor="@color/home_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+<!--            ff_copt_but-->
             <TextView
                     android:id="@+id/ffCopy"
                     android:layout_marginLeft="28px"

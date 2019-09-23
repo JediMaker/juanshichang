@@ -49,6 +49,7 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
     private var gHome: HomeEntity? = null
     private var rHome: HomeEntity? = null
     private var base: BaseActivity? = null
+    private var isOneNotify:Boolean? = false
     private var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -69,10 +70,25 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
                         b = 1
                         g = 1
                         r = 1
+                        isOneNotify = true
                         homeAdapter?.emptyView =
                             View.inflate(context, R.layout.activity_not_null, null)
                         base?.dismissProgressDialog()
                         this.removeMessages(1)
+                    }else if(b != 1 && g != 1 && r == 1){ //这里用来应对 第三个接口 走空问题！！！
+                        if (mainList.size != 0) {
+                            mainList.clear()
+                        }
+                        synchronized(SelectionFragment::class) {
+                            mainList.add(0, bHome!!)
+                            mainList.add(1, gHome!!)
+//                            mainList.add(2, rHome!!)
+                            homeAdapter?.setNewData(mainList as List<MultiItemEntity>?)
+                        }
+                        getRecycler(2, next)
+//                        isOneNotify = true
+                        base?.dismissProgressDialog()
+                        this.sendEmptyMessageDelayed(1,500)
                     }
 //                    else {
 //                        this.sendEmptyMessageDelayed(1, 20)
@@ -88,6 +104,19 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
         return seleView!!
     }
 
+
+    private fun initData() {
+        base = this.activity as BaseActivity
+        base?.showProgressDialog()
+        setRecycler()
+        synchronized(SelectionFragment::class){
+            getBanner()
+            getGrid()
+            getRecycler(2, next)
+            handler.sendEmptyMessageDelayed(1, 50)
+        }
+        timerLogin.start() //启动定时器
+    }
     override fun onResume() {
         super.onResume()
         //写在这里 无论 切换回来 还是 息屏唤醒 都会 请求网络... 增加流量消耗
@@ -97,18 +126,6 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
 //        handler.sendEmptyMessageDelayed(1,50)
         //迁移至于initData....
     }
-
-    private fun initData() {
-        base = this.activity as BaseActivity
-        base?.showProgressDialog()
-        setRecycler()
-        getBanner()
-        getGrid()
-        getRecycler(2, next)
-        timerLogin.start() //启动定时器
-        handler.sendEmptyMessageDelayed(1, 50)
-    }
-
     //上滑加载更多
     override fun onLoadMoreRequested() {
         val numSize = rvData.size
@@ -254,6 +271,7 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
 
     //todo 网络请求
     private fun getBanner() {
+        LogTool.e("okgo","启动Banner请求")
         HttpManager.getInstance()
             .post(Api.MAINBANNER, Parameter.getMainBannerMap(), object : Subscriber<String>() {
                 override fun onNext(str: String?) {
@@ -282,6 +300,7 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
     }
 
     private fun getRecycler(theme_goods_count: Int, next: Int) {
+        LogTool.e("okgo","启动Recycler请求")
         HttpManager.getInstance()
             .post(
                 Api.THEMELIST,
@@ -331,6 +350,7 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
     }
 
     private fun getGrid() {
+        LogTool.e("okgo","启动Grid请求")
         HttpManager.getInstance()
             .post(Api.CHANNELLIST, Parameter.getMainBannerMap(), object : Subscriber<String>() {
                 override fun onNext(str: String?) {
@@ -361,13 +381,14 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
     //这个计时器用于轮询首次进入页面的是否成功刷新显示 超时没有成功显示 就关闭进度框 并 提示
     var timerLogin: CountDownTimer = object : CountDownTimer(5000, 5000) {
         override fun onFinish() {
-            if (b == 2 || g == 2 || r == 2) {
+            if (!isOneNotify!!) {
                 if(base?.progressdialog!!.isShowing()){
                     base?.runOnUiThread(object : Runnable {
                         override fun run() {
                             base?.dismissProgressDialog()
                             ToastUtil.showToast(this@SelectionFragment.context!!,"请稍后刷新 以获取最新优惠资讯")
                             LogTool.e("tools_Sekection", "onTick  首次加载失败了")
+                            LogTool.e("okgo","启动应急策略")
                             onRefresh()
                         }
                     })

@@ -8,7 +8,7 @@ class BenefitBean {
     )
 
     data class Data(
-        var balance: Int = 0,
+        var balance: Long = 0,
         var current_day_order_paid: Int = 0,
         var current_day_other: Int = 0,
         var current_day_pre_benefit: Int = 0,

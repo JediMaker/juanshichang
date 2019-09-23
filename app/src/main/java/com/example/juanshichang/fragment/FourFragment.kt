@@ -74,6 +74,7 @@ class FourFragment : BaseFragment() {
                 }
             }
             R.id.earnings -> {//收益
+                goNet = 2
                 BaseActivity.goStartActivity(this.mContext!!, EarningsActivity())
             }
             R.id.orderForm -> {//订单
@@ -98,7 +99,7 @@ class FourFragment : BaseFragment() {
         GlideUtil.loadHeadImage(mContext!!, user?.avatar, fi)
         fiv?.text = user?.invite_code
         ft?.text = user?.nick_name
-        top?.text = "" + Util.getFloatPrice(user?.balance!!.toLong())
+        top?.text = "" + Util.getFloatPrice(user?.balance!!)
         isMon?.text = "" + Util.getFloatPrice(user?.current_month_benefit!!.toLong())
         isDay?.text = "" + Util.getFloatPrice(user?.current_day_benefit!!.toLong())
         myUser = user

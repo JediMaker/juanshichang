@@ -33,7 +33,6 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
     override fun initView() {
 //        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
         isOne.setPadding(0,QMUIStatusBarHelper.getStatusbarHeight(this),0,0)
-        getBenefit()
         EaRet.setOnClickListener(this)
         syDetail.setOnClickListener(this)
         putRecord.setOnClickListener(this)
@@ -42,6 +41,11 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
 
     override fun initData() {
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getBenefit() //请求网络
     }
     override fun onClick(v: View?) {
         when(v?.id){
@@ -95,7 +99,7 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
     }
     private fun setUiData(){
         if(benefit!=null){
-            balanceZh.text =  "¥"+Util.getFloatPrice(benefit!!.balance.toLong()) //账户余额
+            balanceZh.text =  "¥"+Util.getFloatPrice(benefit!!.balance) //账户余额
             todFk.text = "付款笔数\n"+benefit!!.current_day_order_paid
             todSy.text = "预估收益\n¥"+Util.getFloatPrice(benefit!!.current_day_pre_benefit.toLong())
             todQt.text = "其它\n¥"+Util.getFloatPrice(benefit!!.current_day_other.toLong())
