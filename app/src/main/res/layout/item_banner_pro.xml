@@ -34,7 +34,7 @@
                     android:layout_marginRight="2px"
                     android:scaleType="fitXY"
                     android:layout_width="match_parent"
-                    android:layout_height="396px"/>
+                    android:layout_height="504px"/>
             <TextView
                     android:id="@+id/left_tv_title"
                     android:ellipsize="end"

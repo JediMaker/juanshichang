@@ -87,7 +87,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
     override fun initData() {
         adapter?.setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener { // item 点击事件
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
-                var intent = Intent(this@ClassTypeActivity, ShangPinContains::class.java)
+                val intent = Intent(this@ClassTypeActivity, ShangPinContains::class.java)
                 if (goodsList.size > position) {
                     intent.putExtra("goods_id", goodsList[position].goods_id)
                     intent.putExtra("mall_name", goodsList[position].mall_name)

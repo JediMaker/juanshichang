@@ -22,6 +22,8 @@ interface Api {
         val SEARCHDETAIL = "/apiserver/goodsdetail"
         // 商品分享链接 必须登录  login
         val SHARE = "/user/generateurl"
+        // 商品店铺地址 必须登录 login
+        val MALLURl = "/user/generate_mall_url"
         //首页banner
         val MAINBANNER = "/index/bannerlist" //  /theme/list   delete
         //Banner 条目请求商品地址

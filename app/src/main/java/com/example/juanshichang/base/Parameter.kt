@@ -409,5 +409,19 @@ class Parameter {
             map.put("with_image","$with_image")
             return map
         }
+        /**
+         * 获取商品详情页链接地址
+         * @param
+         * @param
+         */
+        fun getStoreMap(mall_id:String,servicer:String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("mall_id=$mall_id")
+            baseList.add("servicer=$servicer")
+            val map = fengMap("login")
+            map.put("mall_id","$mall_id")
+            map.put("servicer","$servicer")
+            return map
+        }
     }
 }

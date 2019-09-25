@@ -10,7 +10,7 @@ class MainBannerBean: MultiItemEntity {
     )
 
     data class Data(
-        var banner_list: List<Banner> = listOf()
+        var banner_list: List<Banner> = listOf()  //banner_list
     )
 
     data class Banner(

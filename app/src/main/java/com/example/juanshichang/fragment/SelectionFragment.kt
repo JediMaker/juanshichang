@@ -49,7 +49,8 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
     private var gHome: HomeEntity? = null
     private var rHome: HomeEntity? = null
     private var base: BaseActivity? = null
-    private var isOneNotify:Boolean? = false
+    private var isOneNotify:Boolean = false
+    private var BotEnd:Int = 0
     private var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -70,6 +71,7 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
                         b = 1
                         g = 1
                         r = 1
+                        BotEnd = 0
                         isOneNotify = true
                         homeAdapter?.emptyView =
                             View.inflate(context, R.layout.activity_not_null, null)
@@ -88,11 +90,13 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
                         getRecycler(2, next)
 //                        isOneNotify = true
                         base?.dismissProgressDialog()
-                        this.sendEmptyMessageDelayed(1,500)
+                        if(BotEnd<1){
+                            this.sendEmptyMessageDelayed(1,1000)
+                            BotEnd++
+                        }
+                    }else {
+                        this.sendEmptyMessageDelayed(1, 50)
                     }
-//                    else {
-//                        this.sendEmptyMessageDelayed(1, 20)
-//                    }
                 }
             }
         }
@@ -110,9 +114,9 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
         base?.showProgressDialog()
         setRecycler()
         synchronized(SelectionFragment::class){
-            getBanner()
-            getGrid()
-            getRecycler(2, next)
+//            getBanner()
+//            getGrid()
+//            getRecycler(2, next)
             handler.sendEmptyMessageDelayed(1, 50)
         }
         timerLogin.start() //启动定时器
@@ -120,6 +124,11 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
     override fun onResume() {
         super.onResume()
         //写在这里 无论 切换回来 还是 息屏唤醒 都会 请求网络... 增加流量消耗
+        if(!isOneNotify){
+            getBanner()
+            getGrid()
+            getRecycler(2, next)
+        }
 //        getBanner()
 //        getGrid()
 //        getRecycler(2, next)
@@ -154,7 +163,7 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
                     homeAdapter?.loadMoreEnd()
                 }
             }
-        }, 2500)
+        }, 1800)
     }
 
     //下拉刷新

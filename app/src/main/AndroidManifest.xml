@@ -48,7 +48,7 @@
         <activity android:name=".activity.WebActivity" />
         <activity
                 android:name=".activity.ShangPinContains"
-                android:launchMode="singleTask" />
+                android:launchMode="standard" />
         <activity
                 android:name=".activity.ClassTypeActivity"
                 android:launchMode="singleTask" />
