@@ -39,27 +39,30 @@ import kotlin.collections.ArrayList
  * @创建日期: 2019/7/17 16:53
  * @文件作用: 学院页面
  */
-class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
+class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var mTl: LinearLayout? = null
     private var tEdit: EditText? = null
     private var tSearch: TextView? = null
     var mTSwipeRefreshLayout: SwipeRefreshLayout? = null
     private var mList: ListView? = null
     private var mLA: ClassifyListAdpater? = null
-    private var listData:ArrayList<TabOneBean.Category>? = null
-    private var recyclerData:ArrayList<TabOneBean.Data>? = null
+    private var listData: ArrayList<TabOneBean.Category>? = null
+    private var recyclerData: ArrayList<TabOneBean.Data>? = null
     private var mRecycler: RecyclerView? = null
-    private var mRA:TwoRecyclerAdapter? = null
-    private var leftSelect:Int = 0
+    private var mRA: TwoRecyclerAdapter? = null
+    private var leftSelect: Int = 0
+    private var base: BaseActivity? = null
     override fun getLayoutId(): Int {
-        return  R.layout.fragment_two
+        return R.layout.fragment_two
     }
 
     override fun initViews(savedInstanceState: Bundle) {
+        base = this.activity as BaseActivity
         mTl = mBaseView?.findViewById<LinearLayout>(R.id.mainTwo) //头部搜索框
         tEdit = mBaseView?.findViewById<EditText>(R.id.mainTEdit)
         tSearch = mBaseView?.findViewById<TextView>(R.id.mainTSearch)
-        mTSwipeRefreshLayout = mBaseView?.findViewById<SwipeRefreshLayout>(R.id.mTSwipeRefreshLayout)
+        mTSwipeRefreshLayout =
+            mBaseView?.findViewById<SwipeRefreshLayout>(R.id.mTSwipeRefreshLayout)
         mList = mBaseView?.findViewById<ListView>(R.id.mList)
         listData = ArrayList()
         mLA = ClassifyListAdpater(mContext!!)
@@ -80,10 +83,11 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
         mRecycler?.layoutManager = lm
         mRecycler?.adapter = mRA
     }
+
     @OnClick(R.id.mainTSearch)
-    fun thisOnClick(v:View){
-        when(v.id){
-            R.id.mainTSearch ->{
+    fun thisOnClick(v: View) {
+        when (v.id) {
+            R.id.mainTSearch -> {
                 val str = getEditText()
                 if (!TextUtils.isEmpty(str)) {
                     val intent = Intent(mContext!!, ClassTypeActivity::class.java)
@@ -96,59 +100,64 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
             }
         }
     }
+
     override fun initData() {
         mTSwipeRefreshLayout?.setOnRefreshListener(this)
-        getOneT(0,leftSelect)
+        getOneT(0, leftSelect)
     }
 
     override fun onResume() {
         super.onResume()
-        mList?.setOnScrollListener(object : AbsListView.OnScrollListener{
+        mList?.setOnScrollListener(object : AbsListView.OnScrollListener {
             override fun onScroll(p0: AbsListView?, p1: Int, p2: Int, p3: Int) {
 
             }
+
             //用于解决 ListView 与 滑动 冲突
             override fun onScrollStateChanged(v: AbsListView?, p: Int) {
-                if(v?.childCount!! > 0 && v.firstVisiblePosition == 0 && v.getChildAt(0).top >= v.paddingTop){
+                if (v?.childCount!! > 0 && v.firstVisiblePosition == 0 && v.getChildAt(0).top >= v.paddingTop) {
                     //判断 已经到达顶部
                     mTSwipeRefreshLayout?.isEnabled = true
-                }else{
+                } else {
                     mTSwipeRefreshLayout?.isEnabled = false
                 }
             }
         })
-        mList?.setOnItemClickListener(object : AdapterView.OnItemClickListener{
+        mList?.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, v: View?, position: Int, id: Long) {
-                if(position!=leftSelect){
+                if (position != leftSelect) {
                     leftSelect = position
                     //网络请求
-                    if(listData!=null && listData!!.size > position){
+                    if (listData != null && listData!!.size > position) {
+                        base?.showProgressDialog()
+                        //置null右边集合
+                        mRA?.setNewData(null)
                         getTwoT(listData!![position].category_id)
-                    }else{
-                        ToastUtil.showToast(mContext!!,"数据错误 请刷新后重试")
+                        mLA?.setSelect(leftSelect)
+                        //因为选中左侧的菜单后背景颜色会变，所以每次点击都要刷新一下
+                        mLA?.notifyDataSetChanged()
+                    } else {
+                        ToastUtil.showToast(mContext!!, "数据错误 请刷新后重试")
                     }
-                    mLA?.setSelect(leftSelect)
-                    //因为选中左侧的菜单后背景颜色会变，所以每次点击都要刷新一下
-                    mLA?.notifyDataSetChanged()
-                }else{
+                } else {
                     goRefresh()
                 }
             }
         })
         //耳机列表点击事件
-        mRA?.setOnItemChildClickListener(object : BaseQuickAdapter.OnItemChildClickListener{
+        mRA?.setOnItemChildClickListener(object : BaseQuickAdapter.OnItemChildClickListener {
             override fun onItemChildClick(
                 adapter: BaseQuickAdapter<*, *>?,
                 view: View?,
                 position: Int
             ) {
-                when(view?.id){
-                    R.id.twoLowAllR->{
-                        if(listData!=null && listData?.size!! > leftSelect){
-                            val intent:Intent = Intent(mContext!!,LookAllActivity::class.java)
-                            intent.putExtra("category_id",listData!![leftSelect].category_id)
-                            intent.putExtra("itemtype",0)
-                            BaseActivity.goStartActivity(mContext!!,intent)
+                when (view?.id) {
+                    R.id.twoLowAllR -> {
+                        if (listData != null && listData?.size!! > leftSelect) {
+                            val intent: Intent = Intent(mContext!!, LookAllActivity::class.java)
+                            intent.putExtra("category_id", listData!![leftSelect].category_id)
+                            intent.putExtra("itemtype", 0)
+                            BaseActivity.goStartActivity(mContext!!, intent)
                         }
                     }
                 }
@@ -158,33 +167,35 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
 
     //下拉刷新
     override fun onRefresh() {
-        mList?.postDelayed(object : Runnable{
+        mList?.postDelayed(object : Runnable {
             override fun run() {
-                getOneT(0,leftSelect)  //todo 简单设置 待优化
+                getOneT(0, leftSelect)  //todo 简单设置 待优化
                 //刷新完成取消刷新动画
                 mTSwipeRefreshLayout?.setRefreshing(false)
             }
-        },1000)
+        }, 1000)
     }
 
     //计时 刷新器
     var isRefresh = false
-    private fun goRefresh(){
+
+    private fun goRefresh() {
         var tRe: Timer? = null
-        if(!isRefresh){
+        if (!isRefresh) {
             isRefresh = true
             tRe = Timer()
-            tRe.schedule(object : TimerTask(){
+            tRe.schedule(object : TimerTask() {
                 override fun run() {
                     isRefresh = false
                 }
-            },2000)
-            ToastTool.showToast(mContext!!,"双击刷新 当前条目")
-        }else{
+            }, 2000)
+            ToastTool.showToast(mContext!!, "双击刷新 当前条目")
+        } else {
             onRefresh() // 调用刷新
             isRefresh = false
         }
     }
+
     //获取 输入框数据
     private fun getEditText(): String {//获取Edit数据
         val text = tEdit?.text.toString().trim()
@@ -193,11 +204,12 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
         }
         return ""
     }
+
     //网络请求
-    private fun getOneT(parent_id:Int,leftSelect:Int){
+    private fun getOneT(parent_id: Int, leftSelect: Int) {
         HttpManager.getInstance().post(
             Api.CATEGORY,
-            Parameter.getTabData(parent_id,0),object : Subscriber<String>() {
+            Parameter.getTabData(parent_id, 0), object : Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
@@ -206,18 +218,18 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
                         } else {
                             val data = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
                             val list = data.data.category_list
-                            if(list.size!=0){
-                                if(listData?.size != 0){
+                            if (list.size != 0) {
+                                if (listData?.size != 0) {
                                     listData?.clear()
                                 }
                                 listData?.addAll(list)
                             }
-                            mList?.post(object : Runnable{
+                            mList?.post(object : Runnable {
                                 override fun run() {
-                                    if(listData!=null && listData?.size != 0){
+                                    if (listData != null && listData?.size != 0) {
                                         mLA?.setDatas(listData!!)
                                     }
-                                    if(listData?.size != 0){
+                                    if (listData?.size != 0) {
                                         getTwoT(listData!![leftSelect].category_id)
                                     }
 //                                    mLA?.notifyDataSetChanged()
@@ -232,43 +244,46 @@ class TwoFragment : BaseFragment(),SwipeRefreshLayout.OnRefreshListener{
                 }
 
                 override fun onError(e: Throwable?) {
-                    LogTool.e("onError", "T - Tab加载失败!"+e)
+                    LogTool.e("onError", "T - Tab加载失败!" + e)
                 }
             })
     }
+
     // 二级页面 请求
-    fun getTwoT(parent_id:Int){
-        HttpManager.getInstance().post(Api.CATEGORY,Parameter.getTabData(parent_id,1),object : Subscriber<String>() {
-            override fun onNext(str: String?) {
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    val jsonObj: JSONObject = JSONObject(str)
-                    if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val bean = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
-                        val data = bean.data  //todo 设置使用这个数据结构是为了应对多条目的问题
-                        if(recyclerData == null){
-                            recyclerData = ArrayList()
-                        }
-                        recyclerData?.clear()
-                        mRecycler?.post(object : Runnable{
-                            override fun run() {
-                                recyclerData?.add(data)
-                                mRA?.setNewData(recyclerData)
-                                mRA?.setIsId(parent_id) //请求的父id
+    fun getTwoT(parent_id: Int) {
+        HttpManager.getInstance()
+            .post(Api.CATEGORY, Parameter.getTabData(parent_id, 1), object : Subscriber<String>() {
+                override fun onNext(str: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        val jsonObj: JSONObject = JSONObject(str)
+                        if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
+                        } else {
+                            val bean = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
+                            val data = bean.data  //todo 设置使用这个数据结构是为了应对多条目的问题
+                            if (recyclerData == null) {
+                                recyclerData = ArrayList()
                             }
-                        })
+                            recyclerData?.clear()
+                            mRecycler?.post(object : Runnable {
+                                override fun run() {
+                                    recyclerData?.add(data)
+                                    mRA?.setNewData(recyclerData)
+                                    mRA?.setIsId(parent_id) //请求的父id
+                                }
+                            })
+                        }
                     }
                 }
-            }
 
-            override fun onCompleted() {
-                LogTool.e("onCompleted", "T - Tab2加载完成!")
-            }
+                override fun onCompleted() {
+                    base?.dismissProgressDialog()
+                    LogTool.e("onCompleted", "T - Tab2加载完成!")
+                }
 
-            override fun onError(e: Throwable?) {
-                LogTool.e("onError", "T - Tab2加载失败!"+e)
-            }
-        })
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onError", "T - Tab2加载失败!" + e)
+                }
+            })
     }
 }

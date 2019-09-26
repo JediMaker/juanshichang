@@ -3,11 +3,13 @@ package com.example.juanshichang
 import android.Manifest
 import android.app.Activity
 import android.app.Application
+import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.text.TextUtils
 import androidx.multidex.MultiDex
+import com.bumptech.glide.Glide
 import com.example.juanshichang.utils.JumpPermissionManagement
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
@@ -112,5 +114,22 @@ open class MyApp : Application() {
         super.onTerminate()
     }
 
+    /**
+     * 在 lowMemory 的时候，调用 Glide.cleanMemroy() 清理掉所有的内存缓存。
+    在 App 被置换到后台的时候，调用 Glide.cleanMemroy() 清理掉所有的内存缓存。
+    在其它情况的 onTrimMemroy() 回调中，直接调用 Glide.trimMemory() 方法来交给 Glide 处理内存情况。
+     */
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        if(level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN){
+            Glide.get(this).clearMemory()
+        }
+        Glide.get(this).trimMemory(level)
+    }
+    override fun onLowMemory() {
+        super.onLowMemory()
+        //内存低的时候清理Glide缓存
+        Glide.get(this).clearMemory()
+    }
 
 }
