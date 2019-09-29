@@ -152,6 +152,7 @@
                             android:textSize="40px"/>
                     <LinearLayout
                             android:id="@+id/spYhj"
+                            android:visibility="gone"
                             android:background="@drawable/details_coupon"
                             android:layout_marginTop="35px"
                             android:orientation="horizontal"
