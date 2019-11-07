@@ -53,6 +53,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         setUserImage.setOnClickListener(this)
         setUserName.setOnClickListener(this)
         setZfb.setOnClickListener(this)
+        realName.setOnClickListener(this)
         setUND()//创建 用户昵称对话框 和 图片选择器
     }
 
@@ -110,6 +111,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                     zfbDialog?.setDefaultText(userZfb)
                 }
                 zfbDialog?.show()
+            }
+            realName->{ //实名认证
+                goStartActivity(this@SettingActivity,RealNameActivity())
             }
         }
     }

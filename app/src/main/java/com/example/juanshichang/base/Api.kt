@@ -64,5 +64,14 @@ interface Api {
         val Pdd = "pdd"
         val TaoBao = "taobao"
         val Jd = "jd"
+
+        //聚合数据Key集
+        val IDKey = "8bc635e7345dd2e160df47c7ed386818" //身份证实名信息
+        val PhoneKey = "5c0ee202ae8c61f918e1367c7a007348"//手机号归属地查询
+        val TeleKey = "d651d007f97138c79288519d84c756d9" //手机充值
+        val OilCardKey = "4cc4a1c34ef8a88f7d07b7e1e43e27e4" //油卡充值
+        //聚合接口
+        const val JUHEAPi = "http://apis.juhe.cn"
+        val TELCHECK = "/mobile/get" //手机号归属地查询
     }
 }

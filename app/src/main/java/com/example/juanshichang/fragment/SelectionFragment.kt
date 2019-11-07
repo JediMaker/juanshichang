@@ -1,6 +1,7 @@
 package com.example.juanshichang.fragment
 
 
+import android.content.Context
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Message
@@ -102,6 +103,10 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        base = context as BaseActivity
+    }
     override fun onCreateView(): View {
         seleView = context?.layoutInflater!!.inflate(R.layout.fragment_selection, null)
         initData()
@@ -110,7 +115,6 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
 
 
     private fun initData() {
-        base = this.activity as BaseActivity
         base?.showProgressDialog()
         setRecycler()
         synchronized(SelectionFragment::class){
@@ -134,6 +138,10 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
 //        getRecycler(2, next)
 //        handler.sendEmptyMessageDelayed(1,50)
         //迁移至于initData....
+    }
+    override fun onPause() {
+        super.onPause()
+        timerLogin.cancel()
     }
     //上滑加载更多
     override fun onLoadMoreRequested() {
@@ -387,11 +395,16 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
             })
     }
 
+
     //这个计时器用于轮询首次进入页面的是否成功刷新显示 超时没有成功显示 就关闭进度框 并 提示
     var timerLogin: CountDownTimer = object : CountDownTimer(5000, 5000) {
         override fun onFinish() {
-            if (!isOneNotify!!) {
-                if(base?.progressdialog!!.isShowing()){
+            LogTool.e("tools_Sekection", "onFinish  首次加载 轮询结束！！！")
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+            if (!isOneNotify) {
+                if(base?.progressdialog?.isShowing()!!){
                     base?.runOnUiThread(object : Runnable {
                         override fun run() {
                             base?.dismissProgressDialog()
@@ -403,10 +416,6 @@ class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListen
                     })
                 }
             }
-            LogTool.e("tools_Sekection", "onFinish  首次加载 轮询结束！！！")
-        }
-
-        override fun onTick(millisUntilFinished: Long) {
         }
     }
 

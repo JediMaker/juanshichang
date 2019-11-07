@@ -172,4 +172,6 @@ dependencies {
 //    implementation files('libs/umeng-shareboard-widget-6.9.6.jar')
 //    implementation files('libs/umeng-sharetool-6.9.6.jar')
     //友盟 分享  end
+    //LeakCanary 内存泄漏 检查工具 debug版本添加依赖  源码解析：https://www.jianshu.com/p/75f0e1fea3e0
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
 }

@@ -36,7 +36,8 @@ class FourFragment : BaseFragment() {
     private var mClipData: ClipData? = null
     private var goNet: Int = 0
     override fun getLayoutId(): Int {
-        return R.layout.fragment_five
+//        fragment_five
+        return R.layout.fragment_five_two
     }
 
     override fun initViews(savedInstanceState: Bundle) {
@@ -56,7 +57,7 @@ class FourFragment : BaseFragment() {
         })
     }
 
-    @OnClick(R.id.ffUserSet, R.id.ffCopy, R.id.earnings, R.id.orderForm, R.id.myFans, R.id.myInvite)
+    @OnClick(R.id.ffUserSet, R.id.ffCopy, R.id.goTx,R.id.earnings, R.id.orderForm, R.id.myFans, R.id.myInvite,R.id.tastCz)
     fun onViewClicked(v: View) {
         when (v.id) {
             R.id.ffUserSet -> {
@@ -73,6 +74,11 @@ class FourFragment : BaseFragment() {
                     ToastUtil.showToast(this.mContext!!, "内容有误,请重新复制")
                 }
             }
+            R.id.goTx ->{//提现
+                val intent = Intent(mContext,TakeOutActivity::class.java)
+                intent.putExtra("type",1)
+                BaseActivity.goStartActivity(mContext!!, intent)
+            }
             R.id.earnings -> {//收益
                 goNet = 2
                 BaseActivity.goStartActivity(this.mContext!!, EarningsActivity())
@@ -85,6 +91,9 @@ class FourFragment : BaseFragment() {
             }
             R.id.myInvite -> {//邀请
 
+            }
+            R.id.tastCz ->{
+                BaseActivity.goStartActivity(this.mContext!!, TopupActivity())
             }
         }
     }

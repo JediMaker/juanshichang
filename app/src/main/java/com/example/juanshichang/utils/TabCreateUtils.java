@@ -1,13 +1,19 @@
 package com.example.juanshichang.utils;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.TextPaint;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.juanshichang.MainActivity;
 import com.example.juanshichang.R;
+import com.example.juanshichang.bean.TopUpBarBean;
 import com.example.juanshichang.widget.SelectBigPagerTitleView;
 
 import net.lucode.hackware.magicindicator.FragmentContainerHelper;
@@ -19,6 +25,9 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerInd
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -232,5 +241,87 @@ public class TabCreateUtils {
         magicIndicator.setNavigator(commonNavigator);
         mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
         return cA;
+    }
+
+    /**
+     * 这是一个带图的
+     * 指示器
+     *
+     */
+    public static CommonNavigatorAdapter setTopUpTab(Context context, MagicIndicator magicIndicator, List<TopUpBarBean> tabNames, onTitleClickListener listener){
+        FragmentContainerHelper mFragmentContainerHelper = new FragmentContainerHelper();
+        CommonNavigator commonNavigator = new CommonNavigator(context);
+        CommonNavigatorAdapter cT = new CommonNavigatorAdapter(){
+
+            @Override
+            public int getCount() {
+                return tabNames == null?0:tabNames.size();
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, int index) {
+                CommonPagerTitleView commonPagerTitleView = new CommonPagerTitleView(context);
+                commonPagerTitleView.setContentView(R.layout.topup_item);
+                // 初始化
+                final ImageView titleImg = (ImageView) commonPagerTitleView.findViewById(R.id.itemImg);
+                titleImg.setImageResource(tabNames.get(index).getTopImg());
+                final TextView titleText = (TextView) commonPagerTitleView.findViewById(R.id.itemText);
+                titleText.setText(tabNames.get(index).getBotTit());
+                commonPagerTitleView.setOnPagerTitleChangeListener(new CommonPagerTitleView.OnPagerTitleChangeListener() {
+
+                    @Override
+                    public void onSelected(int index, int totalCount) {
+//                        TextPaint tp = titleText.getPaint();
+//                        tp.setFakeBoldText(true); //设置文字加粗
+                    }
+
+                    @Override
+                    public void onDeselected(int index, int totalCount) {
+//                        TextPaint tp = titleText.getPaint();
+//                        tp.setFakeBoldText(false); // 取消文字加粗
+                    }
+
+                    @Override
+                    public void onLeave(int index, int totalCount, float leavePercent, boolean leftToRight) {
+                        titleImg.setScaleX(1.1f + (0.8f - 1.3f) * leavePercent);//1.3 --- 1.1
+                        titleImg.setScaleY(1.1f + (0.8f - 1.3f) * leavePercent);
+                    }
+
+                    @Override
+                    public void onEnter(int index, int totalCount, float enterPercent, boolean leftToRight) {
+                        titleImg.setScaleX(0.6f + (1.3f - 0.8f) * enterPercent); // 0.8 --- 0.6
+                        titleImg.setScaleY(0.6f + (1.3f - 0.8f) * enterPercent);
+                    }
+                });
+                commonPagerTitleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        mPager.setCurrentItem(index);
+                        mFragmentContainerHelper.handlePageSelected(index);
+                        if (listener != null) listener.onTitleClick(index);
+                    }
+                });
+                return commonPagerTitleView;
+            }
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                return getTypeindicator(context);
+            }
+            //设置指示器
+            private LinePagerIndicator getTypeindicator(Context context) {
+                LinePagerIndicator indicator = new LinePagerIndicator(context);
+                indicator.setMode(LinePagerIndicator.MODE_EXACTLY);//MODE_WRAP_CONTENT
+                indicator.setLineWidth(120);
+//                indicator.setColors(ContextCompat.getColor(context, R.color.white));
+                indicator.setRoundRadius(3);
+                indicator.setColors(ContextCompat.getColor(context, R.color.indicatorRed));
+                return indicator;
+            }
+        };
+        commonNavigator.setAdapter(cT);
+        commonNavigator.setAdjustMode(true);
+        magicIndicator.setNavigator(commonNavigator);
+        mFragmentContainerHelper.attachMagicIndicator(magicIndicator);
+        return cT;
     }
 }
