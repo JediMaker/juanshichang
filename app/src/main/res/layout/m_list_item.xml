@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemR"
+        xmlns:tools="http://schemas.android.com/tools">
+        <TextView
+                android:id="@+id/textList"
+                android:paddingTop="43px"
+                android:paddingBottom="42px"
+                android:layout_centerInParent="true"
+                tools:text="健康"
+                android:textSize="42px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <View
+                android:id="@+id/leftV"
+                android:layout_centerVertical="true"
+                android:background="@drawable/m_list_left"
+                android:layout_width="20px"
+                android:layout_height="80px"/>
+</com.zhy.autolayout.AutoRelativeLayout>

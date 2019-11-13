@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:paddingTop="10px"
+        android:paddingBottom="10px"
+        android:paddingLeft="45px"
+        android:paddingRight="45px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <!--    app:contentPaddingBottom="" 内容的下Padding-->
+    <!--    app:cardBackgroundColor=""设置背景色-->
+    <!--    app:cardMaxElevation="" 设置Z轴最大高度值-->
+    <!--    app:cardUseCompatPadding="" 是否使用CompatPadding-->
+    <!--    app:cardPreventCornerOverlap="" 是否使用PreventCornerOverlap-->
+    <!--    app:contentPadding="" 内容的Padding-->
+    <!--    app:contentPaddingTop="" 内容的上Padding-->
+    <!--    app:contentPaddingLeft="" 内容的左Padding-->
+    <!--    app:contentPaddingRight="" 内容的右Padding-->
+    <!--    app:contentPaddingBottom="" 内容的下Padding-->
+        <androidx.cardview.widget.CardView
+                app:cardUseCompatPadding="true"
+                app:cardPreventCornerOverlap="false"
+                android:layout_marginTop="10px"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <com.zhy.autolayout.AutoLinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginLeft="60px"
+                    android:layout_marginRight="60px"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <RelativeLayout
+                        android:paddingTop="40px"
+                        android:paddingBottom="40px"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:id="@+id/mesTopIv"
+                            android:src="@drawable/news_notice"
+                            android:layout_width="60px"
+                            android:layout_height="60px"/>
+                    <TextView
+                            android:id="@+id/mesTitle"
+                            android:text="系统通知"
+                            android:layout_toRightOf="@+id/mesTopIv"
+                            android:layout_marginLeft="20px"
+                            android:textSize="42px"
+                            android:textColor="@color/main_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    <TextView
+                            android:id="@+id/mesData"
+                            android:layout_alignParentRight="true"
+                            tools:text="11:41:22"
+                            android:textColor="@color/txt_gray"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </RelativeLayout>
+                <View
+                        android:background="@color/set_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"/>
+                <TextView
+                        android:id="@+id/botTit"
+                        android:paddingBottom="14px"
+                        android:paddingTop="45px"
+                        android:layout_marginRight="100px"
+                        tools:text="好消息"
+                        android:textSize="42px"
+                        android:textColor="@color/main_text"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/botDetails"
+                        android:paddingBottom="50px"
+                        tools:text="好消息：为了给您更优质的服务 我决定系统维护期间 正常使用相关服务 请大家更新最新版本App 享受更好的体验！！！"
+                        android:textColor="@color/home_gray"
+                        android:textSize="28px"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+            </com.zhy.autolayout.AutoLinearLayout>
+        </androidx.cardview.widget.CardView>
+</com.zhy.autolayout.AutoFrameLayout>

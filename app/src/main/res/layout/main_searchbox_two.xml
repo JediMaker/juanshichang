@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:paddingLeft="45px"
+        android:layout_width="match_parent"
+        android:layout_height="150px">
+    <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+        <EditText
+                android:id="@+id/mainTEdit"
+                android:layout_width="match_parent"
+                android:layout_height="100px"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:background="@drawable/bg_search_white"
+                android:hint="搜索商品名或者粘贴商品标题"
+                android:paddingLeft="88px"
+                android:textSize="36px" />
+        <ImageView
+                android:layout_marginTop="26px"
+                android:layout_marginLeft="30px"
+                android:layout_width="48px"
+                android:layout_height="48px"
+                android:src="@drawable/c_search" />
+    </RelativeLayout>
+    <TextView
+            android:id="@+id/mainTSearch"
+            android:gravity="center_vertical"
+            android:text="搜索"
+            android:paddingLeft="29px"
+            android:paddingRight="45px"
+            android:textSize="48px"
+            android:textColor="@color/main_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+</com.zhy.autolayout.AutoLinearLayout>
