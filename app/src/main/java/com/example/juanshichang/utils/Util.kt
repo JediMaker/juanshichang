@@ -56,7 +56,7 @@ class Util {
          * @return
          */
         @SuppressLint("NewApi")
-       fun ifCurrentActivityTopStack(activity: AutoLayoutActivity?): Boolean {
+        fun ifCurrentActivityTopStack(activity: AutoLayoutActivity?): Boolean {
             if (activity == null || activity.isFinishing)
                 return false
             val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -95,6 +95,7 @@ class Util {
             }
             return true
         }
+
         /**
          * 根据拼多多接口特性
          * 自定义的 数据接口
@@ -121,8 +122,13 @@ class Util {
                     return retStr
                 }
             }
+            if (price is Float || price is Double) { //如果 传入的价格就是小数
+                val ret = UtilsBigDecimal.add(price.toString().toDouble(), 0.0)
+                return ret.toString()
+            }
             return ""
         }
+
         fun getIntPrice(price: Any): String {
             if (price is Long) {
                 val penny = price % 10 //得到 分
@@ -146,6 +152,7 @@ class Util {
             }
             return ""
         }
+
         /**
          *清理Cookie
          */
@@ -156,49 +163,53 @@ class Util {
             CookieSyncManager.getInstance().sync()
         }
 
-        private var  sf: SimpleDateFormat? = null
+        private var sf: SimpleDateFormat? = null
         /*时间戳转换成字符窜*/
-        fun getDateToString(time:Long):String{
+        fun getDateToString(time: Long): String {
 //            val d = Date(time)
 //            sf = SimpleDateFormat("MM-dd") //yyyy年MM月dd日
 //            return sf!!.format(d)
             sf = SimpleDateFormat("MM-dd")
-            val str:String = sf!!.format(Date(time*1000L))
+            val str: String = sf!!.format(Date(time * 1000L))
             return str
         }
+
         /*时间戳转换成字符窜*/
-        fun getTimedate(time:Long):String{
+        fun getTimedate(time: Long): String {
             sf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 //            @SuppressWarnings("unused")
 //            long lcc = Long.valueOf(time);
-            val str:String = sf!!.format(Date(time*1000L))
+            val str: String = sf!!.format(Date(time * 1000L))
             return str
         }
+
         /*时间戳转换成字符窜*/
-        fun getTimedateTwo(time:Long):String{
+        fun getTimedateTwo(time: Long): String {
             sf = SimpleDateFormat("yyyy-MM-dd")
 //            @SuppressWarnings("unused")
 //            long lcc = Long.valueOf(time);
-            val str:String = sf!!.format(Date(time*1000L))
+            val str: String = sf!!.format(Date(time * 1000L))
             return str
         }
+
         /*时间戳转换成字符窜*/
-        fun getTimedateThree(time:Long):String{
+        fun getTimedateThree(time: Long): String {
             sf = SimpleDateFormat("HH:mm:ss")
 //            @SuppressWarnings("unused")
 //            long lcc = Long.valueOf(time);
-            val str:String = sf!!.format(Date(time*1000L))
+            val str: String = sf!!.format(Date(time * 1000L))
             return str
         }
+
         /** 手机 字符 加密**/
-        fun getPhoneNTransition(mobile: String):String{
+        fun getPhoneNTransition(mobile: String): String {
             val str = mobile
             var sb = StringBuilder()
-            if(mobile.length>0){
-                for (i in 0 .. str.length-1){
-                    if(i<3 || i>6){ //保留 前三位 后四位
+            if (mobile.length > 0) {
+                for (i in 0..str.length - 1) {
+                    if (i < 3 || i > 6) { //保留 前三位 后四位
                         sb.append(str[i])
-                    }else{
+                    } else {
                         sb.append("*")
                     }
                 }
@@ -209,13 +220,14 @@ class Util {
         /**
          * 生成图片保存地址工具类
          */
-        fun createImageFile(context:Context): File?{
+        fun createImageFile(context: Context): File? {
             try {
-                val timeStamp:String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                val timeStamp: String =
+                    SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
                 val imageFileName = "IMG_" + timeStamp
-                val dir:File =  context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
-                return File.createTempFile(imageFileName,".png",dir)
-            }catch (e:Exception){
+                val dir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+                return File.createTempFile(imageFileName, ".png", dir)
+            } catch (e: Exception) {
 
             }
             return null
@@ -227,25 +239,36 @@ class Util {
          * @param id  资源id
          * @return Uri 地址
          */
-        fun getUriFormDrawableRes(context: Context,id:Int):Uri{
-            val resources:Resources = context.resources
-            val path:String = ContentResolver.SCHEME_ANDROID_RESOURCE+"://"+resources.getResourcePackageName(id)+"/"+resources.getResourceTypeName(id)+"/"+resources.getResourceEntryName(id)
+        fun getUriFormDrawableRes(context: Context, id: Int): Uri {
+            val resources: Resources = context.resources
+            val path: String =
+                ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + resources.getResourcePackageName(
+                    id
+                ) + "/" + resources.getResourceTypeName(id) + "/" + resources.getResourceEntryName(
+                    id
+                )
             return Uri.parse(path)
         }
+
         /**
          * @param min_group_price 最少拼团价
          * @param coupon_discount 优惠劵面额
          * @param promotion_rate  佣金比列
          * @param istype  类型
          */
-        fun getProportion(min_group_price:Long,coupon_discount:Long,promotion_rate:Int,istype:Boolean):String{
-            var t:Long= 0
-            if(istype){//有券
+        fun getProportion(
+            min_group_price: Long,
+            coupon_discount: Long,
+            promotion_rate: Int,
+            istype: Boolean
+        ): String {
+            var t: Long = 0
+            if (istype) {//有券
                 t = min_group_price - coupon_discount
-            }else{
+            } else {
                 t = min_group_price
             }
-            val lastP = promotion_rate*t/1000
+            val lastP = promotion_rate * t / 1000
             return getFloatPrice(lastP.toLong())
         }
     }

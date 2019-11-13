@@ -1,7 +1,6 @@
 package com.example.juanshichang.base
 
 import android.text.TextUtils
-import android.util.Log
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.MyApp.Companion.getMD5uuid
 import com.example.juanshichang.utils.LogTool
@@ -374,6 +373,28 @@ class Parameter {
             map.put("nickname",nickname)
             return map
         }
+        /***
+         * 修改用户支付宝
+         * @param ali_pay_account
+         */
+        fun getUpdZfb(ali_pay_account:String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("ali_pay_account=$ali_pay_account")
+            var map = fengMap("login")
+            map.put("ali_pay_account",ali_pay_account)
+            return map
+        }
+        /***
+         * 申请提现
+         * @param amount
+         */
+        fun getTxZfb(amount:String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("amount=$amount")
+            var map = fengMap("login")
+            map.put("amount",amount)
+            return map
+        }
         /**
          * 获取首页Tab等数据
          * @param parent_id def 0
@@ -386,6 +407,20 @@ class Parameter {
             val map = fengMap("unlogin")
             map.put("parent_id","$parent_id")
             map.put("with_image","$with_image")
+            return map
+        }
+        /**
+         * 获取商品详情页链接地址
+         * @param
+         * @param
+         */
+        fun getStoreMap(mall_id:String,servicer:String): HashMap<String, String>{
+            baseList.clear()
+            baseList.add("mall_id=$mall_id")
+            baseList.add("servicer=$servicer")
+            val map = fengMap("login")
+            map.put("mall_id","$mall_id")
+            map.put("servicer","$servicer")
             return map
         }
     }

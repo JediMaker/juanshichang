@@ -26,8 +26,9 @@
             android:networkSecurityConfig="@xml/network_security_config"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            tools:replace="android:icon, android:label,android:theme"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            tools:replace="android:icon, android:label,android:theme">
+        <activity android:name=".activity.TakeOutActivity"></activity>
         <activity
                 android:name=".activity.GuideActivity"
                 android:configChanges="orientation|keyboardHidden"
@@ -47,7 +48,7 @@
         <activity android:name=".activity.WebActivity" />
         <activity
                 android:name=".activity.ShangPinContains"
-                android:launchMode="singleTask" />
+                android:launchMode="standard" />
         <activity
                 android:name=".activity.ClassTypeActivity"
                 android:launchMode="singleTask" />
@@ -80,57 +81,49 @@
                 android:value="1080" />
         <meta-data
                 android:name="design_height"
-                android:value="1920" />
-        <!-- 在友盟上申请的APPKY-->
+                android:value="1920" /> <!-- 在友盟上申请的APPKY -->
         <meta-data
                 android:name="UMENG_APPKEY"
-                android:value="5d77136d3fc1953357000529" />
-        <!-- 渠道号，用作统计-->
-        <!--<meta-data
+                android:value="5d77136d3fc1953357000529" /> <!-- 渠道号，用作统计 -->
+        <!--
+<meta-data
                 android:name="UMENG_CHANNEL"
-                android:value="渠道号，用作统计" />-->
-        <!--新浪-->
+                android:value="渠道号，用作统计" />
+        -->
+        <!-- 新浪 -->
         <activity
-                android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+                android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
                 android:launchMode="singleTask"
-                android:name="com.sina.weibo.sdk.share.WbShareTransActivity">
+                android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-        <!--微信-->
+        </activity> <!-- 微信 -->
         <activity
                 android:name=".wxapi.WXEntryActivity"
                 android:configChanges="keyboardHidden|orientation|screenSize"
                 android:exported="true"
                 android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                tools:ignore="DuplicateActivity" />
-        <!--QQ   todo 请注意将我们的qq appkey替换成您自己的qq appkey-->
+                tools:ignore="DuplicateActivity" /> <!-- QQ   todo 请注意将我们的qq appkey替换成您自己的qq appkey -->
         <activity
                 android:name="com.tencent.tauth.AuthActivity"
                 android:launchMode="singleTask"
-                android:noHistory="true" >
+                android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent100424468" />
             </intent-filter>
         </activity>
         <activity
                 android:name="com.tencent.connect.common.AssistActivity"
-                android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                android:configChanges="orientation|keyboardHidden|screenSize"/>
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
-</manifest>
 
-        <!--        <provider-->
-        <!--                android:name="androidx.core.content.FileProvider"-->
-        <!--                android:authorities="com.example.juanshichang.fileProvider"-->
-        <!--                android:exported="false"-->
-        <!--                android:grantUriPermissions="true">-->
-        <!--            <meta-data-->
-        <!--                    android:name="android.support.FILE_PROVIDER_PATHS"-->
-        <!--                    android:resource="@xml/file_paths" />-->
-        <!--        </provider>-->
+</manifest>

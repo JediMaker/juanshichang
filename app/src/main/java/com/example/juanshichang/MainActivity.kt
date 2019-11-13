@@ -321,7 +321,7 @@ class MainActivity : BaseActivity() {
                             val item = data.data
                             var user = SpUtil.getIstance().user
                             user.avatar = item.avatar
-                            user.balance = item.balance
+                            user.balance = Util.getFloatPrice(item.balance.toLong()).toFloat()
                             user.current_day_benefit = item.current_day_benefit
                             user.current_month_benefit = item.current_month_benefit
                             user.last_day_benefit = item.last_day_benefit
