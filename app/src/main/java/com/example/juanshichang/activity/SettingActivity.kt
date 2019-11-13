@@ -11,10 +11,10 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.example.juanshichang.MyApp
@@ -43,6 +43,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     private var userName: String? = null
     private var uNDialog: QMUIDialog.EditTextDialogBuilder? = null
     private var uIADialog: QMUIDialog.MenuDialogBuilder? = null
+    private var userZfb:String? = null
+    private var zfbDialog: QMUIDialog.EditTextDialogBuilder? = null
     private var cameraSavePath: Uri? = null
     override fun initView() {
         StatusBarUtil.addStatusViewWithColor(this@SettingActivity, R.color.white)
@@ -50,12 +52,13 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         setRet.setOnClickListener(this)
         setUserImage.setOnClickListener(this)
         setUserName.setOnClickListener(this)
+        setZfb.setOnClickListener(this)
         setUND()//创建 用户昵称对话框 和 图片选择器
     }
 
     override fun initData() {
-        cameraSavePath =
-            Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + "small.jpg") //解决小米手机崩溃问题
+//        cameraSavePath =
+//            Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + "small.jpg") //解决小米手机崩溃问题
         getSetting()
     }
 
@@ -102,6 +105,12 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 }
                 uNDialog?.show()
             }
+            setZfb ->{
+                if(userZfb != null && !TextUtils.isEmpty(userZfb)){
+                    zfbDialog?.setDefaultText(userZfb)
+                }
+                zfbDialog?.show()
+            }
         }
     }
 
@@ -123,11 +132,15 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                         val avatar = data.getString("avatar")
                         val nickname = data.getString("nickname")
                         val create_time = data.getInt("create_time")
+                        val ali_pay_account = data.getString("ali_pay_account")
                         this@SettingActivity.runOnUiThread(object : Runnable {
                             override fun run() {
-                                setUi(avatar, nickname, create_time)
+                                setUi(avatar, nickname, create_time,ali_pay_account)
                             }
                         })
+                        val u = SpUtil.getIstance().user
+                        u.ali_pay_account = ali_pay_account
+                        SpUtil.getIstance().user = u  //写入
                     }
                 }
             }
@@ -167,10 +180,12 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         }).start()
     }
 
-    private fun setUi(avatar: String, nickname: String, create_time: Int) {
+    private fun setUi(avatar: String, nickname: String, create_time: Int,ali:String) {
+        Zfb.text = ali //提现账户
         setUserReg.text = Util.getTimedateTwo(create_time.toLong()) //日期
-        GlideUtil.loadHeadImage(this@SettingActivity, avatar, userImage) //头像
+        GlideUtil.loadHeadImage(this@SettingActivity, avatar, userImage!!) //头像
         userName = nickname //昵称
+        userZfb = ali //提现账户
     }
 
     private var imageUriP: Uri? = null
@@ -273,7 +288,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         uNDialog?.addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
             val newName = uNDialog?.editText?.text.toString()
             if (!newName.equals(userName.toString())) {
-                if (!TextUtils.isEmpty(newName) && newName!="") {
+                if (!TextUtils.isEmpty(newName) && newName != "") {
                     if (newName.length > 10) {
                         ToastUtil.showToast(this@SettingActivity, "昵称过长 请重新设置")
                         uNDialog?.editText?.setText("")
@@ -300,7 +315,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                         Manifest.permission.CAMERA
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1);
+                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), 1)
                 } else {
                     goCamera()
                     dialogInterface.dismiss()
@@ -316,8 +331,38 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             dialogInterface.dismiss()
         })
         uIADialog?.create()
+        //修改支付宝账号对话框
+        zfbDialog = QMUIDialog.EditTextDialogBuilder(this)
+        zfbDialog?.setTitle("支付宝提现账户")
+        zfbDialog?.setPlaceholder("在此输入您的支付宝提现账户") //Hint
+        zfbDialog?.editText?.inputType = EditorInfo.TYPE_CLASS_PHONE // todo 设置输入类型为手机号？？？
+//        zfbDialog?.editText?.filters = InputFilter[]{(InputFilter.LengthFilter(11))}
+        zfbDialog?.addAction("取消", QMUIDialogAction.ActionListener { dialog, index ->
+            ToastTool.showToast(this@SettingActivity, "提现账户修改已取消")
+            dialog.dismiss()
+        })
+        zfbDialog?.addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
+            val newZfb = zfbDialog?.editText?.text.toString()
+            if (!newZfb.equals(userZfb.toString())) {
+                if (!TextUtils.isEmpty(newZfb) && newZfb != "") {
+                    if (newZfb.length != 11 || !Util.validateMobile(newZfb)) {
+                        ToastUtil.showToast(this@SettingActivity, "请输入正确的提现账户")
+                        zfbDialog?.editText?.setText("")
+                    } else {
+                        showProgressDialog()  //
+                        setNewZfb(newZfb.toString().trim())
+                        dialog.dismiss()
+                    }
+                } else {
+                    ToastUtil.showToast(this@SettingActivity, "提现账户不能为空")
+                }
+            }else{
+                ToastUtil.showToast(this@SettingActivity, "提现账户未修改")
+                dialog.dismiss()
+            }
+        })
+        zfbDialog?.create()
     }
-
     //修改用户昵称
     private fun setNewName(nickname: String) {
         HttpManager.getInstance().post(Api.SETINFO, Parameter.getUpdInfo(nickname), object : Subscriber<String>() {
@@ -351,13 +396,53 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 this@SettingActivity.runOnUiThread(object : Runnable {
                     override fun run() {
                         ToastUtil.showToast(this@SettingActivity, "昵称修改失败,请稍后重试")
+                        dismissProgressDialog()
                     }
                 })
             }
 
         })
     }
+    //修改用户支付宝
+    private fun setNewZfb(ali_pay_account: String) {
+        HttpManager.getInstance().post(Api.UPDZFB, Parameter.getUpdZfb(ali_pay_account), object : Subscriber<String>() {
+            override fun onNext(str: String?) {
+                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                    var jsonObj: JSONObject? = null
+                    jsonObj = JSONObject(str)
+                    if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        ToastUtil.showToast(this@SettingActivity, jsonObj.optString(JsonParser.JSON_MSG))
+                    } else {
+                        val user = SpUtil.getIstance().user
+                        user.ali_pay_account = ali_pay_account
+                        SpUtil.getIstance().user = user
+                        this@SettingActivity.runOnUiThread(object : Runnable {
+                            override fun run() {
+                                ToastTool.showToast(this@SettingActivity, "提现账户修改成功")
+                                Zfb.text = ali_pay_account
+                                userZfb = ali_pay_account
+                                dismissProgressDialog()
+                            }
+                        })
+                    }
+                }
+            }
 
+            override fun onCompleted() {
+                LogTool.e("onCompleted", "提现账户修改加载完成!")
+            }
+
+            override fun onError(e: Throwable?) {
+                LogTool.e("onError", "提现账户修改失败!" + e)
+                this@SettingActivity.runOnUiThread(object : Runnable {
+                    override fun run() {
+                        ToastUtil.showToast(this@SettingActivity, "提现账户修改失败,请稍后重试")
+                    }
+                })
+            }
+
+        })
+    }
     //修改用户头像
     fun setIconUser(path: String) {//bt:Bitmap?,
         //1.获取图片，创建请求体

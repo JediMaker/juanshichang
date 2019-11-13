@@ -9,10 +9,13 @@ import android.os.Message
 import android.text.TextUtils
 import android.view.View
 import android.widget.ScrollView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
+import com.example.juanshichang.adapter.ShangPinOtherAdapter
 import com.example.juanshichang.adapter.ShangPinXqAdapter
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
@@ -36,15 +39,17 @@ import org.json.JSONObject
 import rx.Subscriber
 
 class ShangPinContains : BaseActivity(), View.OnClickListener {
-    var goods_id: Long = 0 //从正常列表进入
-    var theme_id: Long = 0  //Banner进入
+    private var goods_id: Long = 0 //从正常列表进入
+    private var theme_id: Long = 0  //Banner进入
     //    var mall_name: String? = null //店铺名称
-    val goods_id_def: Long = Long.MAX_VALUE
-    var goods: SDB.GoodsDetail? = null
-    var goodsPromotionUrl: PSP.GoodsPromotionUrl? = null
-    var cm: ClipboardManager? = null
-    var mClipData: ClipData? = null
-    var handler: Handler = object : Handler() {
+    private val goods_id_def: Long = Long.MAX_VALUE
+    private var goods: SDB.GoodsDetail? = null
+    private var goodsPromotionUrl: PSP.GoodsPromotionUrl? = null
+    private var cm: ClipboardManager? = null
+    private var mClipData: ClipData? = null
+    private var otherAdapter:ShangPinOtherAdapter? = null
+    private var adapterSp:ShangPinXqAdapter? = null
+    private var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
@@ -132,7 +137,10 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                 })
             }
             go_shop -> {
-                ToastUtil.showToast(this@ShangPinContains, "暂未开放店铺入口")
+                if(Util.hasLogin(this@ShangPinContains)){
+                    storePath("${goods?.mall_id}",Api.Pdd)
+                }
+//                ToastUtil.showToast(this@ShangPinContains, "暂未开放店铺入口")
             }
             spHome -> {
                 var intent = Intent(this@ShangPinContains, MainActivity::class.java)
@@ -338,7 +346,58 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
 
                 })
     }
+    /**
+     * 获取店铺链接 必须登录
+     */
+    private fun storePath(mall_id:String,servicer:String) { //不为0 则启动handler刷新
+        HttpManager.getInstance()
+            .post(
+                Api.MALLURl,
+                Parameter.getStoreMap(mall_id, servicer),
+                object : Subscriber<String>() {
+                    override fun onNext(str: String?) {
+                        if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                            var jsonObj: JSONObject? = null
+                            jsonObj = JSONObject(str)
+                            if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                                ToastUtil.showToast(
+                                    this@ShangPinContains,
+                                    jsonObj.optString(JsonParser.JSON_MSG)
+                                )
+                            } else {
+//                        val pddSharePath: PddSharePath = Gson().fromJson(str, PddSharePath::class.java)
+                                val data = jsonObj.optJSONObject("data")
+                                val mall_coupon_generate_url_response = data.optJSONObject("mall_coupon_generate_url_response")
+                                val list = mall_coupon_generate_url_response.optJSONArray("list")
+                                val obj = list.getJSONObject(0)
+                                val msu = obj.getString("mobile_short_url")
+                                val lmsu = obj.getString("mobile_url")
+                                this@ShangPinContains.runOnUiThread(object:Runnable{
+                                    override fun run() {
+                                        val intent = Intent(this@ShangPinContains, WebActivity::class.java)
+                                        if(msu!="" && !msu.isEmpty()){
+                                            intent.putExtra("mobile_short_url", msu)
+                                        }else{
+                                            intent.putExtra("mobile_url", lmsu)
+                                        }
+                                        goStartActivity(this@ShangPinContains,intent)
+                                    }
+                                })
+                            }
+                        }
 
+                    }
+
+                    override fun onCompleted() {
+                        LogTool.e("onCompleted", "店铺链接加载完成!")
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        LogTool.e("onError", "店铺链接加载失败!" + e)
+                    }
+
+                })
+    }
     private fun setData(goods: SDB.GoodsDetail,type:Int) {
         if(type == 1){
             setBanner(goods.goods_gallery_urls as MutableList<String>) // 初始化bannner
@@ -403,6 +462,27 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                 }
             }
         })
+        // 这里加载店铺其它商品
+        val otherSpList = goods.mall_goods_list
+        if(otherSpList?.size != 0){
+            otherSp.visibility = View.VISIBLE
+            dPOther.layoutManager = GridLayoutManager(this@ShangPinContains,2)
+            otherAdapter = ShangPinOtherAdapter()
+            dPOther.adapter = otherAdapter
+            otherAdapter?.setNewData(otherSpList)
+            otherAdapter?.setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener{
+                override fun onItemClick(
+                    adapter: BaseQuickAdapter<*, *>?,
+                    view: View?,
+                    position: Int
+                ) {
+                    LogTool.e("djl","点击了$position 条  , id: ${otherSpList[position].goods_id}")
+                    val intent = Intent(this@ShangPinContains, ShangPinContains::class.java)
+                    intent.putExtra("goods_id", otherSpList[position].goods_id)
+                    goStartActivity(this@ShangPinContains,intent)
+                }
+            })
+        }
     }
 
     private fun getTags(serviceTags: List<Int>?) {  //返回支持的服务
@@ -543,11 +623,11 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                     LinearLayoutManager(this@ShangPinContains, RecyclerView.VERTICAL, false)
                 //瀑布流加载图片
 //        shangpinList.layoutManager = StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
-                val adapterSp = ShangPinXqAdapter(R.layout.item_shangpin_xiangqing, imgUrls)
+                adapterSp = ShangPinXqAdapter(R.layout.item_shangpin_xiangqing, imgUrls)
                 shangpinList.adapter = adapterSp
                 shangpinList.setHasFixedSize(false)
                 shangpinList.setPadding(0, 0, 0, botShangpin.height + 3)
-                adapterSp.notifyDataSetChanged()
+                adapterSp?.notifyDataSetChanged()
             }
         })
     }
