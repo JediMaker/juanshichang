@@ -26,9 +26,10 @@ import java.security.MessageDigest;
 import static com.bumptech.glide.request.target.Target.SIZE_ORIGINAL;
 
 /**
- * Created by Administrator on 2018/3/27/027.
+ * Created by Administrator on 2019/5/27/027.
  * <p>
  * 加载图片
+ * 参考文档：https://segmentfault.com/a/1190000011423889
  */
 
 public class GlideUtil {

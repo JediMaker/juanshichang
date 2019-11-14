@@ -1,8 +1,11 @@
 package com.example.juanshichang.http;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.example.juanshichang.base.Api;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -13,24 +16,18 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 /**
  * @作者：yzq
  * @创建时间：2019/11/6 11:16
- * @文件作用: 用于加载本地接口
+ * @文件作用:  这个类用于加载聚合Api
  */
-
-public class HttpManager{
-
-
+public class JhApiHttpManager {
     private static final int READ_TIME_OUT = 5;
     private static final int CONNECT_TIME_OUT = 5; //5
 
     private ApiService mApiService;
 
-    private HttpManager() {
+    private JhApiHttpManager() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT);//打印retrofit日志
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -47,18 +44,18 @@ public class HttpManager{
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 //网络请求的域名
-                .baseUrl(Api.BASEURL)
+                .baseUrl(Api.JUHEAPi)
                 .build();
         mApiService = retrofit.create(ApiService.class);
     }
 
-    private static HttpManager instanse = null;
+    private static JhApiHttpManager instanse = null;
 
-    public static HttpManager getInstance() {
+    public static JhApiHttpManager getInstance() {
         if (instanse == null) {
-            synchronized (HttpManager.class) {
+            synchronized (JhApiHttpManager.class) {
                 if (instanse == null) {
-                    return new HttpManager();
+                    return new JhApiHttpManager();
                 }
             }
         }
@@ -96,9 +93,8 @@ public class HttpManager{
                 .subscribe(subscriber);
     }
 
-   public void post(String url, JSONObject json, Subscriber<String> subscriber){
+    public void post(String url, JSONObject json, Subscriber<String> subscriber){
         Observable <String> observable=mApiService.post(url,json);
         call(observable,subscriber);
-   }
-
+    }
 }

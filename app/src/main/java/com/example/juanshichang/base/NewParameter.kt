@@ -1,0 +1,84 @@
+package com.example.juanshichang.base
+
+import com.example.juanshichang.MyApp
+import com.example.juanshichang.MyApp.Companion.getMD5uuid
+import com.example.juanshichang.utils.LogTool
+import com.example.juanshichang.utils.SpUtil
+import com.example.juanshichang.widget.MD5Utils
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+
+/**
+ * @作者: yzq
+ * @创建日期: 2019/11/14 13:56
+ * @文件作用:  这是新的接口协议
+ */
+class NewParameter {
+    private var baseList = ArrayList<String>()//存放签名集合
+    private var stringList = ArrayList<String>()//存放签名集合
+    /**
+     * 签名
+     * @param signType 0 未登录  1 登录
+     */
+    fun getSignString(signType: Int, str: String): String {
+        val appkey = MyApp.sp.getString("appkey", "shop.0371.ml")   //获取AppKey
+        val usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
+        var sign: String = ""
+        if (signType == 0) { //未登录
+            sign = MD5Utils.getMD5Str("|D|$str|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥  todo 待询问
+        } else if (signType == 1) { //登录
+            sign = MD5Utils.getMD5Str("|D|$str|K|$usertoken")
+            LogTool.e("signLogin", sign)
+        } else { //其它情况
+            sign = ""
+        }
+        return sign
+    }
+
+    /**
+     * 公共参数
+     */
+    fun getPublicMap(signType: Int, fuji: String): HashMap<String, String> { //action: String,
+        val map = HashMap<String, String>()
+//            map.put("action", action)
+        map.put("sign", getSignString(signType, fuji))
+        map.put("uuid", getMD5uuid())
+        map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
+        return map
+    }
+
+    /***
+     * 字符集封装
+     */
+    fun getFuji(list: ArrayList<String>): String {//, action: String
+//            list.add("action=$action")
+//            list.add("clienttype=2")
+        list.add("timestamp=" + ((System.currentTimeMillis()) / 1000))
+        list.add("uuid=${getMD5uuid()}")
+//            list.sort()
+        Collections.sort(list)
+        val sbs = StringBuffer()
+        for (i in 0 until list.size) {
+            if (i == list.size - 1) {
+                sbs.append(list[i])
+            } else {
+                sbs.append(list[i] + "&")
+            }
+        }
+        return sbs.toString()
+    }
+
+    /**
+     * 封装登陆类型和方法名
+     *
+     * @param typeLogin
+     * @param methodName
+     * @return
+     */
+    fun fengMap(typeLogin: Int): HashMap<String, String> { // , methodName: String
+        val fengMap = getPublicMap(typeLogin, getFuji(baseList)) // methodName,   , methodName
+        return fengMap
+    }
+
+}

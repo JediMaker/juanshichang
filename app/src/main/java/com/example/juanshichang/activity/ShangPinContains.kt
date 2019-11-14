@@ -427,6 +427,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
             spYhj.visibility = View.GONE
             spGou.text = "立即购买"
         } else {
+            spYhj.visibility = View.VISIBLE
             //这里可以判断 用户优惠劵 是否过期....
             if ((goods.coupon_total_quantity - goods.coupon_remain_quantity) < goods.coupon_total_quantity) { //总数 和 剩余
                 val juan = Util.getIntPrice(goods.coupon_discount.toLong())

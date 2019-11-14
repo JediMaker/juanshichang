@@ -142,7 +142,11 @@
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/mSwipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mTypeClassView"
             android:layout_marginTop="3px"
             android:scrollbars="none"
@@ -150,4 +154,5 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </com.zhy.autolayout.AutoLinearLayout>

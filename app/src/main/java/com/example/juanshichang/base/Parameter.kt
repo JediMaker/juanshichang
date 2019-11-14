@@ -12,15 +12,15 @@ import kotlin.collections.HashMap
 
 class Parameter {
     companion object {
-        var baseList = ArrayList<String>()//存放签名集合
-        var stringList = ArrayList<String>()//存放签名集合
+        private var baseList = ArrayList<String>()//存放签名集合
+        private var stringList = ArrayList<String>()//存放签名集合
 
         /**
          * 签名
          */
         fun getSignString(signType: Int, str: String): String {
-            var appkey = MyApp.sp.getString("appkey", "0371.ml.appkey")   //获取AppKey
-            var usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
+            val appkey = MyApp.sp.getString("appkey", "0371.ml.appkey")   //获取AppKey
+            val usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
             var sign: String = ""
             if (signType == 0) { //未登录
                 sign = MD5Utils.getMD5Str("|D|$str|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥  todo 待询问
@@ -90,7 +90,7 @@ class Parameter {
          * 公共参数
          */
         fun getPublicMap(signType: String, fuji: String): HashMap<String, String> { //action: String,
-            var map = HashMap<String, String>()
+            val map = HashMap<String, String>()
 //            map.put("action", action)
             map.put("sign", getSign(signType, fuji))
             map.put("uuid", getMD5uuid())
@@ -108,7 +108,7 @@ class Parameter {
             list.add("uuid=${getMD5uuid()}")
 //            list.sort()
             Collections.sort(list)
-            var sbs = StringBuffer()
+            val sbs = StringBuffer()
             for (i in 0 until list.size) {
                 if (i == list.size-1) {
                     sbs.append(list[i])
@@ -127,7 +127,7 @@ class Parameter {
          * @return
          */
         fun fengMap(typeLogin: String): HashMap<String, String> { // , methodName: String
-            var fengMap = getPublicMap(typeLogin, getFuji(baseList)) // methodName,   , methodName
+            val fengMap = getPublicMap(typeLogin, getFuji(baseList)) // methodName,   , methodName
             return fengMap
         }
         //--------------------------------------分割线-----------------------------------------------------
@@ -138,7 +138,7 @@ class Parameter {
             baseList.clear()
             baseList.add("mobile=$mobile")
             baseList.add("password=$password")
-            var map = fengMap("unlogin")
+            val map = fengMap("unlogin")
             map.put("mobile", mobile)
             map.put("password", password)
             return map
@@ -156,7 +156,7 @@ class Parameter {
             }else{
                 baseList.add("invite_code=$invite_code")
             }
-            var map = fengMap("unlogin")
+            val map = fengMap("unlogin")
             map.put("mobile", mobile)
             map.put("password", password)
             map.put("sms_code", sms_code)
@@ -187,7 +187,7 @@ class Parameter {
             }
             baseList.add("category_id=$category_id")
             baseList.add("sort_type=$sort_type")
-            var map = fengMap("unlogin")
+            val map = fengMap("unlogin")
 //            map.put("servicer", servicer)
             map.put("keyword", keyword)
             map.put("page", "$page")
@@ -208,7 +208,7 @@ class Parameter {
             baseList.clear()
             baseList.add("servicer=$servicer")
             baseList.add("goods_id=$goods_id")
-            var map = fengMap("unlogin")
+            val map = fengMap("unlogin")
             map.put("servicer", servicer)
             map.put("goods_id", "$goods_id")
             return map
@@ -223,7 +223,7 @@ class Parameter {
             baseList.clear()
             baseList.add("servicer=$servicer")
             baseList.add("goods_id=$goods_id")
-            var map = fengMap(isLogin)
+            val map = fengMap(isLogin)
             map.put("servicer", servicer)
             map.put("goods_id", "$goods_id")
             return map
@@ -234,7 +234,7 @@ class Parameter {
          */
         fun getMainBannerMap(): HashMap<String, String>{
             baseList.clear()
-            var map = fengMap("unlogin")
+            val map = fengMap("unlogin")
             return map
         }
         /**
@@ -243,7 +243,7 @@ class Parameter {
          */
         fun getBenefitMap(): HashMap<String, String>{
             baseList.clear()
-            var map = fengMap("login")
+            val map = fengMap("login")
             return map
         }
         /**
@@ -255,7 +255,7 @@ class Parameter {
         fun getBannerClickMap(banner_id:Long,offset:Int,limit:Int): HashMap<String, String>{
             baseList.clear()
             baseList.add("banner_id=$banner_id")
-            var map = fengMap("unlogin")
+            val map = fengMap("unlogin")
             map.put("banner_id", "$banner_id")
             if(offset != 0){
                 baseList.add("offset=$offset")
@@ -276,7 +276,7 @@ class Parameter {
         fun getGridClickMap(channel_id:Long,offset:Int,limit:Int): HashMap<String, String>{
             baseList.clear()
             baseList.add("channel_id=$channel_id")
-            var map = fengMap("unlogin")
+            val map = fengMap("unlogin")
             map.put("channel_id", "$channel_id")
             if(offset != 0){
                 baseList.add("offset=$offset")
@@ -303,8 +303,8 @@ class Parameter {
             if(limit != 20){
                 baseList.add("limit=$limit")
             }
-            var map = fengMap("unlogin")
-            map.put("$idName", "$id")
+            val map = fengMap("unlogin")
+            map.put(idName, "$id")
             if(offset != 0){
                 map.put("offset", "$offset")
             }
@@ -322,7 +322,7 @@ class Parameter {
             if(theme_goods_count != 2){
                 baseList.add("theme_goods_count=$theme_goods_count")
             }
-            var map = fengMap("unlogin")
+            val map = fengMap("unlogin")
             if(theme_goods_count != 2){
                 map.put("theme_goods_count", "$theme_goods_count")
             }
@@ -335,7 +335,7 @@ class Parameter {
         fun getVerifyCode(mobile:String):HashMap<String,String>{
             baseList.clear()
             baseList.add("mobile=$mobile")
-            var map = fengMap("unlogin")
+            val map = fengMap("unlogin")
             map.put("mobile", mobile)
             return map
         }
@@ -353,7 +353,7 @@ class Parameter {
             if(limit != 20){
                 baseList.add("limit=$limit")
             }
-            var map = fengMap("login")
+            val map = fengMap("login")
             if(offset != 0){
                 map.put("offset", "$offset")
             }
@@ -369,7 +369,7 @@ class Parameter {
         fun getUpdInfo(nickname:String): HashMap<String, String>{
             baseList.clear()
             baseList.add("nickname=$nickname")
-            var map = fengMap("login")
+            val map = fengMap("login")
             map.put("nickname",nickname)
             return map
         }
@@ -380,7 +380,7 @@ class Parameter {
         fun getUpdZfb(ali_pay_account:String): HashMap<String, String>{
             baseList.clear()
             baseList.add("ali_pay_account=$ali_pay_account")
-            var map = fengMap("login")
+            val map = fengMap("login")
             map.put("ali_pay_account",ali_pay_account)
             return map
         }
@@ -391,7 +391,7 @@ class Parameter {
         fun getTxZfb(amount:String): HashMap<String, String>{
             baseList.clear()
             baseList.add("amount=$amount")
-            var map = fengMap("login")
+            val map = fengMap("login")
             map.put("amount",amount)
             return map
         }
@@ -419,8 +419,8 @@ class Parameter {
             baseList.add("mall_id=$mall_id")
             baseList.add("servicer=$servicer")
             val map = fengMap("login")
-            map.put("mall_id","$mall_id")
-            map.put("servicer","$servicer")
+            map.put("mall_id",mall_id)
+            map.put("servicer",servicer)
             return map
         }
     }

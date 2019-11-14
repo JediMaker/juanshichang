@@ -19,7 +19,7 @@
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:background="@drawable/bg_search_white"
-                android:hint="搜索商品名或者粘贴商品标题"
+                android:hint="搜索商品名称或者粘贴商品标题"
                 android:paddingLeft="88px"
                 android:textSize="36px" />
         <ImageView

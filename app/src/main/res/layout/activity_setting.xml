@@ -150,6 +150,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
         </RelativeLayout>
+        <View
+            android:layout_marginLeft="46px"
+            android:layout_marginRight="46px"
+            android:background="@color/set_linear"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+        <RelativeLayout
+            android:id="@+id/realName"
+            android:paddingLeft="46px"
+            android:paddingRight="46px"
+            android:paddingTop="23px"
+            android:paddingBottom="21px"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="实名认证"
+                android:textColor="@color/ff_gray"
+                android:textSize="35px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/realIcon"
+                android:drawableRight="@drawable/details_next"
+                android:layout_alignParentRight="true"
+                android:text="未认证"
+                android:drawablePadding="29px"
+                android:textColor="@color/txt_gray"
+                android:textSize="35px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
     </com.zhy.autolayout.AutoLinearLayout>
 
     <TextView
