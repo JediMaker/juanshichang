@@ -37,6 +37,9 @@ abstract class BaseFragment : Fragment(){
             }else{
                 initViews(savedInstanceState = Bundle())
             }
+//            savedInstanceState.let {
+//                initViews(it!!)
+//            }
             initData()
         }
         return mBaseView

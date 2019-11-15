@@ -270,12 +270,17 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                     if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
                         ToastUtil.showToast(this@Reg2LogActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
-                        val data = jsonObj!!.getJSONObject("data")
+                        val data = jsonObj.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理
+                        val uid: Long = data.getLong("uid") //这是用于校验新接口的uid
                         LogTool.e("LogToken", token)
-                        var user = SpUtil.getIstance().user
-                        user.usertoken = token
-                        SpUtil.getIstance().user = user //写入
+                        val user = SpUtil.getIstance().user
+                        user.apply {
+                            useruid = uid
+                            usertoken = token
+                        }.let {
+                            SpUtil.getIstance().user = it //写入
+                        }
                         this@Reg2LogActivity.runOnUiThread(Runnable {
                             if (token != "" && !TextUtils.isEmpty(token)) {
 //                            downUser("login")

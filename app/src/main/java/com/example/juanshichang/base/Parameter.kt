@@ -68,8 +68,8 @@ class Parameter {
          * 签名
          */
         fun getSign(signType: String, fuji: String): String {
-            var appkey = MyApp.sp.getString("appkey", "0371.ml.appkey")   //获取AppKey
-            var usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
+            val appkey = MyApp.sp.getString("appkey", "0371.ml.appkey")   //获取AppKey
+            val usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
             var sign: String = ""
             if (signType.equals("unlogin")) { //未登录
                 sign = MD5Utils.getMD5Str("|D|$fuji|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥  todo 待询问

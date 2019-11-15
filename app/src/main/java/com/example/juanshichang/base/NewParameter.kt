@@ -22,7 +22,7 @@ class NewParameter {
      * @param signType 0 未登录  1 登录
      */
     fun getSignString(signType: Int, str: String): String {
-        val appkey = MyApp.sp.getString("appkey", "shop.0371.ml")   //获取AppKey
+        val appkey = MyApp.sp.getString("newappkey", "shop.0371.ml")   //获取AppKey
         val usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
         var sign: String = ""
         if (signType == 0) { //未登录
@@ -77,8 +77,17 @@ class NewParameter {
      * @return
      */
     fun fengMap(typeLogin: Int): HashMap<String, String> { // , methodName: String
+        if(typeLogin == 1){//0 未登录  1 登录
+            val useruid = SpUtil.getIstance().user.useruid  //获取Useruid
+            baseList.add("uid=$useruid")
+        }
         val fengMap = getPublicMap(typeLogin, getFuji(baseList)) // methodName,   , methodName
+        if(typeLogin == 1){//0 未登录  1 登录
+            val useruid = SpUtil.getIstance().user.useruid  //获取Useruid
+            fengMap.put("uid","$useruid")
+        }
         return fengMap
     }
+    // --------------------------------------------------------------
 
 }

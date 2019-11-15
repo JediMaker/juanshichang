@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
@@ -80,7 +81,14 @@ android {
 static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
-
+greendao {
+    //数据库的schema版本，也可以理解为数据库版本号
+    schemaVersion 1
+    //设置DaoMaster、DaoSession、Dao包名，也就是要放置这些类的包的全路径。
+    daoPackage 'com.example.juanshichang.greendao'
+    //设置DaoMaster、DaoSession、Dao目录
+    targetGenDir 'src/main/java'
+}
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -138,10 +146,9 @@ dependencies {
     kapt 'com.jakewharton:butterknife-compiler:10.1.0'
 
     //添加这行
-
-    //eventbus
-    api 'org.greenrobot:eventbus:3.1.1'
-    kapt "org.greenrobot:eventbus-annotation-processor:3.1.1"
+    //eventbus  广播不使用eventbus...
+//    api 'org.greenrobot:eventbus:3.1.1'
+//    kapt "org.greenrobot:eventbus-annotation-processor:3.1.1"
 
     // New Add
 
@@ -160,7 +167,6 @@ dependencies {
     api 'com.squareup.retrofit2:converter-scalars:2.6.0'
     api 'com.squareup.okhttp3:okhttp:4.0.1'
     api 'io.reactivex:rxandroid:1.2.1'
-
     //友盟 分享  start
 //    implementation files('libs/SecurityEnvSDK-release-1.1.0.jar')
 //    implementation files('libs/utdid4all-1.1.5.3_proguard.jar')
@@ -172,4 +178,8 @@ dependencies {
 //    implementation files('libs/umeng-shareboard-widget-6.9.6.jar')
 //    implementation files('libs/umeng-sharetool-6.9.6.jar')
     //友盟 分享  end
+    //LeakCanary 内存泄漏 检查工具 debug版本添加依赖  源码解析：https://www.jianshu.com/p/75f0e1fea3e0
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
+    //GreenDao
+    api 'org.greenrobot:greendao:3.2.2'
 }
