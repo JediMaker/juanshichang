@@ -21,6 +21,7 @@ import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import kotlinx.android.synthetic.main.activity_register.*
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.backgroundResource
 import org.json.JSONException
 import org.json.JSONObject
@@ -156,11 +157,11 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                         e.printStackTrace();
                     }
                     if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(this@RegisterActivity, jsonObj.optString(JsonParser.JSON_MSG))
+                        ToastUtil.showToast(this@RegisterActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
-                        val data = jsonObj.getJSONObject("data")
+                        val data = jsonObj!!.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理
-                        val user = SpUtil.getIstance().user
+                        var user = SpUtil.getIstance().user
                         user.usertoken = token
                         SpUtil.getIstance().user = user //写入
                         if (SpUtil.getIstance().user.usertoken != "" && !TextUtils.isEmpty(SpUtil.getIstance().user.usertoken)) {

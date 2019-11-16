@@ -52,14 +52,16 @@
             android:layout_height="10dp"
             android:background="@color/ff_back"
             app:layout_constraintTop_toBottomOf="@+id/shopbar"/>
-    <androidx.recyclerview.widget.RecyclerView
+    <ExpandableListView
             android:id="@+id/goodsList"
+            android:divider="@null"
+            android:groupIndicator="@null"
             android:layout_marginBottom="52dp"
             android:scrollbars="none"
             app:layout_constraintTop_toBottomOf="@+id/backView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-    </androidx.recyclerview.widget.RecyclerView>
+    </ExpandableListView>
     <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/shopBotBar"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -74,12 +76,16 @@
                 android:layout_height="match_parent">
             <CheckBox
                     android:id="@+id/allCheck"
-                    android:text="合计："
+                    android:button="@drawable/shoppingcar_check"
+                    android:paddingHorizontal="25px"
+                    android:layout_marginLeft="24px"
+                    android:text="合计 :"
                     android:textSize="48px"
                     android:textColor="@color/main_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <TextView
+                    android:visibility="gone"
                     android:text="¥"
                     android:textSize="56px"
                     android:textColor="@color/indicatorRed"
@@ -88,7 +94,7 @@
                     android:layout_height="wrap_content"/>
             <TextView
                     android:id="@+id/nowPrice"
-                    android:text="0.0"
+                    android:text="¥0.0"
                     android:textSize="72px"
                     android:textColor="@color/indicatorRed"
                     android:layout_width="wrap_content"

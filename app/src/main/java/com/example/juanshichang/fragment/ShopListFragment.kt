@@ -19,6 +19,6 @@ class ShopListFragment : BaseFragment() {
     }
 
     override fun initData() {
-
+        
     }
 }

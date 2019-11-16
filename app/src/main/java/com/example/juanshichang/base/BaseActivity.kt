@@ -332,7 +332,11 @@ abstract class BaseActivity : AutoLayoutActivity(), LifecycleProvider<ActivityEv
         }
 
     }
-
+    /*fun DisplayToast(str: String) {
+        val toast = Toast.makeText(this, str, Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.TOP, 0, 220)
+        toast.show()
+    }*/
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (!IsInternet.isNetworkAvalible(this@BaseActivity)) {

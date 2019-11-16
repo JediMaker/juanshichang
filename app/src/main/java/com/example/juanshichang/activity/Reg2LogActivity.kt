@@ -268,7 +268,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                         e.printStackTrace();
                     }
                     if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(this@Reg2LogActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
+                        ToastUtil.showToast(this@Reg2LogActivity, jsonObj.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理
@@ -289,6 +289,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                                 this@Reg2LogActivity.finish()
                             }
                         })
+
                     }
                 }
             }

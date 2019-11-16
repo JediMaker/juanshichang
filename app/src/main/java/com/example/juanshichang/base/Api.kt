@@ -66,10 +66,9 @@ interface Api {
         val Jd = "jd"
         // ------------------------------------------------ new  port ------------------------------------------
         const val NEWBASEURL = "http://s.0371.ml:8080/"  //内网环境
-//        const val NEWBASEURL = "http://shop.0371.ml:88/"  //外网测试
+        //        const val NEWBASEURL = "http://shop.0371.ml:88/"  //外网测试
         val CART = "/index.php?route=app/cart"
         val CARTADD ="/index.php?route=app/cart/add"
-
         //聚合数据Key集
         val IDKey = "8bc635e7345dd2e160df47c7ed386818" //身份证实名信息
         val PhoneKey = "5c0ee202ae8c61f918e1367c7a007348"//手机号归属地查询
@@ -78,5 +77,7 @@ interface Api {
         //聚合接口
         const val JUHEAPi = "http://apis.juhe.cn"
         val TELCHECK = "/mobile/get" //手机号归属地查询
+        const val JUHEAPi2 = "http://op.juhe.cn"
+        val REALNAME = "/idcard/query"//实名验证
     }
 }

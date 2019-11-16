@@ -29,7 +29,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon, android:label,android:theme">
-        <activity android:name=".activity.RealNameActivity"></activity>
+        <activity android:name=".activity.SiteListActivity"></activity>
+        <activity android:name=".activity.RealNameActivity" />
         <activity android:name=".activity.TopupActivity" />
         <activity android:name=".activity.TakeOutActivity" />
         <activity
