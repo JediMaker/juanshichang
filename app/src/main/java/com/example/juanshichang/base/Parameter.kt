@@ -50,11 +50,11 @@ class Parameter {
             stringList.add("timestamp=" + (System.currentTimeMillis() / 1000).toString()) //todo 时间戳一直差8小时...
             stringList.add("uuid=" + getMD5uuid())
             stringList.sort()
-            var sbs = StringBuffer()
+            val sbs = StringBuffer()
             for (i in 0 until stringList.size) {
                 sbs.append(stringList[i] + "&")
             }
-            var map = HashMap<String, String>()
+            val map = HashMap<String, String>()
 //            map.put("action", action)
             map.put("uuid", getMD5uuid())
 //            map.put("clienttype", "2")

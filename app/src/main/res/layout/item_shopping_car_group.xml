@@ -4,7 +4,7 @@
               android:background="@color/white"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
-    <LinearLayout
+    <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -12,8 +12,8 @@
 
         <ImageView
                 android:id="@+id/iv_select"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/shoppingcar_check" />
@@ -51,7 +51,7 @@
                 android:maxLines="1"
                 android:maxLength="10"
                 android:ellipsize="end"/>
-    </LinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
 
     <View
             android:layout_width="match_parent"
