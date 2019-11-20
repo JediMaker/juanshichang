@@ -51,7 +51,7 @@ public class SpUtil {
     public void setUser(User entity ){
         SharedPreferences.Editor editor=sp.edit();
         editor.putString("usertoken",entity.getUsertoken());
-        editor.putLong("useruid",0);
+        editor.putLong("useruid",entity.getUseruid());
 //        editor.putString("userimaccid",entity.getUserimaccid()); //todo 新添
 //        editor.putString("userimtoken",entity.getUserimtoken());
 //        editor.putString("userage",entity.getUserage());

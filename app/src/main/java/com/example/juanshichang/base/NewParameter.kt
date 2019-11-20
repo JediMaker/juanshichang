@@ -96,5 +96,13 @@ class NewParameter {
             val map = fengMap(1)
             return map
         }
+        //自营商品详情 免登陆
+        fun getProductMap(productId:Long): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("product_id=$productId")
+            val map = fengMap(0)
+            map.put("product_id","$productId")
+            return map
+        }
     }
 }

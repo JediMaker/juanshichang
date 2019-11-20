@@ -90,12 +90,12 @@ class ShoppingCarAdapter : BaseExpandableListAdapter{
         //这里进行顶部操作逻辑...
         //todo  因为后台分配的数据结构问题  这里只能先写死...
         val fatherGroup = data?.data?.products
-        fatherGroup.let {
+        fatherGroup?.let{
             //设置标题
             groupViewHolder.tv_store_name?.text = "萌象自营"
 
             //店铺内的商品都选中的时候，店铺的也要选中
-            for (i in 0..it!!.size) {
+            for (i in 0..it.size) {
                 val isSelect = it[i].isSelect
                 if (isSelect) {
                     //这里 应该给 父类Group 以 选中参数 因为暂时没有数据 -- 直接就选中
@@ -183,6 +183,9 @@ class ShoppingCarAdapter : BaseExpandableListAdapter{
                 }
             })
             //删除的点击事件
+        }
+        if(fatherGroup == null || fatherGroup?.size == 0){
+            v.visibility = View.GONE
         }
         return v
     }

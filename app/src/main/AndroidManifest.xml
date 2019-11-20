@@ -1,94 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.juanshichang">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.example.juanshichang">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission
-        android:name="android.permission.WRITE_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
+            android:name="android.permission.WRITE_SETTINGS"
+            tools:ignore="ProtectedPermissions"/>
 
     <application
-        android:name=".MyApp"
-        android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:largeHeap="true"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:replace="android:icon, android:label,android:theme">
-        <activity android:name=".activity.SiteListActivity"></activity>
-        <activity android:name=".activity.RealNameActivity" />
-        <activity android:name=".activity.TopupActivity" />
-        <activity android:name=".activity.TakeOutActivity" />
+            android:name=".MyApp"
+            android:allowBackup="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:largeHeap="true"
+            android:networkSecurityConfig="@xml/network_security_config"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            tools:replace="android:icon, android:label,android:theme">
+        <activity android:name=".activity.ShangPinZyContains">
+        </activity>
+        <activity android:name=".activity.SiteListActivity"/>
+        <activity android:name=".activity.RealNameActivity"/>
+        <activity android:name=".activity.TopupActivity"/>
+        <activity android:name=".activity.TakeOutActivity"/>
         <activity
-            android:name=".activity.GuideActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".activity.MessageActivity" />
-        <activity android:name=".activity.LookAllActivity" />
-        <activity android:name=".activity.FansActivity" />
-        <activity android:name=".activity.OrderFormActivity" />
-        <activity android:name=".activity.EarningsActivity" />
+                android:name=".activity.GuideActivity"
+                android:configChanges="orientation|keyboardHidden"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".activity.MessageActivity"/>
+        <activity android:name=".activity.LookAllActivity"/>
+        <activity android:name=".activity.FansActivity"/>
+        <activity android:name=".activity.OrderFormActivity"/>
+        <activity android:name=".activity.EarningsActivity"/>
         <activity
-            android:name=".activity.Reg2LogActivity"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".activity.PromotionActivity" />
-        <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.WebActivity" />
+                android:name=".activity.Reg2LogActivity"
+                android:launchMode="singleTask"
+                android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".activity.PromotionActivity"/>
+        <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".activity.WebActivity"/>
         <activity
-            android:name=".activity.ShangPinContains"
-            android:launchMode="standard" />
+                android:name=".activity.ShangPinContains"
+                android:launchMode="standard"/>
         <activity
-            android:name=".activity.ClassTypeActivity"
-            android:launchMode="singleTask" />
+                android:name=".activity.ClassTypeActivity"
+                android:launchMode="singleTask"/>
         <activity
-            android:name=".activity.SearcheActivity"
-            android:launchMode="singleTask" />
+                android:name=".activity.SearcheActivity"
+                android:launchMode="singleTask"/>
         <activity
-            android:name=".activity.LoginActivity"
-            android:launchMode="singleTask" />
+                android:name=".activity.LoginActivity"
+                android:launchMode="singleTask"/>
         <activity
-            android:name=".activity.SplashActivity"
-            android:launchMode="singleTask">
+                android:name=".activity.SplashActivity"
+                android:launchMode="singleTask">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme" />
+                android:name=".MainActivity"
+                android:configChanges="orientation"
+                android:launchMode="singleTask"
+                android:theme="@style/AppTheme"/>
         <activity
-            android:name=".activity.RegisterActivity"
-            android:launchMode="singleTask" />
+                android:name=".activity.RegisterActivity"
+                android:launchMode="singleTask"/>
 
         <meta-data
-            android:name="design_width"
-            android:value="1080" />
+                android:name="design_width"
+                android:value="1080"/>
         <meta-data
-            android:name="design_height"
-            android:value="1920" /> <!-- 在友盟上申请的APPKY -->
+                android:name="design_height"
+                android:value="1920"/> <!-- 在友盟上申请的APPKY -->
         <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5d77136d3fc1953357000529" /> <!-- 渠道号，用作统计 -->
+                android:name="UMENG_APPKEY"
+                android:value="5d77136d3fc1953357000529"/> <!-- 渠道号，用作统计 -->
         <!--
 <meta-data
                 android:name="UMENG_CHANNEL"
@@ -96,38 +98,38 @@
         -->
         <!-- 新浪 -->
         <activity
-            android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+                android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
+                android:launchMode="singleTask"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity> <!-- 微信 -->
         <activity
-            android:name=".wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            tools:ignore="DuplicateActivity" /> <!-- QQ   todo 请注意将我们的qq appkey替换成您自己的qq appkey -->
+                android:name=".wxapi.WXEntryActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize"
+                android:exported="true"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                tools:ignore="DuplicateActivity"/> <!-- QQ   todo 请注意将我们的qq appkey替换成您自己的qq appkey -->
         <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
+                android:name="com.tencent.tauth.AuthActivity"
+                android:launchMode="singleTask"
+                android:noHistory="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="tencent100424468" />
+                <data android:scheme="tencent100424468"/>
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+                android:name="com.tencent.connect.common.AssistActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
     </application>
 
 </manifest>

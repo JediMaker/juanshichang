@@ -3,7 +3,7 @@ package com.example.juanshichang.bean
 /**
  * @作者: yzq
  * @创建日期: 2019/7/26 10:33
- * @文件作用: 这是商品详情
+ * @文件作用: 这是拼多多商品详情
  */
 class SDB {
     data class SearchDetailBean(

@@ -2,8 +2,8 @@
     <string name="app_name">萌象生活</string>
     <string name="first">首页</string>
     <string name="study">分类</string>
-    <string name="store">小店</string>
-    <string name="community">问答</string>
+    <string name="community">商学院</string>
+    <string name="store">购物车</string>
     <string name="me">我的</string>
 
     <!-- TODO: Remove or change this placeholder text -->

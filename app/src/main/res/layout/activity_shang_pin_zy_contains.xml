@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <com.example.juanshichang.widget.MyScrollView
-                android:id="@+id/nestedScrollView"
+                android:id="@+id/nestedZyScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:fillViewport="true"
@@ -26,21 +26,12 @@
             >
 
                 <com.youth.banner.Banner
-                        android:id="@+id/meBanner"
+                        android:visibility="invisible"
+                        android:id="@+id/mBZy"
                         android:layout_width="match_parent"
                         app:image_scale_type="fit_xy"
                         android:layout_height="986px"/>
-                <TextView
-                        android:id="@+id/sPSY"
-                        tools:text="收益:14.67"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:textSize="35px"
-                        android:paddingLeft="45px"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/details_icon5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
@@ -64,85 +55,35 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="bottom"
-                                android:text="劵后价"
+                                android:text="¥ "
                                 android:textStyle="bold"
                                 android:textColor="@color/label_color"
-                                android:textSize="45px"/>
+                                android:textSize="18sp"/>
                         <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:gravity="bottom"
-                                android:paddingLeft="30px"
-                                android:text="¥ "
-                                android:textColor="@color/label_color"
-                                android:textSize="14sp"/>
-                        <TextView
-                                android:id="@+id/spJinEr"
+                                android:id="@+id/spZyJinEr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="bottom"
                                 tools:text="100"
                                 android:textStyle="bold"
                                 android:textColor="@color/label_color"
-                                android:textSize="54px"/>
+                                android:textSize="24sp"/>
                         <com.example.juanshichang.widget.PriceTextView
-                                android:id="@+id/original_cost_view"
+                                android:id="@+id/originalZy_cost_view"
                                 android:gravity="bottom"
                                 android:paddingBottom="10px"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:textSize="34px"
                                 tools:text="110"
-                                android:layout_marginLeft="10dp"
+                                android:layout_marginLeft="30dp"
                                 android:textColor="@color/txt_gray"/>
-                        <LinearLayout
-                                android:orientation="horizontal"
-                                android:gravity="right"
-                                android:paddingBottom="12px"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:layout_height="wrap_content">
-                            <TextView
-                                    android:gravity="bottom"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:text="销量 "
-                                    android:textColor="@color/txt_gray"
-                                    android:textSize="34px"/>
-
-                            <TextView
-                                    android:id="@+id/spjian"
-                                    android:gravity="bottom"
-                                    android:paddingRight="15px"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    tools:text="1000"
-                                    android:textColor="@color/txt_gray"
-                                    android:textSize="34px"/>
-                            <View
-                                    android:visibility="gone"
-                                    android:layout_gravity="center_vertical"
-                                    android:background="@color/txt_gray"
-                                    android:layout_width="2px"
-                                    android:layout_height="29px"/>
-                            <TextView
-                                    android:visibility="gone"
-                                    android:id="@+id/spWz"
-                                    android:gravity="bottom"
-                                    android:paddingLeft="15px"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    tools:text="上海"
-                                    android:textColor="@color/txt_gray"
-                                    android:textSize="34px"/>
-                        </LinearLayout>
-
                     </LinearLayout>
                     <!-- 名称-->
-<!--                    android:drawablePadding="12px"-->
-<!--                    android:drawableLeft="@drawable/details_icon3"-->
+                    <!--                    android:drawablePadding="12px"-->
+                    <!--                    android:drawableLeft="@drawable/details_icon3"-->
                     <TextView
-                            android:id="@+id/spName"
+                            android:id="@+id/spZyName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -239,7 +180,7 @@
                                         android:text="商铺名"
                                         android:textSize="16sp"/>
                                 <LinearLayout
-                                        android:id="@+id/go_shop"
+                                        android:id="@+id/goZyshop"
                                         android:orientation="horizontal"
                                         android:layout_gravity="center_vertical"
                                         android:layout_width="wrap_content"
@@ -501,63 +442,63 @@
                         android:layout_height="10dp"
                         android:background="@color/beijing"/>
                 <LinearLayout
-                    android:id="@+id/otherSp"
-                    android:visibility="gone"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:paddingTop="45px"
-                        android:paddingBottom="20px"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/otherSp"
+                        android:visibility="gone"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <View
-                            android:background="@drawable/shangpin_one"
-                            android:layout_width="9px"
-                            android:layout_height="9px"/>
-                        <View
-                            android:background="@drawable/shangpin_two"
-                            android:layout_marginLeft="10px"
-                            android:layout_width="12px"
-                            android:layout_height="12px"/>
-                        <View
-                            android:background="@drawable/shangpin_three"
-                            android:layout_marginLeft="10px"
-                            android:layout_width="15px"
-                            android:layout_height="15px"/>
-                        <TextView
-                            android:layout_marginRight="45px"
-                            android:layout_marginLeft="45px"
-                            android:paddingBottom="15px"
-                            android:text="店铺内其它商品"
-                            android:textColor="@color/main_text"
-                            android:textSize="46px"
+                    <LinearLayout
+                            android:paddingTop="45px"
+                            android:paddingBottom="20px"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content">
                         <View
-                            android:background="@drawable/shangpin_three"
-                            android:layout_marginRight="10px"
-                            android:layout_width="15px"
-                            android:layout_height="15px"/>
+                                android:background="@drawable/shangpin_one"
+                                android:layout_width="9px"
+                                android:layout_height="9px"/>
                         <View
-                            android:background="@drawable/shangpin_two"
-                            android:layout_marginRight="10px"
-                            android:layout_width="12px"
-                            android:layout_height="12px"/>
+                                android:background="@drawable/shangpin_two"
+                                android:layout_marginLeft="10px"
+                                android:layout_width="12px"
+                                android:layout_height="12px"/>
                         <View
-                            android:background="@drawable/shangpin_one"
-                            android:layout_width="9px"
-                            android:layout_height="9px"/>
+                                android:background="@drawable/shangpin_three"
+                                android:layout_marginLeft="10px"
+                                android:layout_width="15px"
+                                android:layout_height="15px"/>
+                        <TextView
+                                android:layout_marginRight="45px"
+                                android:layout_marginLeft="45px"
+                                android:paddingBottom="15px"
+                                android:text="店铺内其它商品"
+                                android:textColor="@color/main_text"
+                                android:textSize="46px"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        <View
+                                android:background="@drawable/shangpin_three"
+                                android:layout_marginRight="10px"
+                                android:layout_width="15px"
+                                android:layout_height="15px"/>
+                        <View
+                                android:background="@drawable/shangpin_two"
+                                android:layout_marginRight="10px"
+                                android:layout_width="12px"
+                                android:layout_height="12px"/>
+                        <View
+                                android:background="@drawable/shangpin_one"
+                                android:layout_width="9px"
+                                android:layout_height="9px"/>
                     </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/dPOther"
-                        android:scrollbars="none"
-                        android:nestedScrollingEnabled="false"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+                            android:id="@+id/dPOther"
+                            android:scrollbars="none"
+                            android:nestedScrollingEnabled="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
                 <LinearLayout
                         android:paddingTop="45px"
@@ -620,7 +561,7 @@
     </com.zhy.autolayout.AutoLinearLayout>
 
     <LinearLayout
-            android:id="@+id/botShangpin"
+            android:id="@+id/botSp"
             android:visibility="visible"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
@@ -630,10 +571,10 @@
             android:weightSum="1">
 
         <LinearLayout
-                android:id="@+id/spHome"
+                android:id="@+id/spZyHome"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.15"
+                android:layout_weight="0.1"
                 android:gravity="center"
                 android:orientation="vertical"
         >
@@ -644,6 +585,7 @@
                     android:src="@drawable/details_home"/>
 
             <TextView
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="首页"
@@ -656,10 +598,39 @@
                 android:background="@color/line"
         />
         <LinearLayout
-                android:id="@+id/spShouCang"
+                android:id="@+id/goShopCar"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.15"
+                android:layout_weight="0.1"
+                android:gravity="center"
+                android:orientation="vertical"
+        >
+
+            <ImageView
+                    android:id="@+id/spShopCarImg"
+                    android:layout_width="51px"
+                    android:layout_height="49px"
+                    android:src="@drawable/details_shopcar"
+            />
+
+            <TextView
+                    android:visibility="gone"
+                    android:id="@+id/spShopCarText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="购物车"
+                    android:textSize="27px"/>
+        </LinearLayout>
+        <View
+                android:layout_width="0.5dp"
+                android:layout_height="45dp"
+                android:background="@color/line"
+        />
+        <LinearLayout
+                android:id="@+id/spZySC"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
                 android:gravity="center"
                 android:orientation="vertical"
         >
@@ -672,13 +643,13 @@
             />
 
             <TextView
+                    android:visibility="gone"
                     android:id="@+id/spShouCangT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="收藏"
                     android:textSize="27px"/>
         </LinearLayout>
-
         <LinearLayout
                 android:paddingTop="8px"
                 android:paddingBottom="8px"
@@ -690,33 +661,33 @@
                 android:weightSum="1">
 
             <TextView
-                    android:id="@+id/spJia"
+                    android:id="@+id/spAddShopCar"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.45"
                     android:background="@drawable/but_left"
                     android:gravity="center"
                     android:textStyle="normal"
-                    android:text="分享\n(收益14.67元)"
+                    android:text="加个购物车"
                     android:textColor="@color/white"
                     android:textSize="32px"/>
 
             <TextView
-                    android:id="@+id/spGou"
+                    android:id="@+id/spGoGou"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.45"
                     android:background="@drawable/but_right"
                     android:gravity="center"
                     android:textStyle="normal"
-                    android:text="立即购买\n(省160元)"
+                    android:text="立即购买"
                     android:textColor="@color/white"
                     android:textSize="31px"/>
         </LinearLayout>
 
     </LinearLayout>
     <View
-            android:id="@+id/goTop"
+            android:id="@+id/goZyTop"
             android:visibility="gone"
             android:layout_above="@+id/botShangpin"
             android:layout_alignParentRight="true"
@@ -729,7 +700,7 @@
             android:layout_width="match_parent"
             android:layout_height="75dp">
         <RelativeLayout
-                android:id="@+id/mbackLayouts"
+                android:id="@+id/mZyBL"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
             <ImageView

@@ -19,6 +19,7 @@ import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.Util
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
@@ -44,33 +45,43 @@ class ShopListFragment : BaseFragment() {
     }
 
     override fun initViews(savedInstanceState: Bundle) {
-        shopRig = mBaseView?.findViewById<TextView>(R.id.shopRig)
+        /*shopRig = mBaseView?.findViewById<TextView>(R.id.shopRig)
         goodsList = mBaseView?.findViewById<ExpandableListView>(R.id.goodsList)
         llSelectAll = mBaseView?.findViewById<LinearLayout>(R.id.llSelectAll)
         allCheck = mBaseView?.findViewById<CheckBox>(R.id.allCheck)
         nowPrice = mBaseView?.findViewById<TextView>(R.id.nowPrice)
-        goPayment = mBaseView?.findViewById<TextView>(R.id.goPayment)
+        goPayment = mBaseView?.findViewById<TextView>(R.id.goPayment)*/
+        mBaseView.let {
+            shopRig = it!!.findViewById<TextView>(R.id.shopRig)
+            goodsList = it.findViewById<ExpandableListView>(R.id.goodsList)
+            llSelectAll = it.findViewById<LinearLayout>(R.id.llSelectAll)
+            allCheck = it.findViewById<CheckBox>(R.id.allCheck)
+            nowPrice = it.findViewById<TextView>(R.id.nowPrice)
+            goPayment = it.findViewById<TextView>(R.id.goPayment)
+        }
         goodsAdapter = ShoppingCarAdapter(mContext,llSelectAll,allCheck,shopRig,nowPrice,goPayment)
         goodsList?.setAdapter(goodsAdapter)
     }
     override fun initData() {
-        getShopData()
-    }
 
+    }
     override fun onResume() {
         super.onResume()
-        //删除的回调
-        goodsAdapter?.setOnDeleteListener(object : ShoppingCarAdapter.OnDeleteListener{
-            override fun onDelete() {
+        if(Util.hasLogin(mContext!!)){
+            getShopData() //请求网络
+            //删除的回调
+            goodsAdapter?.setOnDeleteListener(object : ShoppingCarAdapter.OnDeleteListener{
+                override fun onDelete() {
 
-            }
-        })
-        //修改商品数量的回调
-        goodsAdapter?.setOnChangeCountListener(object : ShoppingCarAdapter.OnChangeCountListener{
-            override fun onChangeCount(cart_id: String) {
+                }
+            })
+            //修改商品数量的回调
+            goodsAdapter?.setOnChangeCountListener(object : ShoppingCarAdapter.OnChangeCountListener{
+                override fun onChangeCount(cart_id: String) {
 
-            }
-        })
+                }
+            })
+        }
     }
     private fun getShopData(){
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(Api.CART,NewParameter.getBaseMap(),object : Subscriber<String>(){
