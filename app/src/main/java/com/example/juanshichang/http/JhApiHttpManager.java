@@ -27,7 +27,7 @@ public class JhApiHttpManager {
 
     private ApiService mApiService;
 
-    private JhApiHttpManager() {
+    private JhApiHttpManager(String url) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT);//打印retrofit日志
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -44,18 +44,20 @@ public class JhApiHttpManager {
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 //网络请求的域名
-                .baseUrl(Api.JUHEAPi)
+                .baseUrl(url)
                 .build();
         mApiService = retrofit.create(ApiService.class);
     }
 
     private static JhApiHttpManager instanse = null;
 
-    public static JhApiHttpManager getInstance() {
-        if (instanse == null) {
+    private static String BaseUrl = "";
+    public static JhApiHttpManager getInstance(String url) {
+        if (instanse == null || BaseUrl.equals(url)) {
             synchronized (JhApiHttpManager.class) {
                 if (instanse == null) {
-                    return new JhApiHttpManager();
+                    BaseUrl = url;
+                    return new JhApiHttpManager(url);
                 }
             }
         }

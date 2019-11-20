@@ -23,9 +23,6 @@ import kotlinx.android.synthetic.main.activity_topup_plus.*
 import org.json.JSONObject
 import rx.Subscriber
 
-
-
-
 /**
  * @作者：yzq
  * @创建时间：2019/11/5 16:35
@@ -152,6 +149,7 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
                 if(s.toString().length == 11&&!isPNLocal.isEmpty()){
                     setPhoneLocal(isPNLocal)
                 }
+                LogTool.e("Edit","执行了onTextChanged  当前s：${s.toString()}")
             }
         })
         // 输入 对话框默认数据 即 本机号码
@@ -269,7 +267,7 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
         map.put("dtype", "json")
         map.put("key", Api.PhoneKey)
         var phoneMes:String = ""
-        JhApiHttpManager.getInstance().post(Api.TELCHECK, map, object : Subscriber<String>() {
+        JhApiHttpManager.getInstance(Api.JUHEAPi).post(Api.TELCHECK, map, object : Subscriber<String>() {
             override fun onNext(str: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     val jsonObj: JSONObject = JSONObject(str)

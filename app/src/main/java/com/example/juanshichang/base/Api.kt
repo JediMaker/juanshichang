@@ -73,5 +73,7 @@ interface Api {
         //聚合接口
         const val JUHEAPi = "http://apis.juhe.cn"
         val TELCHECK = "/mobile/get" //手机号归属地查询
+        const val JUHEAPi2 = "http://op.juhe.cn"
+        val REALNAME = "/idcard/query"//实名验证
     }
 }
