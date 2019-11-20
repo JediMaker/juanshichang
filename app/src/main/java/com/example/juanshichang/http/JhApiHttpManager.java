@@ -19,7 +19,7 @@ import rx.schedulers.Schedulers;
 /**
  * @作者：yzq
  * @创建时间：2019/11/6 11:16
- * @文件作用:  这个类用于加载聚合Api
+ * @文件作用:  这个类用于加载自定义url
  */
 public class JhApiHttpManager {
     private static final int READ_TIME_OUT = 5;

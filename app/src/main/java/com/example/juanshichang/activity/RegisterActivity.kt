@@ -21,7 +21,6 @@ import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import kotlinx.android.synthetic.main.activity_register.*
-import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.backgroundResource
 import org.json.JSONException
 import org.json.JSONObject

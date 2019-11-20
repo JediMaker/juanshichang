@@ -27,7 +27,7 @@ interface Api {
         //首页banner
         val MAINBANNER = "/index/bannerlist" //  /theme/list   delete
         //Banner 条目请求商品地址
-        val BANNERITEM= "/index/banner" //   /theme/theme_goods  delete
+        val BANNERITEM = "/index/banner" //   /theme/theme_goods  delete
         //请求GridView条目
         val CHANNELLIST = "/index/channellist"
         //GridView条目数据请求
@@ -64,7 +64,15 @@ interface Api {
         val Pdd = "pdd"
         val TaoBao = "taobao"
         val Jd = "jd"
+        // ------------------------------------------------ new  port ------------------------------------------
+//        const val NEWBASEURL = "http://s.0371.ml:8080/"  //内网环境
+        const val NEWBASEURL = "http://shop.0371.ml:88/"  //外网测试
+        val CART = "/index.php?route=app/cart"         //购物车
+        val CARTADD = "/index.php?route=app/cart/add"  //添加商品
+        val PRODUCT = "/index.php?route=app/product"  //商品详情
+        val ADDRESS = "/index.php?route=app/address"  //地址详情
 
+        //--------------------------------------------------- end ------------------------------------------------
         //聚合数据Key集
         val IDKey = "8bc635e7345dd2e160df47c7ed386818" //身份证实名信息
         val PhoneKey = "5c0ee202ae8c61f918e1367c7a007348"//手机号归属地查询

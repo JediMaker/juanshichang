@@ -16,10 +16,7 @@ import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.UserBean
-import com.example.juanshichang.fragment.FourFragment
-import com.example.juanshichang.fragment.OneFragment
-import com.example.juanshichang.fragment.ThreeFragment
-import com.example.juanshichang.fragment.TwoFragment
+import com.example.juanshichang.fragment.*
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.widget.LiveDataBus
@@ -42,7 +39,7 @@ class MainActivity : BaseActivity() {
     private var oneFragment: OneFragment? = null
     private var twoFragment: TwoFragment? = null
     private var threeFragment: ThreeFragment? = null
-//    private var oFragment: OneOtherFragment? = null  //设计五个页面 现保留至四个
+    private var shopFragment: ShopListFragment? = null   //购物车
     private var fourFragment: FourFragment? = null
     private var normalAdapter: NormalAdapter? = null
     var bus =  LiveDataBus.get()
@@ -58,11 +55,13 @@ class MainActivity : BaseActivity() {
         oneFragment = OneFragment()
         twoFragment = TwoFragment()
         threeFragment = ThreeFragment()
+        shopFragment = ShopListFragment()
         fourFragment = FourFragment()
 //        oFragment = OneOtherFragment()
         fragmentList?.add(oneFragment!!)
         fragmentList?.add(twoFragment!!)
         fragmentList?.add(threeFragment!!)
+        fragmentList?.add(shopFragment!!)
         fragmentList?.add(fourFragment!!)
 //            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request
         MyApp.requestPermission(this@MainActivity)
@@ -73,7 +72,28 @@ class MainActivity : BaseActivity() {
                 }
             })
     }
+    override fun initData() {
+        normalAdapter = NormalAdapter(supportFragmentManager, fragmentList!!)//supportFragmentManager
+        vp_main.adapter = normalAdapter
+        vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
+        val token = SpUtil.getIstance().user.usertoken
+        LogTool.e("token", "本地的token值为:" + token)
+        if (token != null && !TextUtils.isEmpty(token)) {
+            downUser(this@MainActivity)
+        }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        if(!Util.hasLogin()){ //如果没有登录就关闭滑动
+            vp_main.setPagingEnabled(false)
+        }else{
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1){
+                vp_main.setPagingEnabled(true) //如果登录 并且版本大于25 开启滑动
+            }
+        }
+
+    }
     @SuppressLint("ResourceType")
     private fun setBottomView() {
 //        val xpp = resources.getXml(R.drawable.selector_tab_color)
@@ -113,9 +133,13 @@ class MainActivity : BaseActivity() {
                 vp_main.currentItem = 2
                 return@OnNavigationItemSelectedListener true
             }
+            R.id.store -> {
+                vp_main.currentItem = 3
+                return@OnNavigationItemSelectedListener true
+            }
             R.id.me -> {
                 if(Util.hasLogin(this)){
-                    vp_main.currentItem = 3
+                    vp_main.currentItem = 4
                     return@OnNavigationItemSelectedListener true
                 }
                 /*if (!Util.hasLogin()) { //登录检查
@@ -178,17 +202,6 @@ class MainActivity : BaseActivity() {
 
     }
 
-    override fun initData() {
-        normalAdapter = NormalAdapter(supportFragmentManager, fragmentList!!)//supportFragmentManager
-        vp_main.adapter = normalAdapter
-        vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
-        val token = SpUtil.getIstance().user.usertoken
-        LogTool.e("token", "本地的token值为:" + token)
-        if (token != null && !TextUtils.isEmpty(token)) {
-            downUser(this@MainActivity)
-        }
-    }
-
     internal inner class NormalAdapter(fm: FragmentManager, private val fragmentList: List<Fragment>) :
         FragmentPagerAdapter(fm,FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
@@ -208,8 +221,8 @@ class MainActivity : BaseActivity() {
     private fun setTecentBottom() {
         views.addTab(views.newTab().setText(R.string.first).setIcon(R.drawable.tab_one))
         views.addTab(views.newTab().setText(R.string.study).setIcon(R.drawable.tab_two))
-//        views.addTab(views.newTab().setText(R.string.store).setIcon(R.drawable.tab_three))
         views.addTab(views.newTab().setText(R.string.community).setIcon(R.drawable.tab_three_t))
+        views.addTab(views.newTab().setText(R.string.store).setIcon(R.drawable.tab_shopcar))
         views.addTab(views.newTab().setText(R.string.me).setIcon(R.drawable.tab_four))
         views.addOnTabSelectedListener(mTabLayoutBottom)
         vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

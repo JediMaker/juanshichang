@@ -132,7 +132,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
             goTop -> {
                 nestedScrollView.post(object : kotlinx.coroutines.Runnable {
                     override fun run() {
-                        nestedScrollView.fullScroll(ScrollView.FOCUS_UP) //// 滚动至顶部  FOCUS_DOWN 滚动到底部
+                        nestedScrollView.fullScroll(ScrollView.FOCUS_UP) // 滚动至顶部  FOCUS_DOWN 滚动到底部
                     }
                 })
             }
@@ -143,7 +143,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
 //                ToastUtil.showToast(this@ShangPinContains, "暂未开放店铺入口")
             }
             spHome -> {
-                var intent = Intent(this@ShangPinContains, MainActivity::class.java)
+                val intent = Intent(this@ShangPinContains, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
                 finish()
@@ -273,7 +273,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            var searchDetailBean =
+                            val searchDetailBean =
                                 Gson().fromJson(str, SDB.SearchDetailBean::class.java)
                             goods = searchDetailBean.data.goods_detail_response.goods_details.get(0)
                             if (null != goods) {
