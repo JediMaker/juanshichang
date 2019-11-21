@@ -1,6 +1,10 @@
 package com.example.juanshichang.activity
 
+import android.app.Dialog
+import android.view.Gravity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.ScrollView
 import com.example.juanshichang.R
 import com.example.juanshichang.base.Api
@@ -22,45 +26,48 @@ import org.json.JSONObject
 import rx.Subscriber
 
 class ShangPinZyContains : BaseActivity(), View.OnClickListener {
-    private var product_id:Long = 0
+    private var product_id: Long = 0
+    private var dialog: Dialog? = null
     override fun getContentView(): Int {
         return R.layout.activity_shang_pin_zy_contains
     }
+
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.mZyBL ->{
+        when (v?.id) {
+            R.id.mZyBL -> {
                 finish()
             }
-            R.id.goZyshop ->{
+            R.id.goZyshop -> {
 
             }
-            R.id.spZyHome ->{
+            R.id.spZyHome -> {
 
             }
-            R.id.goShopCar ->{
+            R.id.goShopCar -> {
 
             }
-            R.id.spZySC ->{
+            R.id.spZySC -> {
 
             }
-            R.id.spAddShopCar ->{
+            R.id.spAddShopCar -> {
 
             }
-            R.id.spGoGou ->{
+            R.id.spGoGou -> {
 
             }
-            R.id.goZyTop ->{
+            R.id.goZyTop -> {
                 nestedZyScrollView.post {
                     nestedZyScrollView.fullScroll(ScrollView.FOCUS_UP) // 滚动至顶部  FOCUS_DOWN 滚动到底部
                 }
             }
         }
     }
-    override fun initView() {
-        if(0.toLong() != intent.getLongExtra("product_id",0)){
-            product_id = intent.getLongExtra("product_id",0)
 
-        }else{
+    override fun initView() {
+        if (0.toLong() != intent.getLongExtra("product_id", 0)) {
+            product_id = intent.getLongExtra("product_id", 0)
+            getZyDetails(product_id) //请求网络数据
+        } else {
             ToastUtil.showToast(this@ShangPinZyContains, "数据传输错误,请稍后重试!!!")
             finish()
         }
@@ -76,25 +83,26 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         spGoGou.setOnClickListener(this) //立即购买
         goZyTop.setOnClickListener(this) //回顶部
     }
-    private fun setUiData(data: ZyProduct.Data,type:Int) {
-        if(type == 1){ //第一次刷新页面 更新banner
+
+    private fun setUiData(data: ZyProduct.Data, type: Int) {
+        if (type == 1) { //第一次刷新页面 更新banner
             setBannerData(data.images)
         }
         spZyName.text = data.model  // 商品名称 todo 待定
-        if(data.special.contains("¥")){ //设置现价
+        if (data.special.contains("¥")) { //设置现价
 //            val xSpecial = data.special.substring(1,data.special.length)
             val xSpecial = data.special.drop(1)// 舍弃前1个
             spZyJinEr.text = xSpecial
-        }else{
+        } else {
             spZyJinEr.text = data.special
         }
         originalZy_cost_view.text = data.price //获取原价
-
+        //todo 加入购物车 弹窗待定
     }
 
     private fun setBannerData(images: List<ZyProduct.Image>) {
         val bannerList = ArrayList<String>()
-        for(i in 0..images.size){
+        for (i in 0..images.size) {
             bannerList.add(images[i].popup)
         }
         mBZy.setBannerStyle(BannerConfig.NUM_INDICATOR) //显示数字指示器
@@ -122,39 +130,71 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         super.onStart()
         mBZy?.startAutoPlay()
     }
+
     override fun onStop() {
         super.onStop()
         mBZy?.stopAutoPlay()
     }
-    private fun getZyDetails(productId:Long){
-        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(Api.PRODUCT, NewParameter.getProductMap(productId),object : Subscriber<String>(){
-            override fun onNext(t: String?) {
-                if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
-                    var jsonObj: JSONObject? = null
-                    try {
-                        jsonObj = JSONObject(t)
-                    } catch (e: JSONException) {
-                        e.printStackTrace();
-                    }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(this@ShangPinZyContains, jsonObj.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val dataAll = Gson().fromJson(t,ZyProduct.ZyProducts::class.java)
-                        val data = dataAll.data
-                        this@ShangPinZyContains.runOnUiThread {
-                            setUiData(data,1)
+
+    //规格弹窗
+    private fun PopDialog(dData: ZyProduct.Data, tag: String) { //tag 用于标识 是否已加入购物车等状态
+        dialog = Dialog(this@ShangPinZyContains, R.style.Dialog)
+        dialog?.apply {
+            window?.setGravity(Gravity.BOTTOM)
+            window?.setWindowAnimations(R.style.mystyle)//添加动画
+        }
+        val m = windowManager
+        val d = m.defaultDisplay
+        val lp = window.attributes
+        //设置dialog 横向满屏
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp.height = (d.height*0.65) as Int
+        window.attributes = lp
+        dialog?.show() //弹出dialog
+
+    }
+
+    //--- 网络请求 ------
+    //获取商品详情
+    private fun getZyDetails(productId: Long) {
+        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
+            Api.PRODUCT,
+            NewParameter.getProductMap(productId),
+            object : Subscriber<String>() {
+                override fun onNext(t: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(
+                                this@ShangPinZyContains,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            val dataAll = Gson().fromJson(t, ZyProduct.ZyProducts::class.java)
+                            val data = dataAll.data
+                            this@ShangPinZyContains.runOnUiThread {
+                                setUiData(data, 1)
+                            }
                         }
                     }
                 }
-            }
 
-            override fun onCompleted() {
-                LogTool.e("onCompleted","Zy商品详情请求完成")
-            }
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "Zy商品详情请求完成")
+                }
 
-            override fun onError(e: Throwable?) {
-                LogTool.e("onCompleted","Zy商品详情请求失败: ${e.toString()}")
-            }
-        })
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onCompleted", "Zy商品详情请求失败: ${e.toString()}")
+                }
+            })
+    }
+
+    private fun addShopCar() {
+
     }
 }

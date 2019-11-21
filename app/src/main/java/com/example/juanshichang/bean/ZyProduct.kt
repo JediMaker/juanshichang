@@ -59,7 +59,8 @@ class ZyProduct {
         var option_value_id: String = "",
         var price: Boolean = false,
         var price_prefix: String = "",
-        var product_option_value_id: String = ""
+        var product_option_value_id: String = "",
+        var is_select:Boolean = false  // add 选中态
     )
 
     data class Image(
