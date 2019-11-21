@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:background="@color/white"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <com.zhy.autolayout.AutoLinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal">
+
+        <ImageView
+                android:id="@+id/iv_select"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/shoppingcar_check" />
+
+        <ImageView
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/shoppingcar_check" />
+
+        <TextView
+                android:id="@+id/tv_store_name"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="店铺名称"
+                android:textColor="@color/main_text"
+                android:textSize="14dp"
+                android:maxLines="1"
+                android:maxLength="10"
+                android:ellipsize="end"/>
+        <TextView
+                android:id="@+id/tv_on_sale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="16dp"
+                tools:text="满99包邮"
+                android:textColor="@color/txt_gray"
+                android:textSize="11dp"
+                android:maxLines="1"
+                android:maxLength="10"
+                android:ellipsize="end"/>
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="37dp"
+            android:layout_marginRight="16dp"
+            android:background="#DDDDDD" />
+</LinearLayout>

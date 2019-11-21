@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true"  android:drawable="@drawable/shopcar_count_is"/>
+    <item android:drawable="@drawable/shopcar_count_nor"/>
+</selector>
