@@ -5,8 +5,14 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ScrollView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.juanshichang.R
+import com.example.juanshichang.adapter.ShopDetailsAdapter
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
@@ -17,6 +23,7 @@ import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.GlideImageLoader
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.glide.GlideUtil
 import com.google.gson.Gson
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
@@ -28,6 +35,19 @@ import rx.Subscriber
 class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private var product_id: Long = 0
     private var dialog: Dialog? = null
+    //弹窗布局
+    private var dShopImg:ImageView? = null  //小图
+    private var dFinish:View? = null  //关闭
+    private var dShopPrice:TextView? = null //价格
+    private var dShopTit:TextView? = null //标题
+    private var dList:RecyclerView? = null //列表
+    private var dAdapter:ShopDetailsAdapter? = null
+    private var dMinusAmount:TextView? = null //-
+    private var dAmount:TextView? = null   //数量
+    private var dAddAmount:TextView? = null //+
+    private var dLeaveWord:EditText? = null //留言
+    private var dConfirm:TextView? = null //确定
+
     override fun getContentView(): Int {
         return R.layout.activity_shang_pin_zy_contains
     }
@@ -139,6 +159,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     //规格弹窗
     private fun PopDialog(dData: ZyProduct.Data, tag: String) { //tag 用于标识 是否已加入购物车等状态
         dialog = Dialog(this@ShangPinZyContains, R.style.Dialog)
+        dialog?.setContentView(R.layout.shopdetails_diaog)
         dialog?.apply {
             window?.setGravity(Gravity.BOTTOM)
             window?.setWindowAnimations(R.style.mystyle)//添加动画
@@ -151,7 +172,42 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         lp.height = (d.height*0.65) as Int
         window.attributes = lp
         dialog?.show() //弹出dialog
+        //初始化控件
+        dialog?.let {
+            dShopImg = it.findViewById(R.id.dShopImg)
+            dFinish = it.findViewById(R.id.dFinish)
+            dShopPrice = it.findViewById(R.id.dShopPrice)
+            dShopTit = it.findViewById(R.id.dShopTit)
+            dList = it.findViewById(R.id.dList)
+            dMinusAmount = it.findViewById(R.id.dMinusAmount)
+            dAmount = it.findViewById(R.id.dAmount)
+            dAddAmount = it.findViewById(R.id.dAddAmount)
+            dLeaveWord = it.findViewById(R.id.dLeaveWord)
+            dConfirm = it.findViewById(R.id.dConfirm)
+            //设置数据等
+            GlideUtil.loadImage(this@ShangPinZyContains,dData.images[0]?.thumb,dShopImg)
+            dShopPrice?.text = dData.special
+            dShopTit?.text = dData.model
+            dAdapter = ShopDetailsAdapter()
+            dList?.adapter = dAdapter
+            dAdapter?.setNewData(dData.options)
+            //设置按键监听
+            dFinish?.setOnClickListener { //结束
+                //网络请求
 
+                dialog?.dismiss()
+            }
+            dMinusAmount?.setOnClickListener { //减少--
+
+            }
+            dAddAmount?.setOnClickListener { //增加数量
+
+            }
+            dConfirm?.setOnClickListener { //确定
+
+                dialog?.dismiss()
+            }
+        }
     }
 
     //--- 网络请求 ------
