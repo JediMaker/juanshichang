@@ -624,11 +624,11 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
                     LinearLayoutManager(this@ShangPinContains, RecyclerView.VERTICAL, false)
                 //瀑布流加载图片
 //        shangpinList.layoutManager = StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
-                adapterSp = ShangPinXqAdapter(R.layout.item_shangpin_xiangqing, imgUrls)
+                adapterSp = ShangPinXqAdapter()
                 shangpinList.adapter = adapterSp
                 shangpinList.setHasFixedSize(false)
                 shangpinList.setPadding(0, 0, 0, botShangpin.height + 3)
-                adapterSp?.notifyDataSetChanged()
+                adapterSp?.setNewData(imgUrls)
             }
         })
     }

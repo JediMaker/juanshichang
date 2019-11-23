@@ -80,15 +80,15 @@
                 android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="gone"
+                    android:visibility="visible"
+                    android:nestedScrollingEnabled="false"
                     android:id="@+id/dList"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="15dp"
                     android:scrollbars="none"
-                    app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -152,13 +152,15 @@
             <EditText
                     android:id="@+id/dLeaveWord"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
+                    android:maxHeight="71dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="15dp"
                     android:layout_marginBottom="30dp"
                     android:background="@color/ff_back"
                     android:hint="留言"
+                    android:gravity="top|left"
                     android:maxLength="120"
                     android:paddingLeft="12dp"
                     android:paddingTop="5dp"

@@ -154,6 +154,7 @@
                             android:gravity="center_vertical">
                         <ImageView
                                 android:id="@+id/shop_img"
+                                android:src="@drawable/c_error"
                                 android:layout_width="132px"
                                 android:layout_height="132px"
                                 android:layout_margin="15dp"/>
@@ -177,7 +178,7 @@
                                         android:singleLine="true"
                                         android:ellipsize="end"
                                         android:textColor="@color/main_text"
-                                        android:text="商铺名"
+                                        android:text="萌象自营"
                                         android:textSize="16sp"/>
                                 <LinearLayout
                                         android:id="@+id/goZyshop"
@@ -224,7 +225,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
-                                        tools:text="0"
+                                        tools:text="5.0"
                                         android:textSize="23px"/>
                                 <TextView
                                         android:paddingLeft="85px"
@@ -238,7 +239,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
-                                        tools:text="0"
+                                        tools:text="5.0"
                                         android:textSize="23px"/>
                                 <TextView
                                         android:paddingLeft="85px"
@@ -252,7 +253,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
-                                        tools:text="0"
+                                        tools:text="5.0"
                                         android:textSize="23px"/>
 
                             </LinearLayout>
@@ -550,7 +551,7 @@
                                 android:layout_height="9px"/>
                     </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/shangpinList"
+                            android:id="@+id/zySpList"
                             android:scrollbars="none"
                             android:nestedScrollingEnabled="false"
                             android:layout_width="match_parent"
@@ -668,7 +669,7 @@
                     android:background="@drawable/but_left"
                     android:gravity="center"
                     android:textStyle="normal"
-                    android:text="加个购物车"
+                    android:text="加入购物车"
                     android:textColor="@color/white"
                     android:textSize="32px"/>
 

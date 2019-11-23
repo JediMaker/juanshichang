@@ -27,7 +27,7 @@ class NewParameter {
             val usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
             var sign: String = ""
             if (signType == 0) { //未登录
-                sign = MD5Utils.getMD5Str("|D|$str|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥  todo 待询问
+                sign = MD5Utils.getMD5Str("|D|$str|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥
             } else if (signType == 1) { //登录
                 sign = MD5Utils.getMD5Str("|D|$str|K|$usertoken")
                 LogTool.e("signLogin", sign)
@@ -67,6 +67,7 @@ class NewParameter {
                     sbs.append(list[i] + "&")
                 }
             }
+            LogTool.e("sign","${sbs.toString()}")
             return sbs.toString()
         }
 
@@ -100,8 +101,10 @@ class NewParameter {
         fun getProductMap(productId:Long): HashMap<String, String> {
             baseList.clear()
             baseList.add("product_id=$productId")
+            baseList.add("route=app/product")
             val map = fengMap(0)
             map.put("product_id","$productId")
+            map.put("route","app/product")
             return map
         }
     }

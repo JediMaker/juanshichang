@@ -66,7 +66,7 @@ interface Api {
         val Jd = "jd"
         // ------------------------------------------------ new  port ------------------------------------------
 //        const val NEWBASEURL = "http://s.0371.ml:8080/"  //内网环境
-        const val NEWBASEURL = "http://shop.0371.ml:88/"  //外网测试
+        const val NEWBASEURL = "http://mxss.0371.ml:88/"  //外网测试
         val CART = "/index.php?route=app/cart"         //购物车
         val CARTADD = "/index.php?route=app/cart/add"  //添加商品
         val PRODUCT = "/index.php?route=app/product"  //商品详情

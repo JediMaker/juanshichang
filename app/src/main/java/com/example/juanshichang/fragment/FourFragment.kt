@@ -57,7 +57,7 @@ class FourFragment : BaseFragment() {
         })
     }
 
-    @OnClick(R.id.ffUserSet, R.id.ffCopy, R.id.goTx,R.id.earnings, R.id.orderForm, R.id.myFans, R.id.myInvite,R.id.tastCz)
+    @OnClick(R.id.ffUserSet, R.id.ffCopy, R.id.goTx,R.id.earnings, R.id.orderForm, R.id.myFans, R.id.myInvite,R.id.tastCz,R.id.tastGwc)
     fun onViewClicked(v: View) {
         when (v.id) {
             R.id.ffUserSet -> {
@@ -92,8 +92,11 @@ class FourFragment : BaseFragment() {
             R.id.myInvite -> {//邀请
 
             }
-            R.id.tastCz ->{
+            R.id.tastCz ->{ //充值缴费
                 BaseActivity.goStartActivity(this.mContext!!, TopupActivity())
+            }
+            R.id.tastGwc ->{ //自营商品详情
+                BaseActivity.goStartActivity(this.mContext!!, ShangPinZyContains())
             }
         }
     }

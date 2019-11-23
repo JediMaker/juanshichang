@@ -92,7 +92,7 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
                 rvList.add(item.recyclers!![index])
             }
         }
-        rvAdapter = MainRecyclerAdapter(R.layout.item_main_recycler,mContext)
+        rvAdapter = MainRecyclerAdapter(R.layout.item_main_recycler)
         home_recycler.adapter = rvAdapter
         rvAdapter?.setNewData(rvList)
         rvAdapter?.setOnItemChildClickListener(object : OnItemChildClickListener{

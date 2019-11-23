@@ -3,15 +3,15 @@ package com.example.juanshichang.activity
 import android.app.Dialog
 import android.view.Gravity
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.juanshichang.R
+import com.example.juanshichang.adapter.ShangPinXqAdapter
 import com.example.juanshichang.adapter.ShopDetailsAdapter
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
@@ -20,6 +20,7 @@ import com.example.juanshichang.base.NewParameter
 import com.example.juanshichang.bean.ZyProduct
 
 import com.example.juanshichang.http.JhApiHttpManager
+import com.example.juanshichang.utils.ButtonSubmit
 import com.example.juanshichang.utils.GlideImageLoader
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
@@ -28,6 +29,7 @@ import com.google.gson.Gson
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import kotlinx.android.synthetic.main.activity_shang_pin_zy_contains.*
+import kotlinx.android.synthetic.main.item_txxq.*
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
@@ -35,19 +37,21 @@ import rx.Subscriber
 class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private var product_id: Long = 0
     private var dialog: Dialog? = null
+    private var data: ZyProduct.Data? = null
+    private var adapterSp: ShangPinXqAdapter? = null
     //弹窗布局
-    private var dShopImg:ImageView? = null  //小图
-    private var dFinish:View? = null  //关闭
-    private var dShopPrice:TextView? = null //价格
-    private var dShopTit:TextView? = null //标题
-    private var dList:RecyclerView? = null //列表
-    private var dAdapter:ShopDetailsAdapter? = null
-    private var dMinusAmount:TextView? = null //-
-    private var dAmount:TextView? = null   //数量
-    private var dAddAmount:TextView? = null //+
-    private var dLeaveWord:EditText? = null //留言
-    private var dConfirm:TextView? = null //确定
-
+    private var dShopImg: ImageView? = null  //小图
+    private var dFinish: View? = null  //关闭
+    private var dShopPrice: TextView? = null //价格
+    private var dShopTit: TextView? = null //标题
+    private var dList: RecyclerView? = null //列表
+    private var dAdapter: ShopDetailsAdapter? = null
+    private var dMinusAmount: TextView? = null //-
+    private var dAmount: TextView? = null   //数量
+    private var dAddAmount: TextView? = null //+
+    private var dLeaveWord: EditText? = null //留言
+    private var dConfirm: TextView? = null //确定
+    private var typeDialog: Int? = 0 //确定弹窗是 加购 1 还是 直接去购买 2
     override fun getContentView(): Int {
         return R.layout.activity_shang_pin_zy_contains
     }
@@ -70,10 +74,24 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
 
             }
             R.id.spAddShopCar -> {
-
+                typeDialog = 1
+                if (ButtonSubmit.isFastDoubleClick()) {
+                    return
+                } else {
+                    data?.let {
+                        PopDialog(it, "")
+                    }
+                }
             }
             R.id.spGoGou -> {
-
+                typeDialog = 2
+                if (ButtonSubmit.isFastDoubleClick()) {
+                    return
+                } else {
+                    data?.let {
+                        PopDialog(it, "")
+                    }
+                }
             }
             R.id.goZyTop -> {
                 nestedZyScrollView.post {
@@ -88,8 +106,10 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             product_id = intent.getLongExtra("product_id", 0)
             getZyDetails(product_id) //请求网络数据
         } else {
-            ToastUtil.showToast(this@ShangPinZyContains, "数据传输错误,请稍后重试!!!")
-            finish()
+//            ToastUtil.showToast(this@ShangPinZyContains, "数据传输错误,请稍后重试!!!")
+//            finish()
+            product_id = 30
+            getZyDetails(product_id) //请求网络数据
         }
     }
 
@@ -105,6 +125,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     }
 
     private fun setUiData(data: ZyProduct.Data, type: Int) {
+        this.data = data
         if (type == 1) { //第一次刷新页面 更新banner
             setBannerData(data.images)
         }
@@ -117,12 +138,14 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             spZyJinEr.text = data.special
         }
         originalZy_cost_view.text = data.price //获取原价
+        shangPinJs.text = data.description  //描述
         //todo 加入购物车 弹窗待定
+
     }
 
     private fun setBannerData(images: List<ZyProduct.Image>) {
         val bannerList = ArrayList<String>()
-        for (i in 0..images.size) {
+        for (i in 0 until images.size) {
             bannerList.add(images[i].popup)
         }
         mBZy.setBannerStyle(BannerConfig.NUM_INDICATOR) //显示数字指示器
@@ -143,7 +166,23 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         mBZy.start()
         mBZy.visibility = View.VISIBLE
         //这里初始化商品详情...
+        setRecycler(bannerList)
+    }
 
+    private fun setRecycler(imgUrls: MutableList<String>) {
+        zySpList.post(object : Runnable {
+            override fun run() {
+                zySpList.layoutManager =
+                    LinearLayoutManager(this@ShangPinZyContains, RecyclerView.VERTICAL, false)
+                //瀑布流加载图片
+//        shangpinList.layoutManager = StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
+                adapterSp = ShangPinXqAdapter()
+                zySpList.adapter = adapterSp
+                zySpList.setHasFixedSize(false)
+                zySpList.setPadding(0, 0, 0, botSp.height + 3)
+                adapterSp?.setNewData(imgUrls)
+            }
+        })
     }
 
     override fun onStart() {
@@ -160,17 +199,17 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private fun PopDialog(dData: ZyProduct.Data, tag: String) { //tag 用于标识 是否已加入购物车等状态
         dialog = Dialog(this@ShangPinZyContains, R.style.Dialog)
         dialog?.setContentView(R.layout.shopdetails_diaog)
-        dialog?.apply {
-            window?.setGravity(Gravity.BOTTOM)
-            window?.setWindowAnimations(R.style.mystyle)//添加动画
-        }
+        val window = dialog?.window
+        window?.setGravity(Gravity.BOTTOM)
+        window?.setWindowAnimations(R.style.mystyle)//添加动画
         val m = windowManager
         val d = m.defaultDisplay
-        val lp = window.attributes
+        val lp = window?.attributes
         //设置dialog 横向满屏
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT
-        lp.height = (d.height*0.65) as Int
-        window.attributes = lp
+        lp?.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp?.y = 0 //设置Dialog距离底部的距离
+        lp?.height = WindowManager.LayoutParams.WRAP_CONTENT
+        window?.attributes = lp
         dialog?.show() //弹出dialog
         //初始化控件
         dialog?.let {
@@ -185,25 +224,29 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             dLeaveWord = it.findViewById(R.id.dLeaveWord)
             dConfirm = it.findViewById(R.id.dConfirm)
             //设置数据等
-            GlideUtil.loadImage(this@ShangPinZyContains,dData.images[0]?.thumb,dShopImg)
+            GlideUtil.loadImage(this@ShangPinZyContains, dData.images[0]?.thumb, dShopImg)
             dShopPrice?.text = dData.special
             dShopTit?.text = dData.model
             dAdapter = ShopDetailsAdapter()
             dList?.adapter = dAdapter
             dAdapter?.setNewData(dData.options)
             //设置按键监听
-            dFinish?.setOnClickListener { //结束
+            dFinish?.setOnClickListener {
+                //结束
                 //网络请求
 
                 dialog?.dismiss()
             }
-            dMinusAmount?.setOnClickListener { //减少--
+            dMinusAmount?.setOnClickListener {
+                //减少--
 
             }
-            dAddAmount?.setOnClickListener { //增加数量
+            dAddAmount?.setOnClickListener {
+                //增加数量
 
             }
-            dConfirm?.setOnClickListener { //确定
+            dConfirm?.setOnClickListener {
+                //确定
 
                 dialog?.dismiss()
             }
@@ -246,6 +289,9 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
 
                 override fun onError(e: Throwable?) {
                     LogTool.e("onCompleted", "Zy商品详情请求失败: ${e.toString()}")
+                    this@ShangPinZyContains.runOnUiThread {
+                        finish()
+                    }
                 }
             })
     }

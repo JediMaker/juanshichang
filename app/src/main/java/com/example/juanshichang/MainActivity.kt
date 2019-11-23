@@ -75,7 +75,7 @@ class MainActivity : BaseActivity() {
     override fun initData() {
         normalAdapter = NormalAdapter(supportFragmentManager, fragmentList!!)//supportFragmentManager
         vp_main.adapter = normalAdapter
-        vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载
+//        vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载  todo 后期需调优Fragment为懒加载...
         val token = SpUtil.getIstance().user.usertoken
         LogTool.e("token", "本地的token值为:" + token)
         if (token != null && !TextUtils.isEmpty(token)) {
