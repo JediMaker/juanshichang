@@ -26,8 +26,10 @@ import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.google.gson.Gson
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
+import kotlinx.android.synthetic.main.activity_guide.*
 import kotlinx.android.synthetic.main.activity_shang_pin_zy_contains.*
 import kotlinx.android.synthetic.main.item_txxq.*
 import org.json.JSONException
@@ -39,6 +41,8 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private var dialog: Dialog? = null
     private var data: ZyProduct.Data? = null
     private var adapterSp: ShangPinXqAdapter? = null
+    private var checkList:ArrayList<HashMap<String,ArrayList<String>>>? = null //这个是选择的数据集合
+    private var quantity:Int = 1 // 数量
     //弹窗布局
     private var dShopImg: ImageView? = null  //小图
     private var dFinish: View? = null  //关闭
@@ -229,25 +233,50 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             dShopTit?.text = dData.model
             dAdapter = ShopDetailsAdapter()
             dList?.adapter = dAdapter
-            dAdapter?.setNewData(dData.options)
+            dAdapter?.setTheData(dData.options)
+            checkList?.let {
+                dAdapter?.setAllCheck(it)
+            }
+            dAmount?.text = "$quantity"
             //设置按键监听
             dFinish?.setOnClickListener {
                 //结束
-                //网络请求
-
                 dialog?.dismiss()
             }
             dMinusAmount?.setOnClickListener {
                 //减少--
-
+                if(quantity < 2){
+                    return@setOnClickListener
+                }else{
+                    quantity --
+                    if(quantity == 1){
+                        dMinusAmount?.isEnabled = false
+                    }
+                }
+                dAmount?.text = "$quantity"
             }
             dAddAmount?.setOnClickListener {
                 //增加数量
-
+                if(quantity >= 99){
+                    dAddAmount?.isEnabled = false
+                    return@setOnClickListener
+                }else{
+                    quantity ++
+                }
+                if(quantity == 2){ //设置 - 可点击
+                    dMinusAmount?.isEnabled = true
+                }
+                dAmount?.text = "$quantity"
             }
             dConfirm?.setOnClickListener {
                 //确定
+                checkList = dAdapter?.getAllCheck() //把选中的信息返回
+                showProgressDialog()
+                if(typeDialog == 1){ //加入购物车
+                    addShopCar(product_id,quantity,checkList!!)
+                }else if(typeDialog == 2){ //立即购买
 
+                }
                 dialog?.dismiss()
             }
         }
@@ -296,7 +325,47 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             })
     }
 
-    private fun addShopCar() {
+    private fun addShopCar(productId: Long,quantity:Int,checkList:ArrayList<HashMap<String,ArrayList<String>>>?) {
+        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
+            Api.CARTADD,
+            NewParameter.getAddSCMap(productId,quantity,checkList!!),
+            object : Subscriber<String>() {
+                override fun onNext(t: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(
+                                this@ShangPinZyContains,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            this@ShangPinZyContains.runOnUiThread {
+                                if(typeDialog == 1){
+                                    showMyLoadD(QMUITipDialog.Builder.ICON_TYPE_SUCCESS,"加购成功",true)
+                                }
+                            }
+                        }
+                    }
+                }
 
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "商品加购物车请求完成")
+                    this@ShangPinZyContains.runOnUiThread {
+                        dismissProgressDialog()
+                    }
+                }
+
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onCompleted", "商品加购物车请求失败: ${e.toString()}")
+                    this@ShangPinZyContains.runOnUiThread {
+                        ToastUtil.showToast(this@ShangPinZyContains,"网络异常,请稍后重试...")
+                    }
+                }
+            })
     }
 }
