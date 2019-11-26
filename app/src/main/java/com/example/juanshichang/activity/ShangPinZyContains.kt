@@ -31,17 +31,19 @@ import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import kotlinx.android.synthetic.main.activity_guide.*
 import kotlinx.android.synthetic.main.activity_shang_pin_zy_contains.*
+import kotlinx.android.synthetic.main.fragment_shop_list.*
 import kotlinx.android.synthetic.main.item_txxq.*
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
+import java.util.concurrent.ConcurrentHashMap
 
 class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private var product_id: Long = 0
     private var dialog: Dialog? = null
     private var data: ZyProduct.Data? = null
     private var adapterSp: ShangPinXqAdapter? = null
-    private var checkList:ArrayList<HashMap<String,ArrayList<String>>>? = null //这个是选择的数据集合
+    private var checkMap: ConcurrentHashMap<String, ArrayList<String>>? = null //这个是选择的数据集合
     private var quantity:Int = 1 // 数量
     //弹窗布局
     private var dShopImg: ImageView? = null  //小图
@@ -126,6 +128,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         spAddShopCar.setOnClickListener(this) //加入购物车
         spGoGou.setOnClickListener(this) //立即购买
         goZyTop.setOnClickListener(this) //回顶部
+        //清空
     }
 
     private fun setUiData(data: ZyProduct.Data, type: Int) {
@@ -234,7 +237,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             dAdapter = ShopDetailsAdapter()
             dList?.adapter = dAdapter
             dAdapter?.setTheData(dData.options)
-            checkList?.let {
+            checkMap?.let {
                 dAdapter?.setAllCheck(it)
             }
             dAmount?.text = "$quantity"
@@ -270,10 +273,10 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             }
             dConfirm?.setOnClickListener {
                 //确定
-                checkList = dAdapter?.getAllCheck() //把选中的信息返回
+                checkMap= dAdapter?.getAllCheck() as  ConcurrentHashMap//把选中的信息返回
                 showProgressDialog()
                 if(typeDialog == 1){ //加入购物车
-                    addShopCar(product_id,quantity,checkList!!)
+                    addShopCar(product_id,quantity,checkMap!!)
                 }else if(typeDialog == 2){ //立即购买
 
                 }
@@ -325,10 +328,10 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             })
     }
 
-    private fun addShopCar(productId: Long,quantity:Int,checkList:ArrayList<HashMap<String,ArrayList<String>>>?) {
+    private fun addShopCar(productId: Long,quantity:Int,checkMap:ConcurrentHashMap<String,ArrayList<String>>?) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.CARTADD,
-            NewParameter.getAddSCMap(productId,quantity,checkList!!),
+            NewParameter.getAddSCMap(productId,quantity,checkMap!!),
             object : Subscriber<String>() {
                 override fun onNext(t: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {

@@ -2,11 +2,13 @@ package com.example.juanshichang.base
 
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.MyApp.Companion.getMD5uuid
-import com.example.juanshichang.bean.AKey
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.widget.MD5Utils
+import okhttp3.internal.toImmutableMap
+import okio.utf8Size
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -50,7 +52,14 @@ class NewParameter {
             map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
             return map
         }
-
+        fun getPublicMap2(signType: Int, fuji: String): IdentityHashMap<String, String> { //action: String,
+            val map = IdentityHashMap<String, String>()
+//            map.put("action", action)
+            map.put("sign", getSignString(signType, fuji))
+            map.put("uuid", getMD5uuid())
+            map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
+            return map
+        }
         /***
          * 字符集封装
          */
@@ -92,7 +101,18 @@ class NewParameter {
             }
             return fengMap
         }
-
+        fun fengMap2(typeLogin: Int): IdentityHashMap<String, String> { // , methodName: String
+            if (typeLogin == 1) {//0 未登录  1 登录
+                val useruid = SpUtil.getIstance().user.useruid  //获取Useruid
+                baseList.add("uid=$useruid")
+            }
+            val fengMap = getPublicMap2(typeLogin, getFuji(baseList)) // methodName,   , methodName
+            if (typeLogin == 1) {//0 未登录  1 登录
+                val useruid = SpUtil.getIstance().user.useruid  //获取Useruid
+                fengMap.put("uid", "$useruid")
+            }
+            return fengMap
+        }
         // --------------------------------------------------------------
         fun getBaseMap(): HashMap<String, String> {
             baseList.clear()
@@ -112,48 +132,45 @@ class NewParameter {
             return map
         }
         //添加购物车
-        fun getAddSCMap(productId: Long,quantity:Int,checkList:ArrayList<HashMap<String,ArrayList<String>>>): HashMap<String, String>{
+        fun getAddSCMap(productId: Long,quantity:Int,checkMap:ConcurrentHashMap<String,ArrayList<String>>): Map<String, String>{
             baseList.clear()
             baseList.add("product_id=$productId")
             baseList.add("quantity=$quantity")
-            baseList.add("option=${getBaseCheckList(checkList)}")
+            baseList.add("option=${getBaseCheckList(checkMap)}")
             baseList.add("route=app/cart/add")
-            val map = fengMap(1)
+            val map = fengMap2(1)
             map.put("product_id","$productId")
             map.put("quantity","$quantity")
-            getBaseCheckMap(checkList,map)
             map.put("route","app/cart/add")
+            LogTool.e("map1",map.toString())
+            //map 排序  https://www.jianshu.com/p/605dbb5e1712
+            LogTool.e("map2",map.toString())
+            getBaseCheckMap(checkMap,map)
+            LogTool.e("map3",map.toString())  //todo 在此处自定义重写一个按value排序的方法...
             return map
         }
 
 
         //下面是解析购物车返回集合
-        private fun getBaseCheckList(checkList:ArrayList<HashMap<String,ArrayList<String>>>):String{
-            var state226:Boolean = false  //单选
-            var state227:Boolean = false  //单选
-            var state228:Boolean = false //多选
+        private fun getBaseCheckList(checkMap: ConcurrentHashMap<String, ArrayList<String>>):String{
+            LogTool.e("signO","checkList: ${checkMap.toString()}")
             val strList = arrayListOf<String>()
-            for (i in 0 until  checkList.size){
-                if(!state226 && checkList[i].containsKey("226")){
-                    state226 = true
-                    strList.add("226=${checkList[i]["226"]!![0]}")
-                }
-                if(!state227 && checkList[i].containsKey("227")){
-                    state227 = true
-                    strList.add("227=${checkList[i]["227"]!![0]}")
-                }
-                if(!state228 && checkList[i].containsKey("228")){
-                    val list = checkList[i]["228"]
+            for ((k,v) in checkMap){
+                LogTool.e("signOp","k: $k  v: $v")
+                if(v.size > 1){
                     val buf:StringBuilder = StringBuilder()
-                    for (y in 0 until list?.size!!){
+                    for (y in 0 until v.size){
                         if(y == 0){
-                            buf.append("228=$y=${list[y]}")
+                            buf.append("$k=$y=${v[y]}")
                         }else{
-                            buf.append("&$y=${list[y]}")
+                            buf.append("&$y=${v[y]}")
                         }
                     }
                     strList.add("${buf}")
-                    state228 = true
+                    continue
+                }else if(v.size <= 1){
+                    strList.add("$k=${v[0]}")
+                    continue
                 }
             }
             strList.sort()
@@ -167,81 +184,23 @@ class NewParameter {
             }
             LogTool.e("signOption",bufs.toString())
             return bufs.toString()
-            /*if(!state226){
-                baseList.add("option[226]=")
-            }
-            if(!state227){
-                baseList.add("option[227]=")
-            }
-            if(!state228){
-                baseList.add("option[228][]=")
-            }*/
         }
-        private fun getBaseCheckMap(checkList:ArrayList<HashMap<String,ArrayList<String>>>,map:HashMap<String, String>):HashMap<String, String>{
-            var state226:Boolean = false  //单选
-            var state227:Boolean = false  //单选
-            var state228:Boolean = false //多选
-            for (i in 0 until  checkList.size){
-                if(!state226 && checkList[i].containsKey("226")){
-                    state226 = true
-                    map.put("option[226]","${checkList[i]["226"]!![0]}")
-                }
-                if(!state227 && checkList[i].containsKey("227")){
-                    state227 = true
-                    map.put("option[227]","${checkList[i]["227"]!![0]}")
-                }
-                if(!state228 && checkList[i].containsKey("228")){ //关于这一块儿解决思路 就是.... 重写 相关方法...
-                    val list = checkList[i]["228"]
-                    for (y in 0 until list?.size!!){
-                        //解决hashmap 不可以同键的问题...
-                        val a = AKey()
-                        if(y == 0){
-                            a.head = "option[228][]"
-                            map.put(a.toString(),"${list[y]}")
-                        }else if(y == 1){
-                            a.head = "option"
-                            a.center = "[228][]"
-                            map.put(a.toString(),"${list[y]}")
-                        }else if(y == 2){
-                            a.head = "option"
-                            a.center = "[228]["
-                            a.behind ="]"
-                            map.put(a.toString(),"${list[y]}")
-                        }else if(y == 3){
-                            a.head = "option"
-                            a.center = "["
-                            a.behind ="228][]"
-                            map.put(a.toString(),"${list[y]}")
-                        }else if(y == 4){
-                            a.head = "option"
-                            a.center = "[2"
-                            a.behind ="28][]"
-                            map.put(a.toString(),"${list[y]}")
-                        }else if(y == 5){
-                            a.head = "option"
-                            a.center = "[22"
-                            a.behind ="8][]"
-                            map.put(a.toString(),"${list[y]}")
-                        }else{
-                            a.head = "option"
-                            a.center = "[228]"
-                            a.behind ="[]"
-                            map.put(a.toString(),"${list[y]}")
+        private fun getBaseCheckMap(checkMap:ConcurrentHashMap<String,ArrayList<String>>,map:IdentityHashMap<String, String>):Map<String, String>{
+            //准换为 可以键值重复的map  //https://blog.csdn.net/static_coder/article/details/54894660
+            for ((k,v) in checkMap){
+                    if(v.size == 1){
+                        map.put("option[$k]","${v!![0]}")
+                        continue
+                    }else if(v.size > 1){
+                        //解决hashmap 不可以同键值重复的问题...
+                        for (y in 0 until v.size){
+                            val str:String = String("option[$k][]".toByteArray())
+                            map.put(str,v[y])
                         }
-                        // .....
+                        continue
                     }
-                    state228 = true
+
                 }
-            }
-            /*if(!state226){
-                map.put("option[226]","")
-            }
-            if(!state227){
-                map.put("option[227]","")
-            }
-            if(!state228){
-                map.put("option[228][]","")
-            }*/
             return map
         }
     }

@@ -5,6 +5,7 @@ package com.example.juanshichang.bean
  * @文件作用:  自营产品 集合类
  */
 class ZyProduct {
+    // 把data 去掉.... 解决hashmap相关问题
     data class ZyProducts(
         var `data`: Data = Data(),
         var errmsg: String = "",
@@ -59,8 +60,7 @@ class ZyProduct {
         var option_value_id: String = "",
         var price: Boolean = false,
         var price_prefix: String = "",
-        var product_option_value_id: String = "",
-        var is_select:Boolean = false  // add 选中态
+        var product_option_value_id: String = ""
     )
 
     data class Image(

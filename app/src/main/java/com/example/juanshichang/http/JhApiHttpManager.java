@@ -1,8 +1,6 @@
 package com.example.juanshichang.http;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.juanshichang.base.Api;
-
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
