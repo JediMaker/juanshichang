@@ -84,7 +84,7 @@ class ShopListFragment : BaseFragment() {
         }
     }
     private fun getShopData(){
-        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(Api.CART,NewParameter.getBaseMap(),object : Subscriber<String>(){
+        JhApiHttpManager.getInstance(Api.NEWBASEURL2).post(Api.CART,NewParameter.getBaseMap(),object : Subscriber<String>(){
             override fun onNext(t: String?) {
                 if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                     var jsonObj: JSONObject? = null
@@ -96,6 +96,7 @@ class ShopListFragment : BaseFragment() {
                     if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
                         ToastUtil.showToast(mContext!!, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
+                        LogTool.e("shopcar",t)
                         cargoData = Gson().fromJson(t,CartBean.CartBeans::class.java)
                         cargoData.let {
                             mContext?.runOnUiThread {

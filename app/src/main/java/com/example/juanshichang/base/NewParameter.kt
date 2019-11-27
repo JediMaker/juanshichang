@@ -1,7 +1,9 @@
 package com.example.juanshichang.base
 
+import android.util.Log
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.MyApp.Companion.getMD5uuid
+import com.example.juanshichang.MyApp.Companion.getMD5uuidNew
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.widget.MD5Utils
@@ -25,7 +27,7 @@ class NewParameter {
          * 签名
          * @param signType 0 未登录  1 登录
          */
-        fun getSignString(signType: Int, str: String): String {
+        private fun getSignString(signType: Int, str: String): String {
             val appkey = MyApp.sp.getString("newappkey", "shop.0371.ml")   //获取AppKey
             val usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
             var sign: String = ""
@@ -44,30 +46,32 @@ class NewParameter {
         /**
          * 公共参数
          */
-        fun getPublicMap(signType: Int, fuji: String): HashMap<String, String> { //action: String,
+        private var uuidNew:String? = null
+        private fun getPublicMap(signType: Int, fuji: String): HashMap<String, String> { //action: String,
             val map = HashMap<String, String>()
 //            map.put("action", action)
             map.put("sign", getSignString(signType, fuji))
-            map.put("uuid", getMD5uuid())
+            map.put("uuid", uuidNew!!)
             map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
             return map
         }
-        fun getPublicMap2(signType: Int, fuji: String): IdentityHashMap<String, String> { //action: String,
+        private fun getPublicMap2(signType: Int, fuji: String): IdentityHashMap<String, String> { //action: String,
             val map = IdentityHashMap<String, String>()
 //            map.put("action", action)
             map.put("sign", getSignString(signType, fuji))
-            map.put("uuid", getMD5uuid())
+            map.put("uuid", uuidNew)
             map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
             return map
         }
         /***
          * 字符集封装
          */
-        fun getFuji(list: ArrayList<String>): String {//, action: String
+        private fun getFuji(list: ArrayList<String>): String {//, action: String
 //            list.add("action=$action")
 //            list.add("clienttype=2")
+            uuidNew = getMD5uuidNew()
             list.add("timestamp=" + ((System.currentTimeMillis()) / 1000))
-            list.add("uuid=${getMD5uuid()}")
+            list.add("uuid=${uuidNew}")
 //            list.sort()
             Collections.sort(list)
             val sbs = StringBuffer()
@@ -89,7 +93,7 @@ class NewParameter {
          * @param methodName
          * @return
          */
-        fun fengMap(typeLogin: Int): HashMap<String, String> { // , methodName: String
+        private fun fengMap(typeLogin: Int): HashMap<String, String> { // , methodName: String
             if (typeLogin == 1) {//0 未登录  1 登录
                 val useruid = SpUtil.getIstance().user.useruid  //获取Useruid
                 baseList.add("uid=$useruid")
@@ -136,7 +140,7 @@ class NewParameter {
             baseList.clear()
             baseList.add("product_id=$productId")
             baseList.add("quantity=$quantity")
-            baseList.add("option=${getBaseCheckList(checkMap)}")
+//            baseList.add("option=${getBaseCheckList(checkMap)}")
             baseList.add("route=app/cart/add")
             val map = fengMap2(1)
             map.put("product_id","$productId")
@@ -147,7 +151,9 @@ class NewParameter {
             LogTool.e("map2",map.toString())
             getBaseCheckMap(checkMap,map)
             LogTool.e("map3",map.toString())  //todo 在此处自定义重写一个按value排序的方法...
-            return map
+            val maps = sortByValueDescending(map)
+            LogTool.e("map4",maps.toString())  //todo 在此处自定义重写一个按value排序的方法...
+            return maps
         }
 
 
@@ -202,6 +208,26 @@ class NewParameter {
 
                 }
             return map
+        }
+        //传入map排序算法
+        private fun sortByValueDescending(map:Map<String, String>):IdentityHashMap<String, String>{
+            val list = java.util.ArrayList<Map.Entry<String,String>>(map.entries)
+            LogTool.e("mapList1",list.toString())
+            Collections.sort(list,object : Comparator<Map.Entry<String,String>>{
+                override fun compare(
+                    o1: Map.Entry<String, String>?,
+                    o2: Map.Entry<String, String>?
+                ): Int {
+                    val compare:Int = (o1?.value)!!.compareTo(o2?.value!!)
+                    return compare
+                }
+            })
+            val maps = IdentityHashMap<String,String>()
+            list.forEach {
+                LogTool.e("mapListItem","key: ${it.key}   value:${it.value}")
+                maps.put(String((it.key.toByteArray())),it.value)
+            }
+            return maps
         }
     }
 }

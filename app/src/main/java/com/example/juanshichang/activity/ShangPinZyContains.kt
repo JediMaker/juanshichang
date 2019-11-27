@@ -1,6 +1,8 @@
 package com.example.juanshichang.activity
 
 import android.app.Dialog
+import android.os.Handler
+import android.os.Message
 import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
@@ -20,19 +22,13 @@ import com.example.juanshichang.base.NewParameter
 import com.example.juanshichang.bean.ZyProduct
 
 import com.example.juanshichang.http.JhApiHttpManager
-import com.example.juanshichang.utils.ButtonSubmit
-import com.example.juanshichang.utils.GlideImageLoader
-import com.example.juanshichang.utils.LogTool
-import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.*
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.google.gson.Gson
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
-import kotlinx.android.synthetic.main.activity_guide.*
 import kotlinx.android.synthetic.main.activity_shang_pin_zy_contains.*
-import kotlinx.android.synthetic.main.fragment_shop_list.*
-import kotlinx.android.synthetic.main.item_txxq.*
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
@@ -58,6 +54,19 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private var dLeaveWord: EditText? = null //留言
     private var dConfirm: TextView? = null //确定
     private var typeDialog: Int? = 0 //确定弹窗是 加购 1 还是 直接去购买 2
+    private var handler = object: Handler(){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when(msg.what){
+                1 ->{
+                    if(Util.ifCurrentActivityTopStack(this@ShangPinZyContains)){
+                        myLoading?.dismiss()
+                        removeMessages(1)
+                    }
+                }
+            }
+        }
+    }
     override fun getContentView(): Int {
         return R.layout.activity_shang_pin_zy_contains
     }
@@ -202,6 +211,10 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         mBZy?.stopAutoPlay()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
+    }
     //规格弹窗
     private fun PopDialog(dData: ZyProduct.Data, tag: String) { //tag 用于标识 是否已加入购物车等状态
         dialog = Dialog(this@ShangPinZyContains, R.style.Dialog)
@@ -350,6 +363,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                             this@ShangPinZyContains.runOnUiThread {
                                 if(typeDialog == 1){
                                     showMyLoadD(QMUITipDialog.Builder.ICON_TYPE_SUCCESS,"加购成功",true)
+                                    handler.sendEmptyMessageDelayed(1,1500)
                                 }
                             }
                         }

@@ -71,7 +71,10 @@ open class MyApp : Application() {
             }
             return uuid
         }
-
+        //直接生成一个uuid 并返回
+        fun getMD5uuidNew():String{
+            return md5Uuid()
+        }
         /**
          *  权限请求
          */
