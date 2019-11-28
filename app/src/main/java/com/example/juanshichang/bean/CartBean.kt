@@ -9,12 +9,8 @@ class CartBean {
 
     data class Data(
         var products: List<Product> = listOf(),
-        var totals: List<Total> = listOf()
-    )
-
-    data class Total(
-        var text: String = "",
-        var title: String = ""
+        var total: Total = Total(),
+        var totals: List<TotalX> = listOf()
     )
 
     data class Product(
@@ -31,5 +27,22 @@ class CartBean {
         var thumb: String = "",   //商品图片
         var total: String = "",  //总价
         var isSelect:Boolean = false  //是否选中 默认 false
+    )
+
+    data class Option(
+        var name: String = "",
+        var value: String = ""
+    )
+
+    data class Total(
+        var code: String = "",
+        var sort_order: String = "",
+        var title: String = "",
+        var value: Int = 0
+    )
+
+    data class TotalX(
+        var text: String = "",
+        var title: String = ""
     )
 }

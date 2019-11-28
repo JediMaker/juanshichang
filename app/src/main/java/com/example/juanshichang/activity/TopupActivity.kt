@@ -68,7 +68,7 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
                         //对油卡充值页面的处理
                         if(index == 2){
                             czXx.visibility = View.GONE
-                            if(mStubView == null){
+                            if(mStubView == null){ //https://www.jianshu.com/p/a0423a5eb715
                                 mStubView = oilPayLayout.inflate()
                             }else{
                                 mStubView?.visibility = View.VISIBLE

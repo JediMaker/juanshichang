@@ -10,13 +10,14 @@
             android:layout_height="40dp"
             android:orientation="horizontal">
 
-        <ImageView
+        <CheckBox
+                android:clickable="false"
                 android:id="@+id/iv_select"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:background="@drawable/shoppingcar_check" />
+                android:button="@drawable/shoppingcar_check" />
 
         <ImageView
                 android:visibility="gone"

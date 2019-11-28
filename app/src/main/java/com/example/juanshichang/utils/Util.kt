@@ -11,6 +11,7 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
+import androidx.core.text.isDigitsOnly
 import com.example.juanshichang.activity.Reg2LogActivity
 import com.example.juanshichang.base.BaseActivity
 import java.io.File
@@ -270,6 +271,21 @@ class Util {
             }
             val lastP = promotion_rate * t / 1000
             return getFloatPrice(lastP.toLong())
+        }
+
+        //这是去除单价中的人民币符号的方法
+        fun removeRMB(str:String):Double{
+            val ind = str.indexOf("¥")
+            var newStr:String? = null
+            if(ind != -1){
+                newStr = str.substring(ind,str.length)
+            }
+            //判断是否只包含数字
+            if(newStr?.isDigitsOnly()!!){
+                return newStr.toDouble()
+            }else{
+                return 0.0
+            }
         }
     }
 }

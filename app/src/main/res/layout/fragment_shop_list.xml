@@ -57,12 +57,12 @@
             android:id="@+id/goodsList"
             android:divider="@null"
             android:groupIndicator="@null"
-            android:layout_marginBottom="52dp"
             android:scrollbars="none"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/backView"
+            app:layout_constraintBottom_toTopOf="@+id/shopBotBar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintVertical_weight="1">
+            android:layout_height="0dp">
     </ExpandableListView>
     <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/shopBotBar"
