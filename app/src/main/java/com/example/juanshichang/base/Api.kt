@@ -65,10 +65,12 @@ interface Api {
         val TaoBao = "taobao"
         val Jd = "jd"
         // ------------------------------------------------ new  port ------------------------------------------
-        const val NEWBASEURL2 = "http://s.0371.ml/"  //内网环境
+//        const val NEWBASEURL2 = "http://s.0371.ml/"  //内网环境
         const val NEWBASEURL = "http://mxss.0371.ml:88/"  //外网测试
         val CART = "/index.php?route=app/cart"         //购物车
         val CARTADD = "/index.php?route=app/cart/add"  //添加商品
+        val CARTDELE = "/index.php?route=app/cart/remove"  //删除商品
+        val CARTEDIT = "/index.php?route=app/cart/edit"  //修改商品数量
         val PRODUCT = "/index.php?route=app/product"  //商品详情
         val ADDRESS = "/index.php?route=app/address"  //地址详情
 

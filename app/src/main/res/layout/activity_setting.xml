@@ -123,6 +123,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
         </RelativeLayout>
+        <TextView
+                android:id="@+id/mSite"
+                android:drawableRight="@drawable/details_next"
+                android:layout_marginTop="30px"
+                android:paddingLeft="46px"
+                android:paddingRight="46px"
+                android:paddingTop="24px"
+                android:paddingBottom="25px"
+                android:textSize="35px"
+                android:textColor="@color/ff_gray"
+                android:text="我的收货地址"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         <RelativeLayout
                 android:id="@+id/setZfb"
                 android:layout_marginTop="30px"

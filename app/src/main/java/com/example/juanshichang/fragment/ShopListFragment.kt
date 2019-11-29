@@ -74,20 +74,20 @@ class ShopListFragment : BaseFragment() {
             getShopData() //请求网络
             //删除的回调
             goodsAdapter?.setOnDeleteListener(object : ShoppingCarAdapter.OnDeleteListener {
-                override fun onDelete() {
-
+                override fun onDelete(cart_id: String,num:String){
+                    removeShopNum(cart_id,num)
                 }
             })
             //修改商品数量的回调
             goodsAdapter?.setOnChangeCountListener(object :
                 ShoppingCarAdapter.OnChangeCountListener {
-                override fun onChangeCount(cart_id: String) {
-
+                override fun onChangeCount(cart_id: String,count:Int){
+                    editShopNum(cart_id,"$count")
                 }
             })
         }
     }
-
+    //获取购物车列表
     private fun getShopData() {
         JhApiHttpManager.getInstance(Api.NEWBASEURL)
             .post(Api.CART, NewParameter.getBaseMap(), object : Subscriber<String>() {
@@ -109,7 +109,7 @@ class ShopListFragment : BaseFragment() {
                             cargoData = Gson().fromJson(t, CartBean.CartBeans::class.java)
                             cargoData.let {
                                 goodsAdapter?.setData(it)
-//                                goodsList?.collapseGroup(0) //https://www.jianshu.com/p/2e5eba2421c4
+                                goodsList?.collapseGroup(0) //https://www.jianshu.com/p/2e5eba2421c4
                                 goodsList?.expandGroup(0) //展开                            }
                             }
                         }
@@ -122,6 +122,72 @@ class ShopListFragment : BaseFragment() {
 
                 override fun onError(e: Throwable?) {
                     LogTool.e("onCompleted", "购物车请求失败: ${e.toString()}")
+                }
+            })
+    }
+    //更改商品数量
+    private fun editShopNum(cart_id: String,count:String){
+        JhApiHttpManager.getInstance(Api.NEWBASEURL)
+            .post(Api.CARTEDIT, NewParameter.getEditSCMap(cart_id,count,1), object : Subscriber<String>() {
+                override fun onNext(t: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(
+                                mContext!!,
+                                jsonObj!!.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            getShopData() //请求购物车
+                        }
+                    }
+                }
+
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "购物车增减请求完成")
+                }
+
+                override fun onError(e: Throwable?) {
+
+                    LogTool.e("onCompleted", "购物车增减请求失败: ${e.toString()}")
+                }
+            })
+    }
+    //删除商品
+    private fun removeShopNum(cart_id: String,count:String){
+        JhApiHttpManager.getInstance(Api.NEWBASEURL)
+            .post(Api.CARTDELE, NewParameter.getEditSCMap(cart_id,count,2), object : Subscriber<String>() {
+                override fun onNext(t: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(
+                                mContext!!,
+                                jsonObj!!.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            getShopData() //请求购物车
+                        }
+                    }
+                }
+
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "购物车删除请求完成")
+                }
+
+                override fun onError(e: Throwable?) {
+
+                    LogTool.e("onCompleted", "购物车删除请求失败: ${e.toString()}")
                 }
             })
     }

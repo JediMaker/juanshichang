@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DecodeFormat;
@@ -56,6 +59,7 @@ public class GlideUtil {
 
         }
     }
+
     public static void loadHeadImage(Context mContext, String url, ImageView mImageView) {
         try {
             RequestOptions options = new RequestOptions();
@@ -71,25 +75,26 @@ public class GlideUtil {
 
         }
     }
-    public static void loadImage(Context mContext, String url, ImageView mImageView,int type) {
+
+    public static void loadImage(Context mContext, String url, ImageView mImageView, int type) {
         try {
             RequestOptions options = new RequestOptions();
             options.transform(new StaggeredBitmapTransform(MyApp.app))
 //                    .placeholder(R.drawable.c_placeholderlong)
                     .error(R.drawable.c_error)
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
-            if(type!=0){
+            if (type != 0) {
                 options.format(DecodeFormat.PREFER_ARGB_8888);
             }
-            if(type == 2){
+            if (type == 2) {
                 int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
                 Glide.with(mContext).load(url)
-                        .override(screenWidth,SIZE_ORIGINAL)
+                        .override(screenWidth, SIZE_ORIGINAL)
                         .apply(options)
                         .centerCrop()
                         .into(mImageView);
 
-            }else {
+            } else {
                 Glide.with(mContext).load(url)
                         .apply(options)
                         .into(mImageView);
@@ -99,25 +104,51 @@ public class GlideUtil {
 
         }
     }
-    public static void loadImage(Context mContext, int id, ImageView mImageView,int type) {
+
+    /**
+     * 用来加载购物车图片
+     * @param context
+     * @param url
+     * @param imageView
+     */
+    public static void loadShopImg(Context context, String url, ImageView imageView, Drawable draw) { //加载购物车默认使用888等
+        try { //glide设置了跳过内存缓存skipMemoryCache(true)导致的 刷新闪烁
+            //https://blog.csdn.net/wbw522/article/details/71195249
+            RequestOptions options = new RequestOptions();
+            options.transform(new StaggeredBitmapTransform(MyApp.app))
+                    .placeholder(draw)
+                    .error(R.drawable.c_error)
+                    .format(DecodeFormat.PREFER_ARGB_8888)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .skipMemoryCache(false)
+                    .dontAnimate();
+            Glide.with(context).load(url)
+                    .apply(options)
+                    .into(imageView);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public static void loadImage(Context mContext, int id, ImageView mImageView, int type) {
         try {
             RequestOptions options = new RequestOptions();
             options.transform(new StaggeredBitmapTransform(MyApp.app))
 //                    .placeholder(R.drawable.c_placeholderlong)
                     .error(R.drawable.c_error)
                     .diskCacheStrategy(DiskCacheStrategy.ALL);
-            if(type!=0){
+            if (type != 0) {
                 options.format(DecodeFormat.PREFER_ARGB_8888);
             }
-            if(type == 2){
+            if (type == 2) {
                 int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
                 Glide.with(mContext).load(id)
-                        .override(screenWidth,SIZE_ORIGINAL)
+                        .override(screenWidth, SIZE_ORIGINAL)
                         .apply(options)
                         .centerCrop()
                         .into(mImageView);
 
-            }else {
+            } else {
                 Glide.with(mContext).load(id)
                         .apply(options)
                         .into(mImageView);
@@ -127,6 +158,7 @@ public class GlideUtil {
 
         }
     }
+
     /**
      * 加载长图
      *
@@ -227,7 +259,7 @@ public class GlideUtil {
     /**
      * 半圆角图片   存在图片加载不完整问题 建议 操作控件 ...
      */
-    public static void loadHalfRoundImage(final Context context,int roundRadius,String url, final ImageView imageView) {//int resId,
+    public static void loadHalfRoundImage(final Context context, int roundRadius, String url, final ImageView imageView) {//int resId,
         //默认请求选项【不太习惯，还是每个请求重复使用吧】
 //        builder.setDefaultRequestOptions(
 //                new RequestOptions()
@@ -250,7 +282,7 @@ public class GlideUtil {
             RequestOptions options = new RequestOptions()
 //                    .transform(new StaggeredBitmapTransform(context))
                     .fitCenter()
-                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context,roundRadius),-5,GlideRoundedCornersTransform.CornerType.TOP))
+                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context, roundRadius), -5, GlideRoundedCornersTransform.CornerType.TOP))
 //                    .skipMemoryCache(true)
                     .error(R.drawable.c_error)//加载失败显示图片
                     .placeholder(R.drawable.c_error)//预加载图片
@@ -265,15 +297,14 @@ public class GlideUtil {
     }
 
     /**
-     *
      * 圆角图
      */
-    public static void loadRoundImage(final Context context,int roundRadius,String url, final ImageView imageView) {
+    public static void loadRoundImage(final Context context, int roundRadius, String url, final ImageView imageView) {
         try {
             RequestOptions options = new RequestOptions();
             options.placeholder(R.drawable.c_error) //预加载
                     .fitCenter()
-                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context,roundRadius),GlideRoundedCornersTransform.CornerType.ALL))
+                    .optionalTransform(new GlideRoundedCornersTransform(QMUIDisplayHelper.dp2px(context, roundRadius), GlideRoundedCornersTransform.CornerType.ALL))
 //                    .skipMemoryCache(true) //不从内存加载
                     .error(R.drawable.c_error)      //失败
                     .priority(Priority.HIGH) //优先级
@@ -286,7 +317,7 @@ public class GlideUtil {
         }
     }
 
-    public static int[] getImageWidthHeight(String path){
+    public static int[] getImageWidthHeight(String path) {
         BitmapFactory.Options options = new BitmapFactory.Options();
 
         /**
@@ -298,6 +329,6 @@ public class GlideUtil {
         /**
          *options.outHeight为原始图片的高
          */
-        return new int[]{options.outWidth,options.outHeight};
+        return new int[]{options.outWidth, options.outHeight};
     }
 }

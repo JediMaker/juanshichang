@@ -54,6 +54,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         setUserName.setOnClickListener(this)
         setZfb.setOnClickListener(this)
         realName.setOnClickListener(this)
+        mSite.setOnClickListener(this)
         setUND()//创建 用户昵称对话框 和 图片选择器
     }
 
@@ -105,6 +106,9 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                     uNDialog?.setDefaultText(userName)
                 }
                 uNDialog?.show()
+            }
+            mSite ->{ //我的收货地址
+                goStartActivity(this@SettingActivity,SiteListActivity())
             }
             setZfb ->{
                 if(userZfb != null && !TextUtils.isEmpty(userZfb)){

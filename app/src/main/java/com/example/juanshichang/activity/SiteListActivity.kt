@@ -2,6 +2,7 @@ package com.example.juanshichang.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.example.juanshichang.R
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
@@ -9,7 +10,9 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.NewParameter
 import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.LogTool
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
+import kotlinx.android.synthetic.main.activity_site_list.*
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
@@ -19,24 +22,35 @@ import rx.Subscriber
  * @创建时间：2019/11/13 15:50
  * @文件作用: 收货地址 详情页面
  */
-class SiteListActivity : BaseActivity(){
+class SiteListActivity : BaseActivity(),View.OnClickListener{
     override fun getContentView(): Int {
         return R.layout.activity_site_list
     }
 
     override fun initView() {
-
+        StatusBarUtil.addStatusViewWithColor(this@SiteListActivity, R.color.white)
+        getSites()
     }
 
     override fun initData() {
-
+        siteRet.setOnClickListener(this)
+        addNewSite.setOnClickListener(this)
     }
+    override fun onClick(v: View?) {
+        when(v){
+            siteRet ->{
+                finish()
+            }
+            addNewSite->{
 
+            }
+        }
+    }
     //获取地址列表
-    private fun getSites(productId: Long) {
+    private fun getSites() {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.ADDRESS,
-            NewParameter.getProductMap(productId),
+            NewParameter.getBaseMap(),
             object : Subscriber<String>() {
                 override fun onNext(t: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {

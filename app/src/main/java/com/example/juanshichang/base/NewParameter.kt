@@ -155,8 +155,27 @@ class NewParameter {
             LogTool.e("map4",maps.toString())  //todo 在此处自定义重写一个按value排序的方法...
             return maps
         }
-
-
+        //更改、删除购物车
+        fun getEditSCMap(cart_id: String,count:String,type:Int): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("quantity=$count")
+            baseList.add("cart_id=$cart_id")
+            if(type == 1){
+                baseList.add("route=app/cart/edit")
+            }else if(type == 2){
+                baseList.add("route=app/cart/remove")
+            }
+            val map = fengMap(1)
+            map.put("quantity","$count")
+            map.put("cart_id","$cart_id")
+            if(type == 1){
+                map.put("route","app/cart/edit")
+            }else if(type == 2){
+                map.put("route","app/cart/remove")
+            }
+            return  map
+        }
+        //--------------------------------------------------------------------------------------------------------------
         //下面是解析购物车返回集合
         private fun getBaseCheckList(checkMap: ConcurrentHashMap<String, ArrayList<String>>):String{
             LogTool.e("signO","checkList: ${checkMap.toString()}")

@@ -78,6 +78,7 @@
                 android:layout_weight="1.68"
                 android:layout_height="match_parent">
             <CheckBox
+                    android:clickable="false"
                     android:id="@+id/allCheck"
                     android:button="@drawable/shoppingcar_check"
                     android:paddingHorizontal="25px"
