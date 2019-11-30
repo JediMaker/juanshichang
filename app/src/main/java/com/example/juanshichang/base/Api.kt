@@ -73,7 +73,7 @@ interface Api {
         val CARTEDIT = "/index.php?route=app/cart/edit"  //修改商品数量
         val PRODUCT = "/index.php?route=app/product"  //商品详情
         val ADDRESS = "/index.php?route=app/address"  //地址详情
-
+        val ADDADDRESS = "/index.php?route=app/address/add"  //添加地址
         //--------------------------------------------------- end ------------------------------------------------
         //聚合数据Key集
         val IDKey = "8bc635e7345dd2e160df47c7ed386818" //身份证实名信息

@@ -175,6 +175,30 @@ class NewParameter {
             }
             return  map
         }
+        //添加 地址
+        fun getEditAdMap(name:String,phone:String,address_detaill:String,city:String,zone_id:String,type:Int): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("name=$name")
+            baseList.add("address_detaill=$address_detaill")
+            baseList.add("city=$city")
+            baseList.add("zone_id=$zone_id")
+            if (type == 1) { //添加
+                baseList.add("route=app/address/add")
+            }else if(type == 2){
+                baseList.add("route=app/address/edit")
+            }
+            val map = fengMap(1)
+            map.put("name","$name")
+            map.put("address_detaill","$address_detaill")
+            map.put("city","$city")
+            map.put("zone_id","$zone_id")
+            if (type == 1) { //添加
+                map.put("route","app/address/add")
+            }else if(type == 2){
+                map.put("route","app/address/edit")
+            }
+            return  map
+        }
         //--------------------------------------------------------------------------------------------------------------
         //下面是解析购物车返回集合
         private fun getBaseCheckList(checkMap: ConcurrentHashMap<String, ArrayList<String>>):String{

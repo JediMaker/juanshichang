@@ -1,5 +1,6 @@
 package com.example.juanshichang.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -29,12 +30,17 @@ class SiteListActivity : BaseActivity(),View.OnClickListener{
 
     override fun initView() {
         StatusBarUtil.addStatusViewWithColor(this@SiteListActivity, R.color.white)
-        getSites()
+
     }
 
     override fun initData() {
         siteRet.setOnClickListener(this)
         addNewSite.setOnClickListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getSites()
     }
     override fun onClick(v: View?) {
         when(v){
@@ -42,7 +48,9 @@ class SiteListActivity : BaseActivity(),View.OnClickListener{
                 finish()
             }
             addNewSite->{
-
+                val intent = Intent(this@SiteListActivity,EditSiteActivity::class.java)
+                intent.putExtra("type",1)
+                startActivity(intent)
             }
         }
     }
@@ -72,11 +80,11 @@ class SiteListActivity : BaseActivity(),View.OnClickListener{
                 }
 
                 override fun onCompleted() {
-                    LogTool.e("onCompleted", "Zy商品详情请求完成")
+                    LogTool.e("onCompleted", "地址列表请求完成")
                 }
 
                 override fun onError(e: Throwable?) {
-                    LogTool.e("onCompleted", "Zy商品详情请求失败: ${e.toString()}")
+                    LogTool.e("onCompleted", "地址列表请求失败: ${e.toString()}")
                     this@SiteListActivity.runOnUiThread {
                         finish()
                     }
