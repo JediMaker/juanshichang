@@ -1,8 +1,10 @@
 package com.example.juanshichang.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.icu.text.DecimalFormat
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
@@ -14,6 +16,7 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.example.juanshichang.R
+import com.example.juanshichang.activity.ConOrderActivity
 import com.example.juanshichang.bean.CartBean
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
@@ -207,15 +210,20 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             goPay?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     //创建临时的List，用于存储被选中的商品
-                    val temp = ArrayList<CartBean.Product>()
+                    val temp = arrayListOf<String>()
                     for (i in 0 until it.size) {
                         val isSelect = it[i].isSelect
                         if (isSelect) {
-                            temp.add(it[i])
+                            temp.add(it[i].cart_id)
                         }
                     }
                     if (temp.size != 0) {
-                        ToastUtil.showToast(context!!, "跳转到确认订单页面，完成后续订单流程 ${temp.size}")
+                        LogTool.e("adapterDate","跳转到确认订单页面，完成后续订单流程 ${temp.size}  内容：${temp.toString()}")
+                        val  intent = Intent(context,ConOrderActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putStringArrayList("checkAll",temp)
+                        intent.putExtra("bundle",bundle)
+                        context?.startActivity(intent)
                     } else {
                         ToastUtil.showToast(context!!, "请选择要购买的商品")
                     }
@@ -504,7 +512,19 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
 
     private lateinit var mChangeCountListener: OnChangeCountListener
 
-    fun getCheckedList():List<String>{
+    fun getCheckedList():List<String>{ //这个用于多店铺选中数据返回...
+        //先校验一遍
+        for (i in 0 until  data.size){
+            val di = data[i]?.data?.products
+            for (y in 0 until  di?.size!!){
+                val dy = data[i]?.data?.products!![y]
+                if(dy.isSelect){ //如果数据为选中
+                    if(!cardIdList?.contains(dy.cart_id)!!){
+                        cardIdList?.add(dy.cart_id)
+                    }
+                }
+            }
+        }
         return cardIdList as List<String>
     }
 }

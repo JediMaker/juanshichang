@@ -1,6 +1,12 @@
 package com.example.juanshichang.bean
 
-class CartBean {
+import java.io.Serializable
+/**
+ * @作者: yzq
+ * @创建日期: 2019/12/4 18:34
+ * @文件作用: 购物车bean 序列化数据
+ */
+class CartBean : Serializable{
     data class CartBeans(
         var `data`: Data = Data(),
         var errmsg: String = "",

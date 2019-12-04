@@ -74,6 +74,10 @@ interface Api {
         val PRODUCT = "/index.php?route=app/product"  //商品详情
         val ADDRESS = "/index.php?route=app/address"  //地址详情
         val ADDADDRESS = "/index.php?route=app/address/add"  //添加地址
+        val EDITADDRESS = "/index.php?route=app/address/edit" //修改地址
+        val DELEADDRESS = "/index.php?route=app/address/delete" //删除地址
+        val CHECKOUT = "/index.php?route=app/checkout" //提交订单
+        val CHECKOUTCONFIRM = "/index.php?route=app/checkout/confirm" //确定提交
         //--------------------------------------------------- end ------------------------------------------------
         //聚合数据Key集
         val IDKey = "8bc635e7345dd2e160df47c7ed386818" //身份证实名信息

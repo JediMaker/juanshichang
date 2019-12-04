@@ -17,6 +17,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+                android:id="@+id/siteX"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -40,7 +41,7 @@
 
     <TextView
             android:id="@+id/sitePhone"
-            tools:text="17601619521"
+            tools:text="13317694110"
             android:layout_marginTop="20.6dp"
             android:layout_marginLeft="12dp"
             app:layout_constraintLeft_toRightOf="@+id/siteName"
@@ -74,7 +75,9 @@
             android:layout_height="20dp"/>
     <TextView
             android:id="@+id/siteDet"
-            tools:text="河南省 郑州市 金水区 龙子湖正商木华广场3号楼b座1715"
+            tools:text="河南省 郑州市 金水区 龙子湖正商木华广场3号楼b座1715室"
+            android:lines="2"
+            android:ellipsize="end"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="14dp"
             android:layout_marginBottom="13.3dp"

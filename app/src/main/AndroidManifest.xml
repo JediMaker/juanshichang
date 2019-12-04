@@ -29,8 +29,10 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:replace="android:icon, android:label,android:theme">
-        <activity android:name=".activity.EditSiteActivity"></activity>
-        <activity android:name=".activity.ShangPinZyContains"></activity>
+        <activity android:name=".activity.SettleAccActivity"></activity>
+        <activity android:name=".activity.ConOrderActivity" />
+        <activity android:name=".activity.EditSiteActivity" />
+        <activity android:name=".activity.ShangPinZyContains" />
         <activity android:name=".activity.SiteListActivity" />
         <activity android:name=".activity.RealNameActivity" />
         <activity android:name=".activity.TopupActivity" />

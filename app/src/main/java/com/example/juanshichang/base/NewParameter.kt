@@ -32,7 +32,8 @@ class NewParameter {
             val usertoken = SpUtil.getIstance().user.usertoken  //获取UserToken
             var sign: String = ""
             if (signType == 0) { //未登录
-                sign = MD5Utils.getMD5Str("|D|$str|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥
+                sign =
+                    MD5Utils.getMD5Str("|D|$str|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥
             } else if (signType == 1) { //登录
                 sign = MD5Utils.getMD5Str("|D|$str|K|$usertoken")
                 LogTool.e("signLogin", "|D|$str|K|$usertoken")
@@ -46,8 +47,12 @@ class NewParameter {
         /**
          * 公共参数
          */
-        private var uuidNew:String? = null
-        private fun getPublicMap(signType: Int, fuji: String): HashMap<String, String> { //action: String,
+        private var uuidNew: String? = null
+
+        private fun getPublicMap(
+            signType: Int,
+            fuji: String
+        ): HashMap<String, String> { //action: String,
             val map = HashMap<String, String>()
 //            map.put("action", action)
             map.put("sign", getSignString(signType, fuji))
@@ -55,7 +60,11 @@ class NewParameter {
             map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
             return map
         }
-        private fun getPublicMap2(signType: Int, fuji: String): IdentityHashMap<String, String> { //action: String,
+
+        private fun getPublicMap2(
+            signType: Int,
+            fuji: String
+        ): IdentityHashMap<String, String> { //action: String,
             val map = IdentityHashMap<String, String>()
 //            map.put("action", action)
             map.put("sign", getSignString(signType, fuji))
@@ -63,6 +72,7 @@ class NewParameter {
             map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
             return map
         }
+
         /***
          * 字符集封装
          */
@@ -82,7 +92,7 @@ class NewParameter {
                     sbs.append(list[i] + "&")
                 }
             }
-            LogTool.e("sign","${sbs.toString()}")
+            LogTool.e("sign", "${sbs.toString()}")
             return sbs.toString()
         }
 
@@ -105,6 +115,7 @@ class NewParameter {
             }
             return fengMap
         }
+
         fun fengMap2(typeLogin: Int): IdentityHashMap<String, String> { // , methodName: String
             if (typeLogin == 1) {//0 未登录  1 登录
                 val useruid = SpUtil.getIstance().user.useruid  //获取Useruid
@@ -117,160 +128,228 @@ class NewParameter {
             }
             return fengMap
         }
+
         // --------------------------------------------------------------
         fun getBaseMap(): HashMap<String, String> {
             baseList.clear()
             baseList.add("route=app/cart")
             val map = fengMap(1)
-            map.put("route","app/cart")
+            map.put("route", "app/cart")
             return map
         }
+
         //自营商品详情 免登陆
-        fun getProductMap(productId:Long): HashMap<String, String> {
+        fun getProductMap(productId: Long): HashMap<String, String> {
             baseList.clear()
             baseList.add("product_id=$productId")
             baseList.add("route=app/product")
             val map = fengMap(0)
-            map.put("product_id","$productId")
-            map.put("route","app/product")
+            map.put("product_id", "$productId")
+            map.put("route", "app/product")
             return map
         }
+
         //添加购物车
-        fun getAddSCMap(productId: Long,quantity:Int,checkMap:ConcurrentHashMap<String,ArrayList<String>>): Map<String, String>{
+        fun getAddSCMap(
+            productId: Long,
+            quantity: Int,
+            checkMap: ConcurrentHashMap<String, ArrayList<String>>
+        ): Map<String, String> {
             baseList.clear()
             baseList.add("product_id=$productId")
             baseList.add("quantity=$quantity")
 //            baseList.add("option=${getBaseCheckList(checkMap)}")
             baseList.add("route=app/cart/add")
             val map = fengMap2(1)
-            map.put("product_id","$productId")
-            map.put("quantity","$quantity")
-            map.put("route","app/cart/add")
-            LogTool.e("map1",map.toString())
+            map.put("product_id", "$productId")
+            map.put("quantity", "$quantity")
+            map.put("route", "app/cart/add")
+            LogTool.e("map1", map.toString())
             //map 排序  https://www.jianshu.com/p/605dbb5e1712
-            LogTool.e("map2",map.toString())
-            getBaseCheckMap(checkMap,map)
-            LogTool.e("map3",map.toString())  //todo 在此处自定义重写一个按value排序的方法...
+            LogTool.e("map2", map.toString())
+            getBaseCheckMap(checkMap, map)
+            LogTool.e("map3", map.toString())  //todo 在此处自定义重写一个按value排序的方法...
             val maps = sortByValueDescending(map)
-            LogTool.e("map4",maps.toString())  //todo 在此处自定义重写一个按value排序的方法...
+            LogTool.e("map4", maps.toString())  //todo 在此处自定义重写一个按value排序的方法...
             return maps
         }
+
         //更改、删除购物车
-        fun getEditSCMap(cart_id: String,count:String,type:Int): HashMap<String, String> {
+        fun getEditSCMap(cart_id: String, count: String, type: Int): HashMap<String, String> {
             baseList.clear()
             baseList.add("quantity=$count")
             baseList.add("cart_id=$cart_id")
-            if(type == 1){
+            if (type == 1) {
                 baseList.add("route=app/cart/edit")
-            }else if(type == 2){
+            } else if (type == 2) {
                 baseList.add("route=app/cart/remove")
             }
             val map = fengMap(1)
-            map.put("quantity","$count")
-            map.put("cart_id","$cart_id")
-            if(type == 1){
-                map.put("route","app/cart/edit")
-            }else if(type == 2){
-                map.put("route","app/cart/remove")
+            map.put("quantity", "$count")
+            map.put("cart_id", "$cart_id")
+            if (type == 1) {
+                map.put("route", "app/cart/edit")
+            } else if (type == 2) {
+                map.put("route", "app/cart/remove")
             }
-            return  map
+            return map
         }
+
         //添加 地址
-        fun getEditAdMap(name:String,phone:String,address_detaill:String,city:String,zone_id:String,type:Int): HashMap<String, String> {
+        fun getNewAdMap(
+            name: String,
+            phone: String,
+            address_detail: String,
+            city: String,
+            zone_id: String
+        ): HashMap<String, String> {
             baseList.clear()
             baseList.add("name=$name")
-            baseList.add("address_detaill=$address_detaill")
+            baseList.add("address_detail=$address_detail")
             baseList.add("city=$city")
             baseList.add("zone_id=$zone_id")
-            if (type == 1) { //添加
-                baseList.add("route=app/address/add")
-            }else if(type == 2){
-                baseList.add("route=app/address/edit")
-            }
+            baseList.add("route=app/address/add")
             val map = fengMap(1)
-            map.put("name","$name")
-            map.put("address_detaill","$address_detaill")
-            map.put("city","$city")
-            map.put("zone_id","$zone_id")
-            if (type == 1) { //添加
-                map.put("route","app/address/add")
-            }else if(type == 2){
-                map.put("route","app/address/edit")
-            }
-            return  map
+            map.put("name", "$name")
+            map.put("address_detail", "$address_detail")
+            map.put("city", "$city")
+            map.put("zone_id", "$zone_id")
+            map.put("route", "app/address/add")
+            return map
+        }
+        //修改地址
+        fun getEditAdMap(
+            name: String,
+            phone: String,
+            address_detail: String,
+            city: String,
+            zone_id: String,
+            address_id:String,
+            default: Boolean
+        ): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("name=$name")
+            baseList.add("address_detail=$address_detail")
+            baseList.add("city=$city")
+            baseList.add("zone_id=$zone_id")
+            baseList.add("address_id=$address_id")
+            baseList.add("default=$default")
+            baseList.add("route=app/address/edit")
+            val map = fengMap(1)
+            map.put("name", "$name")
+            map.put("address_detail", "$address_detail")
+            map.put("city", "$city")
+            map.put("zone_id", "$zone_id")
+            map.put("address_id","$address_id")
+            map.put("default","$default")
+            map.put("route", "app/address/edit")
+            return map
+        }
+        // 删除地址
+        fun getDeleAdMap(
+            address_id:String
+        ): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("address_id=$address_id")
+            baseList.add("route=app/address/delete")
+            val map = fengMap(1)
+            map.put("address_id","$address_id")
+            map.put("route", "app/address/delete")
+            return map
+        }
+        //提交订单
+        fun getCoMap(list:List<String>):Map<String, String>{
+            baseList.clear()
+            baseList.add("route=app/checkout")
+            val map = fengMap2(1)
+            val maps = fillMap(list,map)
+            return maps
         }
         //--------------------------------------------------------------------------------------------------------------
         //下面是解析购物车返回集合
-        private fun getBaseCheckList(checkMap: ConcurrentHashMap<String, ArrayList<String>>):String{
-            LogTool.e("signO","checkList: ${checkMap.toString()}")
+        private fun getBaseCheckList(checkMap: ConcurrentHashMap<String, ArrayList<String>>): String {
+            LogTool.e("signO", "checkList: ${checkMap.toString()}")
             val strList = arrayListOf<String>()
-            for ((k,v) in checkMap){
-                LogTool.e("signOp","k: $k  v: $v")
-                if(v.size > 1){
-                    val buf:StringBuilder = StringBuilder()
-                    for (y in 0 until v.size){
-                        if(y == 0){
+            for ((k, v) in checkMap) {
+                LogTool.e("signOp", "k: $k  v: $v")
+                if (v.size > 1) {
+                    val buf: StringBuilder = StringBuilder()
+                    for (y in 0 until v.size) {
+                        if (y == 0) {
                             buf.append("$k=$y=${v[y]}")
-                        }else{
+                        } else {
                             buf.append("&$y=${v[y]}")
                         }
                     }
                     strList.add("${buf}")
                     continue
-                }else if(v.size <= 1){
+                } else if (v.size <= 1) {
                     strList.add("$k=${v[0]}")
                     continue
                 }
             }
             strList.sort()
-            val bufs:StringBuilder = StringBuilder()
-            for (k in 0 until strList.size){
-                if(k == strList.size-1){
+            val bufs: StringBuilder = StringBuilder()
+            for (k in 0 until strList.size) {
+                if (k == strList.size - 1) {
                     bufs.append(strList[k])
-                }else{
+                } else {
                     bufs.append("${strList[k]}&")
                 }
             }
-            LogTool.e("signOption",bufs.toString())
+            LogTool.e("signOption", bufs.toString())
             return bufs.toString()
         }
-        private fun getBaseCheckMap(checkMap:ConcurrentHashMap<String,ArrayList<String>>,map:IdentityHashMap<String, String>):Map<String, String>{
-            //准换为 可以键值重复的map  //https://blog.csdn.net/static_coder/article/details/54894660
-            for ((k,v) in checkMap){
-                    if(v.size == 1){
-                        map.put("option[$k]","${v!![0]}")
-                        continue
-                    }else if(v.size > 1){
-                        //解决hashmap 不可以同键值重复的问题...
-                        for (y in 0 until v.size){
-                            val str:String = String("option[$k][]".toByteArray())
-                            map.put(str,v[y])
-                        }
-                        continue
-                    }
 
+        private fun getBaseCheckMap(
+            checkMap: ConcurrentHashMap<String, ArrayList<String>>,
+            map: IdentityHashMap<String, String>
+        ): Map<String, String> {
+            //准换为 可以键值重复的map  //https://blog.csdn.net/static_coder/article/details/54894660
+            for ((k, v) in checkMap) {
+                if (v.size == 1) {
+                    map.put("option[$k]", "${v!![0]}")
+                    continue
+                } else if (v.size > 1) {
+                    //解决hashmap 不可以同键值重复的问题...
+                    for (y in 0 until v.size) {
+                        val str: String = String("option[$k][]".toByteArray())
+                        map.put(str, v[y])
+                    }
+                    continue
                 }
+
+            }
             return map
         }
+
         //传入map排序算法
-        private fun sortByValueDescending(map:Map<String, String>):IdentityHashMap<String, String>{
-            val list = java.util.ArrayList<Map.Entry<String,String>>(map.entries)
-            LogTool.e("mapList1",list.toString())
-            Collections.sort(list,object : Comparator<Map.Entry<String,String>>{
+        private fun sortByValueDescending(map: Map<String, String>): IdentityHashMap<String, String> {
+            val list = java.util.ArrayList<Map.Entry<String, String>>(map.entries)
+            LogTool.e("mapList1", list.toString())
+            Collections.sort(list, object : Comparator<Map.Entry<String, String>> {
                 override fun compare(
                     o1: Map.Entry<String, String>?,
                     o2: Map.Entry<String, String>?
                 ): Int {
-                    val compare:Int = (o1?.value)!!.compareTo(o2?.value!!)
+                    val compare: Int = (o1?.value)!!.compareTo(o2?.value!!)
                     return compare
                 }
             })
-            val maps = IdentityHashMap<String,String>()
+            val maps = IdentityHashMap<String, String>()
             list.forEach {
-                LogTool.e("mapListItem","key: ${it.key}   value:${it.value}")
-                maps.put(String((it.key.toByteArray())),it.value)
+                LogTool.e("mapListItem", "key: ${it.key}   value:${it.value}")
+                maps.put(String((it.key.toByteArray())), it.value)
             }
             return maps
+        }
+        //这是为 订单打造的map
+        private fun fillMap(list:List<String>,checkMap: IdentityHashMap<String, String>): IdentityHashMap<String, String>{
+            for(i in 0 until list.size){
+                val str = String("cart_id[]".toByteArray())
+                checkMap.put(str,list[i])
+            }
+            return checkMap
         }
     }
 }
