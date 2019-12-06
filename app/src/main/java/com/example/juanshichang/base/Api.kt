@@ -78,6 +78,9 @@ interface Api {
         val DELEADDRESS = "/index.php?route=app/address/delete" //删除地址
         val CHECKOUT = "/index.php?route=app/checkout" //提交订单
         val CHECKOUTCONFIRM = "/index.php?route=app/checkout/confirm" //确定提交
+        val NEWORDER = "/index.php?route=app/order" //订单详情
+        val NEWHISORDER = "/index.php?route=app/order/history" //历史订单
+
         //--------------------------------------------------- end ------------------------------------------------
         //聚合数据Key集
         val IDKey = "8bc635e7345dd2e160df47c7ed386818" //身份证实名信息

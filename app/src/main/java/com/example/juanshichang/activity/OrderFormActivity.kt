@@ -5,22 +5,26 @@ import android.os.Message
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.juanshichang.R
 import com.example.juanshichang.adapter.OrdersAdapter
-import com.example.juanshichang.base.Api
-import com.example.juanshichang.base.BaseActivity
-import com.example.juanshichang.base.JsonParser
-import com.example.juanshichang.base.Parameter
+import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.OrdersBean
+import com.example.juanshichang.bean.OrdersBeanT
+import com.example.juanshichang.bean.SettleAccBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastTool
 import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.UtilsBigDecimal
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_order_form.*
+import kotlinx.android.synthetic.main.activity_settle_acc.*
 import kotlinx.coroutines.Runnable
+import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
 /**
@@ -29,7 +33,7 @@ import rx.Subscriber
  * @文件作用: 订单
  */
 class OrderFormActivity : BaseActivity(), View.OnClickListener {
-    private var ordersListData:ArrayList<OrdersBean.Data>? = null
+    private var ordersListData:ArrayList<OrdersBeanT.Data>? = null
     private var ordersAdpater:OrdersAdapter ? = null
     private val handler:Handler = object : Handler(){
         override fun handleMessage(msg: Message) {
@@ -38,7 +42,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                 0 ->{
                     ordersAdpater?.emptyView = View.inflate(this@OrderFormActivity, R.layout.activity_not_null, null)
                     ordersAdpater?.setNewData(ordersListData)
-                    ToastUtil.showToast(this@OrderFormActivity,""+ordersListData?.size)
+                    ToastTool.showToast(this@OrderFormActivity,""+ordersListData?.size)
                 }
             }
         }
@@ -57,7 +61,8 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
         ordersListData = ArrayList()
         ordTast.postDelayed(object : Runnable{
             override fun run() {
-                getOrders(0,20)
+//                getOrders(0,20)
+                orderList()
             }
         },900)
     }
@@ -72,6 +77,22 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        ordersAdpater?.setOnItemChildClickListener(object : BaseQuickAdapter.OnItemChildClickListener{
+            override fun onItemChildClick(
+                adapter: BaseQuickAdapter<*, *>?,
+                view: View?,
+                position: Int
+            ) {
+                if(view?.id == R.id.goPay){
+                    ToastUtil.showToast(this@OrderFormActivity,"$position")
+                }
+            }
+
+        })
+    }
     private fun setTab() {
         detailTab.addTab(detailTab.newTab().setText("全部"))
         detailTab.addTab(detailTab.newTab().setText("已付款"))
@@ -79,7 +100,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
         detailTab.addTab(detailTab.newTab().setText("已失效"))
         detailTab.addOnTabSelectedListener(mTabLayoutBottom)
         detailList.layoutManager = LinearLayoutManager(this@OrderFormActivity,RecyclerView.VERTICAL,false)
-        ordersAdpater = OrdersAdapter(R.layout.item_orders)
+        ordersAdpater = OrdersAdapter()
         detailList.adapter = ordersAdpater
         orRet.setOnClickListener(this)
         orSearch.setOnClickListener(this)
@@ -115,7 +136,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                                     }
                                 }
                                 "已结算" ->{
-                                    val d = getTabData("已结算")
+                                    val d = getTabData("已收货")
                                     if (d!=null){
                                         ordersAdpater?.setNewData(d)
                                     }else{
@@ -124,7 +145,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                                     }
                                 }
                                 "已失效" ->{
-                                    val d = getTabData("已失效")
+                                    val d = getTabData("已取消")
                                     if (d!=null){
                                         ordersAdpater?.setNewData(d)
                                     }else{
@@ -145,11 +166,11 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
-    var newData:ArrayList<OrdersBean.Data>? = null
-    fun getTabData(tit:String):List<OrdersBean.Data>?{
+    var newData:ArrayList<OrdersBeanT.Data>? = null
+    fun getTabData(tit:String):List<OrdersBeanT.Data>?{
         newData = ArrayList()
         for (i in 0 until ordersListData!!.size){
-            if(ordersListData!![i].order_status_desc.equals(tit)){
+            if(ordersListData!![i].status.equals(tit)){
                 newData?.add(ordersListData!![i])
             }
         }
@@ -158,6 +179,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
         }
         return null
     }
+    // jsc 请求订单列表
     private fun getOrders(offset:Int,limit:Int){
         HttpManager.getInstance().post(Api.ORDERS,Parameter.getOrders(offset,limit),object : Subscriber<String>(){
             override fun onNext(str: String?) {
@@ -171,8 +193,8 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                         if (ordersListData != null && ordersListData?.size != 0){
                             ordersListData?.clear()
                         }
-                        ordersListData?.addAll(ordersList.data)
-                        handler.sendEmptyMessage(0)
+//                        ordersListData?.addAll(ordersList.data)
+//                        handler.sendEmptyMessage(0)
                     }
                 }
             }
@@ -192,7 +214,46 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
 
         })
     }
+    //mxsh 最新请求订单列表
+    private fun orderList(){
+        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
+            Api.NEWHISORDER,
+            NewParameter.getBaseTMap(),
+            object : Subscriber<String>() {
+                override fun onNext(t: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(
+                                this@OrderFormActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            if (ordersListData != null && ordersListData?.size != 0){
+                                ordersListData?.clear()
+                            }
+                            val data = Gson().fromJson(t, OrdersBeanT.OrdersBeanTs::class.java)
+                            ordersListData?.addAll(data.data)
+                            handler.sendEmptyMessage(0)
+                        }
+                    }
+                }
 
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "订单列表请求完成")
+                    dismissProgressDialog()
+                }
+
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onCompleted", "订单列表请求失败: ${e.toString()}")
+                }
+            })
+    }
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)

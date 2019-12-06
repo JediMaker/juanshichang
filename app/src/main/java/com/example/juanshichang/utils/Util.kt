@@ -5,10 +5,15 @@ import android.app.ActivityManager
 import android.content.ContentResolver
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.net.Uri
 import android.os.Environment
 import android.provider.Settings
+import android.text.Spannable
+import android.text.SpannableString
 import android.text.TextUtils
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import androidx.core.text.isDigitsOnly
@@ -286,6 +291,42 @@ class Util {
             }else{
                 return 0.0
             }
+        }
+
+        //花样设置 合计金额  return 设置后的数据
+       fun getGaudyStr(str: String): SpannableString {
+            val spannableString = SpannableString(str)
+            val textColor = ForegroundColorSpan(Color.parseColor("#F93736")) //文字颜色
+//        StyleSpan : 字体样式：粗体、斜体等
+            val dotInd = str.indexOf(".") //获取小数点的下标
+            val rmbInd = str.indexOf("¥") //获取人民币符号的下标
+            val frontSize = AbsoluteSizeSpan(56) //56px
+            val behindSize = AbsoluteSizeSpan(72) //72px
+            spannableString.setSpan(textColor, 0, str.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE) //设置颜色
+            if (rmbInd != -1) {
+                spannableString.setSpan(
+                    frontSize,
+                    rmbInd,
+                    rmbInd + 1,
+                    Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+                ) //设置人民币符号大小 前面包括，后面不包括
+            }
+            if (dotInd != -1) {
+                spannableString.setSpan(
+                    behindSize,
+                    1,
+                    dotInd,
+                    Spannable.SPAN_INCLUSIVE_INCLUSIVE
+                ) //设置元符号大小   前面包括，后面包括
+                spannableString.setSpan(
+                    frontSize,
+                    dotInd,
+                    str.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                ) //设置人民币符号颜色  前面不包括，后面不包括
+            }
+            //Spannable. SPAN_EXCLUSIVE_INCLUSIVE：前面不包括，后面包括
+            return spannableString
         }
     }
 }

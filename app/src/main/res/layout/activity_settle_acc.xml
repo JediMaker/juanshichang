@@ -105,6 +105,7 @@
                 android:layout_height="2px"/>
         <TextView
                 android:id="@+id/goVx"
+                android:gravity="center_vertical"
                 android:drawableLeft="@drawable/zfwx"
                 android:drawablePadding="20dp"
                 android:drawableRight="@drawable/details_next"

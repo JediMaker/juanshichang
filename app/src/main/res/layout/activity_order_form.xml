@@ -27,7 +27,7 @@
                 android:id="@+id/orTitle"
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
-                android:text="订单"
+                android:text="我的订单"
                 android:textSize="50px"
                 android:textColor="@color/main_text"
                 android:layout_width="wrap_content"
@@ -37,9 +37,9 @@
                 android:background="@drawable/search"
                 android:layout_alignBottom="@+id/orTitle"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="45px"
-                android:layout_width="60px"
-                android:layout_height="60px"/>
+                android:layout_marginRight="15dp"
+                android:layout_width="21dp"
+                android:layout_height="21dp"/>
     </com.zhy.autolayout.AutoRelativeLayout>
     <com.google.android.material.tabs.TabLayout
             android:id="@+id/detailTab"

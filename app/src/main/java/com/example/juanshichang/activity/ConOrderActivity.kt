@@ -1,6 +1,8 @@
 package com.example.juanshichang.activity
 
+import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
@@ -15,10 +17,7 @@ import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.NewParameter
 import com.example.juanshichang.bean.ConOrderBean
 import com.example.juanshichang.http.JhApiHttpManager
-import com.example.juanshichang.utils.LogTool
-import com.example.juanshichang.utils.StatusBarUtil
-import com.example.juanshichang.utils.ToastUtil
-import com.example.juanshichang.utils.UtilsBigDecimal
+import com.example.juanshichang.utils.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_con_order.*
 import org.json.JSONException
@@ -35,6 +34,7 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
     private var data:ConOrderBean.ConOrderBeans? = null
     private var adapter:ConOrderAdapter? = null
     private var addresse:ConOrderBean.Addresse? = null
+    private var bundle:Bundle? = null
     override fun getContentView(): Int {
         return R.layout.activity_con_order
     }
@@ -42,7 +42,8 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
     override fun initView() {
         StatusBarUtil.addStatusViewWithColor(this@ConOrderActivity, R.color.white)
         if(null != intent.getBundleExtra("bundle")){
-            cartList = intent.getBundleExtra("bundle").getStringArrayList("checkAll")
+            bundle = intent.getBundleExtra("bundle") //获取 bundle
+            cartList = bundle?.getStringArrayList("checkAll")
             cartList?.let {
                 showProgressDialog()
                 reqOrderFrom(it)
@@ -74,6 +75,11 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
                     ToastUtil.showToast(this@ConOrderActivity,"收货地址不能为空")
                     return
                 }
+                val intent = Intent(this@ConOrderActivity,SettleAccActivity::class.java)
+                bundle?.putString("address_id",addresse?.address_id) //携带地址id 跳转
+                intent.putExtra("bundle",bundle)
+                startActivity(intent)
+                finish()
                 ToastUtil.showToast(this@ConOrderActivity,"确认提交")
             }
         }
@@ -93,7 +99,7 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
             //设置底部数据
             val totalSum = it.data.total
             val totalSumStr = "￥${UtilsBigDecimal.mul(totalSum,1.toDouble(),2)}"
-            coPrice.text = getGaudyStr(totalSumStr)
+            coPrice.text = Util.getGaudyStr(totalSumStr)
             val list = it.data.products
             if(list.size != 0){
                 val v = View.inflate(this@ConOrderActivity,R.layout.item_sub_oreder_end,null)
@@ -102,41 +108,7 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
             }
         }
     }
-    //花样设置 合计金额  return 设置后的数据
-    private fun getGaudyStr(str: String): SpannableString {
-        val spannableString = SpannableString(str)
-        val textColor = ForegroundColorSpan(Color.parseColor("#F93736")) //文字颜色
-//        StyleSpan : 字体样式：粗体、斜体等
-        val dotInd = str.indexOf(".") //获取小数点的下标
-        val rmbInd = str.indexOf("¥") //获取人民币符号的下标
-        val frontSize = AbsoluteSizeSpan(56) //56px
-        val behindSize = AbsoluteSizeSpan(72) //72px
-        spannableString.setSpan(textColor, 0, str.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE) //设置颜色
-        if (rmbInd != -1) {
-            spannableString.setSpan(
-                frontSize,
-                rmbInd,
-                rmbInd + 1,
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE
-            ) //设置人民币符号大小 前面包括，后面不包括
-        }
-        if (dotInd != -1) {
-            spannableString.setSpan(
-                behindSize,
-                1,
-                dotInd,
-                Spannable.SPAN_INCLUSIVE_INCLUSIVE
-            ) //设置元符号大小   前面包括，后面包括
-            spannableString.setSpan(
-                frontSize,
-                dotInd,
-                str.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            ) //设置人民币符号颜色  前面不包括，后面不包括
-        }
-        //Spannable. SPAN_EXCLUSIVE_INCLUSIVE：前面不包括，后面包括
-        return spannableString
-    }
+
     //提交订单
     private fun reqOrderFrom(list: ArrayList<String>){
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(

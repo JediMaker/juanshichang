@@ -137,7 +137,14 @@ class NewParameter {
             map.put("route", "app/cart")
             return map
         }
-
+        //获取订单列表
+        fun getBaseTMap(): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=app/order/history")
+            val map = fengMap(1)
+            map.put("route", "app/order/history")
+            return map
+        }
         //自营商品详情 免登陆
         fun getProductMap(productId: Long): HashMap<String, String> {
             baseList.clear()
@@ -253,7 +260,7 @@ class NewParameter {
             baseList.add("address_id=$address_id")
             baseList.add("route=app/address/delete")
             val map = fengMap(1)
-            map.put("address_id","$address_id")
+            map.put("address_id",address_id)
             map.put("route", "app/address/delete")
             return map
         }
@@ -263,6 +270,16 @@ class NewParameter {
             baseList.add("route=app/checkout")
             val map = fengMap2(1)
             val maps = fillMap(list,map)
+            return maps
+        }
+        //完成订单
+        fun getSucMap(list:List<String>,address_id:String):Map<String, String>{
+            baseList.clear()
+            baseList.add("address_id=$address_id")
+            baseList.add("route=app/checkout/confirm")
+            val map = fengMap2(1)
+            val maps = fillMap(list,map)
+            maps.put("address_id",address_id)
             return maps
         }
         //--------------------------------------------------------------------------------------------------------------

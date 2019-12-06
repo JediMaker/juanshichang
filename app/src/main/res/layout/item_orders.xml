@@ -5,17 +5,17 @@
                                     android:orientation="vertical"
                                     android:paddingLeft="45px"
                                     android:paddingRight="45px"
-                                    android:paddingTop="20px"
                                     android:paddingBottom="5px"
-                                    android:background="@color/ff_back"
+                                    android:layout_marginTop="10dp"
+                                    android:background="@color/white"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
     <!--ff_back-->
-    <androidx.cardview.widget.CardView
+    <!--<androidx.cardview.widget.CardView
             android:background="@color/line"
             app:cardCornerRadius="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content">-->
         <com.zhy.autolayout.AutoLinearLayout
                 android:paddingLeft="28px"
                 android:paddingRight="28px"
@@ -50,31 +50,21 @@
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:text="已付款"
-                        android:textSize="35px"
+                        android:textSize="32px"
                         android:textColor="@color/orders_state"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                <TextView
-                        android:visibility="gone"
-                        android:id="@+id/ordersStateTwo"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:text="已失效"
-                        android:textSize="35px"
-                        android:textColor="@color/home_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
             </RelativeLayout>
             <View   android:background="@color/set_linear"
-                    android:layout_width="match_parent" android:layout_height="2px"/>
+                    android:layout_width="match_parent" android:layout_height="1px"/>
             <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
-                <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+<!--                com.qmuiteam.qmui.widget.QMUIRadiusImageView-->
+                <ImageView
                         android:id="@+id/ordersImage"
                         android:layout_marginTop="26px"
                         android:layout_marginBottom="28px"
-                        app:qmui_corner_radius="5dp"
-                        android:layout_width="240px"
-                        android:layout_height="240px"/>
+                        android:layout_width="81dp"
+                        android:layout_height="81dp"/>
                 <TextView
                         android:id="@+id/ordersTitle"
                         android:textStyle="bold"
@@ -103,6 +93,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
+                        android:visibility="invisible"
                         android:id="@+id/ordersZq"
                         android:layout_marginTop="60px"
                         android:layout_below="@+id/ordersTitle"
@@ -115,24 +106,69 @@
                         android:layout_height="wrap_content"/>
             </RelativeLayout>
             <View   android:background="@color/set_linear"
-                    android:layout_width="match_parent" android:layout_height="2px"/>
+                    android:layout_width="match_parent" android:layout_height="1px"/>
             <LinearLayout
-                    android:paddingTop="20px"
-                    android:paddingBottom="25px"
+                    android:id="@+id/botO"
+                    android:visibility="gone"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="10dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent" android:layout_height="wrap_content">
                 <TextView
                         android:text="订单编号 :  "
                         android:textSize="31px"
                         android:textColor="@color/home_gray"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/ordersNum"
                         tools:text="8846434846434"
                         android:textSize="31px"
                         android:textColor="@color/home_gray"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"/>
             </LinearLayout>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:visibility="gone"
+                    android:id="@+id/botT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/vTl"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:text="应付款 :  "
+                        android:textSize="32px"
+                        android:textColor="@color/home_gray"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/oPrices"
+                        app:layout_constraintLeft_toRightOf="@+id/vTl"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:text="￥64.00"
+                        android:textSize="32px"
+                        android:textColor="@color/indicatorRed"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/goPay"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="6dp"
+                        android:background="@drawable/order_item_but"
+                        android:text="立即支付"
+                        android:textSize="11sp"
+                        android:textColor="@color/indicatorRed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.zhy.autolayout.AutoLinearLayout>
-    </androidx.cardview.widget.CardView>
+<!--    </androidx.cardview.widget.CardView>-->
 </com.zhy.autolayout.AutoFrameLayout>
