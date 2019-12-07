@@ -35,7 +35,7 @@ import rx.Subscriber
 import java.util.concurrent.ConcurrentHashMap
 
 class ShangPinZyContains : BaseActivity(), View.OnClickListener {
-    private var product_id: Long = 0
+    private var product_id:String? = null
     private var dialog: Dialog? = null
     private var data: ZyProduct.Data? = null
     private var adapterSp: ShangPinXqAdapter? = null
@@ -117,13 +117,13 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        if (0.toLong() != intent.getLongExtra("product_id", 0)) {
-            product_id = intent.getLongExtra("product_id", 0)
+        if (null != intent.getStringExtra("product_id")) {
+            product_id = intent.getStringExtra("product_id")
             getZyDetails(product_id) //请求网络数据
         } else {
 //            ToastUtil.showToast(this@ShangPinZyContains, "数据传输错误,请稍后重试!!!")
 //            finish()
-            product_id = 30
+            product_id = "30"
             getZyDetails(product_id) //请求网络数据
         }
     }
@@ -289,7 +289,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 checkMap= dAdapter?.getAllCheck() as  ConcurrentHashMap//把选中的信息返回
                 showProgressDialog()
                 if(typeDialog == 1){ //加入购物车
-                    addShopCar(product_id,quantity,checkMap!!)
+                    addShopCar(product_id!!,quantity,checkMap!!)
                 }else if(typeDialog == 2){ //立即购买
 
                 }
@@ -300,10 +300,10 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
 
     //--- 网络请求 ------
     //获取商品详情
-    private fun getZyDetails(productId: Long) {
+    private fun getZyDetails(productId: String?) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.PRODUCT,
-            NewParameter.getProductMap(productId),
+            NewParameter.getProductMap(productId!!),
             object : Subscriber<String>() {
                 override fun onNext(t: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
@@ -341,7 +341,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             })
     }
 
-    private fun addShopCar(productId: Long,quantity:Int,checkMap:ConcurrentHashMap<String,ArrayList<String>>?) {
+    private fun addShopCar(productId: String,quantity:Int,checkMap:ConcurrentHashMap<String,ArrayList<String>>?) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.CARTADD,
             NewParameter.getAddSCMap(productId,quantity,checkMap!!),

@@ -80,8 +80,10 @@ interface Api {
         val CHECKOUTCONFIRM = "/index.php?route=app/checkout/confirm" //确定提交
         val NEWORDER = "/index.php?route=app/order" //订单详情
         val NEWHISORDER = "/index.php?route=app/order/history" //历史订单
-
-        //--------------------------------------------------- end ------------------------------------------------
+        val NEWCATEGORY = "/index.php?route=app/category" //列表信息
+        val NEWCATEGORYCON = "/index.php?route=app/category/goods" //商品列表
+        val ADDRESSZONES = "/index.php?route=app/address/zones" //地址列表参数
+        //------------------------------------ --------------- end ------------------------------------------------
         //聚合数据Key集
         val IDKey = "8bc635e7345dd2e160df47c7ed386818" //身份证实名信息
         val PhoneKey = "5c0ee202ae8c61f918e1367c7a007348"//手机号归属地查询

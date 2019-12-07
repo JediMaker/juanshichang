@@ -34,6 +34,7 @@ class NewParameter {
             if (signType == 0) { //未登录
                 sign =
                     MD5Utils.getMD5Str("|D|$str|K|$appkey")   //MD5(|D|+参数字符+|K|+Key)    //Key：系统统一密钥
+                LogTool.e("signLogin", "|D|$str|K|$appkey")
             } else if (signType == 1) { //登录
                 sign = MD5Utils.getMD5Str("|D|$str|K|$usertoken")
                 LogTool.e("signLogin", "|D|$str|K|$usertoken")
@@ -146,19 +147,19 @@ class NewParameter {
             return map
         }
         //自营商品详情 免登陆
-        fun getProductMap(productId: Long): HashMap<String, String> {
+        fun getProductMap(productId: String): HashMap<String, String> {
             baseList.clear()
             baseList.add("product_id=$productId")
             baseList.add("route=app/product")
             val map = fengMap(0)
-            map.put("product_id", "$productId")
+            map.put("product_id", productId)
             map.put("route", "app/product")
             return map
         }
 
         //添加购物车
         fun getAddSCMap(
-            productId: Long,
+            productId: String,
             quantity: Int,
             checkMap: ConcurrentHashMap<String, ArrayList<String>>
         ): Map<String, String> {
@@ -168,7 +169,7 @@ class NewParameter {
 //            baseList.add("option=${getBaseCheckList(checkMap)}")
             baseList.add("route=app/cart/add")
             val map = fengMap2(1)
-            map.put("product_id", "$productId")
+            map.put("product_id", productId)
             map.put("quantity", "$quantity")
             map.put("route", "app/cart/add")
             LogTool.e("map1", map.toString())
@@ -281,6 +282,24 @@ class NewParameter {
             val maps = fillMap(list,map)
             maps.put("address_id",address_id)
             return maps
+        }
+        //商品列表分类请求
+        fun getNewClassMap(parent_category_id:String):Map<String, String>{
+            baseList.clear()
+            baseList.add("route=app/category")
+            baseList.add("parent_category_id=$parent_category_id")
+            val map = fengMap(0)
+            map.put("parent_category_id",parent_category_id)
+            return map
+        }
+        //商品列表详情
+        fun getNewCGoodMap(category_id:String):Map<String, String>{
+            baseList.clear()
+            baseList.add("route=app/category/goods")
+            baseList.add("parent_category_id=$category_id")
+            val map = fengMap(0)
+            map.put("parent_category_id",category_id)
+            return map
         }
         //--------------------------------------------------------------------------------------------------------------
         //下面是解析购物车返回集合

@@ -329,5 +329,14 @@
                 android:layout_toLeftOf="@+id/tastCz"
                 android:layout_width="300px"
                 android:layout_height="100px"/>
+        <Button
+                android:id="@+id/tastLb"
+                android:text="商品列表"
+                android:layout_marginTop="100px"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/meBar"
+                android:layout_toRightOf="@+id/tastCz"
+                android:layout_width="300px"
+                android:layout_height="100px"/>
     </RelativeLayout>
 </com.zhy.autolayout.AutoLinearLayout>
