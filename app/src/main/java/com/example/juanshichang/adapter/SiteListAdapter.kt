@@ -15,8 +15,8 @@ class SiteListAdapter() : BaseQuickAdapter<SiteBean.Addresse, BaseViewHolder>(R.
     override fun convert(helper: BaseViewHolder?, item: SiteBean.Addresse?) {
         helper?.setText(R.id.siteName,"哈哈哈")
             ?.setText(R.id.siteX,"哈")
-            ?.setText(R.id.siteDet,"${item?.city} ${item?.address_detail}")
-            ?.setText(R.id.sitePhone,"0371-110")
+            ?.setText(R.id.siteDet,"${item?.city}  ${item?.address_detail}")
+            ?.setText(R.id.sitePhone,item?.iphone)
         helper?.addOnClickListener(R.id.siteEdit) //给 编辑 按钮添加点击事件
     }
 }

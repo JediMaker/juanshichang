@@ -146,6 +146,13 @@ class NewParameter {
             map.put("route", "app/order/history")
             return map
         }
+        //获取地址id列表
+        fun getBaseZMap(): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=app/address/zones")
+            val map = fengMap(1)
+            return map
+        }
         //自营商品详情 免登陆
         fun getProductMap(productId: String): HashMap<String, String> {
             baseList.clear()
@@ -216,12 +223,14 @@ class NewParameter {
             baseList.add("address_detail=$address_detail")
             baseList.add("city=$city")
             baseList.add("zone_id=$zone_id")
+            baseList.add("iphone=$phone")
             baseList.add("route=app/address/add")
             val map = fengMap(1)
             map.put("name", "$name")
             map.put("address_detail", "$address_detail")
             map.put("city", "$city")
             map.put("zone_id", "$zone_id")
+            map.put("iphone",phone)
             map.put("route", "app/address/add")
             return map
         }
@@ -242,14 +251,16 @@ class NewParameter {
             baseList.add("zone_id=$zone_id")
             baseList.add("address_id=$address_id")
             baseList.add("default=$default")
+            baseList.add("iphone=$phone")
             baseList.add("route=app/address/edit")
             val map = fengMap(1)
-            map.put("name", "$name")
-            map.put("address_detail", "$address_detail")
-            map.put("city", "$city")
-            map.put("zone_id", "$zone_id")
-            map.put("address_id","$address_id")
+            map.put("name", name)
+            map.put("address_detail", address_detail)
+            map.put("city", city)
+            map.put("zone_id", zone_id)
+            map.put("address_id",address_id)
             map.put("default","$default")
+            map.put("iphone",phone)
             map.put("route", "app/address/edit")
             return map
         }

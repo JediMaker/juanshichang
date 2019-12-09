@@ -17,7 +17,7 @@
     <uses-permission
             android:name="android.permission.WRITE_SETTINGS"
             tools:ignore="ProtectedPermissions" />
-
+<!--    tools:replace="android:icon, android:label,android:theme"-->
     <application
             android:name=".MyApp"
             android:allowBackup="false"
@@ -27,8 +27,7 @@
             android:networkSecurityConfig="@xml/network_security_config"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            tools:replace="android:icon, android:label,android:theme">
+            android:theme="@style/AppTheme">
         <activity android:name=".activity.ZyAllActivity"></activity>
         <activity android:name=".activity.NewClassifyActivity" />
         <activity android:name=".activity.SettleAccActivity" />

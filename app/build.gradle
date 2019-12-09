@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'org.greenrobot.greendao' // apply plugin
+//apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
@@ -35,9 +35,12 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            multiDexEnabled = true
+            minifyEnabled true //启用资源压缩  否则无法移除无用的resourse文件
+            //开启混淆
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            multiDexEnabled true //dex 分包
+            zipAlignEnabled true //zipAlign优化
+            shrinkResources true //移除无用的resourse文件
             signingConfig signingConfigs.release
         }
         debug {
@@ -50,10 +53,14 @@ android {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = 1.8 //用于解决 字节码 1.6 - 1.8不兼容问题
+        //https://stackoverflow.com/questions/55319579/importing-coroutines-common-causes-error-cannot-inline-bytecode-build-with-jvm
+    }
     android.applicationVariants.all { variant ->
         // 更新至Android Studio 3.3 gradle 4.10.1
         variant.outputs.all {
-            outputFileName = "劵市场-${variant.versionCode}-${variant.versionName}-${releaseTime()}.apk"
+            outputFileName = "萌象生活-${variant.versionCode}-${variant.versionName}-${releaseTime()}.apk"
             //Nanosic_OTA
         }
     }
@@ -76,43 +83,49 @@ android {
 //        exclude 'META-INF/ECLIPSE_.SF'
 //        exclude 'META-INF/ECLIPSE_.RSA'
     }
+    lintOptions {  //todo 注意....
+//        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+//        abortOnError false
+    }
 }
 //获取编译时间
 static def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
-greendao {
+/*greendao {
     //数据库的schema版本，也可以理解为数据库版本号
     schemaVersion 1
     //设置DaoMaster、DaoSession、Dao包名，也就是要放置这些类的包的全路径。
     daoPackage 'com.example.juanshichang.greendao'
     //设置DaoMaster、DaoSession、Dao目录
     targetGenDir 'src/main/java'
-}
+}*/
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.anko:anko:$anko_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 
     //v7 包含 v4
-    implementation 'androidx.core:core-ktx:1.2.0-alpha02'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+    implementation 'androidx.core:core-ktx:1.2.0-rc01'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
 
     //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha03'
     implementation 'com.google.android.material:material:1.0.0'
 
     //引入腾讯UI框架
-    implementation 'com.qmuiteam:qmui:1.4.0'
-
+//    implementation 'com.qmuiteam:qmui:1.4.0'
+    implementation 'com.qmuiteam:qmui:2.0.0-alpha02'
     //1.2.0
 
     //    implementation 'com.qmuiteam:arch:0.6.1' //0.3.1
@@ -135,9 +148,9 @@ dependencies {
     //解决重复类dex问题
 
     //    annotationProcessor 'com.android.support:multidex:1.0.0'
-    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.multidex:multidex-instrumentation:2.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     //添加这行
@@ -182,5 +195,11 @@ dependencies {
     //LeakCanary 内存泄漏 检查工具 debug版本添加依赖  源码解析：https://www.jianshu.com/p/75f0e1fea3e0
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
     //GreenDao
-    api 'org.greenrobot:greendao:3.2.2'
+//    api 'org.greenrobot:greendao:3.2.2'
+    //引入 支付宝sdk
+    api(name: 'alipaySdk-15.6.8-20191021122514', ext: 'aar')
 }
+
+//configurations{
+//    all*.exclude group:'com.wireless.security.securityenv.sdk',module:'DeviceUtils'
+//}

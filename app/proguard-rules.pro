@@ -112,13 +112,18 @@
 -keep class com.android.dingtalk.share.ddsharemodule.** { *; }
 -keepattributes Signature
 
-#green dao
--keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
-public static java.lang.String TABLENAME;
-}
--keep class **$Properties {*;}
+##green dao
+#-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+#public static java.lang.String TABLENAME;
+#}
+#-keep class **$Properties {*;}
+#
+## If you do not use SQLCipher:
+#-dontwarn net.sqlcipher.database.**
+## If you do not use RxJava:
+##-dontwarn rx.**
 
-# If you do not use SQLCipher:
--dontwarn net.sqlcipher.database.**
-# If you do not use RxJava:
-#-dontwarn rx.**
+#QMUI
+-keep class **_FragmentFinder { *; }
+-keep class com.qmuiteam.qmui.arch.record.** { *; }
+-keep class androidx.fragment.app.* { *; }

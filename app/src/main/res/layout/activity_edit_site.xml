@@ -121,7 +121,8 @@
                 android:background="@color/set_linear"
                 android:layout_width="match_parent"
                 android:layout_height="2px"/>
-        <RelativeLayout
+        <!--<RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/sAreaT"
                 android:paddingTop="32px"
                 android:paddingBottom="26px"
@@ -148,13 +149,14 @@
                     android:textSize="35px"
                     android:layout_width="7dp"
                     android:layout_height="12dp"/>
-        </RelativeLayout>
+        </RelativeLayout>-->
 <!--        这里暂且隐藏-->
         <TextView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/sArea"
                 android:text="所在地区"
                 android:drawableRight="@drawable/details_next"
+                android:textSize="42px"
                 android:textColor="@color/txt_gray"
                 android:paddingTop="33px"
                 android:paddingBottom="29px"

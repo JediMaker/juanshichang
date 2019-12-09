@@ -4,7 +4,7 @@ buildscript {
     ext.kotlin_version = '1.3.41'
     ext.anko_version='0.10.8'
     ext.build_number = "beta"
-    ext.qmui_arch_version = '0.6.1'
+    ext.qmui_arch_version = '2.0.0-alpha02' //0.6.1
     repositories {
         google()
 //        mavenCentral()
@@ -12,11 +12,11 @@ buildscript {
         maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin GreenDao
+//        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin GreenDao
     }
 }
 
@@ -29,6 +29,9 @@ allprojects {
         //jcenter镜像
         maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 

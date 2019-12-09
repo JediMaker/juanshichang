@@ -291,7 +291,9 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 if(typeDialog == 1){ //加入购物车
                     addShopCar(product_id!!,quantity,checkMap!!)
                 }else if(typeDialog == 2){ //立即购买
+//                    addShopCar(product_id!!,quantity,checkMap!!) //先加入购物车
 
+                    dismissProgressDialog()
                 }
                 dialog?.dismiss()
             }
@@ -364,6 +366,9 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                                 if(typeDialog == 1){
                                     showMyLoadD(QMUITipDialog.Builder.ICON_TYPE_SUCCESS,"加购成功",true)
                                     handler.sendEmptyMessageDelayed(1,1500)
+                                }
+                                if(typeDialog == 2){
+
                                 }
                             }
                         }

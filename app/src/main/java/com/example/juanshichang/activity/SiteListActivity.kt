@@ -58,7 +58,8 @@ class SiteListActivity : BaseActivity(),View.OnClickListener{
                         adds?.let {
                             val intent = Intent(this@SiteListActivity,EditSiteActivity::class.java)
                             intent.putExtra("type",2)
-                            intent.putExtra("address_id",it[position].address_id)
+//                            intent.putExtra("address_id",it[position].address_id)
+                            intent.putExtra("data",it[position]) //传输序列化内容
                             startActivity(intent)
                         }
                     }
@@ -98,8 +99,8 @@ class SiteListActivity : BaseActivity(),View.OnClickListener{
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            val data:SiteBean.SiteBeas = Gson().fromJson(t,SiteBean.SiteBeas::class.java)
-                            adds = data?.data.addresses
+                            val data:SiteBean.SiteBeans = Gson().fromJson(t,SiteBean.SiteBeans::class.java)
+                            adds = data.data.addresses
                             siteAdapter?.setNewData(adds)
                         }
                     }

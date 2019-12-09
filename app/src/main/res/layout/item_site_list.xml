@@ -76,6 +76,7 @@
     <TextView
             android:id="@+id/siteDet"
             tools:text="河南省 郑州市 金水区 龙子湖正商木华广场3号楼b座1715室"
+            android:gravity="center_vertical"
             android:lines="2"
             android:ellipsize="end"
             android:layout_marginLeft="12dp"

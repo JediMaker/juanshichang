@@ -25,7 +25,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:ellipsize="end"
             android:singleLine="true"
-            android:layout_below="@+id/left_iv"
             android:paddingTop="25px"
             android:paddingBottom="4px"
             android:paddingLeft="19px"
