@@ -307,9 +307,9 @@ class NewParameter {
         fun getNewCGoodMap(category_id:String):Map<String, String>{
             baseList.clear()
             baseList.add("route=app/category/goods")
-            baseList.add("parent_category_id=$category_id")
+            baseList.add("category_id=$category_id")
             val map = fengMap(0)
-            map.put("parent_category_id",category_id)
+            map.put("category_id",category_id)
             return map
         }
         //--------------------------------------------------------------------------------------------------------------

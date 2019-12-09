@@ -228,6 +228,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         //设置dialog 横向满屏
         lp?.width = WindowManager.LayoutParams.MATCH_PARENT
         lp?.y = 0 //设置Dialog距离底部的距离
+//        lp?.height = (d.height*0.7).toInt()
         lp?.height = WindowManager.LayoutParams.WRAP_CONTENT
         window?.attributes = lp
         dialog?.show() //弹出dialog

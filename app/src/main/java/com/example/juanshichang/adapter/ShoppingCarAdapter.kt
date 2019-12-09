@@ -134,7 +134,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             groupViewHolder.ll?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
                     var state: Boolean = false
-                    val select: Boolean = groupViewHolder?.iv_select?.isChecked!!
+                    val select: Boolean = groupViewHolder.iv_select?.isChecked!!
                     state = !select
                     groupViewHolder.iv_select?.isChecked = state
                     //数据结构因素 ....
@@ -318,6 +318,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 childViewHolder.llAmount?.visibility = View.INVISIBLE
                 childViewHolder.iv_select?.isSelected = false
                 childViewHolder.iv_select?.isChecked = false  //设置无货商品 不可选中 todo 注意编辑模式 释放该权限
+                goodsBean.isSelect = false  //取消选中数据
             } else {
                 childViewHolder.amount?.text = goods_num ?: "1"
                 childViewHolder.minusAmount?.isEnabled = false
