@@ -13,6 +13,7 @@ class SettleAccBean {
     )
 
     data class Data(
+        var alipay_order_info: String = "",
         var order_id: Int = 0,
         var products: List<Product> = listOf(),
         var total: Double = 0.0,

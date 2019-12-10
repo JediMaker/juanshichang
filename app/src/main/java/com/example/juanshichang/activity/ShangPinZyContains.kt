@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Handler
 import android.os.Message
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
@@ -218,8 +219,8 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     //规格弹窗
     private fun PopDialog(dData: ZyProduct.Data, tag: String) { //tag 用于标识 是否已加入购物车等状态
         dialog = Dialog(this@ShangPinZyContains, R.style.Dialog)
-        dialog?.setContentView(R.layout.shopdetails_diaog)
-        val window = dialog?.window
+//        dialog?.setContentView(R.layout.shopdetails_diaog)
+        /*val window = dialog?.window
         window?.setGravity(Gravity.BOTTOM)
         window?.setWindowAnimations(R.style.mystyle)//添加动画
         val m = windowManager
@@ -231,9 +232,10 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
 //        lp?.height = (d.height*0.7).toInt()
         lp?.height = WindowManager.LayoutParams.WRAP_CONTENT
         window?.attributes = lp
-        dialog?.show() //弹出dialog
+        dialog?.show() //弹出dialog*/
+        val inflate = LayoutInflater.from(this@ShangPinZyContains).inflate(R.layout.shopdetails_diaog,null)
         //初始化控件
-        dialog?.let {
+        inflate?.let {
             dShopImg = it.findViewById(R.id.dShopImg)
             dFinish = it.findViewById(R.id.dFinish)
             dShopPrice = it.findViewById(R.id.dShopPrice)
@@ -244,6 +246,14 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             dAddAmount = it.findViewById(R.id.dAddAmount)
             dLeaveWord = it.findViewById(R.id.dLeaveWord)
             dConfirm = it.findViewById(R.id.dConfirm)
+            dialog?.setContentView(inflate)
+            val dialogWindow = dialog?.window
+            dialogWindow?.setGravity(Gravity.BOTTOM)
+            dialogWindow?.setWindowAnimations(R.style.mystyle)//添加动画
+            val lp = dialogWindow?.attributes
+            lp?.width = WindowManager.LayoutParams.MATCH_PARENT
+            lp?.y = 0
+            dialogWindow?.attributes = lp
             //设置数据等
             GlideUtil.loadImage(this@ShangPinZyContains, dData.images[0]?.thumb, dShopImg)
             dShopPrice?.text = dData.special
@@ -298,6 +308,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 }
                 dialog?.dismiss()
             }
+            dialog?.show()
         }
     }
 

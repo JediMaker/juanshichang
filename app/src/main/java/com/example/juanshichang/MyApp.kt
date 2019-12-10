@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.text.TextUtils
 import androidx.multidex.MultiDex
+import com.alipay.sdk.app.EnvUtils
 import com.bumptech.glide.Glide
 import com.example.juanshichang.utils.JumpPermissionManagement
 import com.example.juanshichang.utils.LogTool
@@ -106,6 +107,8 @@ open class MyApp : Application() {
         PlatformConfig.setSinaWeibo("","","http://sns.whalecloud.com")//微博  微博APPID  微博APPSecret  微博的后台配置回调地址
         UMConfigure.setLogEnabled(BuildConfig.DEBUG) //是否开启日志
         UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE,null)
+
+        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX) //支付宝 沙盒环境...
     }
 
     override fun attachBaseContext(base: Context?) {

@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 //apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.1"
+    buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.example.juanshichang"
         minSdkVersion 19
@@ -19,6 +19,21 @@ android {
     androidExtensions {
         experimental = true //@Parcelize 是一个实验室功能，所以还需要在 Gradle 中，增加 experimental 配置
     }
+    //虚拟机安装错误  解决
+    /*splits {
+        abi {
+            enable true
+            reset()
+            include 'x86', 'armeabi-v7a', 'x86_64'
+            universalApk true
+        }
+    }*/
+    /*lintOptions {
+        checkReleaseBuilds false
+//         Or, if you prefer, you can continue to check for errors in release builds,
+//         but continue the build even when errors are found:
+        abortOnError false
+    }*/
     signingConfigs {
         debug {
             keyAlias 'key0'
@@ -83,12 +98,7 @@ android {
 //        exclude 'META-INF/ECLIPSE_.SF'
 //        exclude 'META-INF/ECLIPSE_.RSA'
     }
-    lintOptions {  //todo 注意....
-//        checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
-//        abortOnError false
-    }
+
 }
 //获取编译时间
 static def releaseTime() {
@@ -108,11 +118,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.anko:anko:$anko_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
-
     //v7 包含 v4
     implementation 'androidx.core:core-ktx:1.2.0-rc01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
-
     //    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'androidx.annotation:annotation:1.1.0'
@@ -155,7 +163,6 @@ dependencies {
 
     //添加这行
     implementation 'com.jakewharton:butterknife:10.1.0'
-
     // New Add
     kapt 'com.jakewharton:butterknife-compiler:10.1.0'
 

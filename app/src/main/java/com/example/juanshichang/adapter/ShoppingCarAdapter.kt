@@ -314,19 +314,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             )
             childViewHolder.cargoTit?.text = goods_name ?: ""
             childViewHolder.cargoPrice?.text = goods_price ?: ""
-            if (!isStock) { //设置是否有货的状态
-                childViewHolder.llAmount?.visibility = View.INVISIBLE
-                childViewHolder.iv_select?.isSelected = false
-                childViewHolder.iv_select?.isChecked = false  //设置无货商品 不可选中 todo 注意编辑模式 释放该权限
-                goodsBean.isSelect = false  //取消选中数据
-            } else {
-                childViewHolder.amount?.text = goods_num ?: "1"
-                childViewHolder.minusAmount?.isEnabled = false
-                childViewHolder.iv_select?.isChecked = isSelect  //设置是否选中
-                if(isSelect){
-                    cardIdList?.add(goods_id)
-                }
-            }
+            childViewHolder.amount?.text = goods_num
             if (shopType == SHOPCARFINISH) { //完成状态  按钮显示编辑
                 childViewHolder.llAmount?.visibility = View.VISIBLE
                 childViewHolder.cargoDele?.visibility = View.GONE
@@ -346,7 +334,22 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             } else {
                 childViewHolder.endLayout?.visibility = View.GONE
             }
-
+            if (!isStock) { //设置是否有货的状态
+                childViewHolder.llAmount?.visibility = View.INVISIBLE
+                childViewHolder.iv_select?.isSelected = false
+                childViewHolder.iv_select?.isChecked = false  //设置无货商品 不可选中 todo 注意编辑模式 释放该权限
+                goodsBean.isSelect = false  //取消选中数据
+                //设置双按钮 都不可点击
+                if(SHOPCAREDIT == SHOPCAREDIT){ //在编辑模式下
+                    //待开发的功能....
+                }
+            } else {
+                childViewHolder.minusAmount?.isEnabled = false
+                childViewHolder.iv_select?.isChecked = isSelect  //设置是否选中
+                if(isSelect){
+                    cardIdList?.add(goods_id)
+                }
+            }
             //商品选择框的点击事件
             childViewHolder.iv_select?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
