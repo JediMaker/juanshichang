@@ -52,14 +52,6 @@
                             android:orientation="horizontal"
                             android:paddingTop="5dp">
                         <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:gravity="bottom"
-                                android:text="¥ "
-                                android:textStyle="bold"
-                                android:textColor="@color/label_color"
-                                android:textSize="18sp"/>
-                        <TextView
                                 android:id="@+id/spZyJinEr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"

@@ -2,6 +2,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         tools:context=".fragment.TwoFragment">
     <include
@@ -25,6 +26,8 @@
                     android:layout_height="match_parent"/>
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/mRecycler"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
                     android:background="@color/white"
                     android:scrollbars="none"
                     android:layout_width="0dp"

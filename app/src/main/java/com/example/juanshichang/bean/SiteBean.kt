@@ -9,9 +9,7 @@ import android.os.Parcelable
  * @创建日期: 2019/12/2 15:12
  * @文件作用:地址类
  */
-class SiteBean(){
-
-
+class SiteBean() {
     data class SiteBeans(
         var `data`: Data = Data(),
         var errmsg: String = "",
@@ -19,7 +17,8 @@ class SiteBean(){
     )
 
     data class Data(
-        var addresses: List<Addresse> = listOf()
+        var addresses: List<Addresse> = listOf(),
+        var default_address_id: String = ""
     )
 
     data class Addresse(
@@ -27,9 +26,12 @@ class SiteBean(){
         var address_id: String = "",
         var city: String = "",
         var iphone: String = "",
+        var name: String = "",
         var zone: String = ""
+
     ) : Parcelable {
         constructor(source: Parcel) : this(
+            source.readString().toString(),
             source.readString().toString(),
             source.readString().toString(),
             source.readString().toString(),
@@ -44,6 +46,7 @@ class SiteBean(){
             writeString(address_id)
             writeString(city)
             writeString(iphone)
+            writeString(name)
             writeString(zone)
         }
 

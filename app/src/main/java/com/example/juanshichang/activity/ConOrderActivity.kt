@@ -16,10 +16,12 @@ import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.NewParameter
 import com.example.juanshichang.bean.ConOrderBean
+import com.example.juanshichang.bean.SiteBean
 import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_con_order.*
+import kotlinx.android.synthetic.main.item_txxq.*
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
@@ -34,6 +36,7 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
     private var data:ConOrderBean.ConOrderBeans? = null
     private var adapter:ConOrderAdapter? = null
     private var addresse:ConOrderBean.Addresse? = null
+    private var addresseId:String? = null
     private var bundle:Bundle? = null
     override fun getContentView(): Int {
         return R.layout.activity_con_order
@@ -67,8 +70,10 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
             coRet ->{
                 finish()
             }
-            siteRig ->{
-                ToastUtil.showToast(this@ConOrderActivity,"更改收货地址....")
+            siteRig ->{ //更换地址
+                val intent = Intent(this@ConOrderActivity,SiteListActivity::class.java)
+                intent.putExtra("checkLocal","true")
+                startActivityForResult(intent,1)
             }
             coPay ->{
                 if(addresse == null){
@@ -76,7 +81,7 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
                     return
                 }
                 val intent = Intent(this@ConOrderActivity,SettleAccActivity::class.java)
-                bundle?.putString("address_id",addresse?.address_id) //携带地址id 跳转
+                bundle?.putString("address_id",addresseId) //携带地址id 跳转
                 intent.putExtra("bundle",bundle)
                 startActivity(intent)
                 finish()
@@ -90,6 +95,7 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
             val site = it.data.addresses
             if(site.size > 0){
                 addresse = site[0]
+                addresseId = addresse?.address_id
                 ocName.text = addresse?.address_id
                 coPhone.text = "0371-110"
                 coSite.text = "${addresse?.city} ${addresse?.address_detail}"
@@ -109,6 +115,21 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 1 && resultCode == 2){
+            val bundle = data?.extras?.get("bundle") as Bundle
+            LogTool.e("onActivityResult1",bundle.toString())
+            bundle?.let {
+                val ds = bundle.getParcelable<SiteBean.Addresse>("data")
+                LogTool.e("onActivityResult2",ds.toString())
+                addresseId = ds?.address_id
+                ocName.text = ds?.name
+                coPhone.text = ds?.iphone
+                coSite.text = "${ds?.city} ${ds?.address_detail}"
+            }
+        }
+    }
     //提交订单
     private fun reqOrderFrom(list: ArrayList<String>){
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(

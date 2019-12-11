@@ -6,6 +6,7 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Environment
 import android.provider.Settings
@@ -14,6 +15,7 @@ import android.text.SpannableString
 import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import androidx.core.text.isDigitsOnly
@@ -326,6 +328,8 @@ class Util {
                 ) //设置人民币符号颜色  前面不包括，后面不包括
             }
             //Spannable. SPAN_EXCLUSIVE_INCLUSIVE：前面不包括，后面包括
+            //设置字体样式正常 NORMAL ，粗体 BOLD，斜体 ITALIC，粗斜体  BOLD_ITALIC
+            spannableString.setSpan(StyleSpan(Typeface.BOLD),0,str.length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             return spannableString
         }
     }

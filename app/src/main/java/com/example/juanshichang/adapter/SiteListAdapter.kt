@@ -1,5 +1,6 @@
 package com.example.juanshichang.adapter
 
+import android.text.TextUtils
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.example.juanshichang.R
@@ -13,10 +14,16 @@ import com.example.juanshichang.bean.SiteBean
  */
 class SiteListAdapter() : BaseQuickAdapter<SiteBean.Addresse, BaseViewHolder>(R.layout.item_site_list){
     override fun convert(helper: BaseViewHolder?, item: SiteBean.Addresse?) {
-        helper?.setText(R.id.siteName,"哈哈哈")
-            ?.setText(R.id.siteX,"哈")
+        val name = item?.name
+        var oText = ""
+        if(!TextUtils.isEmpty(name)){
+            oText = name?.substring(0,1).toString()
+        }
+        helper?.setText(R.id.siteName,name)
+            ?.setText(R.id.siteX,oText)
             ?.setText(R.id.siteDet,"${item?.city}  ${item?.address_detail}")
             ?.setText(R.id.sitePhone,item?.iphone)
         helper?.addOnClickListener(R.id.siteEdit) //给 编辑 按钮添加点击事件
+        helper?.addOnClickListener(R.id.allCon) //给 选择收货地址 添加点击事件
     }
 }

@@ -1,12 +1,21 @@
 package com.example.juanshichang.utils;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+
+
+import androidx.annotation.DrawableRes;
+
+import com.example.juanshichang.R;
 
 import static com.qmuiteam.qmui.util.QMUIDisplayHelper.getStatusBarHeight;
 
@@ -18,6 +27,7 @@ import static com.qmuiteam.qmui.util.QMUIDisplayHelper.getStatusBarHeight;
 public class StatusBarUtil {
     /**
      * 通过设置全屏，设置状态栏透明
+     *
      * @param activity
      */
     public static void fullScreen(Activity activity) {
@@ -55,7 +65,7 @@ public class StatusBarUtil {
      *
      * @param activity
      */
-    public static  void addStatusViewWithColor(Activity activity, int colorId) {
+    public static void addStatusViewWithColor(Activity activity, int colorId) {
         //4.4以上才能设置状态栏
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //设置 paddingTop 状态栏的高度
@@ -66,7 +76,6 @@ public class StatusBarUtil {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //5.0以上直接设置状态栏颜色
                 activity.getWindow().setStatusBarColor(activity.getResources().getColor(colorId));
-
             } else {
                 //增加占位状态栏
                 ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
@@ -80,5 +89,43 @@ public class StatusBarUtil {
             }
         }
     }
+// --------------------------------------  渐变状态栏 ------------------------------------------------
+    /**
+     * 添加状态栏占位视图
+     *
+     * @param activity
+     */
+    public static void addStatusViewWithBack(Activity activity, int back) {
+        //4.4以上才能设置状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //设置 paddingTop 状态栏的高度
+            ViewGroup rootView = (ViewGroup) activity.getWindow().getDecorView()
+                    .findViewById(android.R.id.content);
+            rootView.setPadding(0, getStatusBarHeight(activity), 0, 0);
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //5.0以上直接设置状态栏颜色
+                ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
+                decorView.clearFocus();
+                View statusBarView = new View(activity);
+                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams
+                        .MATCH_PARENT,
+                        getStatusBarHeight(activity));
+//                statusBarView.setBackgroundColor(back);
+                statusBarView.setBackgroundResource(back);
+                decorView.addView(statusBarView, lp);
+            } else {
+                //增加占位状态栏
+                ViewGroup decorView = (ViewGroup) activity.getWindow().getDecorView();
+                decorView.clearFocus();
+                View statusBarView = new View(activity);
+                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams
+                        .MATCH_PARENT,
+                        getStatusBarHeight(activity));
+//                statusBarView.setBackgroundColor(back);
+                statusBarView.setBackgroundResource(back);
+                decorView.addView(statusBarView, lp);
+            }
+        }
+    }
 }

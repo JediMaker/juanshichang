@@ -1,12 +1,9 @@
 package com.example.juanshichang.fragment
 
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,21 +11,25 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.OnClick
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.ClassTypeActivity
 import com.example.juanshichang.activity.LookAllActivity
+import com.example.juanshichang.activity.ZyAllActivity
 import com.example.juanshichang.adapter.ClassifyListAdpater
+import com.example.juanshichang.adapter.NewCLeftAdapter
+import com.example.juanshichang.adapter.NewCRightAdapter
 import com.example.juanshichang.adapter.TwoRecyclerAdapter
 import com.example.juanshichang.base.*
+import com.example.juanshichang.bean.NewClassifyBean
 import com.example.juanshichang.bean.TabOneBean
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.LogTool
-import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastTool
 import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
 import kotlinx.coroutines.Runnable
+import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
 import java.util.*
@@ -37,7 +38,7 @@ import kotlin.collections.ArrayList
 /**
  * @作者: yzq
  * @创建日期: 2019/7/17 16:53
- * @文件作用: 学院页面
+ * @文件作用: 分类页面
  */
 class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var mTl: LinearLayout? = null
@@ -45,12 +46,17 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var tSearch: TextView? = null
     var mTSwipeRefreshLayout: SwipeRefreshLayout? = null
     private var mList: ListView? = null
-    private var mLA: ClassifyListAdpater? = null
+    //老数据数据接口 和 源 替换
+    /*private var mLA: ClassifyListAdpater? = null
     private var listData: ArrayList<TabOneBean.Category>? = null
     private var recyclerData: ArrayList<TabOneBean.Data>? = null
-    private var mRecycler: RecyclerView? = null
     private var mRA: TwoRecyclerAdapter? = null
-    private var leftSelect: Int = 0
+    private var leftSelect: Int = 0*/
+    private var mLA: NewCLeftAdapter? = null
+    private var listData: ArrayList<NewClassifyBean.Data>? = null
+    private var recyclerData: ArrayList<NewClassifyBean.Data>? = null
+    private var mRA: NewCRightAdapter? = null
+    private var mRecycler: RecyclerView? = null
     private var base: BaseActivity? = null
     override fun getLayoutId(): Int {
         return R.layout.fragment_two
@@ -64,12 +70,12 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         mTSwipeRefreshLayout =
             mBaseView?.findViewById<SwipeRefreshLayout>(R.id.mTSwipeRefreshLayout)
         mList = mBaseView?.findViewById<ListView>(R.id.mList)
-        listData = ArrayList()
-        mLA = ClassifyListAdpater(mContext!!)
+        listData = arrayListOf()
+        mLA = NewCLeftAdapter(mContext!!)
         mList?.adapter = mLA
         mRecycler = mBaseView?.findViewById<RecyclerView>(R.id.mRecycler)
-        recyclerData = ArrayList()
-        mRA = TwoRecyclerAdapter()
+        recyclerData = arrayListOf()
+        mRA = NewCRightAdapter()
         /**
          * 渐显 ALPHAIN
          * 缩放 SCALEIN
@@ -78,9 +84,9 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
          * 从右到左 SLIDEIN_RIGHT
          */
         mRA?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT)
-        mRA?.emptyView = View.inflate(context, R.layout.activity_not_null, null)
+        /*mRA?.emptyView = View.inflate(context, R.layout.activity_not_null, null)
         val lm = LinearLayoutManager(context!!, RecyclerView.VERTICAL, false)
-        mRecycler?.layoutManager = lm
+        mRecycler?.layoutManager = lm*/
         mRecycler?.adapter = mRA
     }
 
@@ -103,11 +109,15 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun initData() {
         mTSwipeRefreshLayout?.setOnRefreshListener(this)
-        getOneT(0, leftSelect)
+//        getOneT(0, leftSelect)
+
     }
 
     override fun onResume() {
         super.onResume()
+        if(listData?.size == 0){
+            reqCateFat("0")
+        }
         mList?.setOnScrollListener(object : AbsListView.OnScrollListener {
             override fun onScroll(p0: AbsListView?, p1: Int, p2: Int, p3: Int) {
 
@@ -125,27 +135,32 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         })
         mList?.setOnItemClickListener(object : AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, v: View?, position: Int, id: Long) {
-                if (position != leftSelect) {
+                /*if (position != leftSelect) {
                     leftSelect = position
                     //网络请求
                     if (listData != null && listData!!.size > position) {
                         base?.showProgressDialog()
                         //置null右边集合
                         mRA?.setNewData(null)
-                        getTwoT(listData!![position].category_id)
+//                        getTwoT(listData!![position].category_id)
+                        reqCateFat(listData!![position].category_id)
                         mLA?.setSelect(leftSelect)
-                        //因为选中左侧的菜单后背景颜色会变，所以每次点击都要刷新一下
                         mLA?.notifyDataSetChanged()
                     } else {
                         ToastUtil.showToast(mContext!!, "数据错误 请刷新后重试")
                     }
                 } else {
                     goRefresh()
+                }*/
+                if (position != mLA?.getSelect()) {
+                    base?.showProgressDialog()
+                    reqCateFat(listData!![position].category_id)
+                    mLA?.setSelect(position)
                 }
             }
         })
-        //耳机列表点击事件
-        mRA?.setOnItemChildClickListener(object : BaseQuickAdapter.OnItemChildClickListener {
+        //二级列表点击事件
+        /*mRA?.setOnItemChildClickListener(object : BaseQuickAdapter.OnItemChildClickListener {
             override fun onItemChildClick(
                 adapter: BaseQuickAdapter<*, *>?,
                 view: View?,
@@ -162,14 +177,22 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     }
                 }
             }
-        })
+        })*/
+        mRA?.setOnItemClickListener { adapter, view, position ->
+            recyclerData?.let {
+                val intent = Intent(mContext!!, ZyAllActivity::class.java)
+                intent.putExtra("category_id",it[position].category_id)
+                startActivity(intent)
+            }
+        }
     }
 
     //下拉刷新
     override fun onRefresh() {
         mList?.postDelayed(object : Runnable {
             override fun run() {
-                getOneT(0, leftSelect)  //todo 简单设置 待优化
+//                getOneT(0, leftSelect)  //todo 简单设置 待优化
+                reqCateFat("0")
                 //刷新完成取消刷新动画
                 mTSwipeRefreshLayout?.setRefreshing(false)
             }
@@ -204,8 +227,8 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
         return ""
     }
-
-    //网络请求
+    //老页面的网络请求
+    /*//网络请求
     private fun getOneT(parent_id: Int, leftSelect: Int) {
         HttpManager.getInstance().post(
             Api.CATEGORY,
@@ -248,7 +271,6 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
             })
     }
-
     // 二级页面 请求
     fun getTwoT(parent_id: Int) {
         HttpManager.getInstance()
@@ -283,6 +305,63 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
                 override fun onError(e: Throwable?) {
                     LogTool.e("onError", "T - Tab2加载失败!" + e)
+                }
+            })
+    }*/
+    //新的请求
+    //一/N级列表请求
+    private fun reqCateFat(parent_category_id: String) {
+        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
+            Api.NEWCATEGORY,
+            NewParameter.getNewClassMap(parent_category_id),
+            object : Subscriber<String>() {
+                override fun onNext(t: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(
+                                mContext!!,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            val data =
+                                Gson().fromJson(t, NewClassifyBean.NewClassifyBeans::class.java)
+                            if (parent_category_id == "0") { //一级列表
+                                listData = data.data as ArrayList<NewClassifyBean.Data>
+                                mLA?.setNewData(listData!!)
+                                if (listData?.size != 0) { //直接唤起第一个子页面
+                                    reqCateFat(listData!![0].category_id)
+                                }
+                            } else { //赋予子列表
+                                recyclerData = data.data as ArrayList<NewClassifyBean.Data>
+                                mRA?.setNewData(recyclerData)
+                                //设置 空数据view
+                                mRA?.emptyView = View.inflate(
+                                    mContext,
+                                    R.layout.activity_not_null,
+                                    null
+                                )
+                            }
+                        }
+                    }
+                }
+
+                override fun onCompleted() {
+                    if (parent_category_id == "0") {
+                        LogTool.e("onCompleted", "一级列表请求完成")
+                    } else {
+                        LogTool.e("onCompleted", "N级列表请求完成")
+                    }
+                    base?.dismissProgressDialog()
+                }
+
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onCompleted", "订单详情请求失败: ${e.toString()}")
                 }
             })
     }

@@ -29,7 +29,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".activity.ZyAllActivity"></activity>
-        <activity android:name=".activity.NewClassifyActivity" />
         <activity android:name=".activity.SettleAccActivity" />
         <activity android:name=".activity.ConOrderActivity" />
         <activity android:name=".activity.EditSiteActivity" />

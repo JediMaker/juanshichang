@@ -23,6 +23,7 @@ import com.example.juanshichang.widget.LiveDataBus
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -42,7 +43,7 @@ class MainActivity : BaseActivity() {
     private var shopFragment: ShopListFragment? = null   //购物车
     private var fourFragment: FourFragment? = null
     private var normalAdapter: NormalAdapter? = null
-    var bus =  LiveDataBus.get()
+    private var bus =  LiveDataBus.get()
     // 用于确定 首页面Tab 是否处在第一个
     private var topTabIsOne:Boolean = true
     override fun getContentView(): Int {
@@ -68,7 +69,7 @@ class MainActivity : BaseActivity() {
         bus.with("mainTopStatusView",Int::class.java)
             .observe(this,object : Observer<Int>{
                 override fun onChanged(t: Int?) {
-                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, t!!)
+                    StatusBarUtil.addStatusViewWithBack(this@MainActivity, t!!)
                 }
             })
     }
@@ -103,7 +104,7 @@ class MainActivity : BaseActivity() {
 //            val view = android.support.design.widget.BottomNavigationView(this@MainActivity)
             vp_main.setPagingEnabled(false)
             views.visibility = View.VISIBLE
-            setTecentBottom()
+            setTabBottom()
         } else {
             view.visibility = View.VISIBLE
             setGoogleBottom()
@@ -134,8 +135,11 @@ class MainActivity : BaseActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.store -> {
-                vp_main.currentItem = 3
-                return@OnNavigationItemSelectedListener true
+                if(Util.hasLogin(this)) {
+                    vp_main.currentItem = 3
+                    return@OnNavigationItemSelectedListener true
+                }
+                return@OnNavigationItemSelectedListener false
             }
             R.id.me -> {
                 if(Util.hasLogin(this)){
@@ -180,24 +184,36 @@ class MainActivity : BaseActivity() {
         }
 
         override fun onTabSelected(p0: TabLayout.Tab?) {
-            if(p0?.position == 0){
-                if(topTabIsOne){
-                    bus.with("mainTopStatusView").value = R.color.colorPrimary
-                }else{
-                    bus.with("mainTopStatusView").value = R.color.white
+            when(p0?.position){
+                0 ->{
+                    if(topTabIsOne){
+                        bus.with("mainTopStatusView").value = R.color.colorPrimary
+                    }else{
+                        bus.with("mainTopStatusView").value = R.color.white
+                    }
+                    vp_main.currentItem = 0
                 }
-//                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
-            }else if(p0?.position == 3){
-                if(!Util.hasLogin(this@MainActivity)){
-                    return
-                }else{
+                1,2->{
                     bus.with("mainTopStatusView").value = R.color.white
+                    vp_main.currentItem = p0.position
                 }
-            }else{
-                bus.with("mainTopStatusView").value = R.color.white
-//                StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
+                3->{
+                    if(!Util.hasLogin(this@MainActivity)){
+                        return
+                    }else{
+                        bus.with("mainTopStatusView").value = R.color.white
+                        vp_main.currentItem = p0.position
+                    }
+                }
+                4->{
+                    if(!Util.hasLogin(this@MainActivity)){
+                        return
+                    }else{
+                        StatusBarUtil.addStatusViewWithBack(this@MainActivity,R.drawable.bg_me_twotop)
+                        vp_main.currentItem = p0.position
+                    }
+                }
             }
-            vp_main.currentItem = p0!!.position
         }
 
     }
@@ -218,7 +234,7 @@ class MainActivity : BaseActivity() {
     /**
      *  采用原生底部栏
      */
-    private fun setTecentBottom() {
+    private fun setTabBottom() {
         views.addTab(views.newTab().setText(R.string.first).setIcon(R.drawable.tab_one))
         views.addTab(views.newTab().setText(R.string.study).setIcon(R.drawable.tab_two))
         views.addTab(views.newTab().setText(R.string.community).setIcon(R.drawable.tab_three_t))
@@ -282,16 +298,22 @@ class MainActivity : BaseActivity() {
                     menuItem = view.getMenu().getItem(position)
                     menuItem!!.isChecked = true
                 }
-                if(position != 0){
-                    bus.with("mainTopStatusView").value = R.color.white
-//                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.white)
-                }else{
-                    if(topTabIsOne){
-                        bus.with("mainTopStatusView").value = R.color.colorPrimary
-                    }else{
+                when(position){
+                    0 ->{
+                        if(topTabIsOne){
+                            bus.with("mainTopStatusView").value = R.color.colorPrimary
+                        }else{
+                            bus.with("mainTopStatusView").value = R.color.white
+                        }
+                    }
+                    1,2,3->{
                         bus.with("mainTopStatusView").value = R.color.white
                     }
-//                    StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
+                    4->{
+//                        bus.with("mainTopStatusView").value = R.drawable.bg_me_twotop
+                        bus.with("mainTopStatusView").value = R.drawable.bg_me_twotop
+//                        StatusBarUtil.addStatusViewWithBack(this@MainActivity,R.drawable.bg_me_twotop)
+                    }
                 }
             }
         })

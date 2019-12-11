@@ -1,6 +1,7 @@
 package com.example.juanshichang.activity
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Handler
 import android.os.Message
 import android.view.Gravity
@@ -13,6 +14,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.adapter.ShangPinXqAdapter
 import com.example.juanshichang.adapter.ShopDetailsAdapter
@@ -25,6 +27,7 @@ import com.example.juanshichang.bean.ZyProduct
 import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.utils.glide.GlideUtil
+import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import com.youth.banner.BannerConfig
@@ -81,10 +84,17 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
 
             }
             R.id.spZyHome -> {
-
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                startActivity(intent)
+                finish()
             }
             R.id.goShopCar -> {
-
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                startActivity(intent)
+                LiveDataBus.get().with("mainGo").value =  3 //返回到购物车
+                finish()
             }
             R.id.spZySC -> {
 
@@ -147,12 +157,13 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             setBannerData(data.images)
         }
         spZyName.text = data.model  // 商品名称 todo 待定
-        if (data.special.contains("¥")) { //设置现价
-//            val xSpecial = data.special.substring(1,data.special.length)
-            val xSpecial = data.special.drop(1)// 舍弃前1个
-            spZyJinEr.text = xSpecial
+        if (!data.price.contains("¥")) { //设置现价
+//            val xPrice = data.price.substring(1,data.special.length)
+//            val xPrice = data.price.drop(1)// 舍弃前1个
+            val xPrice = "¥${data.price}"
+            spZyJinEr.text = Util.getGaudyStr(xPrice)
         } else {
-            spZyJinEr.text = data.special
+            spZyJinEr.text = Util.getGaudyStr(data.price)
         }
         originalZy_cost_view.text = data.price //获取原价
         shangPinJs.text = data.description  //描述
@@ -255,8 +266,13 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             lp?.y = 0
             dialogWindow?.attributes = lp
             //设置数据等
-            GlideUtil.loadImage(this@ShangPinZyContains, dData.images[0]?.thumb, dShopImg)
-            dShopPrice?.text = dData.special
+            GlideUtil.loadImage(this@ShangPinZyContains, dData.images[0].thumb, dShopImg)
+            if (!dData.price.contains("¥")) { //设置现价
+                val xPrice = "¥${dData.price}"
+                dShopPrice?.text = Util.getGaudyStr(xPrice)
+            } else {
+                dShopPrice?.text = Util.getGaudyStr(dData.price)
+            }
             dShopTit?.text = dData.model
             dAdapter = ShopDetailsAdapter()
             dList?.adapter = dAdapter

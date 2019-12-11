@@ -99,7 +99,7 @@ class FourFragment : BaseFragment() {
                 BaseActivity.goStartActivity(this.mContext!!, ShangPinZyContains())
             }
             R.id.tastLb ->{ //自营商品列表
-                BaseActivity.goStartActivity(this.mContext!!,NewClassifyActivity())
+
             }
         }
     }

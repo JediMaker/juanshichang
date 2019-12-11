@@ -32,6 +32,7 @@ import rx.Subscriber
  * @作者: yzq
  * @创建日期: 2019/12/7 16:48
  * @文件作用: 自营商品列表
+ * todo 在Manifrsts文件中删除了 该 activity的注册....
  */
 class NewClassifyActivity : BaseActivity(), View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener {
