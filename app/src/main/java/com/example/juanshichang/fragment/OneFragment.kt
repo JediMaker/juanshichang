@@ -58,7 +58,8 @@ class OneFragment : BaseFragment() {
     private var mainVp: CustomViewPager? = null
     private var mainAdapter: NormalAdapter? = null
     private var fragmentList: ArrayList<Fragment>? = null
-    private var oneFragment: SelectionFragment? = null
+    //    private var oneFragment: SelectionFragment? = null
+    private var oneFragment: HomeFragment? = null
     private var twoFragment: OneOtherFragment? = null
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -97,7 +98,7 @@ class OneFragment : BaseFragment() {
         mainVp?.setPagingEnabled(false) //设置ViewPager不可滑动
         getOneT(0)
         fragmentList = arrayListOf()
-        oneFragment = SelectionFragment()
+        oneFragment = HomeFragment()
         twoFragment = OneOtherFragment()
         fragmentList!!.add(oneFragment!!)
         fragmentList!!.add(twoFragment!!)
@@ -133,7 +134,7 @@ class OneFragment : BaseFragment() {
                 ScanUtil.toWeChatScanDirect(mContext!!)
             }
             R.id.message_home -> { //消息
-                BaseActivity.goStartActivity(mContext!!,MessageActivity())
+                BaseActivity.goStartActivity(mContext!!, MessageActivity())
             }
             else -> {
                 ToastUtil.showToast(mContext!!, "程序猿小哥 日夜赶工中...")
@@ -155,7 +156,7 @@ class OneFragment : BaseFragment() {
         if (fragmentList == null) {
             fragmentList = arrayListOf()
             if (oneFragment == null) {
-                oneFragment = SelectionFragment()
+                oneFragment = HomeFragment()
             }
             if (twoFragment == null) {
                 twoFragment = OneOtherFragment()

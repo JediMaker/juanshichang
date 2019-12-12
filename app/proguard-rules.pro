@@ -127,3 +127,6 @@
 -keep class **_FragmentFinder { *; }
 -keep class com.qmuiteam.qmui.arch.record.** { *; }
 -keep class androidx.fragment.app.* { *; }
+#腾讯bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}

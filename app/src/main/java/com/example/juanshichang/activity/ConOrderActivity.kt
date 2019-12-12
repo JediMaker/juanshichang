@@ -120,7 +120,7 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
         if(requestCode == 1 && resultCode == 2){
             val bundle = data?.extras?.get("bundle") as Bundle
             LogTool.e("onActivityResult1",bundle.toString())
-            bundle?.let {
+            bundle.let {
                 val ds = bundle.getParcelable<SiteBean.Addresse>("data")
                 LogTool.e("onActivityResult2",ds.toString())
                 addresseId = ds?.address_id

@@ -32,7 +32,11 @@ import kotlinx.android.synthetic.main.home_grid_item.view.*
 import kotlinx.android.synthetic.main.home_recycler_item.view.*
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk27.coroutines.onItemClick
-
+/**
+ * @作者: yzq
+ * @创建日期: 2019/12/12 16:58
+ * @文件作用: 老旧的适配器
+ */
 class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
     var b_i = 1
     var g_i = 1
@@ -154,7 +158,7 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
                 WebUrl = null
                 getWebLink(gridList[p].channel_id, mContext)
             } else if (gridList[p].type.equals("goods")) {
-                var intent = Intent(mContext!!, PromotionActivity::class.java)
+                val intent = Intent(mContext!!, PromotionActivity::class.java)
                 intent.putExtra("id", gridList[p].channel_id)
                 intent.putExtra("idName","channel_id")
                 BaseActivity.goStartActivity(mContext, intent)

@@ -131,6 +131,12 @@ class NewParameter {
         }
 
         // --------------------------------------------------------------
+        fun getHomeMap(): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=app/home")
+            val map = fengMap(0)
+            return map
+        }
         fun getBaseMap(): HashMap<String, String> {
             baseList.clear()
             baseList.add("route=app/cart")

@@ -34,7 +34,7 @@ import rx.Subscriber
 /**
  * @作者: yzq
  * @创建日期: 2019/8/23 17:49
- * @文件作用: 首页 精选
+ * @文件作用: 首页 精选 todo 废弃
  */
 class SelectionFragment : QMUIFragment(), BaseQuickAdapter.RequestLoadMoreListener,
     SwipeRefreshLayout.OnRefreshListener {

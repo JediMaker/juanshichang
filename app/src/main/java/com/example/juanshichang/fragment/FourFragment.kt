@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Observer
@@ -15,15 +16,20 @@ import butterknife.OnClick
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.*
-import com.example.juanshichang.base.BaseActivity
-import com.example.juanshichang.base.BaseFragment
+import com.example.juanshichang.base.*
+import com.example.juanshichang.bean.GridItemBean
 import com.example.juanshichang.bean.User
+import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.LiveDataBus
+import com.google.gson.Gson
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView
+import org.json.JSONObject
+import rx.Subscriber
 
 /**
  * @作者: yzq
@@ -99,11 +105,37 @@ class FourFragment : BaseFragment() {
                 BaseActivity.goStartActivity(this.mContext!!, ShangPinZyContains())
             }
             R.id.tastLb ->{ //自营商品列表
-
+                getGrid()
             }
         }
     }
+    private fun getGrid() {
+        LogTool.e("okgo","启动Grid请求")
+        HttpManager.getInstance()
+            .post(Api.CHANNELLIST, Parameter.getMainBannerMap(), object : Subscriber<String>() {
+                override fun onNext(str: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        val jsonObj: JSONObject? = JSONObject(str)
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(context!!, jsonObj!!.optString(JsonParser.JSON_MSG))
+                        } else {
+                            val data = Gson().fromJson(str, GridItemBean.GridItemBeans::class.java)
+                            val gridList = data.data.channel_list
+                        }
+                    }
+                }
 
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "Grid加载完成!")
+                }
+
+                override fun onError(e: Throwable?) {
+//                getGrid()
+                    LogTool.e("onError", "Grid加载失败!" + e)
+                }
+
+            })
+    }
     private fun setUiData(user: User?) {
         val fi = mBaseView?.findViewById<QMUIRadiusImageView>(R.id.ffUserImage) //头像
         val fiv = mBaseView?.findViewById<TextView>(R.id.ffUserInvite) //邀请码

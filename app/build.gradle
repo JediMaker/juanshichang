@@ -200,7 +200,9 @@ dependencies {
 //    implementation files('libs/umeng-sharetool-6.9.6.jar')
     //友盟 分享  end
     //LeakCanary 内存泄漏 检查工具 debug版本添加依赖  源码解析：https://www.jianshu.com/p/75f0e1fea3e0
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
+    //腾讯bugly集成
+    api 'com.tencent.bugly:crashreport:latest.release'
     //GreenDao
 //    api 'org.greenrobot:greendao:3.2.2'
     //引入 支付宝sdk
@@ -210,3 +212,4 @@ dependencies {
 //configurations{
 //    all*.exclude group:'com.wireless.security.securityenv.sdk',module:'DeviceUtils'
 //}
+

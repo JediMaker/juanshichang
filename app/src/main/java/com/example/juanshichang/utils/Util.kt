@@ -21,7 +21,9 @@ import android.webkit.CookieSyncManager
 import androidx.core.text.isDigitsOnly
 import com.example.juanshichang.activity.Reg2LogActivity
 import com.example.juanshichang.base.BaseActivity
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -331,6 +333,25 @@ class Util {
             //设置字体样式正常 NORMAL ，粗体 BOLD，斜体 ITALIC，粗斜体  BOLD_ITALIC
             spannableString.setSpan(StyleSpan(Typeface.BOLD),0,str.length,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             return spannableString
+        }
+
+        //读取本地json
+        fun readLocalJson(mContext:Context,filename:String):String{
+            val sb = StringBuilder()
+            val am = mContext.assets
+            try {
+                val br = BufferedReader(InputStreamReader(am.open(filename)))
+                var line:String
+                while (true){
+                    line = br.readLine()?:break
+                    sb.append(line)
+                }
+                br.close()
+            }catch (e:Exception){
+                e.printStackTrace()
+                sb.delete(0,sb.length)
+            }
+            return sb.toString().trim()
         }
     }
 }

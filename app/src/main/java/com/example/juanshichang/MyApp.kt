@@ -11,11 +11,10 @@ import android.text.TextUtils
 import androidx.multidex.MultiDex
 import com.alipay.sdk.app.EnvUtils
 import com.bumptech.glide.Glide
-import com.example.juanshichang.utils.JumpPermissionManagement
-import com.example.juanshichang.utils.LogTool
-import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.*
 import com.example.juanshichang.widget.MD5Utils
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager
+import com.tencent.bugly.crashreport.CrashReport
 import com.umeng.commonsdk.UMConfigure
 import com.umeng.socialize.PlatformConfig
 import com.yanzhenjie.permission.AndPermission
@@ -107,7 +106,7 @@ open class MyApp : Application() {
         PlatformConfig.setSinaWeibo("","","http://sns.whalecloud.com")//微博  微博APPID  微博APPSecret  微博的后台配置回调地址
         UMConfigure.setLogEnabled(BuildConfig.DEBUG) //是否开启日志
         UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE,null)
-
+        initTencentBugly() //初始化腾讯bugly
         EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX) //支付宝 沙盒环境...
     }
 
@@ -116,6 +115,12 @@ open class MyApp : Application() {
         MultiDex.install(this)
     }
 
+    private fun initTencentBugly() {
+        //bugly 文档:https://bugly.qq.com/docs/user-guide/advance-features-android/?v=20180709165613#bugly_1
+        val strategy = CrashReport.UserStrategy(applicationContext)
+        strategy.setAppReportDelay(8000) //程序启动8s后初始化腾讯bugly
+        CrashReport.initCrashReport(getApplicationContext(), "60bd157ca3",isDebug,strategy)
+    }
     override fun onTerminate() { //程序终止的时候执行
         super.onTerminate()
     }
