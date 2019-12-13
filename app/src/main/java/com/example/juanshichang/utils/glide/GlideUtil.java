@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -19,6 +21,8 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.juanshichang.MyApp;
 import com.example.juanshichang.R;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -51,7 +55,9 @@ public class GlideUtil {
 //                    .placeholder(R.drawable.c_placeholderlong)
                     .error(R.drawable.c_error)
 //                    .format(DecodeFormat.PREFER_ARGB_8888)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+                    .placeholder(R.drawable.c_error)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .dontAnimate(); //
             Glide.with(mContext).load(url)
                     .apply(options)
                     .into(mImageView);
@@ -67,7 +73,9 @@ public class GlideUtil {
 //                    .placeholder(R.drawable.c_placeholderlong)
                     .error(R.drawable.head_img_def)
 //                    .format(DecodeFormat.PREFER_ARGB_8888)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+                    .placeholder(R.drawable.c_error)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .dontAnimate(); //ALL
             Glide.with(mContext).load(url)
                     .apply(options)
                     .into(mImageView);
@@ -82,7 +90,7 @@ public class GlideUtil {
             options.transform(new StaggeredBitmapTransform(MyApp.app))
 //                    .placeholder(R.drawable.c_placeholderlong)
                     .error(R.drawable.c_error)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE); //ALL
             if (type != 0) {
                 options.format(DecodeFormat.PREFER_ARGB_8888);
             }
@@ -107,24 +115,35 @@ public class GlideUtil {
 
     /**
      * 用来加载购物车图片
+     *
      * @param context
      * @param url
      * @param imageView
      */
     public static void loadShopImg(Context context, String url, ImageView imageView, Drawable draw) { //加载购物车默认使用888等
-        try { //glide设置了跳过内存缓存skipMemoryCache(true)导致的 刷新闪烁
+        try { //glide设置了内存缓存skipMemoryCache(true)导致的 刷新闪烁
             //https://blog.csdn.net/wbw522/article/details/71195249
-            RequestOptions options = new RequestOptions();
-            options.transform(new StaggeredBitmapTransform(MyApp.app))
-                    .placeholder(draw)
-                    .error(R.drawable.c_error)
-                    .format(DecodeFormat.PREFER_ARGB_8888)
-                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .skipMemoryCache(false)
-                    .dontAnimate();
-            Glide.with(context).load(url)
+            if(TextUtils.isEmpty(url+"")){
+                imageView.setImageResource(R.drawable.c_error);
+            }else { //https://blog.csdn.net/u011814346/article/details/89521542  oom处理
+                RequestOptions options = new RequestOptions();
+                options.transform(new StaggeredBitmapTransform(MyApp.app))
+                        .placeholder(draw)
+                        .error(R.drawable.c_error)
+                        .format(DecodeFormat.PREFER_ARGB_8888)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .skipMemoryCache(false)
+                        .dontAnimate();
+            /*Glide.with(context).load(url)
                     .apply(options)
-                    .into(imageView);
+                    .into(imageView);*/
+                Glide.with(context).load(url).into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        imageView.setImageDrawable(resource);
+                    }
+                });
+            }
         } catch (Exception e) {
 
         }
@@ -136,7 +155,9 @@ public class GlideUtil {
             options.transform(new StaggeredBitmapTransform(MyApp.app))
 //                    .placeholder(R.drawable.c_placeholderlong)
                     .error(R.drawable.c_error)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+                    .skipMemoryCache(false)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .dontAnimate();  //ALL
             if (type != 0) {
                 options.format(DecodeFormat.PREFER_ARGB_8888);
             }

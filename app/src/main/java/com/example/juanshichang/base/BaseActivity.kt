@@ -13,6 +13,7 @@ import androidx.annotation.CheckResult
 import androidx.annotation.NonNull
 import butterknife.ButterKnife
 import butterknife.Unbinder
+import com.bumptech.glide.Glide
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.R
 import com.example.juanshichang.dialog.HandyDialog

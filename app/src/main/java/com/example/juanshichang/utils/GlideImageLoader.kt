@@ -37,7 +37,7 @@ class GlideImageLoader(type:Int) : ImageLoader() {
                 )
                 .error(R.drawable.c_error)//加载失败显示图片
                 .placeholder(R.drawable.c_error)//预加载图片
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE) //ALL
 //            .transform(GlideRoundTransform(8, 0))
                 .priority(Priority.HIGH) //优先级
         }else{

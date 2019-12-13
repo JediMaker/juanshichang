@@ -24,6 +24,7 @@ import com.example.juanshichang.utils.GlideImageLoader
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
+import com.example.juanshichang.widget.IsInternet
 import com.example.juanshichang.widget.OrderConfirmGridView
 import com.google.gson.Gson
 import com.youth.banner.Banner
@@ -35,7 +36,11 @@ import org.jetbrains.anko.sdk27.coroutines.onItemClick
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
-
+/**
+ * @作者: yzq
+ * @创建日期: 2019/12/13 17:57
+ * @文件作用: 自营商品首页面
+ */
 class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var refresh: SwipeRefreshLayout? = null
     private var banner: Banner? = null
@@ -53,6 +58,22 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 1->{ //更新grid
                     gList?.let {
                         setGrid(mContext!!,it)
+                    }
+                }
+                2 ->{ //用于结束首次加载的网络不佳问题
+                    mContext?.let {
+                        if(Util.ifCurrentActivityTopStack(it) && !IsInternet.isNetworkAvalible(it)){//如果在前台 但是 无网络
+                            it.dismissProgressDialog()
+                            ToastUtil.showToast(it,"您的网络状态不佳,请检查网络...")
+                        }
+                    }
+                }
+                3 ->{//用于结束 刷新的网络不佳问题
+                    mContext?.let {
+                        if(Util.ifCurrentActivityTopStack(it) && !IsInternet.isNetworkAvalible(it)){//如果在前台 但是 无网络
+                            refresh?.setRefreshing(false)
+                            ToastUtil.showToast(it,"您的网络状态不佳,请检查网络...")
+                        }
                     }
                 }
             }
@@ -82,6 +103,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         recycler?.adapter = rAdapter
     }
     override fun onRefresh() {
+        hand.sendEmptyMessageDelayed(3,3500)
         recycler?.postDelayed(object :Runnable{
             override fun run() {
                 getHome("Refresh")
@@ -107,6 +129,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
         if(gList == null || bList == null){
             mContext?.showProgressDialog()
+            hand.sendEmptyMessageDelayed(2,3000)
             getHome()
         }
     }
@@ -202,6 +225,11 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
+                            if(!tag.isEmpty()){
+                                hand.removeMessages(3) //加载完成则删除hand
+                            }else{
+                                hand.removeMessages(2)
+                            }
                             val data: HomeBean.HomeBeans =
                                 Gson().fromJson(t, HomeBean.HomeBeans::class.java)
                             setUiData(data)
@@ -220,7 +248,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
 
                 override fun onError(e: Throwable?) {
-                    LogTool.e("onCompleted", "Home列表请求失败: ${e.toString()}")
+                    LogTool.e("onError", "Home列表请求失败: ${e.toString()}")
                 }
             })
     }
