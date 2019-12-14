@@ -1,8 +1,6 @@
 package com.example.juanshichang.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.juanshichang.R
@@ -22,6 +20,12 @@ import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
 
+
+/**
+ * @作者: yzq
+ * @创建日期: 2019/12/14 18:48
+ * @文件作用:
+ */
 class ZyAllActivity : BaseActivity(), View.OnClickListener {
     private var category_id: String? = null
     private var zyAdapter: ZyAllAdapter? = null
@@ -66,7 +70,7 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
     }
 
     //商品请求
-    //一/N级列表请求
+    //商品列表
     private fun reqCateSon(category_id: String) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.NEWCATEGORYCON,

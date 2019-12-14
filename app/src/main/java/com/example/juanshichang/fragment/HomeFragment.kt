@@ -11,7 +11,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.PromotionActivity
+import com.example.juanshichang.activity.ShangPinZyContains
 import com.example.juanshichang.activity.TopupActivity
+import com.example.juanshichang.activity.ZyAllActivity
 import com.example.juanshichang.adapter.MainGridAdapter
 import com.example.juanshichang.adapter.NewHomeAdapter
 import com.example.juanshichang.base.*
@@ -164,7 +166,21 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 ?.setImages(imgs)
                 ?.setOnBannerListener(object : OnBannerListener{
                     override fun OnBannerClick(position: Int) {
-
+                        when(it[position].type){
+                            "app/product"->{ //商品详情
+                                val intent = Intent(mContext!!,ShangPinZyContains::class.java)
+                                intent.putExtra("product_id",it[position].value)
+                                startActivity(intent)
+                            }
+                            "app/category/goods"->{ //商品列表
+                                val intent = Intent(mContext!!,ZyAllActivity::class.java)
+                                intent.putExtra("category_id",it[position].value)
+                                startActivity(intent)
+                            }
+                            else ->{
+                                ToastUtil.showToast(mContext!!,"未知类型:${it[position].type}")
+                            }
+                        }
                     }
                 })?.start()
         }

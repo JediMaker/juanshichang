@@ -14,12 +14,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS"
+    <uses-permission
+            android:name="android.permission.READ_LOGS"
             tools:ignore="ProtectedPermissions" />
     <uses-permission
             android:name="android.permission.WRITE_SETTINGS"
             tools:ignore="ProtectedPermissions" />
-<!--    tools:replace="android:icon, android:label,android:theme"-->
+
     <application
             android:name=".MyApp"
             android:allowBackup="false"
@@ -30,7 +31,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.ZyAllActivity"></activity>
+        <activity android:name=".activity.ZySearchActivity"></activity>
+        <activity android:name=".activity.ZyAllActivity" />
         <activity android:name=".activity.SettleAccActivity" />
         <activity android:name=".activity.ConOrderActivity" />
         <activity android:name=".activity.EditSiteActivity" />
