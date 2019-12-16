@@ -2,6 +2,7 @@ package com.example.juanshichang.activity
 
 import android.app.Dialog
 import android.content.Intent
+import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.view.Gravity
@@ -39,12 +40,12 @@ import rx.Subscriber
 import java.util.concurrent.ConcurrentHashMap
 
 class ShangPinZyContains : BaseActivity(), View.OnClickListener {
-    private var product_id:String? = null
+    private var product_id: String? = null
     private var dialog: Dialog? = null
     private var data: ZyProduct.Data? = null
     private var adapterSp: ShangPinXqAdapter? = null
     private var checkMap: ConcurrentHashMap<String, ArrayList<String>>? = null //这个是选择的数据集合
-    private var quantity:Int = 1 // 数量
+    private var quantity: Int = 1 // 数量
     //弹窗布局
     private var dShopImg: ImageView? = null  //小图
     private var dFinish: View? = null  //关闭
@@ -58,12 +59,12 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private var dLeaveWord: EditText? = null //留言
     private var dConfirm: TextView? = null //确定
     private var typeDialog: Int? = 0 //确定弹窗是 加购 1 还是 直接去购买 2
-    private var handler = object: Handler(){
+    private var handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            when(msg.what){
-                1 ->{
-                    if(Util.ifCurrentActivityTopStack(this@ShangPinZyContains)){
+            when (msg.what) {
+                1 -> {
+                    if (Util.ifCurrentActivityTopStack(this@ShangPinZyContains)) {
                         myLoading?.dismiss()
                         removeMessages(1)
                     }
@@ -71,6 +72,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             }
         }
     }
+
     override fun getContentView(): Int {
         return R.layout.activity_shang_pin_zy_contains
     }
@@ -93,7 +95,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
-                LiveDataBus.get().with("mainGo").value =  3 //返回到购物车
+                LiveDataBus.get().with("mainGo").value = 3 //返回到购物车
                 finish()
             }
             R.id.spZySC -> {
@@ -227,6 +229,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
     }
+
     //规格弹窗
     private fun PopDialog(dData: ZyProduct.Data, tag: String) { //tag 用于标识 是否已加入购物车等状态
         dialog = Dialog(this@ShangPinZyContains, R.style.Dialog)
@@ -244,7 +247,8 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         lp?.height = WindowManager.LayoutParams.WRAP_CONTENT
         window?.attributes = lp
         dialog?.show() //弹出dialog*/
-        val inflate = LayoutInflater.from(this@ShangPinZyContains).inflate(R.layout.shopdetails_diaog,null)
+        val inflate =
+            LayoutInflater.from(this@ShangPinZyContains).inflate(R.layout.shopdetails_diaog, null)
         //初始化控件
         inflate?.let {
             dShopImg = it.findViewById(R.id.dShopImg)
@@ -288,11 +292,11 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             }
             dMinusAmount?.setOnClickListener {
                 //减少--
-                if(quantity < 2){
+                if (quantity < 2) {
                     return@setOnClickListener
-                }else{
-                    quantity --
-                    if(quantity == 1){
+                } else {
+                    quantity--
+                    if (quantity == 1) {
                         dMinusAmount?.isEnabled = false
                     }
                 }
@@ -300,27 +304,26 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             }
             dAddAmount?.setOnClickListener {
                 //增加数量
-                if(quantity >= 99){
+                if (quantity >= 99) {
                     dAddAmount?.isEnabled = false
                     return@setOnClickListener
-                }else{
-                    quantity ++
+                } else {
+                    quantity++
                 }
-                if(quantity == 2){ //设置 - 可点击
+                if (quantity == 2) { //设置 - 可点击
                     dMinusAmount?.isEnabled = true
                 }
                 dAmount?.text = "$quantity"
             }
             dConfirm?.setOnClickListener {
                 //确定
-                checkMap= dAdapter?.getAllCheck() as  ConcurrentHashMap//把选中的信息返回
+                checkMap = dAdapter?.getAllCheck() as ConcurrentHashMap//把选中的信息返回
                 showProgressDialog()
-                if(typeDialog == 1){ //加入购物车
-                    addShopCar(product_id!!,quantity,checkMap!!)
-                }else if(typeDialog == 2){ //立即购买
-//                    addShopCar(product_id!!,quantity,checkMap!!) //先加入购物车
-
-                    dismissProgressDialog()
+                if (typeDialog == 1) { //加入购物车
+                    addShopCar(product_id!!, quantity, checkMap!!,1)
+                } else if (typeDialog == 2) { //立即购买
+                    addShopCar(product_id!!, quantity, checkMap!!,2)
+                    showProgressDialog()
                 }
                 dialog?.dismiss()
             }
@@ -371,10 +374,18 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             })
     }
 
-    private fun addShopCar(productId: String,quantity:Int,checkMap:ConcurrentHashMap<String,ArrayList<String>>?) {
+    /**
+     * @param type  参数判定 1:接入购物车  2立即购买
+     */
+    private fun addShopCar(
+        productId: String,
+        quantity: Int,
+        checkMap: ConcurrentHashMap<String, ArrayList<String>>?,
+        type: Int = 1
+    ) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.CARTADD,
-            NewParameter.getAddSCMap(productId,quantity,checkMap!!),
+            NewParameter.getAddSCMap(productId, quantity, checkMap!!),
             object : Subscriber<String>() {
                 override fun onNext(t: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
@@ -390,13 +401,20 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            this@ShangPinZyContains.runOnUiThread {
-                                if(typeDialog == 1){
-                                    showMyLoadD(QMUITipDialog.Builder.ICON_TYPE_SUCCESS,"加购成功",true)
-                                    handler.sendEmptyMessageDelayed(1,1500)
-                                }
-                                if(typeDialog == 2){
-
+                            if (type == 1) {
+                                showMyLoadD(QMUITipDialog.Builder.ICON_TYPE_SUCCESS, "加购成功", true)
+                                handler.sendEmptyMessageDelayed(1, 1500)
+                            }
+                            if (typeDialog == 2) { //立即购买  加入购物车 并提交订单
+                                dismissProgressDialog()
+                                val data = jsonObj.getJSONObject("data")
+                                data.let {
+                                    val cartId : String= it.getString("cart_id")
+                                    val  intent = Intent(this@ShangPinZyContains,ConOrderActivity::class.java)
+                                    val bundle = Bundle()
+                                    bundle.putStringArrayList("checkAll", arrayListOf<String>(cartId))
+                                    intent.putExtra("bundle",bundle)
+                                    startActivity(intent)
                                 }
                             }
                         }
@@ -413,7 +431,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 override fun onError(e: Throwable?) {
                     LogTool.e("onCompleted", "商品加购物车请求失败: ${e.toString()}")
                     this@ShangPinZyContains.runOnUiThread {
-                        ToastUtil.showToast(this@ShangPinZyContains,"网络异常,请稍后重试...")
+                        ToastUtil.showToast(this@ShangPinZyContains, "网络异常,请稍后重试...")
                     }
                 }
             })

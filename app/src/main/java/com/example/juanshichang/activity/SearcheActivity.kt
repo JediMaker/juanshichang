@@ -74,25 +74,30 @@ class SearcheActivity : BaseActivity(), View.OnClickListener {
             }
             etsearch -> {//搜索框
                 val str = getEditText()
-                if(!TextUtils.isEmpty(str)){
-                    ToastTool.showToast(this@SearcheActivity, "开始寻找...")
-                    val intent = Intent(this@SearcheActivity,ClassTypeActivity::class.java)
-                    intent.putExtra("keyword",str)
+                if (!TextUtils.isEmpty(str)) {
+                    /* val intent = Intent(this@SearcheActivity,ClassTypeActivity::class.java)
+                     intent.putExtra("keyword",str)
+                     startActivity(intent)*/
+                    val intent = Intent(this@SearcheActivity, ZySearchActivity::class.java)
+                    intent.putExtra("search", str)
                     startActivity(intent)
                     finish()
-                }else{
-                    LogTool.e("onclick","点击了搜索 但是没卵用....")
+                } else {
+                    LogTool.e("onclick", "点击了搜索 但是没卵用....")
                 }
             }
             mSearchBt -> {//搜索按钮
                 val str = getEditText()
-                if(!TextUtils.isEmpty(str)){
+                if (!TextUtils.isEmpty(str)) {
                     ToastTool.showToast(this@SearcheActivity, "开始寻找...")
-                    val intent = Intent(this@SearcheActivity,ClassTypeActivity::class.java)
+                    /*val intent = Intent(this@SearcheActivity,ClassTypeActivity::class.java)
                     intent.putExtra("keyword",str)
+                    startActivity(intent)*/
+                    val intent = Intent(this@SearcheActivity, ZySearchActivity::class.java)
+                    intent.putExtra("search", str)
                     startActivity(intent)
                     finish()
-                }else{
+                } else {
                     ToastUtil.showToast(this@SearcheActivity, "请输入关键字搜索!!!")
                 }
 

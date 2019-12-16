@@ -1,11 +1,14 @@
 package com.example.juanshichang.activity
 
+import android.content.Intent
 import android.os.Handler
 import android.os.Message
+import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.example.juanshichang.R
 import com.example.juanshichang.adapter.OrdersAdapter
 import com.example.juanshichang.base.*
@@ -86,8 +89,18 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                 view: View?,
                 position: Int
             ) {
-                if(view?.id == R.id.goPay){
-                    ToastUtil.showToast(this@OrderFormActivity,"$position")
+                when(view?.id){
+                    R.id.goPay ->{ //去支付
+                        ToastUtil.showToast(this@OrderFormActivity,"$position")
+
+                    }
+                    R.id.orderGo ->{ //查看订单详情
+                        ordersListData?.let {
+                            val intent  = Intent(this@OrderFormActivity,OrderDetailActivity::class.java)
+                            intent.putExtra("orderid",ordersAdpater!!.data[position].order_id)
+                            startActivity(intent)
+                        }
+                    }
                 }
             }
 

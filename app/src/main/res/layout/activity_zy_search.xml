@@ -12,7 +12,7 @@
             android:id="@+id/topLy"
             layout="@layout/activity_seek_bar"/>
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/zyRecycler"
+            android:id="@+id/zySRec"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"

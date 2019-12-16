@@ -1,5 +1,9 @@
 package com.example.juanshichang.bean
-
+/**
+ * @作者: yzq
+ * @创建日期: 2019/12/14 23:59
+ * @文件作用:
+ */
 class ZySearchBean {
     data class ZySearchBeans(
         var `data`: Data = Data(),

@@ -42,6 +42,7 @@ class OrdersAdapter() :
                 ordersStateOne?.textColorResource = R.color.orders_state  //绿色
             }
         }
+        help?.addOnClickListener(R.id.orderGo) //设置查看订单详情
         //设置公共的参数
         help?.setText(R.id.createDate, data?.date_added)
             ?.setText(R.id.ordersTitle, data?.products!![0].name)

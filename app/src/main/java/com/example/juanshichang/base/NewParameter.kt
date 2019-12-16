@@ -318,6 +318,24 @@ class NewParameter {
             map.put("category_id",category_id)
             return map
         }
+        //商品搜索
+        fun getSearchMap(search:String):Map<String, String>{
+            baseList.clear()
+            baseList.add("route=app/search")
+            baseList.add("search=$search")
+            val map = fengMap(0)
+            map.put("search",search)
+            return map
+        }
+        //商品详情
+        fun getOrderDhMap(order_id:String):Map<String, String>{
+            baseList.clear()
+            baseList.add("route=app/order")
+            baseList.add("order_id=$order_id")
+            val map = fengMap(1)
+            map.put("order_id",order_id)
+            return map
+        }
         //--------------------------------------------------------------------------------------------------------------
         //下面是解析购物车返回集合
         private fun getBaseCheckList(checkMap: ConcurrentHashMap<String, ArrayList<String>>): String {

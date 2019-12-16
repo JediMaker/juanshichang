@@ -57,7 +57,10 @@
             </RelativeLayout>
             <View   android:background="@color/set_linear"
                     android:layout_width="match_parent" android:layout_height="1px"/>
-            <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <RelativeLayout
+                    android:id="@+id/orderGo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 <!--                com.qmuiteam.qmui.widget.QMUIRadiusImageView-->
                 <ImageView
                         android:id="@+id/ordersImage"

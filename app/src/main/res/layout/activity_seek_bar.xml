@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="96px"
                 android:maxLines="1"
+                android:maxLength="360"
                 android:singleLine="true"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
