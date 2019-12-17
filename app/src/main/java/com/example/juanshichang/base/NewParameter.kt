@@ -300,6 +300,15 @@ class NewParameter {
             maps.put("address_id",address_id)
             return maps
         }
+        //完成待支付订单
+        fun getCheckWait(order_id: String):Map<String, String>{
+            baseList.clear()
+            baseList.add("order_id=$order_id")
+            baseList.add("route=app/checkout/checkout")
+            val map = fengMap2(1)
+            map.put("order_id",order_id)
+            return map
+        }
         //商品列表分类请求
         fun getNewClassMap(parent_category_id:String):Map<String, String>{
             baseList.clear()

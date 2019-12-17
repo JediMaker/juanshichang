@@ -86,6 +86,7 @@ interface Api {
         val NEWCATEGORYCON = "/index.php?route=app/category/goods" //商品列表
         val ADDRESSZONES = "/index.php?route=app/address/zones" //地址列表参数
         val NEWAEARCH = "/index.php?route=app/search" //商品搜索接口
+        val CHECKOUTXX = "/index.php?route=app/checkout/checkout" //订单列表页面去支付调用
         //------------------------------------ --------------- end ------------------------------------------------
         //聚合数据Key集
         val IDKey = "8bc635e7345dd2e160df47c7ed386818" //身份证实名信息

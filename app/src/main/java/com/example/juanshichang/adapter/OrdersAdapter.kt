@@ -17,6 +17,7 @@ class OrdersAdapter() :
     override fun convert(help: BaseViewHolder?, data: OrdersBeanT.Data?) {
         val status = data?.status
         val ordersStateOne = help?.getView<TextView>(R.id.ordersStateOne)
+        help?.setGone(R.id.botT, false)  //待付款页面 隐藏
         when (status) {
             //等待付款
             "已提交" -> {

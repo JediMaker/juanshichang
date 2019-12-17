@@ -38,6 +38,8 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
     private var cartList: ArrayList<String>? = null
     private var iData: SettleAccBean.SettleAccBeans? = null
     private val ALiPAY_FLAG: Int = 1
+    //从订单列表进入
+    private var orderId: String? = null
     private val mHandler = object : Handler() {
         override fun handleMessage(msg: Message) {
 //            super.handleMessage(msg)
@@ -71,7 +73,7 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
         StatusBarUtil.addStatusViewWithColor(this@SettleAccActivity, R.color.white)
-        if (null != intent.getBundleExtra("bundle")) {
+        if (null != intent.getBundleExtra("bundle")) { //正常购物车进入流程
             val bundle = intent.getBundleExtra("bundle")
             address_id = bundle.getString("address_id")
             cartList = bundle.getStringArrayList("checkAll")
@@ -82,7 +84,13 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
                 ToastUtil.showToast(this@SettleAccActivity, "网络异常,请稍后重新提交订单")
                 finish()
             }
-        } else {
+        } else if(null != intent.getStringExtra("orderid")){ //从订单列表进入流程
+            orderId = intent.getStringExtra("orderid")
+            orderId?.let {
+                showProgressDialog()
+                waitOrderFrom(it)
+            }
+        }else {
             ToastUtil.showToast(this@SettleAccActivity, "数据异常,请稍后重试。")
             finish()
         }
@@ -164,7 +172,46 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
                 }
             })
     }
+    //处理待支付订单
+    private fun waitOrderFrom(order_id:String) {
+        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
+            Api.CHECKOUTXX,
+            NewParameter.getCheckWait(order_id),
+            object : Subscriber<String>() {
+                override fun onNext(t: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(
+                                this@SettleAccActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            val data = Gson().fromJson(t, SettleAccBean.SettleAccBeans::class.java)
+                            iData = data
+                            val price = data.data.total
+                            val priceStr = "￥${UtilsBigDecimal.mul(price, 1.toDouble(), 2)}"
+                            endPrice.text = priceStr
+                        }
+                    }
+                }
 
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "订单完成请求完成")
+                    dismissProgressDialog()
+                }
+
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onCompleted", "订单完成请求失败: ${e.toString()}")
+                    finish()
+                }
+            })
+    }
     override fun onDestroy() {
         super.onDestroy()
         mHandler.removeCallbacksAndMessages(null)

@@ -11,6 +11,7 @@ import com.example.juanshichang.base.NewParameter
 import com.example.juanshichang.bean.ZySearchBean
 import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.LogTool
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_order_detail.*
@@ -24,6 +25,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
+        StatusBarUtil.addStatusViewWithColor(this@OrderDetailActivity, R.color.white)
         if(null != intent.getStringExtra("orderid")){
             orderId = intent.getStringExtra("orderid")
             getOrderData(orderId)

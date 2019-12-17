@@ -67,7 +67,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
 //                getOrders(0,20)
                 orderList()
             }
-        },900)
+        },300)
     }
 
     override fun onClick(v: View?) {
@@ -91,8 +91,12 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
             ) {
                 when(view?.id){
                     R.id.goPay ->{ //去支付
-                        ToastUtil.showToast(this@OrderFormActivity,"$position")
-
+                        ordersListData?.let {
+                            val intent  = Intent(this@OrderFormActivity,SettleAccActivity::class.java)
+                            intent.putExtra("orderid",ordersAdpater!!.data[position].order_id)
+                            startActivity(intent)
+                            finish()
+                        }
                     }
                     R.id.orderGo ->{ //查看订单详情
                         ordersListData?.let {
@@ -169,7 +173,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                             }
                             dismissProgressDialog()
                         }
-                    },1000)
+                    },500)
                 }else{
                     ToastUtil.showToast(this@OrderFormActivity,"您还没有任何订单")
                 }
