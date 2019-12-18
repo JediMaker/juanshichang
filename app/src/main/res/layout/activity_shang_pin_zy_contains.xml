@@ -168,11 +168,13 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginRight="250px"
                                         android:singleLine="true"
+                                        android:maxLength="10"
                                         android:ellipsize="end"
                                         android:textColor="@color/main_text"
                                         android:text="萌象自营"
                                         android:textSize="16sp"/>
                                 <LinearLayout
+                                        android:visibility="gone"
                                         android:id="@+id/goZyshop"
                                         android:orientation="horizontal"
                                         android:layout_gravity="center_vertical"
@@ -200,7 +202,7 @@
                             </LinearLayout>
 
                             <LinearLayout
-
+                                    android:visibility="gone"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center_vertical"
@@ -405,14 +407,14 @@
 
                  </LinearLayout>-->
                 <LinearLayout
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:paddingLeft="45px"
                         android:paddingRight="45px"
                         android:paddingBottom="20px"
                         android:paddingTop="20px"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                    <TextView
+                    <!--<TextView
                             android:text="推荐词"
                             android:textColor="@color/label_color"
                             android:textSize="27px"
@@ -420,7 +422,51 @@
                             android:paddingRight="10px"
                             android:background="@drawable/shangpin_title_pp"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"/>-->
+                    <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                        <View
+                                android:background="@drawable/shangpin_one"
+                                android:layout_width="9px"
+                                android:layout_height="9px"/>
+                        <View
+                                android:background="@drawable/shangpin_two"
+                                android:layout_marginLeft="10px"
+                                android:layout_width="12px"
+                                android:layout_height="12px"/>
+                        <View
+                                android:background="@drawable/shangpin_three"
+                                android:layout_marginLeft="10px"
+                                android:layout_width="15px"
+                                android:layout_height="15px"/>
+                        <TextView
+                                android:layout_marginRight="45px"
+                                android:layout_marginLeft="45px"
+                                android:paddingBottom="15px"
+                                android:text="商品描述"
+                                android:textColor="@color/main_text"
+                                android:textSize="46px"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        <View
+                                android:background="@drawable/shangpin_three"
+                                android:layout_marginRight="10px"
+                                android:layout_width="15px"
+                                android:layout_height="15px"/>
+                        <View
+                                android:background="@drawable/shangpin_two"
+                                android:layout_marginRight="10px"
+                                android:layout_width="12px"
+                                android:layout_height="12px"/>
+                        <View
+                                android:background="@drawable/shangpin_one"
+                                android:layout_width="9px"
+                                android:layout_height="9px"/>
+                    </LinearLayout>
                     <TextView
                             android:id="@+id/shangPinJs"
                             tools:text="hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"

@@ -1,13 +1,18 @@
 package com.example.juanshichang.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
+import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.juanshichang.R
+import com.example.juanshichang.adapter.OrderDetailAdapter
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.NewParameter
+import com.example.juanshichang.bean.OrderDetailBean
 import com.example.juanshichang.bean.ZySearchBean
 import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.LogTool
@@ -17,9 +22,15 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_order_detail.*
 import org.json.JSONObject
 import rx.Subscriber
-
+/**
+ * @作者: yzq
+ * @创建日期: 2019/12/18 17:42
+ * @文件作用: 订单详情
+ */
 class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     private var orderId:String = ""
+    private var data:OrderDetailBean.Data? = null
+    private var oDAdapter:OrderDetailAdapter? = null
     override fun getContentView(): Int {
         return R.layout.activity_order_detail
     }
@@ -28,6 +39,8 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         StatusBarUtil.addStatusViewWithColor(this@OrderDetailActivity, R.color.white)
         if(null != intent.getStringExtra("orderid")){
             orderId = intent.getStringExtra("orderid")
+            oDAdapter = OrderDetailAdapter()
+            oDList.adapter = oDAdapter
             getOrderData(orderId)
         }else{
             ToastUtil.showToast(this@OrderDetailActivity,"暂无订单状态信息")
@@ -40,6 +53,16 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
         applyTk.setOnClickListener(this) //申请退款
         alignPay.setOnClickListener(this) //再次购买
         ddCopy.setOnClickListener(this) //复制订单编号
+        oDAdapter?.setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener{
+            override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
+                data?.let {
+                    val id = it.products
+                    val intent = Intent(this@OrderDetailActivity,ShangPinZyContains::class.java)
+                    intent.putExtra("product_id",id[position].product_id)
+                    startActivity(intent)
+                }
+            }
+        })
     }
 
     override fun onClick(v: View?) {
@@ -47,13 +70,18 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
             R.id.oDRet ->{
                 finish()
             }
-            R.id.applyTk ->{
+            R.id.applyTk ->{ //申请退款
 
             }
-            R.id.alignPay ->{
-
+            R.id.alignPay ->{ //再次购买
+                data?.let {
+                    val id = it.products
+                    val intent = Intent(this@OrderDetailActivity,ShangPinZyContains::class.java)
+                    intent.putExtra("product_id",id[0].product_id)
+                    startActivity(intent)
+                }
             }
-            R.id.ddCopy ->{
+            R.id.ddCopy ->{ // 复制订单号
 
             }
         }
@@ -71,7 +99,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-
+                            val bean = Gson().fromJson(str,OrderDetailBean.OrderDetailBeans::class.java)
+                            data = bean.data
+                            setUIData(data)
                         }
                     }
                 }
@@ -84,5 +114,27 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     LogTool.e("onError", "商品详情 Error")
                 }
             })
+    }
+
+    private fun setUIData(data: OrderDetailBean.Data?) {
+        data?.let {
+            oDAdapter?.setNewData(it.products)
+            if(it.products.size!=0){
+                val v:View = View.inflate(this@OrderDetailActivity,R.layout.order_detail_end,null)
+                var sum:Int = 0
+                for (i in 0 until it.products.size){
+                    sum = + it.products[i].quantity.toInt()
+                }
+                v.findViewById<TextView>(R.id.rigPrice).text = it.totals[0].text
+                v.findViewById<TextView>(R.id.parentTit).text ="共$sum 件商品"
+                oDAdapter?.addFooterView(v)
+            }
+            xdDate.text = it.date_added
+            //地址信息
+            val site = it.shipping_address
+            oDName.text = site.name
+            oDPhone.text = site.telephone
+            oDSite.text = "${site.country} ${site.city} ${site.address_1}"
+        }
     }
 }

@@ -259,9 +259,19 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             dMinusAmount = it.findViewById(R.id.dMinusAmount)
             dAmount = it.findViewById(R.id.dAmount)
             dAddAmount = it.findViewById(R.id.dAddAmount)
-            dLeaveWord = it.findViewById(R.id.dLeaveWord)
+            dLeaveWord = it.findViewById(R.id.dLeaveWord) //备注
             dConfirm = it.findViewById(R.id.dConfirm)
             dialog?.setContentView(inflate)
+            if(dData.options.size!=0){ //这里动态显示 留言框
+                val dt = dData.options
+                for (i in 0 until dt.size){
+                    if(dt[i].type.contentEquals("textarea")){
+                        dLeaveWord?.visibility = View.VISIBLE
+                        dLeaveWord?.hint = dt[i].name
+                        break
+                    }
+                }
+            }
             val dialogWindow = dialog?.window
             dialogWindow?.setGravity(Gravity.BOTTOM)
             dialogWindow?.setWindowAnimations(R.style.mystyle)//添加动画

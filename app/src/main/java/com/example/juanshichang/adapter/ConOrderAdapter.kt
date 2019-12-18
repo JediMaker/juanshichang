@@ -12,7 +12,11 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.example.juanshichang.R
 import com.example.juanshichang.bean.ConOrderBean
 import com.example.juanshichang.utils.glide.GlideUtil
-
+/**
+ * @作者: yzq
+ * @创建日期: 2019/12/18 17:32
+ * @文件作用: 与 OrderDetailAdapter 共用布局
+ */
 class ConOrderAdapter : BaseQuickAdapter<ConOrderBean.Product, BaseViewHolder>(R.layout.item_sub_order_o){
     private var fatData:ConOrderBean.ConOrderBeans? = null
     override fun convert(helper: BaseViewHolder?, item: ConOrderBean.Product?) {

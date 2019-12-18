@@ -156,6 +156,7 @@
             </LinearLayout>
 
             <EditText
+                    android:visibility="gone"
                     android:id="@+id/dLeaveWord"
                     android:layout_width="0dp"
                     android:layout_height="70dp"
@@ -163,7 +164,6 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginBottom="30dp"
                     android:background="@color/ff_back"
                     android:hint="留言"
                     android:gravity="top|left"
@@ -186,6 +186,7 @@
 <!--    app:layout_constraintBottom_toBottomOf="parent"-->
     <TextView
             android:id="@+id/dConfirm"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="确定"
             android:textSize="16sp"

@@ -8,6 +8,7 @@ import android.widget.CheckBox
 import android.widget.ExpandableListView
 import android.widget.LinearLayout
 import android.widget.TextView
+import butterknife.OnClick
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.adapter.ShoppingCarAdapter
@@ -20,6 +21,7 @@ import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
+import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
@@ -40,6 +42,9 @@ class ShopListFragment : BaseFragment() {
     private var nowPrice: TextView? = null
     private var goPayment: TextView? = null
     private var goodsAdapter: ShoppingCarAdapter? = null
+    private var shopBotBar:LinearLayout? = null
+    private var emptyIv:View? = null
+    private var emptyBut:TextView? = null
     override fun getLayoutId(): Int {
         return R.layout.fragment_shop_list
     }
@@ -58,6 +63,9 @@ class ShopListFragment : BaseFragment() {
             allCheck = it.findViewById<CheckBox>(R.id.allCheck)
             nowPrice = it.findViewById<TextView>(R.id.nowPrice)
             goPayment = it.findViewById<TextView>(R.id.goPayment)
+            shopBotBar = it.findViewById<LinearLayout>(R.id.shopBotBar)
+            emptyIv = it.findViewById<View>(R.id.emptyIv)
+            emptyBut = it.findViewById<TextView>(R.id.goGG)
         }
         goodsAdapter =
             ShoppingCarAdapter(mContext, llSelectAll, allCheck, shopRig, nowPrice, goPayment)
@@ -67,7 +75,14 @@ class ShopListFragment : BaseFragment() {
     override fun initData() {
 
     }
-
+    @OnClick(R.id.goGG)
+    fun onClick(v:View){
+        when(v.id){
+            R.id.goGG->{
+                LiveDataBus.get().with("mainGo").value = 0
+            }
+        }
+    }
     override fun onResume() {
         super.onResume()
         if (Util.hasLogin(mContext!!)) {
@@ -107,7 +122,18 @@ class ShopListFragment : BaseFragment() {
                         } else {
                             LogTool.e("shopcar", t)
                             cargoData = Gson().fromJson(t, CartBean.CartBeans::class.java)
-                            cargoData.let {
+                            cargoData?.let {
+                                if(it.data.products.size!=0){
+                                    emptyIv?.visibility = View.GONE
+                                    emptyBut?.visibility = View.GONE
+                                    shopBotBar?.visibility = View.VISIBLE
+                                    shopRig?.isEnabled = true
+                                }else{
+                                    shopBotBar?.visibility = View.GONE
+                                    emptyIv?.visibility = View.VISIBLE
+                                    emptyBut?.visibility = View.VISIBLE
+                                    shopRig?.isEnabled = false
+                                }
                                 goodsAdapter?.setData(it)
                                 goodsList?.collapseGroup(0) //https://www.jianshu.com/p/2e5eba2421c4
                                 goodsList?.expandGroup(0) //展开                            }

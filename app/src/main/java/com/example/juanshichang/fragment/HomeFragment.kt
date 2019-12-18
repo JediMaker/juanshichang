@@ -221,7 +221,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             }
         }
     }
-    //获取地址列表
+    //获取主页面数据
     private fun getHome(vararg tag:String) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.HOME,

@@ -33,6 +33,7 @@ import rx.Subscriber
  * @作者: yzq
  * @创建日期: 2019/8/26 17:47
  * @文件作用: 主页面的其它页面
+ *  废弃的页面 用于
  */
 class OneOtherFragment : BaseFragment() {
     private var emptyView:View? = null

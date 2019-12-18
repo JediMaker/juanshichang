@@ -15,6 +15,7 @@ import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.google.gson.Gson
+import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
 import kotlinx.android.synthetic.main.activity_zy_all.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -85,10 +86,23 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
                             e.printStackTrace();
                         }
                         if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                            ToastUtil.showToast(
-                                this@ZyAllActivity,
-                                jsonObj.optString(JsonParser.JSON_MSG)
-                            )
+                            if(jsonObj.optString(JsonParser.JSON_CODE).equals("10007")){ //对于无商品的处理
+                                zyAdapter?.emptyView = View.inflate(
+                                    this@ZyAllActivity,
+                                    R.layout.activity_not_null,
+                                    null
+                                )
+                                showMyLoadD(QMUITipDialog.Builder.ICON_TYPE_FAIL, "暂无商品", true)
+                                zyRecycler?.postDelayed(kotlinx.coroutines.Runnable {
+                                    myLoading?.dismiss()
+                                    finish()
+                                },800)
+                            }else{
+                                ToastUtil.showToast(
+                                    this@ZyAllActivity,
+                                    jsonObj.optString(JsonParser.JSON_MSG)
+                                )
+                            }
                         } else {
                             val data = Gson().fromJson(t, ZyAllBean.ZyAllBeans::class.java)
                             zyData = data.data.products

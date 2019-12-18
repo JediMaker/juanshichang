@@ -28,6 +28,7 @@ import com.example.juanshichang.activity.WebActivity
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
@@ -36,6 +37,7 @@ import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import org.jetbrains.anko.activityManager
 import org.jetbrains.anko.runOnUiThread
+import org.json.JSONException
 import org.json.JSONObject
 import org.w3c.dom.Text
 import rx.Subscriber
@@ -48,7 +50,8 @@ import java.io.IOException
  */
 class OneFragment : BaseFragment() {
     private var tabIndicator: Int = 0 //Tab 下标值
-    private var tabData: List<TabOneBean.Category>? = null
+//    private var tabData: List<TabOneBean.Category>? = null
+    private var tabNData:List<HomeBean.Categroy>? = null
     private var mOr: RelativeLayout? = null
     private var mTl: LinearLayout? = null
     private var tEdit: EditText? = null
@@ -60,16 +63,17 @@ class OneFragment : BaseFragment() {
     private var fragmentList: ArrayList<Fragment>? = null
     //    private var oneFragment: SelectionFragment? = null
     private var oneFragment: HomeFragment? = null
-    private var twoFragment: OneOtherFragment? = null
+    private var twoFragment: HomeOtherFragment? = null
     var handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
                 2 -> {
-                    if (tabData != null) {
-                        setTab(tabData)
+                    if (tabNData != null) {
+                        setTab(tabNData)
                     } else {
-                        sendEmptyMessageDelayed(2, 50)
+                        getHomeTab()
+                        sendEmptyMessageDelayed(2, 100)
                     }
                 }
             }
@@ -96,10 +100,10 @@ class OneFragment : BaseFragment() {
         tEdit = mBaseView?.findViewById<EditText>(R.id.mainTEdit)
         tSearch = mBaseView?.findViewById<TextView>(R.id.mainTSearch)
         mainVp?.setPagingEnabled(false) //设置ViewPager不可滑动
-        getOneT(0)
+//        getOneT(0)
         fragmentList = arrayListOf()
         oneFragment = HomeFragment()
-        twoFragment = OneOtherFragment()
+        twoFragment = HomeOtherFragment()
         fragmentList!!.add(oneFragment!!)
         fragmentList!!.add(twoFragment!!)
         mainAdapter = NormalAdapter(childFragmentManager, fragmentList as List<Fragment>)
@@ -159,7 +163,7 @@ class OneFragment : BaseFragment() {
                 oneFragment = HomeFragment()
             }
             if (twoFragment == null) {
-                twoFragment = OneOtherFragment()
+                twoFragment = HomeOtherFragment()
             }
             fragmentList!!.add(oneFragment!!)
             fragmentList!!.add(twoFragment!!)
@@ -193,7 +197,7 @@ class OneFragment : BaseFragment() {
         })
     }
 
-    //获取列表数据 unlogin
+    //获取列表数据 unlogin  todo 废弃
     private fun getOneT(parent_id: Int) {
         HttpManager.getInstance()
             .post(Api.CATEGORY, Parameter.getTabData(parent_id, 0), object : Subscriber<String>() {
@@ -206,7 +210,7 @@ class OneFragment : BaseFragment() {
                             val data = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
                             val list = data.data.category_list
                             if (list.size != 0) {
-                                tabData = list
+//                                tabData = list
                             }
                         }
                     }
@@ -221,7 +225,44 @@ class OneFragment : BaseFragment() {
                 }
             })
     }
+    //这个 还是主页面接口 但是 只剥离需要 categroy
+    private fun getHomeTab() {
+        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
+            Api.HOME,
+            NewParameter.getHomeMap(),
+            object : Subscriber<String>() {
+                override fun onNext(t: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            ToastUtil.showToast(
+                                mContext!!,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            val data: HomeBean.HomeBeans =
+                                Gson().fromJson(t, HomeBean.HomeBeans::class.java)
+                            data?.let {
+                                tabNData = data.data.categroy
+                            }
+                        }
+                    }
+                }
 
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "HomeTab列表请求完成")
+                }
+
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onError", "HomeTab列表请求失败: ${e.toString()}")
+                }
+            })
+    }
     companion object {
         var WebUrl: String? = null
         //获取链接 跳转
@@ -273,7 +314,7 @@ class OneFragment : BaseFragment() {
         }
     }
 
-    private fun setTab(tabData: List<TabOneBean.Category>?) {
+    private fun setTab(tabData: List<HomeBean.Categroy>?) {//TabOneBean.Category
         val dataTab = ArrayList<String>()
         if (tabData != null) {
             dataTab.add("精选")
