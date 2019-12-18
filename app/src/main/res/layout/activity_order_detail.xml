@@ -112,6 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         <TextView
+                android:visibility="gone"
                 android:id="@+id/applyTk"
                 app:layout_constraintRight_toLeftOf="@+id/alignPay"
                 app:layout_constraintTop_toTopOf="parent"
@@ -180,6 +181,7 @@
                         android:background="@color/set_linear" />
 
                 <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -241,7 +243,7 @@
                             android:gravity="end"
                             android:textColor="@color/txt_gray"
                             android:textSize="12sp"
-                            tools:text="支付宝支付" />
+                            android:text="在线支付" />
                 </LinearLayout>
 
                 <View
@@ -272,7 +274,7 @@
                             android:gravity="end"
                             android:textColor="@color/txt_gray"
                             android:textSize="12sp"
-                            tools:text="支付宝支付" />
+                            tools:text="2019-12-18 06:20:59" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

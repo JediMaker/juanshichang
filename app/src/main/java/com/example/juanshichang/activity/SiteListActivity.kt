@@ -67,20 +67,20 @@ class SiteListActivity : BaseActivity(), View.OnClickListener {
 //                            intent.putExtra("address_id",it[position].address_id)
                             intent.putExtra("data", it[position]) //传输序列化内容
                             startActivity(intent)
-                            ToastTool.showToast(this@SiteListActivity,"点击编辑")
+                            ToastTool.showToast(this@SiteListActivity, "点击编辑")
                         }
                     }
                     R.id.allCon -> { //跳转选择收货地址
                         if (!TextUtils.isEmpty(checkLocal)) {
                             adds?.let {
-                                val intent:Intent = Intent()
+                                val intent: Intent = Intent()
                                 val bund = Bundle()
                                 bund.putParcelable("data", it[position])
-                                intent.putExtra("bundle",bund)
+                                intent.putExtra("bundle", bund)
                                 setResult(2, intent)
                                 finish()
                             }
-                            ToastTool.showToast(this@SiteListActivity,"点击返回")
+                            ToastTool.showToast(this@SiteListActivity, "点击返回")
                         }
                     }
                 }
@@ -135,9 +135,12 @@ class SiteListActivity : BaseActivity(), View.OnClickListener {
 
                 override fun onError(e: Throwable?) {
                     LogTool.e("onCompleted", "地址列表请求失败: ${e.toString()}")
-                    this@SiteListActivity.runOnUiThread {
-                        finish()
-                    }
+                    //todo  接口数据为空 就有  com.google.gson.JsonSyntaxException 爆出....
+                    siteAdapter?.emptyView = View.inflate(
+                        this@SiteListActivity,
+                        R.layout.activity_not_null,
+                        null
+                    )
                 }
             })
     }

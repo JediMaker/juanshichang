@@ -32,11 +32,11 @@
 
             <View
                     android:id="@+id/scan_home"
-                    android:layout_width="78px"
-                    android:layout_height="78px"
+                    android:layout_width="@dimen/dp_26"
+                    android:layout_height="@dimen/dp_26"
                     android:background="@drawable/scan"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="47px"
+                    android:layout_marginLeft="15.67dp"
                     android:layout_marginRight="30dp"
             />
 
@@ -52,17 +52,17 @@
                 <TextView
                         android:id="@+id/etsearchs"
                         android:layout_width="match_parent"
-                        android:layout_height="100px"
+                        android:layout_height="@dimen/dp_33"
                         android:gravity="center_vertical"
                         android:text="粘贴宝贝标题，先领劵再购物"
                         android:paddingLeft="93px"
                         android:textSize="36px"/>
 
                 <ImageView
-                        android:layout_width="48px"
-                        android:layout_height="48px"
+                        android:layout_width="@dimen/dp_16"
+                        android:layout_height="@dimen/dp_16"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="35px"
+                        android:layout_marginLeft="@dimen/dp_12"
                         android:src="@drawable/ic_shop_search"/>
 
             </RelativeLayout>
@@ -70,13 +70,13 @@
             <View
                     android:id="@+id/message_home"
                     android:background="@drawable/mess_home"
-                    android:layout_width="78px"
-                    android:layout_height="73px"
+                    android:layout_width="@dimen/dp_26"
+                    android:layout_height="@dimen/dp_24"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:padding="9dp"
-                    android:layout_marginLeft="35px"
-                    android:layout_marginRight="48px"
+                    android:layout_marginLeft="11.7dp"
+                    android:layout_marginRight="16dp"
             />
 
 
@@ -85,7 +85,7 @@
         <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/mainTab"
                 android:layout_width="match_parent"
-                android:layout_height="80px"></net.lucode.hackware.magicindicator.MagicIndicator>
+                android:layout_height="@dimen/dp_27"></net.lucode.hackware.magicindicator.MagicIndicator>
 
         <com.example.juanshichang.utils.CustomViewPager
                 android:id="@+id/vpOne"
