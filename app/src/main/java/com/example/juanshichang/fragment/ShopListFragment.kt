@@ -127,12 +127,14 @@ class ShopListFragment : BaseFragment() {
                                     emptyIv?.visibility = View.GONE
                                     emptyBut?.visibility = View.GONE
                                     shopBotBar?.visibility = View.VISIBLE
-                                    shopRig?.isEnabled = true
+//                                    shopRig?.isEnabled = true
+                                    shopRig?.visibility = View.VISIBLE
                                 }else{
                                     shopBotBar?.visibility = View.GONE
                                     emptyIv?.visibility = View.VISIBLE
                                     emptyBut?.visibility = View.VISIBLE
-                                    shopRig?.isEnabled = false
+//                                    shopRig?.isEnabled = false
+                                    shopRig?.visibility = View.INVISIBLE
                                 }
                                 goodsAdapter?.setData(it)
                                 goodsList?.collapseGroup(0) //https://www.jianshu.com/p/2e5eba2421c4

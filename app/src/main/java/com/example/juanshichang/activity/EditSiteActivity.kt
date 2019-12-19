@@ -66,12 +66,16 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener {
                 removeIt.visibility = View.VISIBLE
                 //设置内容
                 val data = intent.getParcelableExtra<SiteBean.Addresse>("data")
+                val defId = intent.getStringExtra("defid")  //获取默认地址参数
                 data?.let {
                     address_id = it.address_id
                     sName.setText("王二哈")
                     sPhone.setText(it.iphone)
                     zone = it.zone
                     sAdDet.setText(it.address_detail)
+                    if(defId?.contentEquals(it.address_id)!!){
+                        defCheck.isChecked = true //默认地址设为选中
+                    }
                 }
             }
         } else {

@@ -262,10 +262,10 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             dLeaveWord = it.findViewById(R.id.dLeaveWord) //备注
             dConfirm = it.findViewById(R.id.dConfirm)
             dialog?.setContentView(inflate)
-            if(dData.options.size!=0){ //这里动态显示 留言框
+            if (dData.options.size != 0) { //这里动态显示 留言框
                 val dt = dData.options
-                for (i in 0 until dt.size){
-                    if(dt[i].type.contentEquals("textarea")){
+                for (i in 0 until dt.size) {
+                    if (dt[i].type.contentEquals("textarea")) {
                         dLeaveWord?.visibility = View.VISIBLE
                         dLeaveWord?.hint = dt[i].name
                         break
@@ -280,7 +280,11 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             lp?.y = 0
             dialogWindow?.attributes = lp
             //设置数据等
-            GlideUtil.loadImage(this@ShangPinZyContains, dData.images[0].thumb, dShopImg)
+            if (dData.images.size != 0) {
+                GlideUtil.loadImage(this@ShangPinZyContains, dData.images[0].thumb, dShopImg)
+            } else {//设置空数据
+                GlideUtil.loadImage(this@ShangPinZyContains, "", dShopImg)
+            }
             if (!dData.price.contains("¥")) { //设置现价
                 val xPrice = "¥${dData.price}"
                 dShopPrice?.text = Util.getGaudyStr(xPrice)
@@ -330,12 +334,15 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 checkMap = dAdapter?.getAllCheck() as ConcurrentHashMap//把选中的信息返回
                 showProgressDialog()
                 if (typeDialog == 1) { //加入购物车
-                    addShopCar(product_id!!, quantity, checkMap!!,1)
+                    addShopCar(product_id!!, quantity, checkMap!!, 1)
                 } else if (typeDialog == 2) { //立即购买
-                    addShopCar(product_id!!, quantity, checkMap!!,2)
+                    addShopCar(product_id!!, quantity, checkMap!!, 2)
                     showProgressDialog()
                 }
                 dialog?.dismiss()
+            }
+            if (quantity > 1) {
+                dMinusAmount?.isEnabled = true
             }
             dialog?.show()
         }
@@ -377,9 +384,12 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
 
                 override fun onError(e: Throwable?) {
                     LogTool.e("onCompleted", "Zy商品详情请求失败: ${e.toString()}")
-                    this@ShangPinZyContains.runOnUiThread {
-                        finish()
-                    }
+                    ToastTool.showToast(
+                        this@ShangPinZyContains,
+                        "返回数据error:${e.toString()}"
+                    )
+                    finish()
+
                 }
             })
     }
@@ -419,11 +429,17 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                                 dismissProgressDialog()
                                 val data = jsonObj.getJSONObject("data")
                                 data.let {
-                                    val cartId : String= it.getString("cart_id")
-                                    val  intent = Intent(this@ShangPinZyContains,ConOrderActivity::class.java)
+                                    val cartId: String = it.getString("cart_id")
+                                    val intent = Intent(
+                                        this@ShangPinZyContains,
+                                        ConOrderActivity::class.java
+                                    )
                                     val bundle = Bundle()
-                                    bundle.putStringArrayList("checkAll", arrayListOf<String>(cartId))
-                                    intent.putExtra("bundle",bundle)
+                                    bundle.putStringArrayList(
+                                        "checkAll",
+                                        arrayListOf<String>(cartId)
+                                    )
+                                    intent.putExtra("bundle", bundle)
                                     startActivity(intent)
                                 }
                             }

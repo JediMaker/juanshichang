@@ -22,6 +22,9 @@ class ConOrderBean {
         var address_detail: String = "",
         var address_id: String = "",
         var city: String = "",
+        var firstname: String = "",
+        var iphone: String = "",
+        var lastname: String = "",
         var zone: String = ""
     )
 
@@ -30,7 +33,7 @@ class ConOrderBean {
         var href: String = "",
         var model: String = "",
         var name: String = "",
-        var option: List<Option> = listOf(),
+        var option: List<Any> = listOf(),
         var price: String = "",
         var quantity: String = "",
         var recurring: String = "",
@@ -38,10 +41,5 @@ class ConOrderBean {
         var stock: Boolean = false,
         var thumb: String = "",
         var total: String = ""
-    )
-
-    data class Option(
-        var name: String = "",
-        var value: String = ""
     )
 }

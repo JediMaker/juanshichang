@@ -67,14 +67,30 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         if(Util.ifCurrentActivityTopStack(it) && !IsInternet.isNetworkAvalible(it)){//如果在前台 但是 无网络
                             it.dismissProgressDialog()
                             ToastUtil.showToast(it,"您的网络状态不佳,请检查网络...")
+                        }else if(Util.ifCurrentActivityTopStack(it) && IsInternet.isNetworkAvalible(it)){ //在前台并且有网络
+                            if(gList == null || bList == null){
+                                getHome()
+                            }else{
+                                setBanner(bList)
+                                rAdapter?.setNewData(rData)
+                                mContext?.dismissProgressDialog()
+                            }
                         }
                     }
                 }
-                3 ->{//用于结束 刷新的网络不佳问题
+                3 ->{//用于结束 刷新 的网络不佳问题
                     mContext?.let {
                         if(Util.ifCurrentActivityTopStack(it) && !IsInternet.isNetworkAvalible(it)){//如果在前台 但是 无网络
                             refresh?.setRefreshing(false)
                             ToastUtil.showToast(it,"您的网络状态不佳,请检查网络...")
+                        }else if(Util.ifCurrentActivityTopStack(it) && IsInternet.isNetworkAvalible(it)){ //在前台并且有网络
+                            if(gList == null || bList == null){
+                                getHome()
+                            }else{
+                                setBanner(bList)
+                                rAdapter?.setNewData(rData)
+                                refresh?.setRefreshing(false)
+                            }
                         }
                     }
                 }
@@ -105,7 +121,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         recycler?.adapter = rAdapter
     }
     override fun onRefresh() {
-        hand.sendEmptyMessageDelayed(3,3500)
+        hand.sendEmptyMessageDelayed(3,3000)
         recycler?.postDelayed(object :Runnable{
             override fun run() {
                 getHome("Refresh")
@@ -129,13 +145,17 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
             }).start()
         }
-        if(gList == null || bList == null){
+        if(rData == null || bList == null){
             mContext?.showProgressDialog()
             hand.sendEmptyMessageDelayed(2,3000)
             getHome()
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        //预留
+    }
     override fun onStart() {
         super.onStart()
         banner?.startAutoPlay()

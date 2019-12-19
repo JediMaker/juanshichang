@@ -45,7 +45,7 @@ class ShopDetailsAdapter() :
         if (item?.type?.contentEquals("radio")!! || item.type.contentEquals("select")) { //单选
             val radioList: ArrayList<String> = arrayListOf() //初始化单选集合
             if (item.required.contentEquals("1")) {//为1 必选 0 可选
-                if (!allMap?.containsKey("${item.product_option_id}")!!) {
+                if (!allMap?.containsKey("${item.product_option_id}")!! && data?.size!=0) {
                     radioList.add(data!![0].product_option_value_id) //todo 暂时先这么写
                     allMap?.put("${item.product_option_id}", radioList)
                 }
@@ -59,7 +59,7 @@ class ShopDetailsAdapter() :
         } else if (item.type.contentEquals("checkbox")) { //多选
             val checkboxList: ArrayList<String> = arrayListOf() //初始化多选集合
             if (item.required.contentEquals("1")) {//为1 必选 0 可选
-                if (!allMap?.containsKey("${item.product_option_id}")!!) {
+                if (!allMap?.containsKey("${item.product_option_id}")!! && data?.size!=0) {
                     checkboxList.add(data!![0]?.product_option_value_id) //todo 暂时先这么写
                     allMap?.put("${item.product_option_id}", checkboxList)
                 }

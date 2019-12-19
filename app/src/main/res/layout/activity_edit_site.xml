@@ -197,7 +197,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         <CheckBox
-                android:clickable="false"
+                android:checked="false"
                 android:id="@+id/defCheck"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"

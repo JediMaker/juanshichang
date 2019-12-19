@@ -32,6 +32,7 @@ import rx.Subscriber
 class SiteListActivity : BaseActivity(), View.OnClickListener {
     private var siteAdapter: SiteListAdapter? = null
     private var adds: List<SiteBean.Addresse>? = null
+    private var defId:String? = "" //默认地址id
     private var checkLocal: String? = null
     override fun getContentView(): Int {
         return R.layout.activity_site_list
@@ -66,6 +67,7 @@ class SiteListActivity : BaseActivity(), View.OnClickListener {
                             intent.putExtra("type", 2)
 //                            intent.putExtra("address_id",it[position].address_id)
                             intent.putExtra("data", it[position]) //传输序列化内容
+                            intent.putExtra("defid",defId)
                             startActivity(intent)
                             ToastTool.showToast(this@SiteListActivity, "点击编辑")
                         }
@@ -123,8 +125,9 @@ class SiteListActivity : BaseActivity(), View.OnClickListener {
                         } else {
                             val data: SiteBean.SiteBeans =
                                 Gson().fromJson(t, SiteBean.SiteBeans::class.java)
+                            defId = data.data.default_address_id
                             adds = data.data.addresses
-                            siteAdapter?.setNewData(adds)
+                            siteAdapter?.setMyData(adds,defId)
                         }
                     }
                 }

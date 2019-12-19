@@ -71,9 +71,10 @@ class OneFragment : BaseFragment() {
                 2 -> {
                     if (tabNData != null) {
                         setTab(tabNData)
+                        removeMessages(2)
                     } else {
                         getHomeTab()
-                        sendEmptyMessageDelayed(2, 100)
+                        sendEmptyMessageDelayed(2, 300)
                     }
                 }
             }
@@ -111,7 +112,7 @@ class OneFragment : BaseFragment() {
     }
 
     override fun initData() {
-        handler.sendEmptyMessageDelayed(2, 50)
+        getHomeTab() //网络请求
     }
 
     @SuppressLint("WrongConstant")
@@ -248,7 +249,9 @@ class OneFragment : BaseFragment() {
                             val data: HomeBean.HomeBeans =
                                 Gson().fromJson(t, HomeBean.HomeBeans::class.java)
                             data?.let {
+                                LogTool.e("tast", "HomeTab列表完成 数据${data.toString()}")
                                 tabNData = data.data.categroy
+                                handler.sendEmptyMessage(2)
                             }
                         }
                     }
@@ -256,6 +259,7 @@ class OneFragment : BaseFragment() {
 
                 override fun onCompleted() {
                     LogTool.e("onCompleted", "HomeTab列表请求完成")
+
                 }
 
                 override fun onError(e: Throwable?) {

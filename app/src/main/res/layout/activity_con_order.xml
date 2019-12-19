@@ -38,6 +38,7 @@
             android:background="@drawable/topimg"
             android:layout_width="match_parent"
             android:layout_height="1.8dp"/>
+
     <TextView
             android:id="@+id/ocName"
             tools:text="张三丰"
@@ -79,7 +80,18 @@
             android:layout_centerInParent="true"
             android:textColor="@color/txt_gray"
             android:textSize="11sp" />
-
+    <TextView
+            android:id="@+id/hintText"
+            android:visibility="visible"
+            android:layout_marginTop="@dimen/dp_24"
+            app:layout_constraintTop_toBottomOf="@+id/ocTopIv"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="暂无收货地址信息,点击添加"
+            android:textColor="@color/txt_gray"
+            android:textSize="@dimen/sp_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     <View
             android:id="@+id/siteRig"
             android:layout_width="7dp"

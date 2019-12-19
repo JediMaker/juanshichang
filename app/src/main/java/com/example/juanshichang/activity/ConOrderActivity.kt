@@ -61,8 +61,10 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
 
     override fun initData() {
         coRet.setOnClickListener(this) //返回
+        coSite.setOnClickListener(this)
         siteRig.setOnClickListener(this) //更改收货地址信息
         coPay.setOnClickListener(this) //确认提交订单
+        hintText.setOnClickListener(this) //无收货地址提示
     }
 
     override fun onClick(v: View?) {
@@ -70,6 +72,8 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
             coRet ->{
                 finish()
             }
+            hintText,  //无收货地址提示
+            coSite,
             siteRig ->{ //更换地址
                 val intent = Intent(this@ConOrderActivity,SiteListActivity::class.java)
                 intent.putExtra("checkLocal","true")
@@ -96,11 +100,12 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
             if(site.size > 0){
                 addresse = site[0]
                 addresseId = addresse?.address_id
-                ocName.text = addresse?.address_id
-                coPhone.text = "0371-110"
+                ocName.text = "${addresse?.firstname}${addresse?.lastname}"
+                coPhone.text = addresse?.iphone
                 coSite.text = "${addresse?.city} ${addresse?.address_detail}"
+                hintText.visibility = View.GONE
             }else{//无地址 处理
-
+                hintText.visibility = View.VISIBLE
             }
             //设置底部数据
             val totalSum = it.data.total
