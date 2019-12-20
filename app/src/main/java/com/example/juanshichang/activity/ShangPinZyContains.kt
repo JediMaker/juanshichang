@@ -92,11 +92,13 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.goShopCar -> {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                startActivity(intent)
-                LiveDataBus.get().with("mainGo").value = 3 //返回到购物车
-                finish()
+                if(Util.hasLogin(this)){
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    startActivity(intent)
+                    LiveDataBus.get().with("mainGo").value = 3 //返回到购物车
+                    finish()
+                }
             }
             R.id.spZySC -> {
 
