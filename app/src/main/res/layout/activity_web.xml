@@ -74,10 +74,10 @@
 
         </RelativeLayout>
 
-        <WebView
+        <com.example.juanshichang.utils.LollipopFixedWebView
                 android:id="@+id/mWebView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbarThumbHorizontal="@android:color/transparent"></WebView>
+                android:scrollbarThumbHorizontal="@android:color/transparent"></com.example.juanshichang.utils.LollipopFixedWebView>
     </LinearLayout>
 </LinearLayout>
