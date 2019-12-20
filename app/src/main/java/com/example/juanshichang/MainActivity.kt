@@ -43,12 +43,14 @@ class MainActivity : BaseActivity() {
     private var shopFragment: ShopListFragment? = null   //购物车
     private var fourFragment: FourFragment? = null
     private var normalAdapter: NormalAdapter? = null
-    private var bus =  LiveDataBus.get()
+    private var bus = LiveDataBus.get()
     // 用于确定 首页面Tab 是否处在第一个
-    private var topTabIsOne:Boolean = true
+    private var topTabIsOne: Boolean = true
+
     override fun getContentView(): Int {
         return R.layout.activity_main
     }
+
     override fun initView() {
         StatusBarUtil.addStatusViewWithColor(this@MainActivity, R.color.colorPrimary)
         setBottomView()
@@ -66,15 +68,17 @@ class MainActivity : BaseActivity() {
         fragmentList?.add(fourFragment!!)
 //            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request
         MyApp.requestPermission(this@MainActivity)
-        bus.with("mainTopStatusView",Int::class.java)
-            .observe(this,object : Observer<Int>{
+        bus.with("mainTopStatusView", Int::class.java)
+            .observe(this, object : Observer<Int> {
                 override fun onChanged(t: Int?) {
                     StatusBarUtil.addStatusViewWithBack(this@MainActivity, t!!)
                 }
             })
     }
+
     override fun initData() {
-        normalAdapter = NormalAdapter(supportFragmentManager, fragmentList!!)//supportFragmentManager
+        normalAdapter =
+            NormalAdapter(supportFragmentManager, fragmentList!!)//supportFragmentManager
         vp_main.adapter = normalAdapter
 //        vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载  todo 后期需调优Fragment为懒加载...
         val token = SpUtil.getIstance().user.usertoken
@@ -86,15 +90,16 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(!Util.hasLogin()){ //如果没有登录就关闭滑动
+        if (!Util.hasLogin()) { //如果没有登录就关闭滑动
             vp_main.setPagingEnabled(false)
-        }else{
-            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1){
+        } else {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
                 vp_main.setPagingEnabled(true) //如果登录 并且版本大于25 开启滑动
             }
         }
 
     }
+
     @SuppressLint("ResourceType")
     private fun setBottomView() {
 //        val xpp = resources.getXml(R.drawable.selector_tab_color)
@@ -103,62 +108,63 @@ class MainActivity : BaseActivity() {
             //如果SDK版本过低 就关闭 滑动事件 并启用 较Low 的旧版本状态栏
 //            val view = android.support.design.widget.BottomNavigationView(this@MainActivity)
             vp_main.setPagingEnabled(false)
-            views.visibility = View.VISIBLE
-            setTabBottom()
-        } else {
-            view.visibility = View.VISIBLE
-            setGoogleBottom()
+//            views.visibility = View.VISIBLE
+//            setTabBottom()
         }
-        bus.with("topisone",Boolean::class.java).observe(this,object : Observer<Boolean>{
+//        else {}
+        view.visibility = View.VISIBLE
+        setGoogleBottom()
+        bus.with("topisone", Boolean::class.java).observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
                 topTabIsOne = t!!
             }
         })
     }
 
-    private val mBottomNavigationView = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.menu -> {
-                vp_main.currentItem = 0
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.study -> {
-                vp_main.currentItem = 1
-                return@OnNavigationItemSelectedListener true
-            }
+    private val mBottomNavigationView =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu -> {
+                    vp_main.currentItem = 0
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.study -> {
+                    vp_main.currentItem = 1
+                    return@OnNavigationItemSelectedListener true
+                }
 //            R.id.store -> {
 //                vp_main.currentItem = 2
 //                return@OnNavigationItemSelectedListener true
 //            }
-            R.id.community -> {
-                vp_main.currentItem = 2
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.store -> {
-                if(Util.hasLogin(this)) {
-                    vp_main.currentItem = 3
+                R.id.community -> {
+                    vp_main.currentItem = 2
                     return@OnNavigationItemSelectedListener true
                 }
-                return@OnNavigationItemSelectedListener false
-            }
-            R.id.me -> {
-                if(Util.hasLogin(this)){
-                    vp_main.currentItem = 4
-                    return@OnNavigationItemSelectedListener true
+                R.id.store -> {
+                    if (Util.hasLogin(this)) {
+                        vp_main.currentItem = 3
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    return@OnNavigationItemSelectedListener false
                 }
-                /*if (!Util.hasLogin()) { //登录检查
-                    val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
-                    intent.putExtra("type",Reg2LogActivity.LOGINCODE)
-                    BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
-                    finish()
-                } else {
-                    ToastTool.showToast(this@MainActivity, "登录检查通过2")
-                }*/
-                return@OnNavigationItemSelectedListener false
+                R.id.me -> {
+                    if (Util.hasLogin(this)) {
+                        vp_main.currentItem = 4
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    /*if (!Util.hasLogin()) { //登录检查
+                        val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
+                        intent.putExtra("type",Reg2LogActivity.LOGINCODE)
+                        BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
+                        finish()
+                    } else {
+                        ToastTool.showToast(this@MainActivity, "登录检查通过2")
+                    }*/
+                    return@OnNavigationItemSelectedListener false
+                }
             }
+            false
         }
-        false
-    }
     /*private val mTencentBottomView = object : QMUITabSegment.OnTabSelectedListener{
         override fun onDoubleTap(index: Int) { //当某个 Tab 被双击时会触发
         }
@@ -184,32 +190,35 @@ class MainActivity : BaseActivity() {
         }
 
         override fun onTabSelected(p0: TabLayout.Tab?) {
-            when(p0?.position){
-                0 ->{
-                    if(topTabIsOne){
+            when (p0?.position) {
+                0 -> {
+                    if (topTabIsOne) {
                         bus.with("mainTopStatusView").value = R.color.colorPrimary
-                    }else{
+                    } else {
                         bus.with("mainTopStatusView").value = R.color.white
                     }
                     vp_main.currentItem = 0
                 }
-                1,2->{
+                1, 2 -> {
                     bus.with("mainTopStatusView").value = R.color.white
                     vp_main.currentItem = p0.position
                 }
-                3->{
-                    if(!Util.hasLogin(this@MainActivity)){
+                3 -> {
+                    if (!Util.hasLogin(this@MainActivity)) {
                         return
-                    }else{
+                    } else {
                         bus.with("mainTopStatusView").value = R.color.white
                         vp_main.currentItem = p0.position
                     }
                 }
-                4->{
-                    if(!Util.hasLogin(this@MainActivity)){
+                4 -> {
+                    if (!Util.hasLogin(this@MainActivity)) {
                         return
-                    }else{
-                        StatusBarUtil.addStatusViewWithBack(this@MainActivity,R.drawable.bg_me_twotop)
+                    } else {
+                        StatusBarUtil.addStatusViewWithBack(
+                            this@MainActivity,
+                            R.drawable.bg_me_twotop
+                        )
                         vp_main.currentItem = p0.position
                     }
                 }
@@ -218,8 +227,11 @@ class MainActivity : BaseActivity() {
 
     }
 
-    internal inner class NormalAdapter(fm: FragmentManager, private val fragmentList: List<Fragment>) :
-        FragmentPagerAdapter(fm,FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    internal inner class NormalAdapter(
+        fm: FragmentManager,
+        private val fragmentList: List<Fragment>
+    ) :
+        FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
             return fragmentList[position]
@@ -245,7 +257,11 @@ class MainActivity : BaseActivity() {
             override fun onPageScrollStateChanged(state: Int) {
             }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
             }
 
             override fun onPageSelected(position: Int) {
@@ -254,9 +270,10 @@ class MainActivity : BaseActivity() {
 
         })
         //这是一个返回首页的 广播
-        bus.with("mainGo",Int::class.java).observe(this,object : Observer<Int>{
+        bus.with("mainGo", Int::class.java).observe(this, object : Observer<Int> {
             override fun onChanged(t: Int?) {
                 val tab = views.getTabAt(t!!)
+                LogTool.e("lowTab", tab.toString())
                 tab?.select()
             }
         })
@@ -274,9 +291,13 @@ class MainActivity : BaseActivity() {
                 oldpositionOffset = 0f
             }
 
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                if(position == 2 && positionOffset > oldpositionOffset && oldpositionOffset!=0f){
-                    if (!Util.hasLogin(this@MainActivity)){
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                if (position == 2 && positionOffset > oldpositionOffset && oldpositionOffset != 0f) {
+                    if (!Util.hasLogin(this@MainActivity)) {
                         vp_main.currentItem = 2
 //                        LiveDataBus.get().with("mainGo").value =  2  //这设置 没有登录的页面停留
                         return
@@ -286,11 +307,11 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-                LogTool.e("vpmain3","position:$position")
+                LogTool.e("vpmain3", "position:$position")
                 // new add
-                if(position == 3 && !Util.hasLogin()){
+                if (position == 3 && !Util.hasLogin()) {
                     return
-                }else{
+                } else {
                     if (menuItem != null) {
                         menuItem!!.isChecked = false
                     } else {
@@ -299,18 +320,18 @@ class MainActivity : BaseActivity() {
                     menuItem = view.getMenu().getItem(position)
                     menuItem!!.isChecked = true
                 }
-                when(position){
-                    0 ->{
-                        if(topTabIsOne){
+                when (position) {
+                    0 -> {
+                        if (topTabIsOne) {
                             bus.with("mainTopStatusView").value = R.color.colorPrimary
-                        }else{
+                        } else {
                             bus.with("mainTopStatusView").value = R.color.white
                         }
                     }
-                    1,2,3->{
+                    1, 2, 3 -> {
                         bus.with("mainTopStatusView").value = R.color.white
                     }
-                    4->{
+                    4 -> {
 //                        bus.with("mainTopStatusView").value = R.drawable.bg_me_twotop
                         bus.with("mainTopStatusView").value = R.drawable.bg_me_twotop
 //                        StatusBarUtil.addStatusViewWithBack(this@MainActivity,R.drawable.bg_me_twotop)
@@ -319,7 +340,7 @@ class MainActivity : BaseActivity() {
             }
         })
         //这是一个返回首页的 广播
-        bus.with("mainGo",Int::class.java).observe(this,object : Observer<Int>{
+        bus.with("mainGo", Int::class.java).observe(this, object : Observer<Int> {
             override fun onChanged(t: Int?) {
                 vp_main.currentItem = t!!
                 menuItem?.isChecked = false
@@ -327,75 +348,81 @@ class MainActivity : BaseActivity() {
             }
         })
     }
+
     companion object {
         private const val CAM_CODE = 101
         /**
          * 获取用户信息
          */
-        public fun downUser(context:Context) {
-            HttpManager.getInstance().post(Api.USERINFO, Parameter.getBenefitMap(), object : Subscriber<String>() {
-                override fun onNext(str: String?) {
-                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                        var jsonObj: JSONObject? = null
-                        try {
-                            jsonObj = JSONObject(str)
-                        } catch (e: JSONException) {
-                            e.printStackTrace();
-                        }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                            ToastUtil.showToast(context, jsonObj!!.optString(JsonParser.JSON_MSG))
-                        } else {
-                            /*val data = jsonObj!!.getJSONObject("data")
-    //                        val age: String = data.getString("age")
-                            val avatar: String = data.getString("avatar")
-                            val name: String = data.getString("name")
-                            var user = SpUtil.getIstance().user
-    //                        user.userage = age
-                            user.avatar = avatar
-                            user.nick_name = name*/
-                            val data:UserBean.UserBeans = Gson().fromJson(str,UserBean.UserBeans::class.java)
-                            val item = data.data
-                            var user = SpUtil.getIstance().user
-                            user.avatar = item.avatar
-                            user.balance = Util.getFloatPrice(item.balance.toLong()).toFloat()
-                            user.current_day_benefit = item.current_day_benefit
-                            user.current_month_benefit = item.current_month_benefit
-                            user.last_day_benefit = item.last_day_benefit
-                            user.from_invite_userid = item.from_invite_userid.toLong()
-                            user.invite_code = item.invite_code
-                            user.nick_name = item.nick_name
-                            SpUtil.getIstance().user = user //写入
+        public fun downUser(context: Context) {
+            HttpManager.getInstance()
+                .post(Api.USERINFO, Parameter.getBenefitMap(), object : Subscriber<String>() {
+                    override fun onNext(str: String?) {
+                        if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                            var jsonObj: JSONObject? = null
+                            try {
+                                jsonObj = JSONObject(str)
+                            } catch (e: JSONException) {
+                                e.printStackTrace();
+                            }
+                            if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                                ToastUtil.showToast(
+                                    context,
+                                    jsonObj!!.optString(JsonParser.JSON_MSG)
+                                )
+                            } else {
+                                /*val data = jsonObj!!.getJSONObject("data")
+        //                        val age: String = data.getString("age")
+                                val avatar: String = data.getString("avatar")
+                                val name: String = data.getString("name")
+                                var user = SpUtil.getIstance().user
+        //                        user.userage = age
+                                user.avatar = avatar
+                                user.nick_name = name*/
+                                val data: UserBean.UserBeans =
+                                    Gson().fromJson(str, UserBean.UserBeans::class.java)
+                                val item = data.data
+                                var user = SpUtil.getIstance().user
+                                user.avatar = item.avatar
+                                user.balance = Util.getFloatPrice(item.balance.toLong()).toFloat()
+                                user.current_day_benefit = item.current_day_benefit
+                                user.current_month_benefit = item.current_month_benefit
+                                user.last_day_benefit = item.last_day_benefit
+                                user.from_invite_userid = item.from_invite_userid.toLong()
+                                user.invite_code = item.invite_code
+                                user.nick_name = item.nick_name
+                                SpUtil.getIstance().user = user //写入
 
+                            }
                         }
                     }
-                }
 
-                override fun onCompleted() {
-                    LogTool.e("onCompleted", "用户信息请求完成!")
-                }
+                    override fun onCompleted() {
+                        LogTool.e("onCompleted", "用户信息请求完成!")
+                    }
 
-                override fun onError(e: Throwable?) {
-                    LogTool.e("onError", "用户信息请求错误!")
-                }
-            })
+                    override fun onError(e: Throwable?) {
+                        LogTool.e("onError", "用户信息请求错误!")
+                    }
+                })
         }
 
     }
 
-    var isExit:Boolean = false
+    var isExit: Boolean = false
     override fun onBackPressed() {
 //        super.onBackPressed()
-        var tExit:Timer? = null
-        if(!isExit){
+        var tExit: Timer? = null
+        if (!isExit) {
             isExit = true
-            ToastUtil.showToast(this,"再来一次 退出App")
+            ToastUtil.showToast(this, "再来一次 退出App")
             tExit = Timer()
-            tExit.schedule(object : TimerTask(){
+            tExit.schedule(object : TimerTask() {
                 override fun run() {
                     isExit = false
                 }
-            },2000)
-        }else{
+            }, 2000)
+        } else {
             ActivityManager().exit()
         }
     }
