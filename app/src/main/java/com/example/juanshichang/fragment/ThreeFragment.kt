@@ -2,6 +2,7 @@ package com.example.juanshichang.fragment
 
 
 import android.os.Bundle
+import android.webkit.WebSettings
 import android.webkit.WebView
 
 import com.example.juanshichang.R
@@ -24,10 +25,14 @@ class ThreeFragment : BaseFragment() {
     }
 
     override fun initData() {
-        web?.loadUrl(BASEURL+"/faq.html")
+        web?.settings?.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         setWebView(BASEURL+"/faq.html")
     }
 
+    override fun onResume() {
+        super.onResume()
+        web?.loadUrl(BASEURL+"/faq.html")
+    }
     private fun setWebView(urls: String) {
         //这里 可以 考虑 对 其网页做更完善的处理
     }
