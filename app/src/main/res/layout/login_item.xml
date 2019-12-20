@@ -97,7 +97,7 @@
                         android:gravity="center"
                         android:textSize="48px"
                         android:text="立即登录"
-                        android:enabled="false"
+                        android:enabled="true"
                         android:background="@drawable/rig_go_but"
                         android:textColor="@drawable/rig_text"
                         android:layout_width="match_parent"

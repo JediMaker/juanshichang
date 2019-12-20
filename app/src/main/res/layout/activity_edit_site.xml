@@ -168,7 +168,8 @@
                 android:layout_height="2px"/>
         <EditText
                 android:id="@+id/sAdDet"
-                android:paddingTop="33px"
+                android:paddingTop="11dp"
+                android:inputType="text"
                 android:paddingBottom="35dp"
                 android:textSize="14sp"
                 android:hint="详细地址:如道路、门牌号、小区、楼栋号、单元室等"

@@ -2,17 +2,11 @@ package com.example.juanshichang.fragment
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.webkit.WebView
 
 import com.example.juanshichang.R
-import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.Api.Companion.BASEURL
 import com.example.juanshichang.base.BaseFragment
-import com.example.juanshichang.base.Parameter
-import com.qmuiteam.qmui.widget.webview.QMUIWebView
 
 /**
  * @作者: yzq
@@ -20,13 +14,13 @@ import com.qmuiteam.qmui.widget.webview.QMUIWebView
  * @文件作用:  小店
  */
 class ThreeFragment : BaseFragment() {
-    private var web:QMUIWebView? = null
+    private var web:WebView? = null
     override fun getLayoutId(): Int {
         return R.layout.fragment_three
     }
 
     override fun initViews(savedInstanceState: Bundle) {
-        web= mBaseView?.findViewById<QMUIWebView>(R.id.thWeb)
+        web= mBaseView?.findViewById<WebView>(R.id.thWeb)
     }
 
     override fun initData() {

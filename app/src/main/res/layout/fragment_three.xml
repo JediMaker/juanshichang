@@ -10,8 +10,9 @@
             android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    <com.qmuiteam.qmui.widget.webview.QMUIWebView
+    <WebView
             android:id="@+id/thWeb"
+            android:scrollbars="none"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 </com.zhy.autolayout.AutoFrameLayout>

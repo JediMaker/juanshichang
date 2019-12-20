@@ -49,12 +49,9 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         setOnClick() //注册点击事件
         //传入非0 就显示登录界面
         val type = intent.getIntExtra("type", 0)
-        if (type != 0) {
+        if (type != REGISTERCODE) {
             registerInclude.visibility = View.GONE
             loginInclude.visibility = View.VISIBLE
-            timerLogin.start()
-        }else{
-            timerLogin.start()
         }
         if(null!=intent.getStringExtra("one")){ //从个人中心 页面跳转的处理
             LiveDataBus.get().with("mainGo").value =  0
@@ -76,16 +73,14 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             //注册页面
             R.id.goLog -> {//登录
                 registerInclude.visibility = View.GONE
-                timerReg.cancel()
                 loginInclude.visibility = View.VISIBLE
-                timerLogin.start()
             }
             R.id.goVerifyCode -> {//获取验证码
                 val phone = regPhone.text.toString()
                 mSmsCode = null
                 if (Util.validateMobile(phone)) {
                     //启动注册轮询
-                    timerReg.start()
+                    goVerifyCode.isEnabled = false
                     getSendSMS(phone, this@Reg2LogActivity)
                 } else {
                     showRegisterDialog("温馨提示","请输入正确的手机号","确定","",object : DialogCallback{
@@ -122,9 +117,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             //登录界面
             R.id.goReg -> {//注册
                 loginInclude.visibility = View.GONE
-                timerLogin.cancel()
                 registerInclude.visibility = View.VISIBLE
-                timerReg.start()
             }
             R.id.loginBut -> {//登录按钮
                 val phone = logPhone.text.toString()
@@ -235,10 +228,9 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                         val data = jsonObj!!.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理
                         if (token != "") {
-                            timerReg.cancel() //注销注册轮询
+                            logGo(phone, ps)  //注册完成 直接登录
                             ToastUtil.showToast(this@Reg2LogActivity, "注册成功,正在登录...")
                         }
-                        logGo(phone, ps)  //注册完成 直接登录
                     }
                 }
             }
@@ -285,7 +277,6 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                             if (token != "" && !TextUtils.isEmpty(token)) {
 //                            downUser("login")
                                 goStartActivity(this@Reg2LogActivity, MainActivity())
-                                timerLogin.cancel()
                                 this@Reg2LogActivity.finish()
                             }
                         })
@@ -374,6 +365,20 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
+    //这个计时器用于轮询登录是否输入完成
+    var timerLogin:CountDownTimer = object : CountDownTimer(Long.MAX_VALUE,500){
+        override fun onFinish() {
+
+        }
+
+        override fun onTick(millisUntilFinished: Long) {
+            if(goJudgeLogin()){
+                loginBut.isEnabled = true
+            }else{
+                loginBut.isEnabled = false
+            }
+        }
+    }
     //判断 信息输入是否正确 无误
     private fun goJudgeReg(): Boolean {
         val phone = regPhone.text.toString()
@@ -401,20 +406,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         }
         return true
     }
-    //这个计时器用于轮询登录是否输入完成
-    var timerLogin:CountDownTimer = object : CountDownTimer(Long.MAX_VALUE,500){
-        override fun onFinish() {
 
-        }
-
-        override fun onTick(millisUntilFinished: Long) {
-            if(goJudgeLogin()){
-                loginBut.isEnabled = true
-            }else{
-                loginBut.isEnabled = false
-            }
-        }
-    }
     private fun goJudgeLogin(): Boolean {
         val phone = logPhone.text.toString()
         val ps = logPW.text.toString()
