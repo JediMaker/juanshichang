@@ -105,8 +105,7 @@ class MainActivity : BaseActivity() {
 //        val xpp = resources.getXml(R.drawable.selector_tab_color)
 //        val csl = ColorStateList.createFromXml(resources,xpp)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) { // todo 此处 待确定 版本 预设25...
-            //如果SDK版本过低 就关闭 滑动事件 并启用 较Low 的旧版本状态栏
-//            val view = android.support.design.widget.BottomNavigationView(this@MainActivity)
+            //如果SDK版本过低 就关闭 滑动事件
             vp_main.setPagingEnabled(false)
 //            views.visibility = View.VISIBLE
 //            setTabBottom()
@@ -181,6 +180,58 @@ class MainActivity : BaseActivity() {
         }
 
     }*/
+    internal inner class NormalAdapter(
+        fm: FragmentManager,
+        private val fragmentList: List<Fragment>
+    ) :
+        FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
+        override fun getItem(position: Int): Fragment {
+            return fragmentList[position]
+        }
+
+        override fun getCount(): Int {
+            return fragmentList.size
+        }
+
+    }
+
+    /**
+     *  采用原生Tab栏
+     *  不好使  废弃!!!
+     */
+    private fun setTabBottom() {
+        views.addTab(views.newTab().setText(R.string.first).setIcon(R.drawable.tab_one))
+        views.addTab(views.newTab().setText(R.string.study).setIcon(R.drawable.tab_two))
+        views.addTab(views.newTab().setText(R.string.community).setIcon(R.drawable.tab_three_t))
+        views.addTab(views.newTab().setText(R.string.store).setIcon(R.drawable.tab_shopcar))
+        views.addTab(views.newTab().setText(R.string.me).setIcon(R.drawable.tab_four))
+        views.addOnTabSelectedListener(mTabLayoutBottom)
+        vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                views.getTabAt(position)?.isSelected()
+            }
+
+        })
+        //这是一个返回首页的 广播 --- 不好使 废弃
+        /*bus.with("mainGo", Int::class.java).observe(this, object : Observer<Int> {
+            override fun onChanged(t: Int?) {
+                val tab = views.getTabAt(t!!)
+                LogTool.e("lowTab", tab.toString())
+                tab?.select()
+            }
+        })*/
+    }
     private val mTabLayoutBottom = object : TabLayout.OnTabSelectedListener {
         override fun onTabReselected(p0: TabLayout.Tab?) {
         }
@@ -226,61 +277,8 @@ class MainActivity : BaseActivity() {
         }
 
     }
-
-    internal inner class NormalAdapter(
-        fm: FragmentManager,
-        private val fragmentList: List<Fragment>
-    ) :
-        FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-        override fun getItem(position: Int): Fragment {
-            return fragmentList[position]
-        }
-
-        override fun getCount(): Int {
-            return fragmentList.size
-        }
-
-    }
-
     /**
-     *  采用原生底部栏
-     */
-    private fun setTabBottom() {
-        views.addTab(views.newTab().setText(R.string.first).setIcon(R.drawable.tab_one))
-        views.addTab(views.newTab().setText(R.string.study).setIcon(R.drawable.tab_two))
-        views.addTab(views.newTab().setText(R.string.community).setIcon(R.drawable.tab_three_t))
-        views.addTab(views.newTab().setText(R.string.store).setIcon(R.drawable.tab_shopcar))
-        views.addTab(views.newTab().setText(R.string.me).setIcon(R.drawable.tab_four))
-        views.addOnTabSelectedListener(mTabLayoutBottom)
-        vp_main.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                views.getTabAt(position)?.isSelected()
-            }
-
-        })
-        //这是一个返回首页的 广播
-        bus.with("mainGo", Int::class.java).observe(this, object : Observer<Int> {
-            override fun onChanged(t: Int?) {
-                val tab = views.getTabAt(t!!)
-                LogTool.e("lowTab", tab.toString())
-                tab?.select()
-            }
-        })
-    }
-
-    /**
-     *  原生谷歌官方菜单栏
+     *  原生谷歌官方底部栏
      */
     private fun setGoogleBottom() {
         var oldpositionOffset = 0f
