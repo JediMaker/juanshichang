@@ -316,7 +316,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                         LogTool.e("zxcv","sms_code: "+mSmsCode.toString())
                         if (mSmsCode != "") {
                             timer.start()
-                            ToastUtil.showToast(context, "验证码请求完成,请注意查收消息")
+                            ToastUtil.showToast(context, "验证码已发送,请注意查收消息")
                             //todo 此处可添加 请求读取通知类消息权限
                         }
                     }

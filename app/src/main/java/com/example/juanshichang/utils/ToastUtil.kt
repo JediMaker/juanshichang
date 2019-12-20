@@ -60,11 +60,11 @@ class ToastUtil {
                     "NEED UUID",
                     "NEED CART_ID & QUANTITY",
                     "NEED ADDRESS_ID"->{
-                        retStr = "信息缺失"
+                        retStr = "用户信息缺失"
                     }
                     "NOT FOUND PRODUCT",
                     "NOT FOUND GOODS IN CART" -> {
-                        retStr = "地址不存在"
+                        retStr = "敬请期待"
                     }
                     "INVALID INPUT PARAMS",
                     "INVALID TIMESTAMP",
@@ -79,6 +79,9 @@ class ToastUtil {
                     }
                     "USERNAME OR PASSWORD IS NOT CORRECT"->{
                         retStr = "用户名或密码错误"
+                    }
+                    "FAILED TO ADD USER"->{
+                        retStr = "用户已存在"
                     }
                 }
             }
@@ -103,6 +106,7 @@ class ToastUtil {
                     "NEED ADDRESS_ID"
                 ) || TextUtils.equals(str, "NOT FOUND GOODS IN CART")
                 || TextUtils.equals(str, "USERNAME OR PASSWORD IS NOT CORRECT")
+                || TextUtils.equals(str, "FAILED TO ADD USER")
             ) {
                 return true
             }

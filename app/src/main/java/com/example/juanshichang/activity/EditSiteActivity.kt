@@ -75,6 +75,7 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener {
                     sAdDet.setText(it.address_detail)
                     if(defId?.contentEquals(it.address_id)!!){
                         defCheck.isChecked = true //默认地址设为选中
+                        removeIt.visibility = View.INVISIBLE
                     }
                 }
             }

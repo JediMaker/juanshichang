@@ -199,7 +199,7 @@ class NewParameter {
         fun getEditSCMap(cart_id: String, count: String, type: Int): HashMap<String, String> {
             baseList.clear()
             baseList.add("quantity=$count")
-            baseList.add("cart_id=$cart_id")
+//            baseList.add("cart_id=$cart_id")
             if (type == 1) {
                 baseList.add("route=app/cart/edit")
             } else if (type == 2) {

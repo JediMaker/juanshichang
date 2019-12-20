@@ -375,11 +375,15 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                     notifyDataSetChanged()
                 }
             })
+
+            val num = goodsBean.quantity
+            var integer = num.toInt()
+            if(integer > 1){
+                childViewHolder.minusAmount?.isEnabled = true
+            }
             //减号的点击事件
             childViewHolder.minusAmount?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
-                    val num = goodsBean.quantity
-                    var integer = num.toInt()
                     if (integer > 1) {
                         integer--
                         goodsBean.quantity = "$integer"
@@ -396,8 +400,6 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             //加号的点击事件
             childViewHolder.addAmount?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
-                    val num = goodsBean.quantity
-                    var integer = num.toInt()
                     integer++
                     if (!childViewHolder.minusAmount?.isEnabled!! || integer > 1) {
                         childViewHolder.minusAmount?.isEnabled = true
