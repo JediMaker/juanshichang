@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".fragment.ThreeFragment">
     <ImageView
-            android:visibility="visible"
+            android:visibility="gone"
             android:src="@drawable/comm"
             android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-    <WebView
+    <com.example.juanshichang.utils.LollipopFixedWebView
             android:id="@+id/thWeb"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-</com.zhy.autolayout.AutoFrameLayout>
+</FrameLayout>
