@@ -256,7 +256,7 @@ class MainActivity : BaseActivity() {
         //这是一个返回首页的 广播
         bus.with("mainGo",Int::class.java).observe(this,object : Observer<Int>{
             override fun onChanged(t: Int?) {
-                views.getTabAt(t!!)?.isSelected
+                views.getTabAt(t!!)?.isSelected()
             }
         })
     }
