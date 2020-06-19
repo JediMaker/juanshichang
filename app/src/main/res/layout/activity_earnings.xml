@@ -38,7 +38,7 @@
                     android:gravity="center"
                     android:layout_centerHorizontal="true"
                     android:text="我的收益"
-                    android:textSize="50px"
+                    android:textSize="@dimen/sp_txt_topBarTextSize"
                     android:textColor="@color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -58,7 +58,7 @@
                 tools:text="账户余额（元）"
                 android:textStyle="normal"
                 android:textColor="@color/white"
-                android:textSize="35px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         <TextView
@@ -69,7 +69,7 @@
                 android:text="提现"
                 android:textStyle="normal"
                 android:textColor="@color/white"
-                android:textSize="46px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -90,7 +90,7 @@
                 android:drawablePadding="20px"
                 android:drawableLeft="@drawable/profit_sun"
                 android:text="日预估收益"
-                android:textSize="40px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textColor="@color/main_text"
                 android:layout_width="wrap_content"
                   android:layout_height="wrap_content"/>
@@ -211,7 +211,7 @@
                 android:drawablePadding="20px"
                 android:drawableLeft="@drawable/profit_moon"
                 android:text="月预估收益"
-                android:textSize="40px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textColor="@color/main_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -265,7 +265,7 @@
             android:layout_below="@+id/isThree"
             android:text="收益结算明细"
             android:textColor="@color/main_text"
-            android:textSize="35px"
+            android:textSize="@dimen/sp_txt_nomal"
             style="@style/NotitleButton"
             />
     <View
@@ -280,7 +280,7 @@
             android:layout_below="@+id/isV1"
             android:text="提现记录"
             android:textColor="@color/main_text"
-            android:textSize="35px"
+            android:textSize="@dimen/sp_txt_nomal"
             style="@style/NotitleButton"
             />
 </com.zhy.autolayout.AutoRelativeLayout>

@@ -25,7 +25,7 @@
                 android:id="@+id/LaTitle"
                 android:layout_centerInParent="true"
                 android:text="消息"
-                android:textSize="54px"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:textColor="@color/main_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -41,7 +41,7 @@
                     android:text="开启通知及时收到消息动态~"
                     android:layout_centerVertical="true"
                     android:textColor="@color/indicatorRed"
-                    android:textSize="36px"
+                    android:textSize="@dimen/sp_txt_nomal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <ImageView
@@ -67,7 +67,7 @@
                     android:layout_marginBottom="20px"
                     android:text="立即打开"
                     android:textColor="@color/indicatorRed"
-                    android:textSize="36px"
+                    android:textSize="@dimen/sp_txt_nomal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
     </RelativeLayout>

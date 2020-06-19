@@ -23,6 +23,7 @@ class NewParameter {
     companion object {
         private var baseList = ArrayList<String>()//存放签名集合
         private var stringList = ArrayList<String>()//存放签名集合
+
         /**
          * 签名
          * @param signType 0 未登录  1 登录
@@ -137,6 +138,7 @@ class NewParameter {
             val map = fengMap(0)
             return map
         }
+
         fun getBaseMap(): HashMap<String, String> {
             baseList.clear()
             baseList.add("route=app/cart")
@@ -144,6 +146,23 @@ class NewParameter {
             map.put("route", "app/cart")
             return map
         }
+
+        fun getUserMap(): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=cat/user/info")
+            val map = fengMap(1)
+            map.put("route", "cat/user/info")
+            return map
+        }
+
+        fun getInviteCodeMap(): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=cat/invitecode")
+            val map = fengMap(1)
+            map.put("route", "cat/invitecode")
+            return map
+        }
+
         //获取订单列表
         fun getBaseTMap(): HashMap<String, String> {
             baseList.clear()
@@ -152,6 +171,7 @@ class NewParameter {
             map.put("route", "app/order/history")
             return map
         }
+
         //获取地址id列表
         fun getBaseZMap(): HashMap<String, String> {
             baseList.clear()
@@ -159,6 +179,7 @@ class NewParameter {
             val map = fengMap(1)
             return map
         }
+
         //自营商品详情 免登陆
         fun getProductMap(productId: String): HashMap<String, String> {
             baseList.clear()
@@ -236,10 +257,11 @@ class NewParameter {
             map.put("address_detail", "$address_detail")
             map.put("city", "$city")
             map.put("zone_id", "$zone_id")
-            map.put("iphone",phone)
+            map.put("iphone", phone)
             map.put("route", "app/address/add")
             return map
         }
+
         //修改地址
         fun getEditAdMap(
             name: String,
@@ -247,7 +269,7 @@ class NewParameter {
             address_detail: String,
             city: String,
             zone_id: String,
-            address_id:String,
+            address_id: String,
             default: Boolean
         ): HashMap<String, String> {
             baseList.clear()
@@ -264,87 +286,96 @@ class NewParameter {
             map.put("address_detail", address_detail)
             map.put("city", city)
             map.put("zone_id", zone_id)
-            map.put("address_id",address_id)
-            map.put("default","$default")
-            map.put("iphone",phone)
+            map.put("address_id", address_id)
+            map.put("default", "$default")
+            map.put("iphone", phone)
             map.put("route", "app/address/edit")
             return map
         }
+
         // 删除地址
         fun getDeleAdMap(
-            address_id:String
+            address_id: String
         ): HashMap<String, String> {
             baseList.clear()
             baseList.add("address_id=$address_id")
             baseList.add("route=app/address/delete")
             val map = fengMap(1)
-            map.put("address_id",address_id)
+            map.put("address_id", address_id)
             map.put("route", "app/address/delete")
             return map
         }
+
         //提交订单
-        fun getCoMap(list:List<String>):Map<String, String>{
+        fun getCoMap(list: List<String>): Map<String, String> {
             baseList.clear()
             baseList.add("route=app/checkout")
             val map = fengMap2(1)
-            val maps = fillMap(list,map)
+            val maps = fillMap(list, map)
             return maps
         }
+
         //完成订单
-        fun getSucMap(list:List<String>,address_id:String):Map<String, String>{
+        fun getSucMap(list: List<String>, address_id: String): Map<String, String> {
             baseList.clear()
             baseList.add("address_id=$address_id")
             baseList.add("route=app/checkout/confirm")
             val map = fengMap2(1)
-            val maps = fillMap(list,map)
-            maps.put("address_id",address_id)
+            val maps = fillMap(list, map)
+            maps.put("address_id", address_id)
             return maps
         }
+
         //完成待支付订单
-        fun getCheckWait(order_id: String):Map<String, String>{
+        fun getCheckWait(order_id: String): Map<String, String> {
             baseList.clear()
             baseList.add("order_id=$order_id")
             baseList.add("route=app/checkout/checkout")
             val map = fengMap2(1)
-            map.put("order_id",order_id)
+            map.put("order_id", order_id)
             return map
         }
+
         //商品列表分类请求
-        fun getNewClassMap(parent_category_id:String):Map<String, String>{
+        fun getNewClassMap(parent_category_id: String): Map<String, String> {
             baseList.clear()
             baseList.add("route=app/category")
             baseList.add("parent_category_id=$parent_category_id")
             val map = fengMap(0)
-            map.put("parent_category_id",parent_category_id)
+            map.put("parent_category_id", parent_category_id)
             return map
         }
+
         //商品列表详情
-        fun getNewCGoodMap(category_id:String):Map<String, String>{
+        fun getNewCGoodMap(category_id: String): Map<String, String> {
             baseList.clear()
             baseList.add("route=app/category/goods")
             baseList.add("category_id=$category_id")
             val map = fengMap(0)
-            map.put("category_id",category_id)
+            map.put("category_id", category_id)
             return map
         }
+
         //商品搜索
-        fun getSearchMap(search:String):Map<String, String>{
+        fun getSearchMap(search: String): Map<String, String> {
             baseList.clear()
             baseList.add("route=app/search")
             baseList.add("search=$search")
             val map = fengMap(0)
-            map.put("search",search)
+            map.put("search", search)
             return map
         }
+
         //商品详情
-        fun getOrderDhMap(order_id:String):Map<String, String>{
+        fun getOrderDhMap(order_id: String): Map<String, String> {
             baseList.clear()
             baseList.add("route=app/order")
             baseList.add("order_id=$order_id")
             val map = fengMap(1)
-            map.put("order_id",order_id)
+            map.put("order_id", order_id)
             return map
         }
+
         //--------------------------------------------------------------------------------------------------------------
         //下面是解析购物车返回集合
         private fun getBaseCheckList(checkMap: ConcurrentHashMap<String, ArrayList<String>>): String {
@@ -423,11 +454,15 @@ class NewParameter {
             }
             return maps
         }
+
         //这是为 订单打造的map
-        private fun fillMap(list:List<String>,checkMap: IdentityHashMap<String, String>): IdentityHashMap<String, String>{
-            for(i in 0 until list.size){
+        private fun fillMap(
+            list: List<String>,
+            checkMap: IdentityHashMap<String, String>
+        ): IdentityHashMap<String, String> {
+            for (i in 0 until list.size) {
                 val str = String("cart_id[]".toByteArray())
-                checkMap.put(str,list[i])
+                checkMap.put(str, list[i])
             }
             return checkMap
         }

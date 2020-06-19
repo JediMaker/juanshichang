@@ -1,250 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_me_twotop"
-    android:orientation="vertical"
-    tools:context=".fragment.FourFragment">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_me_twotop"
+        android:orientation="vertical"
+        tools:context=".fragment.FourFragment">
     <!--android:fitsSystemWindows="true"-->
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
-        android:id="@+id/fT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:id="@+id/fT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <com.zhy.autolayout.AutoRelativeLayout
-            android:id="@+id/fTO"
-            android:paddingLeft="46px"
-            android:paddingRight="46px"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40px">
+                android:id="@+id/fTO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40px"
+                android:paddingLeft="46px"
+                android:paddingRight="46px">
             <!--android:layout_marginLeft="49px"-->
             <!--ff_ret-->
             <View
-                android:id="@+id/ffRet"
-                android:layout_width="63px"
-                android:layout_height="43px"
-                android:layout_alignBottom="@+id/ffTitle"
-                android:layout_marginBottom="15px" />
+                    android:id="@+id/ffRet"
+                    android:layout_width="63px"
+                    android:layout_height="43px"
+                    android:layout_alignBottom="@+id/ffTitle"
+                    android:layout_marginBottom="15px" />
 
             <TextView
-                android:id="@+id/ffTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:text="我的"
-                android:textColor="@color/white"
-                android:textSize="52px" />
+                    android:id="@+id/ffTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="我的"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_txt_topBarTextSize" />
 
             <ImageView
-                android:id="@+id/ffUserSet"
-                android:layout_width="60px"
-                android:layout_height="60px"
-                android:layout_alignParentRight="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/setting_t" />
+                    android:id="@+id/ffUserSet"
+                    android:layout_width="60px"
+                    android:layout_height="60px"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/setting_t" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/fTT"
-            android:paddingLeft="46px"
-            android:paddingRight="46px"
-            android:layout_below="@+id/fTO"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45px">
+                android:id="@+id/fTT"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fTO"
+                android:layout_marginTop="45px"
+                android:paddingLeft="46px"
+                android:paddingRight="46px">
             <!--app:qmui_is_circle="true"-->
             <com.qmuiteam.qmui.widget.QMUIRadiusImageView
-                android:id="@+id/ffUserImage"
-                android:layout_width="173px"
-                android:layout_height="173px"
-                android:src="@drawable/defaultt"
-                app:qmui_is_circle="true" />
+                    android:id="@+id/ffUserImage"
+                    android:layout_width="173px"
+                    android:layout_height="173px"
+                    android:src="@drawable/defaultt"
+                    app:qmui_is_circle="true" />
 
             <TextView
-                android:id="@+id/ffUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30px"
-                android:layout_marginTop="27px"
-                android:layout_marginRight="65px"
-                android:layout_toRightOf="@+id/ffUserImage"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/white"
-                android:textSize="46px"
-                tools:text="昵称" />
+                    android:id="@+id/ffUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30px"
+                    android:layout_marginTop="27px"
+                    android:layout_marginRight="65px"
+                    android:layout_toRightOf="@+id/ffUserImage"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
+                    tools:text="昵称" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ffUserName"
-                android:layout_marginLeft="29px"
-                android:layout_toRightOf="@+id/ffUserImage"
-                android:orientation="horizontal">
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="邀请码:"
-                    android:textColor="@color/xcolor"
-                    android:textSize="30px" />
+                    android:layout_below="@+id/ffUserName"
+                    android:layout_marginLeft="29px"
+                    android:layout_toRightOf="@+id/ffUserImage"
+                    android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/ffUserInvite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/xcolor"
-                    android:textSize="35px"
-                    tools:text="WW7HKS" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="邀请码:"
+                        android:textColor="@color/xcolor"
+                        android:textSize="@dimen/sp_txt_nomal" />
+
+                <TextView
+                        android:id="@+id/ffUserInvite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/xcolor"
+                        android:textSize="@dimen/sp_txt_nomal"
+                        tools:text="WW7HKS" />
                 <!--            ff_tx_but-->
                 <TextView
-                    android:id="@+id/ffCopy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="28px"
-                    android:background="@drawable/ff_copy_but"
-                    android:paddingLeft="18px"
-                    android:paddingTop="7px"
-                    android:paddingRight="19px"
-                    android:paddingBottom="7px"
-                    android:text="复制"
-                    android:textColor="@color/white"
-                    android:textSize="23px" />
+                        android:id="@+id/ffCopy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="28px"
+                        android:background="@drawable/ff_copy_but"
+                        android:paddingLeft="18px"
+                        android:paddingTop="7px"
+                        android:paddingRight="19px"
+                        android:paddingBottom="7px"
+                        android:text="复制"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_txt_annotateTextSize" />
             </LinearLayout>
         </RelativeLayout>
+
         <View
-            android:layout_marginTop="162px"
-            android:layout_below="@id/fTT"
-            android:background="@color/ff_back"
-            android:layout_width="match_parent"
-            android:layout_height="330px"/>
+                android:layout_width="match_parent"
+                android:layout_height="330px"
+                android:layout_below="@id/fTT"
+                android:layout_marginTop="162px"
+                android:background="@color/ff_back" />
+
         <androidx.cardview.widget.CardView
-            android:id="@+id/fTTh"
-            android:layout_marginTop="84px"
-            android:layout_below="@id/fTT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="46px"
-            android:layout_marginRight="46px"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="10px">
+                android:id="@+id/fTTh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fTT"
+                android:layout_marginLeft="46px"
+                android:layout_marginTop="84px"
+                android:layout_marginRight="46px"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="10px">
 
             <com.zhy.autolayout.AutoRelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                 <RelativeLayout
-                    android:id="@+id/meZtit"
-                    android:paddingTop="36px"
-                    android:paddingLeft="60px"
-                    android:paddingRight="60px"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        android:id="@+id/meZtit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="60px"
+                        android:paddingTop="36px"
+                        android:paddingRight="60px">
+
                     <TextView
-                        android:text="我的账户"
-                        android:drawablePadding="19px"
-                        android:drawableLeft="@drawable/wallet"
-                        android:textSize="44px"
-                        android:textColor="@color/main_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/wallet"
+                            android:drawablePadding="19px"
+                            android:text="我的账户"
+                            android:textColor="@color/main_text"
+                            android:textSize="@dimen/sp_txt_title_icon_name" />
+
                     <TextView
-                        android:id="@+id/goTx"
-                        android:layout_alignParentRight="true"
-                        android:paddingBottom="9px"
-                        android:paddingTop="10px"
-                        android:paddingRight="18px"
-                        android:paddingLeft="18px"
-                        android:background="@drawable/ff_tx_but"
-                        android:text="立即提现"
-                        android:textColor="@color/white"
-                        android:textSize="36px"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                            android:id="@+id/goTx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/ff_tx_but"
+                            android:paddingLeft="@dimen/dp_8"
+                            android:paddingTop="@dimen/dp_2"
+                            android:paddingRight="@dimen/dp_8"
+                            android:paddingBottom="@dimen/dp_2"
+                            android:text="立即提现"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_txt_nomal" />
                 </RelativeLayout>
+
                 <LinearLayout
-                    android:layout_marginTop="45px"
-                    android:layout_marginBottom="85px"
-                    android:layout_below="@+id/meZtit"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/meZtit"
+                        android:layout_marginTop="45px"
+                        android:layout_marginBottom="85px"
+                        android:orientation="horizontal">
+
                     <LinearLayout
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
                         <TextView
-                            android:text="积分"
-                            android:textColor="@color/home_gray"
-                            android:textSize="36px"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="积分"
+                                android:textColor="@color/home_gray"
+                                android:textSize="@dimen/sp_txt_nomal" />
+
                         <TextView
-                            android:text="0"
-                            android:layout_marginTop="20px"
-                            android:textColor="@color/main_text"
-                            android:textSize="44px"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20px"
+                                android:text="0"
+                                android:textColor="@color/main_text"
+                                android:textSize="@dimen/sp_txt_nomal" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
                         <TextView
-                            android:text="余额"
-                            android:textColor="@color/home_gray"
-                            android:textSize="36px"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="余额"
+                                android:textColor="@color/home_gray"
+                                android:textSize="@dimen/sp_txt_nomal" />
+
                         <TextView
-                            android:id="@+id/ffBalance"
-                            tools:text="186.25"
-                            android:layout_marginTop="20px"
-                            android:textColor="@color/main_text"
-                            android:textSize="44px"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                                android:id="@+id/ffBalance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20px"
+                                android:textColor="@color/main_text"
+                                android:textSize="@dimen/sp_txt_nomal"
+                                tools:text="186.25" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
                         <TextView
-                            android:text="等级"
-                            android:textColor="@color/home_gray"
-                            android:textSize="36px"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="等级"
+                                android:textColor="@color/home_gray"
+                                android:textSize="@dimen/sp_txt_nomal" />
+
                         <TextView
-                            android:text="1"
-                            android:layout_marginTop="20px"
-                            android:textColor="@color/main_text"
-                            android:textSize="44px"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20px"
+                                android:text="1"
+                                android:textColor="@color/main_text"
+                                android:textSize="@dimen/sp_txt_nomal" />
                     </LinearLayout>
                 </LinearLayout>
             </com.zhy.autolayout.AutoRelativeLayout>
         </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
+
     <RelativeLayout
-        android:background="@color/white"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
         <!--<androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -255,7 +271,7 @@
             app:cardCornerRadius="5dp"
             app:cardElevation="10px">-->
 
-            <LinearLayout
+        <LinearLayout
                 android:id="@+id/meBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -263,80 +279,81 @@
                 android:paddingTop="50px"
                 android:paddingBottom="50px">
 
-                <TextView
+            <TextView
                     android:id="@+id/earnings"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableTop="@drawable/ff_one_image"
-                    android:drawablePadding="-20px"
                     android:gravity="center"
                     android:text="收益"
                     android:textColor="@color/ff_gray"
-                    android:textSize="35px" />
+                    android:textSize="@dimen/sp_txt_nomal" />
 
-                <TextView
+            <TextView
                     android:id="@+id/orderForm"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableTop="@drawable/ff_two_image"
-                    android:drawablePadding="-20px"
                     android:gravity="center"
                     android:text="订单"
                     android:textColor="@color/ff_gray"
-                    android:textSize="35px" />
+                    android:textSize="@dimen/sp_txt_nomal" />
 
-                <TextView
+            <TextView
                     android:id="@+id/myFans"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableTop="@drawable/ff_three_image"
-                    android:drawablePadding="-20px"
                     android:gravity="center"
                     android:text="粉丝"
                     android:textColor="@color/ff_gray"
-                    android:textSize="35px" />
+                    android:textSize="@dimen/sp_txt_nomal" />
 
-                <TextView
+            <TextView
                     android:id="@+id/myInvite"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableTop="@drawable/ff_four_image"
-                    android:drawablePadding="-20px"
                     android:gravity="center"
                     android:text="邀请"
                     android:textColor="@color/ff_gray"
-                    android:textSize="35px" />
-            </LinearLayout>
-<!--        </androidx.cardview.widget.CardView>-->
+                    android:textSize="@dimen/sp_txt_nomal" />
+        </LinearLayout>
+        <!--        </androidx.cardview.widget.CardView>-->
         <Button
-            android:id="@+id/tastCz"
-            android:text="充值缴费"
-            android:layout_marginTop="100px"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/meBar"
-            android:layout_width="300px"
-            android:layout_height="100px"/>
+                android:id="@+id/tastCz"
+                android:layout_width="300px"
+                android:layout_height="100px"
+                android:layout_below="@+id/meBar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100px"
+                android:text="充值缴费"
+                android:visibility="gone" />
+
         <Button
                 android:id="@+id/tastGwc"
-                android:text="商品详情"
-                android:layout_marginTop="100px"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/meBar"
-                android:layout_toLeftOf="@+id/tastCz"
                 android:layout_width="300px"
-                android:layout_height="100px"/>
+                android:layout_height="100px"
+                android:layout_below="@+id/meBar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100px"
+                android:layout_toLeftOf="@+id/tastCz"
+                android:text="商品详情"
+                android:visibility="gone" />
+
         <Button
                 android:id="@+id/tastLb"
-                android:text="商品列表"
-                android:layout_marginTop="100px"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@+id/meBar"
-                android:layout_toRightOf="@+id/tastCz"
                 android:layout_width="300px"
-                android:layout_height="100px"/>
+                android:layout_height="100px"
+                android:layout_below="@+id/meBar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="100px"
+                android:layout_toRightOf="@+id/tastCz"
+                android:text="商品列表"
+                android:visibility="gone" />
     </RelativeLayout>
 </com.zhy.autolayout.AutoLinearLayout>

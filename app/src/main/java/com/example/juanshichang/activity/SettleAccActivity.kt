@@ -139,10 +139,12 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
             NewParameter.getSucMap(list, address_id),
             object : Subscriber<String>() {
                 override fun onNext(t: String?) {
-                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                   val result =t?.substring(t?.indexOf("{"),t.length)
+                    if (JsonParser.isValidJsonWithSimpleJudge(result!!)) {
                         var jsonObj: JSONObject? = null
                         try {
-                            jsonObj = JSONObject(t)
+                            jsonObj = JSONObject(result)
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
@@ -152,7 +154,7 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            val data = Gson().fromJson(t, SettleAccBean.SettleAccBeans::class.java)
+                            val data = Gson().fromJson(result, SettleAccBean.SettleAccBeans::class.java)
                             iData = data
                             val price = data.data.total
                             val priceStr = "￥${UtilsBigDecimal.mul(price, 1.toDouble(), 2)}"
@@ -178,7 +180,9 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
             Api.CHECKOUTXX,
             NewParameter.getCheckWait(order_id),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {

@@ -32,7 +32,7 @@
                         android:id="@+id/t1"
                         android:layout_centerVertical="true"
                         android:text="创建: "
-                        android:textSize="31px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/main_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -41,7 +41,7 @@
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@+id/t1"
                         tools:text="2018-09-31   25:61"
-                        android:textSize="31px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/main_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -50,7 +50,7 @@
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:text="已付款"
-                        android:textSize="32px"
+                        android:textSize="@dimen/sp_txt_nomal"
                         android:textColor="@color/orders_state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -76,7 +76,7 @@
                         android:ellipsize="end"
                         android:layout_marginLeft="28px"
                         android:layout_marginTop="36px"
-                        android:textSize="40px"
+                        android:textSize="@dimen/sp_txt_nomal"
                         android:textColor="@color/main_text"
                         android:layout_toRightOf="@+id/ordersImage"
                         android:layout_width="match_parent"
@@ -89,7 +89,7 @@
                         android:ellipsize="end"
                         android:layout_marginLeft="28px"
                         android:layout_marginTop="45px"
-                        android:textSize="40px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:textColor="@color/label_color"
                         android:layout_toRightOf="@+id/ordersImage"
                         android:layout_below="@+id/ordersTitle"
@@ -103,7 +103,7 @@
                         android:layout_alignParentRight="true"
                         android:background="@drawable/orders_but"
                         tools:text="赚佣12.26元"
-                        android:textSize="23px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -119,14 +119,14 @@
                     android:layout_width="match_parent" android:layout_height="wrap_content">
                 <TextView
                         android:text="订单编号 :  "
-                        android:textSize="31px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/home_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/ordersNum"
                         tools:text="8846434846434"
-                        android:textSize="31px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/home_gray"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -143,7 +143,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:text="应付款 :  "
-                        android:textSize="32px"
+                        android:textSize="@dimen/sp_txt_nomal"
                         android:textColor="@color/home_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -153,7 +153,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         tools:text="￥64.00"
-                        android:textSize="32px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:textColor="@color/indicatorRed"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -167,7 +167,7 @@
                         android:layout_marginBottom="6dp"
                         android:background="@drawable/order_item_but"
                         android:text="立即支付"
-                        android:textSize="11sp"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/indicatorRed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

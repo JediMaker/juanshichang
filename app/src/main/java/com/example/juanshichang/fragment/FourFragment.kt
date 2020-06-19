@@ -87,16 +87,18 @@ class FourFragment : BaseFragment() {
             }
             R.id.earnings -> {//收益
                 goNet = 2
-                BaseActivity.goStartActivity(this.mContext!!, EarningsActivity())
+                ToastUtil.showToast(this.mContext!!,"暂未开放入口")
+//                BaseActivity.goStartActivity(this.mContext!!, EarningsActivity())
             }
             R.id.orderForm -> {//订单
                 BaseActivity.goStartActivity(this.mContext!!, OrderFormActivity())
             }
             R.id.myFans -> {//粉丝
-                BaseActivity.goStartActivity(this.mContext!!, FansActivity())
+                ToastUtil.showToast(this.mContext!!,"暂未开放入口")
+//                BaseActivity.goStartActivity(this.mContext!!, FansActivity())
             }
             R.id.myInvite -> {//邀请
-
+                ToastUtil.showToast(this.mContext!!,"暂未开放入口")
             }
             R.id.tastCz ->{ //充值缴费
                 BaseActivity.goStartActivity(this.mContext!!, TopupActivity())
@@ -164,10 +166,10 @@ class FourFragment : BaseFragment() {
                 )
             ) { //通过三个参数判断所有
                 setUiData(user)
-                this.cancel()
             } else {
                 MainActivity.downUser(mContext!!)
             }
+            this.cancel()
         }
     }
 

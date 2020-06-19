@@ -59,14 +59,14 @@
                                 tools:text="100"
                                 android:textStyle="bold"
                                 android:textColor="@color/label_color"
-                                android:textSize="24sp"/>
+                                android:textSize="@dimen/sp_txt_nomal"/>
                         <com.example.juanshichang.widget.PriceTextView
                                 android:id="@+id/originalZy_cost_view"
                                 android:gravity="bottom"
                                 android:paddingBottom="10px"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:textSize="34px"
+                                android:textSize="@dimen/sp_txt_annotateTextSize"
                                 tools:text="110"
                                 android:layout_marginLeft="30dp"
                                 android:textColor="@color/txt_gray"/>
@@ -83,7 +83,7 @@
                             android:ellipsize="end"
                             tools:text="hehheh\nehehhe"
                             android:textColor="@color/main_text"
-                            android:textSize="40px"/>
+                            android:textSize="@dimen/sp_txt_nomal"/>
                     <LinearLayout
                             android:id="@+id/spYhj"
                             android:visibility="gone"
@@ -103,7 +103,7 @@
                                     android:id="@+id/sPYHme"
                                     tools:text="160元优惠劵"
                                     android:textStyle="bold"
-                                    android:textSize="56px"
+                                    android:textSize="@dimen/sp_txt_topBarTextSize"
                                     android:textColor="@color/white"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
@@ -111,7 +111,7 @@
                                     android:id="@+id/sPYHDate"
                                     tools:text="有效日期:08-10到08-17"
                                     android:gravity="center"
-                                    android:textSize="30px"
+                                    android:textSize="@dimen/sp_txt_annotateTextSize"
                                     android:textColor="@color/white"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"/>
@@ -121,7 +121,7 @@
                                 android:text="立即\n领取"
                                 android:gravity="center_vertical|right"
                                 android:paddingRight="160px"
-                                android:textSize="46px"
+                                android:textSize="@dimen/sp_txt_title_icon_name"
                                 android:lines="2"
                                 android:textColor="@color/white"
                                 android:layout_width="0dp"
@@ -171,8 +171,8 @@
                                         android:maxLength="10"
                                         android:ellipsize="end"
                                         android:textColor="@color/main_text"
-                                        android:text="萌象自营"
-                                        android:textSize="16sp"/>
+                                        android:text="商城自营"
+                                        android:textSize="@dimen/sp_txt_title_icon_name"/>
                                 <LinearLayout
                                         android:visibility="gone"
                                         android:id="@+id/goZyshop"
@@ -187,7 +187,7 @@
                                             android:paddingRight="29px"
                                             android:gravity="center_vertical"
                                             android:background="@drawable/shangpin_go_shop"
-                                            android:textSize="22px"
+                                            android:textSize="@dimen/sp_txt_annotateTextSize"
                                             android:textColor="@color/home_gray"
                                             android:text="全部店铺优惠"
                                             android:layout_width="wrap_content"
@@ -213,42 +213,42 @@
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
                                         android:text="宝贝描述: "
-                                        android:textSize="23px"/>
+                                        android:textSize="@dimen/sp_txt_annotateTextSize"/>
                                 <TextView
                                         android:id="@+id/desc_txt"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
                                         tools:text="5.0"
-                                        android:textSize="23px"/>
+                                        android:textSize="@dimen/sp_txt_annotateTextSize"/>
                                 <TextView
                                         android:paddingLeft="85px"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
                                         android:text="卖家服务: "
-                                        android:textSize="23px"/>
+                                        android:textSize="@dimen/sp_txt_nomal"/>
                                 <TextView
                                         android:id="@+id/serv_txt"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
                                         tools:text="5.0"
-                                        android:textSize="23px"/>
+                                        android:textSize="@dimen/sp_txt_annotateTextSize"/>
                                 <TextView
                                         android:paddingLeft="85px"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
                                         android:text="物流服务: "
-                                        android:textSize="23px"/>
+                                        android:textSize="@dimen/sp_txt_annotateTextSize"/>
                                 <TextView
                                         android:id="@+id/lgst_txt"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/txt_gray"
                                         tools:text="5.0"
-                                        android:textSize="23px"/>
+                                        android:textSize="@dimen/sp_txt_annotateTextSize"/>
 
                             </LinearLayout>
 
@@ -283,7 +283,7 @@
                             tools:text="正品保障"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:textSize="23px"
+                            android:textSize="@dimen/sp_txt_annotateTextSize"
                             android:textColor="@color/txt_gray"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -299,7 +299,7 @@
                             tools:text="破损包退"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:textSize="23px"
+                            android:textSize="@dimen/sp_txt_annotateTextSize"
                             android:textColor="@color/txt_gray"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -315,7 +315,7 @@
                             tools:text="极速退款"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:textSize="23px"
+                            android:textSize="@dimen/sp_txt_annotateTextSize"
                             android:textColor="@color/txt_gray"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -331,7 +331,7 @@
                             tools:text="退货运费险"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:textSize="23px"
+                            android:textSize="@dimen/sp_txt_annotateTextSize"
                             android:textColor="@color/txt_gray"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -449,7 +449,7 @@
                                 android:paddingBottom="15px"
                                 android:text="商品描述"
                                 android:textColor="@color/main_text"
-                                android:textSize="46px"
+                                android:textSize="@dimen/sp_txt_title_icon_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         <View
@@ -471,7 +471,7 @@
                             android:id="@+id/shangPinJs"
                             tools:text="hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"
                             android:textColor="@color/txt_black_center"
-                            android:textSize="37px"
+                            android:textSize="@dimen/sp_txt_nomal"
                             android:layout_marginLeft="17px"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
@@ -514,7 +514,7 @@
                                 android:paddingBottom="15px"
                                 android:text="店铺内其它商品"
                                 android:textColor="@color/main_text"
-                                android:textSize="46px"
+                                android:textSize="@dimen/sp_txt_title_icon_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         <View
@@ -570,7 +570,7 @@
                                 android:paddingBottom="15px"
                                 android:text="商品详情"
                                 android:textColor="@color/main_text"
-                                android:textSize="46px"
+                                android:textSize="@dimen/sp_txt_title_icon_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         <View
@@ -629,7 +629,7 @@
                     android:layout_height="wrap_content"
                     android:text="首页"
                     android:textColor="@color/txt_black"
-                    android:textSize="27px"/>
+                    android:textSize="@dimen/sp_txt_nomal"/>
         </LinearLayout>
         <View
                 android:layout_width="0.5dp"
@@ -658,7 +658,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="购物车"
-                    android:textSize="27px"/>
+                    android:textSize="@dimen/sp_txt_nomal"/>
         </LinearLayout>
         <View
                 android:layout_width="0.5dp"
@@ -687,7 +687,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="收藏"
-                    android:textSize="27px"/>
+                    android:textSize="@dimen/sp_txt_nomal"/>
         </LinearLayout>
         <LinearLayout
                 android:paddingTop="8px"
@@ -709,7 +709,7 @@
                     android:textStyle="normal"
                     android:text="加入购物车"
                     android:textColor="@color/white"
-                    android:textSize="32px"/>
+                    android:textSize="@dimen/sp_txt_title_icon_name"/>
 
             <TextView
                     android:id="@+id/spGoGou"
@@ -721,7 +721,7 @@
                     android:textStyle="normal"
                     android:text="立即购买"
                     android:textColor="@color/white"
-                    android:textSize="31px"/>
+                    android:textSize="@dimen/sp_txt_title_icon_name"/>
         </LinearLayout>
 
     </LinearLayout>

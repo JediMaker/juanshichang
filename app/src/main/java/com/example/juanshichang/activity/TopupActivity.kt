@@ -146,7 +146,7 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
                         if(phone.length == 11){
                             goTopUp.isEnabled = false
                         }
-                        llMon = pubAdapter!!.data[position].priPrice
+                        llMon = pubAdapter!!.data[position].topPrice
                     }
                     2 -> { //油卡
                         if (OIlType == 2) {//中石油  中石油的充值id 为定值 10008
@@ -243,12 +243,12 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
         }
         if (key == 1) {
             if (llPrice.size == 0) {
-                llPrice.add(TopUpBean("20M")) //流量选项
-                llPrice.add(TopUpBean("50M"))
-                llPrice.add(TopUpBean("100M"))
-                llPrice.add(TopUpBean("200M"))
-                llPrice.add(TopUpBean("500M"))
-                llPrice.add(TopUpBean("1G"))
+                llPrice.add(TopUpBean("20M","2")) //流量选项
+                llPrice.add(TopUpBean("50M","3"))
+                llPrice.add(TopUpBean("100M","5"))
+                llPrice.add(TopUpBean("200M","9"))
+                llPrice.add(TopUpBean("500M","15"))
+                llPrice.add(TopUpBean("1G","20"))
             }
             pubAdapter?.setMeNewData(llPrice)
             czYj.text = llPrice[0].topPrice //原价
@@ -352,14 +352,17 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
         var phoneMes: String = ""
         JhApiHttpManager.getInstance(Api.JUHEAPi)
             .post(Api.TELCHECK, map, object : Subscriber<String>() {
-                override fun onNext(str: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj.optString("resultcode").equals("200")) {
-                            ToastUtil.showToast(
+//                           todo 这里提示异常信息注释之后要放开，demo演示先跳过，原因后续排查
+
+                           /* ToastUtil.showToast(
                                 this@TopupActivity,
-                                jsonObj.optString("reason")
-                            )
+                                jsonObj.optString("reason")*/
                         } else {
                             val result = jsonObj.getJSONObject("result")
                             val province = result.getString("province") //省
@@ -397,7 +400,9 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
         map.put("key", Api.TeleKey)
         JhApiHttpManager.getInstance(Api.JUHEAPi2)
             .post(Api.PNHFSELECT, map, object : Subscriber<String>() {
-                override fun onNext(str: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj.optString("error_code").equals("0")) {
@@ -432,7 +437,9 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
         map.put("key", Api.TeleKey)
         JhApiHttpManager.getInstance(Api.JUHEAPi2)
             .post(Api.MZSELECT, map, object : Subscriber<String>() {
-                override fun onNext(str: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj.optString("error_code").equals("0")) {
@@ -469,7 +476,9 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
         map.put("key", Api.PHONELLKey)
         JhApiHttpManager.getInstance(Api.JUHEAPi3)
             .post(Api.JCLLTC, map, object : Subscriber<String>() {
-                override fun onNext(str: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj.optString("error_code").equals("0")) {

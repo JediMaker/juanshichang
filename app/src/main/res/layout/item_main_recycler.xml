@@ -18,7 +18,7 @@
             tools:text="暑假清凉节气.儿童学习家具9.8元大放价！"
             android:textColor="#2597F4"
             android:textStyle="bold"
-            android:textSize="36px"
+            android:textSize="@dimen/sp_txt_title_icon_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     <com.qmuiteam.qmui.widget.QMUIRadiusImageView
@@ -58,7 +58,7 @@
                     android:paddingBottom="4px"
                     android:paddingLeft="19px"
                     tools:text="巴黎欧兰雅"
-                    android:textSize="36px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:textColor="@color/txt_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -67,7 +67,7 @@
                     android:layout_below="@+id/left_tv_title"
                     android:textColor="@color/label_color"
                     tools:text="包邮"
-                    android:textSize="20px"
+                    android:textSize="@dimen/sp_txt_annotateTextSize"
                     android:layout_marginTop="4px"
                     android:paddingTop="1px"
                     android:paddingBottom="1px"
@@ -84,7 +84,7 @@
                     android:layout_toRightOf="@+id/left_left_label"
                     android:textColor="@color/home_gray"
                     tools:text="拼多多"
-                    android:textSize="20px"
+                    android:textSize="@dimen/sp_txt_annotateTextSize"
                     android:paddingTop="1px"
                     android:paddingBottom="1px"
                     android:paddingLeft="7px"
@@ -103,14 +103,14 @@
                         android:id="@+id/left_volume"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textSize="16px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/home_gray"
                         tools:text="销量1321"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/left_promotion_rate"
-                        android:textSize="16px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:layout_marginLeft="20px"
@@ -134,7 +134,7 @@
                     android:layout_height="wrap_content">
                 <TextView
                         android:text="¥"
-                        android:textSize="24px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/label_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -142,7 +142,7 @@
                         android:id="@+id/left_price"
                         android:textStyle="bold"
                         tools:text="520.23"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:textColor="@color/label_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -157,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_gray"
-                    android:textSize="24px"/>
+                    android:textSize="@dimen/sp_txt_annotateTextSize"/>
             <LinearLayout
                     android:id="@+id/left_juan"
                     android:layout_alignBottom="@+id/left_linear"
@@ -176,7 +176,7 @@
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         android:text="劵"
-                        android:textSize="28px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <View
@@ -190,7 +190,7 @@
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         tools:text="80元"
-                        android:textSize="28px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -220,7 +220,7 @@
                     android:paddingBottom="4px"
                     android:paddingLeft="19px"
                     tools:text="巴黎欧兰雅"
-                    android:textSize="36px"
+                    android:textSize="@dimen/sp_txt_nomal"
                     android:textColor="@color/txt_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -229,7 +229,7 @@
                     android:layout_below="@+id/right_tv_title"
                     android:textColor="@color/label_color"
                     tools:text="拼多多"
-                    android:textSize="20px"
+                    android:textSize="@dimen/sp_txt_annotateTextSize"
                     android:paddingTop="1px"
                     android:paddingBottom="1px"
                     android:paddingLeft="7px"
@@ -245,7 +245,7 @@
                     android:layout_toRightOf="@+id/right_left_label"
                     android:textColor="@color/home_gray"
                     tools:text="某个店"
-                    android:textSize="20px"
+                    android:textSize="@dimen/sp_txt_annotateTextSize"
                     android:paddingTop="1px"
                     android:paddingBottom="1px"
                     android:paddingLeft="7px"
@@ -264,14 +264,14 @@
                         android:id="@+id/right_volume"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textSize="16px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/home_gray"
                         tools:text="销量1321"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/right_promotion_rate"
-                        android:textSize="16px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:layout_marginLeft="20px"
@@ -295,7 +295,7 @@
                     android:layout_height="wrap_content">
                 <TextView
                         android:text="¥"
-                        android:textSize="24px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/label_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -303,7 +303,7 @@
                         android:id="@+id/right_price"
                         android:textStyle="bold"
                         tools:text="520.23"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:textColor="@color/label_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -318,7 +318,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/txt_gray"
-                    android:textSize="24px"/>
+                    android:textSize="@dimen/sp_txt_annotateTextSize"/>
             <LinearLayout
                     android:id="@+id/right_juan"
                     android:layout_alignBottom="@+id/right_linear"
@@ -337,7 +337,7 @@
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         android:text="劵"
-                        android:textSize="28px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 <View
@@ -351,7 +351,7 @@
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         tools:text="80元"
-                        android:textSize="28px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
             </LinearLayout>

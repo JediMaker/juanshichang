@@ -423,5 +423,23 @@
     <dimen name="sp_38">38sp</dimen>
     <dimen name="sp_40">40sp</dimen>
     <dimen name="sp_42">42sp</dimen>
-    <dimen name="sp_48">48sp</dimen>
+<!--    导航标题: 18sp=36px
+
+    文章标题或图标名称: 16sp=32px
+    文本字体: 14sp=28px
+注释最小字体	annotateTextSize	12sp
+文本字体	contentTextSize	14sp
+文章标题	titleTextSize	16sp
+导航标题	navTextSize	18sp
+顶栏标题	topBarTextSize	22sp
+————————————————
+版权声明：本文为CSDN博主「gooqii」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/baidu_25797177/java/article/details/51422886
+    注释最小字体: 12sp=24px-->
+    <dimen name="sp_navigation_title">18sp</dimen>
+    <dimen name="sp_txt_nomal">14sp</dimen>
+    <dimen name="sp_txt_title_icon_name">16sp</dimen>
+    <dimen name="sp_txt_annotateTextSize">12sp</dimen>
+    <dimen name="sp_txt_topBarTextSize">22sp</dimen>
+
 </resources>

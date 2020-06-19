@@ -15,7 +15,7 @@
     <TextView
         android:id="@+id/topPrice"
         tools:text="20元"
-        android:textSize="16sp"
+        android:textSize="@dimen/sp_txt_title_icon_name"
         android:textColor="@color/main_text"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:visibility="gone"
         android:id="@+id/botPrice"
         tools:text="售价29.82元"
-        android:textSize="12sp"
+        android:textSize="@dimen/sp_txt_annotateTextSize"
         android:textColor="@color/txt_gray"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"

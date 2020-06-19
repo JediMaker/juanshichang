@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textColor="@color/main_text"
-                android:textSize="54px"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:text="收货地址"
                 />
         <TextView
@@ -40,7 +40,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:text="保存"
-                android:textSize="48px"
+                android:textSize="@dimen/sp_navigation_title"
                 android:textColor="@color/indicatorRed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -68,7 +68,7 @@
                     android:hint="收货人"
                     android:textColorHint="@color/txt_gray"
                     android:textColor="@color/main_text"
-                    android:textSize="42px"
+                    android:textSize="@dimen/sp_txt_nomal"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"/>
             <View
@@ -77,7 +77,7 @@
                     android:background="@drawable/siteo"
                     android:layout_alignParentRight="true"
                     android:textColor="@color/txt_gray"
-                    android:textSize="35px"
+                    android:textSize="@dimen/sp_txt_nomal"
                     android:layout_width="15.1dp"
                     android:layout_height="16dp"/>
         </RelativeLayout>
@@ -102,7 +102,7 @@
                     android:hint="手机号码"
                     android:textColorHint="@color/txt_gray"
                     android:textColor="@color/main_text"
-                    android:textSize="42px"
+                    android:textSize="@dimen/sp_txt_nomal"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"/>
             <TextView
@@ -113,7 +113,7 @@
                     android:text="+86"
                     android:drawablePadding="29px"
                     android:textColor="@color/txt_gray"
-                    android:textSize="35px"
+                    android:textSize="@dimen/sp_txt_nomal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
         </RelativeLayout>
@@ -156,7 +156,7 @@
                 android:id="@+id/sArea"
                 android:text="所在地区"
                 android:drawableRight="@drawable/details_next"
-                android:textSize="42px"
+                android:textSize="@dimen/sp_txt_nomal"
                 android:textColor="@color/txt_gray"
                 android:paddingTop="33px"
                 android:paddingBottom="29px"
@@ -171,7 +171,7 @@
                 android:paddingTop="11dp"
                 android:inputType="text"
                 android:paddingBottom="35dp"
-                android:textSize="14sp"
+                android:textSize="@dimen/sp_txt_nomal"
                 android:hint="详细地址:如道路、门牌号、小区、楼栋号、单元室等"
                 android:textColorHint="@color/txt_gray"
                 android:textColor="@color/main_text"
@@ -194,7 +194,7 @@
                 android:paddingBottom="38px"
                 android:text="设为默认地址"
                 android:textColor="@color/main_text"
-                android:textSize="14sp"
+                android:textSize="@dimen/sp_txt_nomal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         <CheckBox
@@ -216,7 +216,7 @@
             android:background="@color/white"
             android:text="删除收货地址"
             android:textColor="@color/indicatorRed"
-            android:textSize="14sp"
+            android:textSize="@dimen/sp_txt_nomal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 </com.zhy.autolayout.AutoLinearLayout>

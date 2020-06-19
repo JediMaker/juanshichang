@@ -27,7 +27,7 @@
             android:gravity="center"
             android:text="订单详情"
             android:textColor="@color/main_text"
-            android:textSize="18sp"
+            android:textSize="@dimen/sp_txt_topBarTextSize"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -63,7 +63,7 @@
             android:layout_centerInParent="true"
             android:layout_marginStart="19dp"
             android:textColor="@color/main_text"
-            android:textSize="16sp"
+            android:textSize="@dimen/sp_txt_title_icon_name"
             app:layout_constraintBaseline_toBaselineOf="@+id/oDName"
             app:layout_constraintLeft_toRightOf="@+id/oDName"
             tools:text="176****7829" />
@@ -80,7 +80,7 @@
             android:maxLines="1"
             android:paddingBottom="18dp"
             android:textColor="@color/txt_gray"
-            android:textSize="11sp"
+            android:textSize="@dimen/sp_txt_annotateTextSize"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -106,7 +106,7 @@
                 android:paddingLeft="17dp"
                 android:paddingRight="17dp"
                 android:textColor="@color/indicatorRed"
-                android:textSize="16sp"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:text="再次购买"
                 android:background="@drawable/order_but"
                 android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
                 android:paddingLeft="17dp"
                 android:paddingRight="17dp"
                 android:textColor="@color/txt_gray"
-                android:textSize="16sp"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:text="申请退款"
                 android:background="@drawable/order_but"
                 android:layout_width="wrap_content"
@@ -175,7 +175,7 @@
                         android:layout_marginBottom="15dp"
                         android:text="商品详情"
                         android:textColor="@color/main_text"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:textStyle="bold" />
 
                 <View
@@ -196,7 +196,7 @@
                             android:layout_marginBottom="12dp"
                             android:text="订单编号"
                             android:textColor="@color/txt_gray"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/sp_txt_nomal" />
 
                     <TextView
                             android:id="@+id/ddBh"
@@ -206,7 +206,7 @@
                             android:layout_weight="1"
                             android:gravity="end"
                             android:textColor="@color/txt_gray"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/sp_txt_nomal"
                             tools:text="1889w939302832982" />
 
                     <View
@@ -235,7 +235,7 @@
                             android:layout_marginBottom="12dp"
                             android:text="支付方式"
                             android:textColor="@color/txt_gray"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/sp_txt_nomal" />
 
                     <TextView
                             android:id="@+id/zfFc"
@@ -245,7 +245,7 @@
                             android:layout_weight="1"
                             android:gravity="end"
                             android:textColor="@color/txt_gray"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/sp_txt_nomal"
                             android:text="在线支付" />
                 </LinearLayout>
 
@@ -266,7 +266,7 @@
                             android:layout_marginBottom="12dp"
                             android:text="下单日期"
                             android:textColor="@color/txt_gray"
-                            android:textSize="12sp" />
+                            android:textSize="@dimen/sp_txt_nomal" />
 
                     <TextView
                             android:id="@+id/xdDate"
@@ -276,7 +276,7 @@
                             android:layout_weight="1"
                             android:gravity="end"
                             android:textColor="@color/txt_gray"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/sp_txt_nomal"
                             tools:text="2019-12-18 06:20:59" />
                 </LinearLayout>
             </LinearLayout>

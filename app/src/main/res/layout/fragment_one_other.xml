@@ -61,7 +61,7 @@
                                 android:maxLength="4"
                                 android:text="综合"
                                 android:textColor="@drawable/top_txt_color"
-                                android:textSize="42px" />
+                                android:textSize="@dimen/sp_txt_title_icon_name" />
 
                         <ImageView
                                 android:id="@+id/fenLeiImg"
@@ -96,7 +96,7 @@
                                 android:maxLength="3"
                                 android:text="劵后价"
                                 android:textColor="@color/home_gray"
-                                android:textSize="42px" />
+                                android:textSize="@dimen/sp_txt_title_icon_name" />
 
                         <ImageView
                                 android:id="@+id/priceImg"
@@ -129,7 +129,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="收益"
                                 android:textColor="@color/home_gray"
-                                android:textSize="42px" />
+                                android:textSize="@dimen/sp_txt_title_icon_name" />
 
                         <ImageView
                                 android:id="@+id/earnImg"

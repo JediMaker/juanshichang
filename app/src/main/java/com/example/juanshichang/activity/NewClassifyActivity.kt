@@ -128,7 +128,9 @@ class NewClassifyActivity : BaseActivity(), View.OnClickListener,
             Api.NEWCATEGORY,
             NewParameter.getNewClassMap(parent_category_id),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {

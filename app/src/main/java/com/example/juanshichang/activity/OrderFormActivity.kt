@@ -237,7 +237,9 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
             Api.NEWHISORDER,
             NewParameter.getBaseTMap(),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {

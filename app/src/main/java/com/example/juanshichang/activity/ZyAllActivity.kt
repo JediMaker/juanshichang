@@ -77,7 +77,9 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
             Api.NEWCATEGORYCON,
             NewParameter.getNewCGoodMap(category_id),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {

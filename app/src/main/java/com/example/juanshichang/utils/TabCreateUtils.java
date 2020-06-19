@@ -146,23 +146,26 @@ public class TabCreateUtils {
                 indicator.setLineWidth(32);
 //                indicator.setColors(ContextCompat.getColor(context, R.color.white));
                 indicator.setRoundRadius(3);
-                if (type == 0) { //默认
+                indicator.setColors(ContextCompat.getColor(context, R.color.white));
+               /* if (type == 0) { //默认
                     indicator.setColors(ContextCompat.getColor(context, R.color.white));
                 } else {
                     indicator.setColors(ContextCompat.getColor(context, R.color.indicatorRed));
-                }
+                }*/
                 return indicator;
             }
 
             //设置字体 颜色...
             private void setTextColor(SelectBigPagerTitleView colorTransitionPagerTitleView) {
-                if (type == 0) {
+                colorTransitionPagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.qmui_config_color_50_white));
+                colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.white));
+             /*   if (type == 0) {
                     colorTransitionPagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.qmui_config_color_50_white));
                     colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.white));
                 } else {
                     colorTransitionPagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.qmui_config_color_50_pure_black));
                     colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.main_text));
-                }
+                }*/
             }
         };
         commonNavigator.setAdapter(cA);
@@ -230,6 +233,7 @@ public class TabCreateUtils {
 
             //设置字体 颜色...
             private void setTextColor(SelectBigPagerTitleView colorTransitionPagerTitleView) {
+                colorTransitionPagerTitleView.setTextSize(R.dimen.sp_txt_nomal);
                 colorTransitionPagerTitleView.setNormalColor(ContextCompat.getColor(context, R.color.qmui_config_color_50_pure_black));
                 colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.main_text));
             }

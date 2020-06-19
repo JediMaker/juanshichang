@@ -29,8 +29,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textColor="@color/main_text"
-                android:textSize="54px"
-                android:text="萌象自营"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
+                android:text="商城自营"
                 />
     </com.zhy.autolayout.AutoRelativeLayout>
     <androidx.recyclerview.widget.RecyclerView

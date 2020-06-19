@@ -44,7 +44,7 @@ class CartBean : Serializable{
         var code: String = "",
         var sort_order: String = "",
         var title: String = "",
-        var value: Int = 0
+        var value:  Double=0.0
     )
 
     data class TotalX(

@@ -36,7 +36,7 @@
                 android:layout_marginLeft="10dp"
                 android:text="店铺名称"
                 android:textColor="@color/main_text"
-                android:textSize="14dp"
+                android:textSize="@dimen/sp_txt_nomal"
                 android:maxLines="1"
                 android:maxLength="10"
                 android:ellipsize="end"/>
@@ -48,7 +48,7 @@
                 android:layout_marginRight="16dp"
                 tools:text="满99包邮"
                 android:textColor="@color/txt_gray"
-                android:textSize="11dp"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:maxLines="1"
                 android:maxLength="10"
                 android:ellipsize="end"/>

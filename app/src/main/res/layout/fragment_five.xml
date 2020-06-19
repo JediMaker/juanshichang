@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.FourFragment">
+
     <!--android:fitsSystemWindows="true"-->
     <!-- TODO: Update blank fragment layout -->
     <com.zhy.autolayout.AutoRelativeLayout
@@ -30,7 +31,7 @@
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
                 android:text="我的"
-                android:textSize="52px"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:textColor="@color/main_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -53,7 +54,7 @@
                 android:layout_marginTop="27px"
                 android:layout_toRightOf="@+id/ffUserImage"
                 tools:text="昵称"
-                android:textSize="46px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/main_text"
@@ -68,14 +69,14 @@
                 android:layout_height="wrap_content">
             <TextView
                     android:text="邀请码:"
-                    android:textSize="30px"
+                    android:textSize="@dimen/sp_txt_nomal"
                     android:textColor="@color/home_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <TextView
                     android:id="@+id/ffUserInvite"
                     tools:text="WW7HKS"
-                    android:textSize="35px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:textColor="@color/home_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -89,7 +90,7 @@
                     android:paddingLeft="18px"
                     android:paddingRight="19px"
                     android:text="复制"
-                    android:textSize="23px"
+                    android:textSize="@dimen/sp_txt_annotateTextSize"
                     android:textColor="@color/white"
                     android:background="@drawable/ff_tx_but"
                     android:layout_width="wrap_content"
@@ -114,7 +115,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="余额"
                     android:textColor="@color/white"
-                    android:textSize="46px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -124,7 +125,7 @@
                     android:layout_centerHorizontal="true"
                     tools:text="100.56"
                     android:textColor="@color/white"
-                    android:textSize="95px"
+                    android:textSize="@dimen/sp_txt_topBarTextSize"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -144,14 +145,14 @@
                                 android:gravity="center"
                                 tools:text="656.23"
                                 android:textStyle="bold"
-                                android:textSize="40px"
+                                android:textSize="@dimen/sp_txt_title_icon_name"
                                 android:textColor="@color/white"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
                         <TextView
                                 android:text="本月预估收入（元）"
                                 android:layout_marginTop="10px"
-                                android:textSize="35px"
+                                android:textSize="@dimen/sp_txt_title_icon_name"
                                 android:textColor="@color/white"
                                 android:gravity="center"
                                 android:layout_width="match_parent"
@@ -173,14 +174,14 @@
                             android:gravity="center"
                             tools:text="56.23"
                             android:textStyle="bold"
-                            android:textSize="40px"
+                            android:textSize="@dimen/sp_txt_title_icon_name"
                             android:textColor="@color/white"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                     <TextView
                             android:text="今日预估收入（元）"
                             android:layout_marginTop="10px"
-                            android:textSize="35px"
+                            android:textSize="@dimen/sp_txt_title_icon_name"
                             android:textColor="@color/white"
                             android:gravity="center"
                             android:layout_width="match_parent"
@@ -206,47 +207,48 @@
                     <TextView
                             android:id="@+id/earnings"
                             android:drawableTop="@drawable/ff_one_image"
-                            android:drawablePadding="-20px"
+                            android:drawablePadding="@dimen/dp_6"
                             android:gravity="center"
                             android:text="收益"
                             android:textColor="@color/ff_gray"
-                            android:textSize="35px"
+                            android:textSize="@dimen/sp_txt_title_icon_name"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"/>
                     <TextView
                             android:id="@+id/orderForm"
                             android:drawableTop="@drawable/ff_two_image"
-                            android:drawablePadding="-20px"
+                            android:drawablePadding="@dimen/dp_6"
                             android:gravity="center"
                             android:text="订单"
                             android:textColor="@color/ff_gray"
-                            android:textSize="35px"
+                            android:textSize="@dimen/sp_txt_title_icon_name"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"/>
                     <TextView
                             android:id="@+id/myFans"
                             android:drawableTop="@drawable/ff_three_image"
-                            android:drawablePadding="-20px"
+                            android:drawablePadding="@dimen/dp_6"
                             android:gravity="center"
                             android:text="粉丝"
                             android:textColor="@color/ff_gray"
-                            android:textSize="35px"
+                            android:textSize="@dimen/sp_txt_title_icon_name"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"/>
                     <TextView
                             android:id="@+id/myInvite"
                             android:drawableTop="@drawable/ff_four_image"
-                            android:drawablePadding="-20px"
+                            android:drawablePadding="@dimen/dp_6"
                             android:gravity="center"
                             android:text="邀请"
                             android:textColor="@color/ff_gray"
-                            android:textSize="35px"
+                            android:textSize="@dimen/sp_txt_title_icon_name"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"/>
             </LinearLayout>
     </androidx.cardview.widget.CardView>
+
 </com.zhy.autolayout.AutoLinearLayout>

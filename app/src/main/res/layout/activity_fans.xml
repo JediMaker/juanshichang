@@ -50,7 +50,7 @@
                         android:background="@drawable/bg_search_white"
                         android:hint="请输入粉丝手机号或邀请码"
                         android:paddingLeft="80px"
-                        android:textSize="40px" />
+                        android:textSize="@dimen/sp_txt_nomal" />
 
                 <LinearLayout
                         android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:text="搜索"
                         android:textColor="@color/white"
-                        android:textSize="46px" />
+                        android:textSize="@dimen/sp_txt_nomal" />
             </LinearLayout>
         </LinearLayout>
         <TextView
@@ -88,7 +88,7 @@
                 android:text="我的粉丝"
                 android:textStyle="normal"
                 android:textColor="@color/white"
-                android:textSize="35px"
+                android:textSize="@dimen/sp_txt_nomal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         <TextView

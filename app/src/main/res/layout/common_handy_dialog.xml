@@ -29,7 +29,7 @@
             <TextView 
                 android:id="@+id/mCancleTV"
                 android:layout_width="315px"
-                android:textSize="44px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:gravity="center"
                 android:background="@drawable/btn_order_commit_green"
                 android:textColor="@color/white"
@@ -39,7 +39,7 @@
             <TextView 
                 android:id="@+id/mSureTV"
                 android:layout_width="315px"
-                android:textSize="44px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:gravity="center"
                 android:text="确定"
                 android:background="@drawable/btn_order_commit_orange"
@@ -58,6 +58,6 @@
             android:layout_below="@id/mImageView"
             android:layout_above="@id/mBottomLayout"
             android:textColor="@color/txt_black_center"
-            android:textSize="44px" />
+            android:textSize="@dimen/sp_txt_title_icon_name" />
     </RelativeLayout>
 </RelativeLayout>

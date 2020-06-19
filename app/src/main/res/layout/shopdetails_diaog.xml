@@ -11,14 +11,14 @@
             android:layout_width="83dp"
             android:layout_height="83dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="10dp"
             android:scaleType="fitXY"
             android:src="@drawable/c_error"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     <View
             android:id="@+id/dFinish"
-            android:layout_marginTop="16.5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="15.5dp"
             android:background="@drawable/money_del"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +34,7 @@
             android:layout_marginTop="40dp"
             android:text="¥32.80"
             android:textColor="@color/indicatorRed"
-            android:textSize="19sp"
+            android:textSize="@dimen/sp_txt_title_icon_name"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/dShopImg"
             app:layout_constraintTop_toTopOf="parent" />
@@ -49,7 +49,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/main_text"
-            android:textSize="12sp"
+            android:textSize="@dimen/sp_txt_annotateTextSize"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toRightOf="@id/dShopImg"
             app:layout_constraintRight_toRightOf="parent"
@@ -106,7 +106,7 @@
                     android:layout_marginTop="13dp"
                     android:text="数量"
                     android:textColor="@color/main_text"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/sp_txt_nomal"
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dList" />
@@ -130,7 +130,7 @@
                         android:gravity="center"
                         android:text="－"
                         android:textColor="@color/txt_gray"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/sp_txt_title_icon_name" />
 
                 <TextView
                         android:id="@+id/dAmount"
@@ -141,7 +141,7 @@
                         android:gravity="center"
                         android:text="1"
                         android:textColor="@color/txt_gray"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/sp_txt_title_icon_name" />
 
                 <TextView
                         android:id="@+id/dAddAmount"
@@ -152,7 +152,7 @@
                         android:gravity="center"
                         android:text="＋"
                         android:textColor="@color/txt_gray"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/sp_txt_title_icon_name" />
             </LinearLayout>
 
             <EditText
@@ -174,7 +174,7 @@
                     android:paddingBottom="5dp"
                     android:textColor="@color/main_text"
                     android:textColorHint="@color/txt_gray"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/sp_txt_annotateTextSize"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -189,7 +189,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="确定"
-            android:textSize="16sp"
+            android:textSize="@dimen/sp_txt_nomal"
             android:textColor="@color/white"
             android:background="@color/indicatorRed"
             app:layout_constraintRight_toRightOf="parent"

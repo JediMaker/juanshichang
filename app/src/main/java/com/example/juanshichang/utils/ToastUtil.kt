@@ -4,6 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.text.TextUtils
 import android.widget.Toast
+import com.example.juanshichang.base.Api
+import com.example.juanshichang.base.JsonParser
+import com.example.juanshichang.base.Parameter
+import com.example.juanshichang.http.HttpManager
+import org.json.JSONException
+import org.json.JSONObject
+import rx.Subscriber
 
 /**
  * @作者: yzq
@@ -15,7 +22,7 @@ class ToastUtil {
         internal var sToast: Toast? = null
 
         fun showToast(context: Context, text: String) {
-            showToastInner(context, getError(text), Toast.LENGTH_SHORT)
+            showToastInner(context, getError(text, context), Toast.LENGTH_SHORT)
         }
 
         fun showToast(context: Context, stringId: Int) {
@@ -50,8 +57,9 @@ class ToastUtil {
                 sToast = Toast.makeText(context.applicationContext, " ", Toast.LENGTH_SHORT)
             }
         }
+
         //返回信息
-        private fun getError(str: String): String {
+        private fun getError(str: String, context: Context): String {
             var retStr: String = str
             if (isError(str)) {
                 when (str) {
@@ -59,7 +67,7 @@ class ToastUtil {
                     "NEED TIMESTAMP",
                     "NEED UUID",
                     "NEED CART_ID & QUANTITY",
-                    "NEED ADDRESS_ID"->{
+                    "NEED ADDRESS_ID" -> {
                         retStr = "用户信息缺失"
                     }
                     "NOT FOUND PRODUCT",
@@ -68,25 +76,87 @@ class ToastUtil {
                     }
                     "INVALID INPUT PARAMS",
                     "INVALID TIMESTAMP",
-                    "INVALID SIGN"->{
+                    "INVALID SIGN" -> {
                         retStr = "无效信息"
+                        relogin(context)
                     }
-                    "LOGIN UID ERROR"->{
+                    "LOGIN UID ERROR" -> {
+//                        retStr = "尚未登陆，请登录"
                         retStr = "登录错误"
                     }
-                    "CAN NOT FOUND USER"->{
+                    "CAN NOT FOUND USER" -> {
                         retStr = "不存在的用户"
                     }
-                    "USERNAME OR PASSWORD IS NOT CORRECT"->{
+                    "USERNAME OR PASSWORD IS NOT CORRECT" -> {
                         retStr = "用户名或密码错误"
                     }
-                    "FAILED TO ADD USER"->{
+                    "The phone number already exists",
+                    "FAILED TO ADD USER" -> {
                         retStr = "用户已存在"
                     }
                 }
             }
             return retStr
         }
+
+        //无效信息重新请求登录
+        private fun relogin(context: Context) {
+            val phone = SpUtil.getIstance().user.phone_num
+            val ps = SpUtil.getIstance().user.password
+            HttpManager.getInstance()
+                .post(
+                    Api.LOGIN,
+                    Parameter.getLoginMap(phone.toString(), ps.toString()),
+                    object : Subscriber<String>() {
+                        override fun onNext(result: String?) {
+                            //todo后台返回数据结构问题，暂时这样处理
+                            val str =result?.substring(result?.indexOf("{"),result.length)
+                            if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                                var jsonObj: JSONObject? = null
+                                try {
+                                    jsonObj = JSONObject(str)
+                                } catch (e: JSONException) {
+                                    e.printStackTrace();
+                                }
+                                if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(
+                                        JsonParser.JSON_SUCCESS
+                                    )
+                                ) {
+                                    showToast(
+                                        context, jsonObj.optString(
+                                            JsonParser.JSON_MSG
+                                        )
+                                    )
+                                } else {
+                                    val data = jsonObj.getJSONObject("data")
+                                    val token: String = data.getString("token")  //注册返回Token不做处理
+                                    val uid: Long = data.getLong("uid") //这是用于校验新接口的uid
+                                    LogTool.e("LogToken", token)
+                                    val user = SpUtil.getIstance().user
+                                    user.apply {
+                                        useruid = uid
+                                        usertoken = token
+                                        phone_num = phone
+                                        password = ps
+                                    }.let {
+                                        SpUtil.getIstance().user = it //写入
+                                    }
+
+                                }
+                            }
+                        }
+
+                        override fun onCompleted() {
+                            LogTool.e("onCompleted", "登录请求完成!")
+                        }
+
+                        override fun onError(e: Throwable?) {
+                            LogTool.e("onError", "登录请求错误!" + e)
+                        }
+
+                    })
+        }
+
         //用于判定是否为已知异常
         private fun isError(str: String): Boolean {
             if (TextUtils.equals(str, "NEED SIGN") || TextUtils.equals(
@@ -107,6 +177,7 @@ class ToastUtil {
                 ) || TextUtils.equals(str, "NOT FOUND GOODS IN CART")
                 || TextUtils.equals(str, "USERNAME OR PASSWORD IS NOT CORRECT")
                 || TextUtils.equals(str, "FAILED TO ADD USER")
+                || TextUtils.equals(str, "The phone number already exists")
             ) {
                 return true
             }

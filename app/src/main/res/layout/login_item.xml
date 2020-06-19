@@ -19,7 +19,7 @@
                     android:paddingLeft="227px"
                     android:paddingRight="227px"
                     android:layout_width="match_parent"
-                    android:layout_height="925px">
+                    android:layout_height="wrap_content">
                 <LinearLayout
                         android:orientation="horizontal"
                         android:layout_marginBottom="33px"
@@ -29,7 +29,7 @@
                             android:id="@+id/goReg"
                             android:gravity="left"
                             android:text="注册"
-                            android:textSize="56px"
+                            android:textSize="@dimen/sp_txt_topBarTextSize"
                             android:textColor="@color/home_gray"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -37,7 +37,7 @@
                     <TextView
                             android:gravity="right"
                             android:text="登录"
-                            android:textSize="56px"
+                            android:textSize="@dimen/sp_txt_topBarTextSize"
                             android:textColor="@color/main_text"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -47,7 +47,8 @@
                         style="@style/RegistLinear"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:gravity="center_vertical"
+                        android:layout_height="wrap_content"                        >
                     <View
                             android:layout_gravity="center"
                             android:background="@drawable/reg_phone"
@@ -70,6 +71,7 @@
                         style="@style/RegistLinear"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
+                        android:gravity="center_vertical"
                         android:layout_height="wrap_content">
                     <View
                             android:layout_gravity="center"
@@ -91,11 +93,11 @@
                         android:layout_height="1px"/>
                 <TextView
                         android:id="@+id/loginBut"
-                        android:layout_marginTop="339px"
+                        android:layout_marginTop="@dimen/dp_58"
                         android:paddingTop="43px"
                         android:paddingBottom="42px"
                         android:gravity="center"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:text="立即登录"
                         android:enabled="true"
                         android:background="@drawable/rig_go_but"
@@ -111,7 +113,7 @@
                             android:id="@+id/fastLogin"
                             android:gravity="left"
                             android:text="快速登录"
-                            android:textSize="36px"
+                            android:textSize="@dimen/sp_txt_title_icon_name"
                             android:textColor="@color/home_gray"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -120,7 +122,7 @@
                             android:id="@+id/lookPW"
                             android:gravity="right"
                             android:text="找回密码"
-                            android:textSize="36px"
+                            android:textSize="@dimen/sp_txt_title_icon_name"
                             android:textColor="@color/home_gray"
                             android:layout_width="0dp"
                             android:layout_weight="1"

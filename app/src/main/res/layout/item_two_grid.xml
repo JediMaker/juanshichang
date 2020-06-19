@@ -26,7 +26,7 @@
                 android:paddingBottom="18px"
                 android:layout_gravity="center_horizontal"
                 tools:text="休闲零食"
-                android:textSize="36px"
+                android:textSize="@dimen/sp_txt_annotateTextSize"
                 android:textColor="@color/main_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

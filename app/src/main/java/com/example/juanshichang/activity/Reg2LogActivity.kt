@@ -188,6 +188,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             if (yzCode.length != mSmsCode!!.length || !mSmsCode!!.equals(yzCode)) {
                 ToastUtil.showToast(this@Reg2LogActivity, "验证码有误!!!")
                 return false
+
             }
         } else {
             ToastUtil.showToast(this@Reg2LogActivity, "获取验证码 错误请稍后重试!!!")
@@ -270,6 +271,8 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                         user.apply {
                             useruid = uid
                             usertoken = token
+                            phone_num = phone
+                            password = ps
                         }.let {
                             SpUtil.getIstance().user = it //写入
                         }
@@ -312,7 +315,8 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
                         LogTool.e("zxcv","Date: "+data.toString())
-                        mSmsCode = data.getString("sms_code")  //注册返回Token不做处理
+                        mSmsCode = data.getString("code")  //注册返回Token不做处理
+//                        mSmsCode = data.getString("sms_code")  //注册返回Token不做处理
                         LogTool.e("zxcv","sms_code: "+mSmsCode.toString())
                         if (mSmsCode != "") {
                             timer.start()

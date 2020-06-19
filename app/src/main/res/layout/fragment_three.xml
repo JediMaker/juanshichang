@@ -1,17 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".fragment.ThreeFragment">
-    <ImageView
-            android:visibility="gone"
-            android:src="@drawable/comm"
-            android:scaleType="fitXY"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".fragment.ThreeFragment"
+        tools:ignore="MissingConstraints">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/topbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:paddingLeft="45px"
+            android:paddingRight="45px"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="35px"
+            >
+
+        <TextView
+                android:id="@+id/LaTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="商学院"
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/sp_txt_topBarTextSize" />
+    </com.zhy.autolayout.AutoRelativeLayout>
+
     <com.example.juanshichang.utils.LollipopFixedWebView
             android:id="@+id/thWeb"
+            app:layout_constraintTop_toBottomOf="@+id/topupTab"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-</FrameLayout>
+            android:layout_marginTop="@dimen/dp_45"
+            android:layout_height="match_parent" />
+
+    <LinearLayout
+            android:id="@+id/layout_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_45"
+            android:background="#f8f8f8"
+            app:layout_constraintTop_toBottomOf="@+id/topupTab"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/web_404" />
+
+        <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="抱歉，没有找到该页面~"
+                android:textColor="#999999"
+                android:textSize="@dimen/sp_txt_nomal" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

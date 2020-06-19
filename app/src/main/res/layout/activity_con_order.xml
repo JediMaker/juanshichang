@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textColor="@color/main_text"
-                android:textSize="54px"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:text="确认订单"
                 />
     </com.zhy.autolayout.AutoRelativeLayout>
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/txt_gray"
-            android:textSize="11sp" />
+            android:textSize="@dimen/sp_txt_annotateTextSize" />
     <TextView
             android:id="@+id/hintText"
             android:visibility="visible"
@@ -128,14 +128,14 @@
                     android:paddingHorizontal="25px"
                     android:layout_marginLeft="24px"
                     android:text="实付款 :"
-                    android:textSize="48px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:textColor="@color/main_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <TextView
                     android:visibility="gone"
                     android:text="¥"
-                    android:textSize="56px"
+                    android:textSize="@dimen/sp_txt_topBarTextSize"
                     android:textColor="@color/indicatorRed"
                     android:layout_marginLeft="5px"
                     android:layout_width="wrap_content"
@@ -143,7 +143,7 @@
             <TextView
                     android:id="@+id/coPrice"
                     android:text="¥0.00"
-                    android:textSize="72px"
+                    android:textSize="@dimen/sp_txt_topBarTextSize"
                     android:textColor="@color/indicatorRed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -152,7 +152,7 @@
                 android:id="@+id/coPay"
                 android:text="提交订单"
                 android:gravity="center"
-                android:textSize="48px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textColor="@color/white"
                 android:background="@color/indicatorRed"
                 android:paddingTop="26px"

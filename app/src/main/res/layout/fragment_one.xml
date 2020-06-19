@@ -27,7 +27,7 @@
         <RelativeLayout
                 android:id="@+id/homeRelatie"
                 android:layout_width="match_parent"
-                android:layout_height="150px"
+                android:layout_height="@dimen/dp_56"
         >
 
             <View
@@ -56,7 +56,7 @@
                         android:gravity="center_vertical"
                         android:text="粘贴宝贝标题，先领劵再购物"
                         android:paddingLeft="93px"
-                        android:textSize="36px"/>
+                        android:textSize="@dimen/sp_txt_annotateTextSize"/>
 
                 <ImageView
                         android:layout_width="@dimen/dp_16"
@@ -85,7 +85,7 @@
         <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/mainTab"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_27"></net.lucode.hackware.magicindicator.MagicIndicator>
+                android:layout_height="@dimen/dp_36"></net.lucode.hackware.magicindicator.MagicIndicator>
 
         <com.example.juanshichang.utils.CustomViewPager
                 android:id="@+id/vpOne"

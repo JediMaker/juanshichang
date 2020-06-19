@@ -70,7 +70,7 @@
             android:id="@+id/view"
             android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_56"
             android:layout_alignParentBottom="true"
             app:itemIconTint="@drawable/selector_tab_color"
             app:itemTextColor="@drawable/selector_tab_color"

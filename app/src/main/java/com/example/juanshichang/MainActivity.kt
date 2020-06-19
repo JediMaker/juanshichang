@@ -11,10 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import com.example.juanshichang.base.Api
-import com.example.juanshichang.base.BaseActivity
-import com.example.juanshichang.base.JsonParser
-import com.example.juanshichang.base.Parameter
+import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.UserBean
 import com.example.juanshichang.fragment.*
 import com.example.juanshichang.http.HttpManager
@@ -46,7 +43,6 @@ class MainActivity : BaseActivity() {
     private var bus = LiveDataBus.get()
     // 用于确定 首页面Tab 是否处在第一个
     private var topTabIsOne: Boolean = true
-
     override fun getContentView(): Int {
         return R.layout.activity_main
     }
@@ -320,11 +316,13 @@ class MainActivity : BaseActivity() {
                 }
                 when (position) {
                     0 -> {
-                        if (topTabIsOne) {
+                        bus.with("mainTopStatusView").value = R.color.white
+
+                  /*      if (topTabIsOne) {
                             bus.with("mainTopStatusView").value = R.color.colorPrimary
                         } else {
                             bus.with("mainTopStatusView").value = R.color.white
-                        }
+                        }*/
                     }
                     1, 2, 3 -> {
                         bus.with("mainTopStatusView").value = R.color.white
@@ -354,7 +352,7 @@ class MainActivity : BaseActivity() {
          */
         public fun downUser(context: Context) {
             HttpManager.getInstance()
-                .post(Api.USERINFO, Parameter.getBenefitMap(), object : Subscriber<String>() {
+                .post(Api.USERINFO, NewParameter.getUserMap(), object : Subscriber<String>() {
                     override fun onNext(str: String?) {
                         if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                             var jsonObj: JSONObject? = null

@@ -35,7 +35,7 @@
                         tools:text="收益:14.67"
                         android:textStyle="bold"
                         android:textColor="@color/white"
-                        android:textSize="35px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:paddingLeft="45px"
                         android:gravity="center_vertical"
                         android:background="@drawable/details_icon5"
@@ -67,7 +67,7 @@
                                 android:text="劵后价"
                                 android:textStyle="bold"
                                 android:textColor="@color/label_color"
-                                android:textSize="45px"/>
+                                android:textSize="@dimen/sp_txt_title_icon_name"/>
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -75,7 +75,7 @@
                                 android:paddingLeft="30px"
                                 android:text="¥ "
                                 android:textColor="@color/label_color"
-                                android:textSize="14sp"/>
+                                android:textSize="@dimen/sp_txt_nomal"/>
                         <TextView
                                 android:id="@+id/spJinEr"
                                 android:layout_width="wrap_content"

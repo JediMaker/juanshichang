@@ -47,7 +47,7 @@
                             android:text="系统通知"
                             android:layout_toRightOf="@+id/mesTopIv"
                             android:layout_marginLeft="20px"
-                            android:textSize="42px"
+                            android:textSize="@dimen/sp_navigation_title"
                             android:textColor="@color/main_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -55,6 +55,7 @@
                             android:id="@+id/mesData"
                             android:layout_alignParentRight="true"
                             tools:text="11:41:22"
+                            android:textSize="@dimen/sp_txt_annotateTextSize"
                             android:textColor="@color/txt_gray"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -69,7 +70,7 @@
                         android:paddingTop="45px"
                         android:layout_marginRight="100px"
                         tools:text="好消息"
-                        android:textSize="42px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:textColor="@color/main_text"
                         android:maxLines="1"
                         android:ellipsize="end"
@@ -80,7 +81,7 @@
                         android:paddingBottom="50px"
                         tools:text="好消息：为了给您更优质的服务 我决定系统维护期间 正常使用相关服务 请大家更新最新版本App 享受更好的体验！！！"
                         android:textColor="@color/home_gray"
-                        android:textSize="28px"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
             </com.zhy.autolayout.AutoLinearLayout>

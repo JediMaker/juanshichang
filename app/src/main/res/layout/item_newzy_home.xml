@@ -30,14 +30,14 @@
                     android:layout_marginBottom="12dp"
                     android:textStyle="bold"
                     android:textColor="@color/main_text"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <TextView
                     android:id="@+id/topHMore"
                     android:paddingRight="8dp"
                     android:text="更多>>"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/sp_txt_annotateTextSize"
                     android:textColor="@color/txt_gray"
                     android:layout_gravity="center_vertical"
                     android:gravity="right"

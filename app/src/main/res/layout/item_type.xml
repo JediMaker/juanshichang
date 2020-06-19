@@ -39,7 +39,7 @@
             android:layout_marginRight="30px"
             android:layout_marginTop="24px"
             android:textColor="@color/txt_hei"
-            android:textSize="40px"/>
+            android:textSize="@dimen/sp_txt_nomal"/>
 
     <RelativeLayout
             android:layout_width="match_parent"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24px"
                 android:textColor="@color/colorPrimary"
-                android:textSize="40px"/>
+                android:textSize="@dimen/sp_txt_nomal"/>
 
         <com.example.juanshichang.widget.PriceTextView
                 android:id="@+id/mTypeNumTvs"
@@ -65,7 +65,7 @@
                 android:layout_marginLeft="15px"
                 android:layout_toRightOf="@+id/mTypeNumTv"
                 android:textColor="@color/txt_gray"
-                android:textSize="32px"/>
+                android:textSize="@dimen/sp_txt_nomal"/>
         <TextView
                 android:id="@+id/mTypeZiYing"
                 android:visibility="gone"
@@ -82,7 +82,7 @@
                 android:paddingTop="8px"
                 android:text="10元劵"
                 android:textColor="@color/white"
-                android:textSize="30px"/>
+                android:textSize="@dimen/sp_txt_annotateTextSize"/>
     </RelativeLayout>
     <!--</LinearLayout>-->
 </com.zhy.autolayout.AutoLinearLayout>

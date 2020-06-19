@@ -115,7 +115,9 @@ class RealNameActivity : BaseActivity(), View.OnClickListener {
         map.put("realname", URLEncoder.encode(name,"utf-8"))
         map.put("key", Api.IDKey)
         JhApiHttpManager.getInstance(Api.JUHEAPi2).post(Api.REALNAME, map, object : Subscriber<String>() {
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     val jsonObj: JSONObject = JSONObject(str)
                     if (jsonObj.optInt("error_code") != 0) {//.equals("0")

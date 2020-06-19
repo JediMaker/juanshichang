@@ -8,14 +8,18 @@ package com.example.juanshichang.base
 interface Api {
     companion object {
         //        const val BASEURL = "http://dev.0371.ml:8080/" // 内网环境
-        const val BASEURL = "http://in.0371.ml:88/" // 阿里环境
+        const val BASEURL = "http://mxss.bainianmao.com:88/" // 阿里环境
         //        const val BASEURL = "http://192.168.5.67:8080/" // 本地环境
         //注册
-        val USER = "/register"
+        val USER = "/index.php?route=pre/register"
         //登录
-        val LOGIN = "/login"
+        val LOGIN = "/index.php?route=pre/login"
         //用户信息 login
-        val USERINFO = "/user/info"   //todo 有更改的接口
+//        val USERINFO = "/user/info"   //todo 有更改的接口
+
+        val USERINFO = "/index.php?route=cat/user/info"
+        val INVITECODE = "/index.php?route=cat/invitecode"
+//        val USERINFO = "/index.php?route=app/user"
         //商品搜索 unlogin
         val SEARCH = "/search"
         //商品详情查询
@@ -37,7 +41,7 @@ interface Api {
         //RecyclerView条目数据请求
         val THEME = "/index/theme"
         //发送验证码
-        val SMSSEND = "/smssend"
+        val SMSSEND = "/index.php?route=pre/smssend"
         //订单
         val ORDERS = "/user/orders"
         //粉丝
@@ -66,7 +70,8 @@ interface Api {
         val Jd = "jd"
         // ------------------------------------------------ new  port ------------------------------------------
 //        const val NEWBASEURL2 = "http://s.0371.ml/"  //内网环境
-        const val NEWBASEURL = "http://mxss.0371.ml:88/"  //外网测试
+//        const val NEWBASEURL = "http://mxss.0371.ml:88/"  //外网测试
+        const val NEWBASEURL = "http://mxss.bainianmao.com:88/"
 
         val HOME = "/index.php?route=app/home"     //首页
         val CART = "/index.php?route=app/cart"         //购物车

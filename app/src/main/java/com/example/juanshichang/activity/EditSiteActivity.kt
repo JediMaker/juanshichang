@@ -69,7 +69,7 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener {
                 val defId = intent.getStringExtra("defid")  //获取默认地址参数
                 data?.let {
                     address_id = it.address_id
-                    sName.setText("王二哈")
+                    sName.setText(it.name)
                     sPhone.setText(it.iphone)
                     zone = it.zone
                     sAdDet.setText(it.address_detail)
@@ -222,7 +222,9 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener {
             Api.ADDADDRESS,
             NewParameter.getNewAdMap(name, phone, address_detail, city, zone_id),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -274,7 +276,9 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener {
                 default
             ),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -314,7 +318,9 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener {
             Api.DELEADDRESS,
             NewParameter.getDeleAdMap(address_id),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -350,7 +356,9 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener {
             Api.ADDRESSZONES,
             NewParameter.getBaseZMap(),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {

@@ -26,7 +26,7 @@
     <!--加载圈所用-->
     <!--首页 TabLayout -->
     <style name="MyTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/sp_txt_nomal</item>
         <!--<item name="android:textColor"></item>-->
     </style>
     <!--注册用style-->
@@ -37,7 +37,7 @@
     <style name="RegistEdit" parent="EditText">
         <item name="android:textColor">@color/main_text</item>
         <item name="android:textColorHint">@color/reg_tit</item>
-        <item name="android:textSize">48px</item>
+        <item name="android:textSize">@dimen/sp_txt_title_icon_name</item>
         <item name="android:background">@null</item>
     </style>
     <!--我的收益 TextView-->
@@ -46,7 +46,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxLines">2</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">35px</item>
+        <item name="android:textSize">@dimen/sp_txt_title_icon_name</item>
         <item name="android:textColor">@color/main_text</item>
         <item name="android:paddingTop">40px</item>
         <item name="android:paddingBottom">50px</item>
@@ -65,7 +65,7 @@
     </style>
     <!--订单页面专用-->
     <style name="OrderTabLayoutTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">40px</item>
+        <item name="android:textSize">@dimen/sp_txt_nomal</item>
         <!--<item name="android:textColor"></item>-->
     </style>
     <!--Dialog样式规格弹框动画-->

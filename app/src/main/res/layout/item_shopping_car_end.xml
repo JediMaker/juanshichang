@@ -14,7 +14,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:text="小计:"
-                android:textSize="11sp"
+                android:textSize="@dimen/sp_txt_annotateTextSize"
                 android:textColor="@color/home_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -25,7 +25,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/endTit"
                 tools:text="87.9"
-                android:textSize="11sp"
+                android:textSize="@dimen/sp_txt_annotateTextSize"
                 android:textColor="@color/indicatorRed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

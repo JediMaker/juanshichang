@@ -332,14 +332,18 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 dAmount?.text = "$quantity"
             }
             dConfirm?.setOnClickListener {
-                //确定
-                checkMap = dAdapter?.getAllCheck() as ConcurrentHashMap//把选中的信息返回
-                showProgressDialog()
-                if (typeDialog == 1) { //加入购物车
-                    addShopCar(product_id!!, quantity, checkMap!!, 1)
-                } else if (typeDialog == 2) { //立即购买
-                    addShopCar(product_id!!, quantity, checkMap!!, 2)
+                if (!Util.hasLogin()){
+                    ToastTool.showToast(this@ShangPinZyContains,"尚未登录 请先登录")
+                }else{
+                    //确定
+                    checkMap = dAdapter?.getAllCheck() as ConcurrentHashMap//把选中的信息返回
                     showProgressDialog()
+                    if (typeDialog == 1) { //加入购物车
+                        addShopCar(product_id!!, quantity, checkMap!!, 1)
+                    } else if (typeDialog == 2) { //立即购买
+                        addShopCar(product_id!!, quantity, checkMap!!, 2)
+                        showProgressDialog()
+                    }
                 }
                 dialog?.dismiss()
             }
@@ -357,7 +361,9 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             Api.PRODUCT,
             NewParameter.getProductMap(productId!!),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -409,7 +415,9 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             Api.CARTADD,
             NewParameter.getAddSCMap(productId, quantity, checkMap!!),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {

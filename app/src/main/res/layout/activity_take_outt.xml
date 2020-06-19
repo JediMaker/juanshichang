@@ -23,7 +23,7 @@
                 android:text="金额将提现至您绑定的支付宝账户上,请注意查收~"
                 android:layout_centerVertical="true"
                 android:textColor="@color/indicatorRed"
-                android:textSize="36px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -35,7 +35,7 @@
             android:layout_height="140px"/>
     <TextView
             android:text="提现成功"
-            android:textSize="48px"
+            android:textSize="@dimen/sp_txt_title_icon_name"
             android:textColor="@color/main_text"
             android:layout_marginTop="21px"
             android:layout_gravity="center_horizontal"
@@ -54,7 +54,7 @@
                 <TextView
                         android:layout_marginRight="20px"
                         android:text="提现金额:"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:textColor="@color/txt_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -62,7 +62,7 @@
                         android:id="@+id/txJe"
                         android:layout_marginLeft="20px"
                         tools:text="192.22"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:textColor="@color/indicatorRed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -74,7 +74,7 @@
             <TextView
                     android:layout_marginRight="20px"
                     android:text="提现账户:"
-                    android:textSize="48px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:textColor="@color/txt_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -82,7 +82,7 @@
                     android:id="@+id/txZh"
                     android:layout_marginLeft="20px"
                     tools:text="156995115"
-                    android:textSize="48px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:textColor="@color/txt_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -94,7 +94,7 @@
             <TextView
                     android:layout_marginRight="20px"
                     android:text="当前余额:"
-                    android:textSize="48px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:textColor="@color/txt_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -102,7 +102,7 @@
                     android:id="@+id/dqYe"
                     android:layout_marginLeft="20px"
                     tools:text="0.00"
-                    android:textSize="48px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:textColor="@color/indicatorRed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>

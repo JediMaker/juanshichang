@@ -21,7 +21,7 @@
                     android:paddingRight="227px"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="925px">
+                    android:layout_height="wrap_content">
                 <LinearLayout
                         android:orientation="horizontal"
                         android:layout_marginBottom="33px"
@@ -30,7 +30,7 @@
                     <TextView
                             android:gravity="left"
                             android:text="注册"
-                            android:textSize="56px"
+                            android:textSize="@dimen/sp_txt_topBarTextSize"
                             android:textColor="@color/main_text"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -39,7 +39,7 @@
                             android:id="@+id/goLog"
                             android:gravity="right"
                             android:text="登录"
-                            android:textSize="56px"
+                            android:textSize="@dimen/sp_txt_topBarTextSize"
                             android:textColor="@color/home_gray"
                             android:layout_width="0dp"
                             android:layout_weight="1"
@@ -113,10 +113,10 @@
                             android:paddingRight="36px"
                             android:gravity="center"
                             android:textColor="@drawable/rig_text"
-                            android:textSize="36px"
+                            android:textSize="@dimen/sp_txt_annotateTextSize"
                             android:text="获取验证码"
                             android:layout_marginLeft="42px"
-                            android:layout_width="275px"
+                            android:layout_width="wrap_content"
                             android:layout_height="95px"/>
                 </LinearLayout>
                 <LinearLayout
@@ -169,11 +169,11 @@
                         android:layout_height="1px"/>
                 <TextView
                         android:id="@+id/registBut"
-                        android:layout_marginTop="111px"
+                        android:layout_marginTop="@dimen/dp_24"
                         android:paddingTop="43px"
                         android:paddingBottom="42px"
                         android:gravity="center"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_txt_title_icon_name"
                         android:text="立即注册/登录"
                         android:enabled="true"
                         android:background="@drawable/rig_go_but"
@@ -182,7 +182,7 @@
                         android:layout_height="wrap_content"/>
                 <LinearLayout
                         android:layout_below="@+id/L3"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="@dimen/dp_8"
                         android:id="@+id/mRCheckBox"
                         android:gravity="center"
                         android:layout_gravity="center"
@@ -200,7 +200,7 @@
                             android:layout_marginLeft="20px"
                             android:text="同意用户注册协议"
                             android:textColor="@color/txt_black_center"
-                            android:textSize="36px"
+                            android:textSize="@dimen/sp_txt_nomal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>

@@ -88,9 +88,9 @@ class OneFragment : BaseFragment() {
     override fun initViews(savedInstanceState: Bundle) {
         MyApp.requestPermission(mContext!!)
         //判断 设置状态栏颜色
-        if (tabIndicator != 0) {
+    /*    if (tabIndicator != 0) {
             StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.white)
-        }
+        }*/
         mainTab = mBaseView?.findViewById<MagicIndicator>(R.id.mainTab)
         mainVp = mBaseView?.findViewById<CustomViewPager>(R.id.vpOne)
         mainBack = mBaseView?.findViewById<ImageView>(R.id.mainBack)
@@ -232,7 +232,9 @@ class OneFragment : BaseFragment() {
             Api.HOME,
             NewParameter.getHomeMap(),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -331,20 +333,27 @@ class OneFragment : BaseFragment() {
                 dataTab,
                 object : TabCreateUtils.onTitleClickListener {
                     override fun onTitleClick(index: Int) {
+                        mTl?.visibility = View.GONE
+                        mOr?.visibility = View.VISIBLE
+                        mainBack?.visibility = View.VISIBLE
                         if (index == 0) {
-                            mTl?.visibility = View.GONE
+                     /*       mTl?.visibility = View.GONE
                             mOr?.visibility = View.VISIBLE
-                            mainBack?.visibility = View.VISIBLE
+                            mainBack?.visibility = View.VISIBLE*/
                             mainVp?.currentItem = 0
                             LiveDataBus.get().with("topisone").value = true
                             LiveDataBus.get().with("mainTopStatusView").value = R.color.colorPrimary
                         } else {
-                            mOr?.visibility = View.GONE
+               /*             mOr?.visibility = View.GONE
                             mTl?.visibility = View.VISIBLE
                             mainBack?.visibility = View.INVISIBLE
                             mainVp?.currentItem = 1
                             LiveDataBus.get().with("topisone").value = false
-                            LiveDataBus.get().with("mainTopStatusView").value = R.color.white
+                            LiveDataBus.get().with("mainTopStatusView").value = R.color.white*/
+
+                            mainVp?.currentItem = 1
+                            LiveDataBus.get().with("topisone").value = true
+                            LiveDataBus.get().with("mainTopStatusView").value = R.color.colorPrimary
                             //这里添加广播事件时间
                             val tabDataid = tabData[index - 1].category_id
                             LiveDataBus.get().with("main_tab").value = "$tabDataid"

@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 tools:text="张" />
     </RelativeLayout>
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/main_text"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_txt_title_icon_name" />
 
     <TextView
             android:id="@+id/sitePhone"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/txt_gray"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp_txt_annotateTextSize" />
     <TextView
             android:id="@+id/siteEdit"
             android:paddingLeft="14.6dp"
@@ -61,7 +61,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:textSize="12sp"
+            android:textSize="@dimen/sp_txt_annotateTextSize"
             android:textColor="@color/txt_gray"
             android:layout_width="wrap_content"
             app:layout_constraintVertical_weight="1"
@@ -88,9 +88,9 @@
             app:layout_constraintRight_toLeftOf="@+id/siteL"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="0dp"
+            android:textColor="@color/main_text"
             app:layout_constraintHorizontal_weight="1"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/main_text"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_txt_nomal" />
 </androidx.constraintlayout.widget.ConstraintLayout>

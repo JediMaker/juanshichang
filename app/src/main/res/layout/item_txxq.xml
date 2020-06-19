@@ -27,7 +27,7 @@
                 <TextView
                         android:layout_marginRight="20px"
                         android:text="当前余额:"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_navigation_title"
                         android:textColor="@color/txt_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -35,7 +35,7 @@
                         android:id="@+id/io"
                         android:layout_marginLeft="45px"
                         tools:text="0.00"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_navigation_title"
                         android:textColor="@color/main_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -48,7 +48,7 @@
                 <TextView
                         android:layout_marginRight="20px"
                         android:text="提现状态:"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_navigation_title"
                         android:textColor="@color/txt_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -56,7 +56,7 @@
                         android:id="@+id/it"
                         android:layout_marginLeft="45px"
                         tools:text="成功"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_navigation_title"
                         android:textColor="@color/orders_state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -69,7 +69,7 @@
                 <TextView
                         android:layout_marginRight="20px"
                         android:text="提现金额:"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_navigation_title"
                         android:textColor="@color/txt_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -77,7 +77,7 @@
                         android:id="@+id/ith"
                         android:layout_marginLeft="45px"
                         tools:text="0.00"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_navigation_title"
                         android:textColor="@color/indicatorRed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -91,7 +91,7 @@
                 <TextView
                         android:layout_marginRight="20px"
                         android:text="提现账号:"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_navigation_title"
                         android:textColor="@color/txt_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -99,7 +99,7 @@
                         android:id="@+id/ifour"
                         android:layout_marginLeft="45px"
                         tools:text="0.00"
-                        android:textSize="48px"
+                        android:textSize="@dimen/sp_navigation_title"
                         android:textColor="@color/main_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>

@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textColor="@color/main_text"
-                android:textSize="54px"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:text="结算台"
                 />
     </com.zhy.autolayout.AutoRelativeLayout>
@@ -51,14 +51,14 @@
                 android:paddingHorizontal="8dp"
                 android:layout_marginLeft="8dp"
                 android:text="订单总额 :"
-                android:textSize="16sp"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textColor="@color/main_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         <TextView
                 android:id="@+id/endPrice"
                 android:text="¥0.00"
-                android:textSize="72px"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/indicatorRed"
@@ -78,7 +78,7 @@
                 android:paddingTop="11dp"
                 android:paddingBottom="11dp"
                 android:text="请选择支付方式:"
-                android:textSize="16sp"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textColor="@color/main_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -95,7 +95,7 @@
                 android:paddingTop="11dp"
                 android:paddingBottom="11dp"
                 android:text="支付宝"
-                android:textSize="16sp"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textColor="@color/main_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -112,7 +112,7 @@
                 android:paddingTop="11dp"
                 android:paddingBottom="11dp"
                 android:text="微信支付"
-                android:textSize="16sp"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textColor="@color/main_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

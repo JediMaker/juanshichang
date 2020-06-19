@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:layout_centerInParent="true"
                 tools:text="我的收益"
-                android:textSize="45px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textColor="@color/main_text"
                 android:layout_width="500px"
                 android:ellipsize="end"
@@ -61,7 +61,7 @@
                         android:maxLength="4"
                         android:text="综合"
                         android:textColor="@color/txt_black"
-                        android:textSize="46px" />
+                        android:textSize="@dimen/sp_txt_title_icon_name" />
 
                 <ImageView
                         android:id="@+id/fenLeiImg"
@@ -95,7 +95,7 @@
                         android:maxLength="2"
                         android:text="价格"
                         android:textColor="@color/txt_black"
-                        android:textSize="46px" />
+                        android:textSize="@dimen/sp_txt_title_icon_name" />
 
                 <ImageView
                         android:id="@+id/priceImg"
@@ -128,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:text="评价"
                         android:textColor="@color/txt_black"
-                        android:textSize="46px" />
+                        android:textSize="@dimen/sp_txt_title_icon_name" />
 
                 <ImageView
                         android:id="@+id/timeImg"

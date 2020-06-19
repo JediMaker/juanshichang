@@ -25,6 +25,6 @@
             android:layout_toRightOf="@id/mImageView"
             android:gravity="left|center"
             android:textColor="@color/txt_black_center"
-            android:textSize="50px" />
+            android:textSize="@dimen/sp_txt_topBarTextSize" />
     </RelativeLayout>
 </RelativeLayout>

@@ -90,7 +90,9 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     private fun getOrderData(order_id: String) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL)
             .post(Api.NEWORDER, NewParameter.getOrderDhMap(order_id), object : Subscriber<String>() {
-                override fun onNext(str: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {

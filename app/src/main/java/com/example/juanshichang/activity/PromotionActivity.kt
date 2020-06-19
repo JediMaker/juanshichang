@@ -234,6 +234,11 @@ class PromotionActivity : BaseActivity(),View.OnClickListener , BaseQuickAdapter
 
             override fun onError(e: Throwable?) {
                 LogTool.e("onError", "促销加载失败!" + e)
+                this@PromotionActivity.runOnUiThread(object : Runnable {
+                    override fun run() {
+                        dismissProgressDialog()
+                    }
+                })
             }
         })
     }

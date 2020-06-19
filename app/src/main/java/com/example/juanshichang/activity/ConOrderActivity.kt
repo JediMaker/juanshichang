@@ -80,7 +80,7 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
                 startActivityForResult(intent,1)
             }
             coPay ->{
-                if(addresse == null){
+                 if(addresse == null){
                     ToastUtil.showToast(this@ConOrderActivity,"收货地址不能为空")
                     return
                 }
@@ -141,7 +141,9 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
             Api.CHECKOUT,
             NewParameter.getCoMap(list),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {

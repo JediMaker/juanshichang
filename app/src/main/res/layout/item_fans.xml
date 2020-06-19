@@ -32,7 +32,7 @@
                     android:id="@+id/fansPhone"
                     tools:text="156****4661"
                     android:textColor="@color/main_text"
-                    android:textSize="42px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <TextView
@@ -40,7 +40,7 @@
                     android:layout_marginTop="10px"
                     tools:text="19-12-21 88:88:82"
                     android:textColor="@color/home_gray"
-                    android:textSize="36px"
+                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -51,7 +51,7 @@
                 android:drawableRight="@drawable/details_next"
                 android:drawablePadding="20px"
                 android:textColor="@color/main_text"
-                android:textSize="42px"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"/>

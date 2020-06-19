@@ -30,7 +30,7 @@
                 android:paddingBottom="16px"
                 android:text="立即体验"
                 android:textColor="@color/main_text"
-                android:textSize="18sp"
+                android:textSize="@dimen/sp_navigation_title"
                 android:visibility="visible" />
     </FrameLayout>
     <RadioGroup

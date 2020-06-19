@@ -2,23 +2,18 @@ package com.example.juanshichang.fragment
 
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ExpandableListView
 import android.widget.LinearLayout
 import android.widget.TextView
 import butterknife.OnClick
-import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.adapter.ShoppingCarAdapter
 import com.example.juanshichang.base.*
-import com.example.juanshichang.base.BaseActivity.Companion.goStartActivity
 import com.example.juanshichang.bean.CartBean
-import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.LogTool
-import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.LiveDataBus
@@ -86,7 +81,7 @@ class ShopListFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if (Util.hasLogin(mContext!!)) {
-            getShopData() //请求网络
+            getShopData(true) //请求网络
             //删除的回调
             goodsAdapter?.setOnDeleteListener(object : ShoppingCarAdapter.OnDeleteListener {
                 override fun onDelete(cart_id: String,num:String){
@@ -103,10 +98,12 @@ class ShopListFragment : BaseFragment() {
         }
     }
     //获取购物车列表
-    private fun getShopData() {
+    private fun getShopData(needChange:Boolean) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL)
             .post(Api.CART, NewParameter.getBaseMap(), object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -136,7 +133,7 @@ class ShopListFragment : BaseFragment() {
 //                                    shopRig?.isEnabled = false
                                     shopRig?.visibility = View.INVISIBLE
                                 }
-                                goodsAdapter?.setData(it)
+                                goodsAdapter?.setData(it,needChange)
                                 goodsList?.collapseGroup(0) //https://www.jianshu.com/p/2e5eba2421c4
                                 goodsList?.expandGroup(0) //展开                            }
                             }
@@ -157,7 +154,9 @@ class ShopListFragment : BaseFragment() {
     private fun editShopNum(cart_id: String,count:String){
         JhApiHttpManager.getInstance(Api.NEWBASEURL)
             .post(Api.CARTEDIT, NewParameter.getEditSCMap(cart_id,count,1), object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -171,7 +170,7 @@ class ShopListFragment : BaseFragment() {
                                 jsonObj!!.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            getShopData() //请求购物车
+                            getShopData(true) //请求购物车
                         }
                     }
                 }
@@ -190,7 +189,9 @@ class ShopListFragment : BaseFragment() {
     private fun removeShopNum(cart_id: String,count:String){
         JhApiHttpManager.getInstance(Api.NEWBASEURL)
             .post(Api.CARTDELE, NewParameter.getEditSCMap(cart_id,count,2), object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -204,7 +205,7 @@ class ShopListFragment : BaseFragment() {
                                 jsonObj!!.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            getShopData() //请求购物车
+                            getShopData(false) //请求购物车
                         }
                     }
                 }

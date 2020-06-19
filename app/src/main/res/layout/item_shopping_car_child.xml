@@ -6,12 +6,14 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical">
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/itemCon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="20dp"
             android:paddingBottom="18dp">
+
         <CheckBox
                 android:id="@+id/iv_select"
                 android:layout_width="20dp"
@@ -43,7 +45,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textColor="@color/main_text"
-                android:textSize="14sp"
+                android:textSize="@dimen/sp_txt_nomal"
                 android:textStyle="bold"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintLeft_toRightOf="@+id/cargoImg"
@@ -57,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:textColor="@color/indicatorRed"
-                android:textSize="14sp"
+                android:textSize="@dimen/sp_txt_nomal"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/cargoImg"
@@ -84,7 +86,7 @@
                     android:gravity="center"
                     android:text="－"
                     android:textColor="@color/txt_gray"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp_txt_nomal" />
 
             <TextView
                     android:id="@+id/amount"
@@ -93,9 +95,9 @@
                     android:layout_weight="1"
                     android:background="@drawable/shopcar_count_is"
                     android:gravity="center"
-                    tools:text="1"
                     android:textColor="@color/txt_gray"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp_txt_annotateTextSize"
+                    tools:text="1" />
 
             <TextView
                     android:id="@+id/addAmount"
@@ -106,18 +108,34 @@
                     android:gravity="center"
                     android:text="＋"
                     android:textColor="@color/txt_gray"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp_txt_nomal" />
         </LinearLayout>
-        <View
-                android:visibility="gone"
-                android:id="@+id/cargoDele"
+
+        <TextView
+                android:id="@+id/noStock"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="2dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:gravity="center"
+                android:text="商品缺货"
+                android:textColor="@color/txt_gray"
+                android:textSize="@dimen/sp_txt_nomal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:background="@drawable/shop_dele"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        <View
+                android:id="@+id/cargoDele"
                 android:layout_width="15dp"
-                android:layout_height="16dp"/>
+                android:layout_height="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/shop_dele"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--    https://www.jianshu.com/p/f66701ec2ea7  优化方向-->
     <!--<include
@@ -136,36 +154,38 @@
             android:layout_height="0.6dp"
             android:layout_marginLeft="33.3dp"
             android:layout_marginRight="16dp"
-            android:background="#DDDDDD"
-            />
+            android:background="#DDDDDD" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="gone"
             android:id="@+id/endLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
         <TextView
                 android:id="@+id/endTit"
-                android:layout_marginBottom="13dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="33.3dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="小计:"
-                android:textSize="11sp"
-                android:textColor="@color/home_gray"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="33.3dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="13dp"
+                android:text="小计:"
+                android:textColor="@color/home_gray"
+                android:textSize="@dimen/sp_txt_annotateTextSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
                 android:id="@+id/endContent"
-                android:layout_marginLeft="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/endTit"
-                tools:text="87.9"
-                android:textSize="11sp"
-                android:textColor="@color/indicatorRed"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/indicatorRed"
+                android:textSize="@dimen/sp_txt_annotateTextSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/endTit"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="87.9" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

@@ -58,6 +58,8 @@ public class SpUtil {
         editor.putString("avatar",entity.getAvatar());
         editor.putString("nickname",entity.getNick_name());
         editor.putFloat("balance",entity.getBalance());
+        editor.putString("phone_num",entity.getPhone_num());
+        editor.putString("password",entity.getPassword());
         editor.putFloat("currentdaybenefit",entity.getCurrent_day_benefit());
         editor.putFloat("currentmonthbenefit",entity.getCurrent_month_benefit());
         editor.putFloat("lastdaybenefit",entity.getLast_day_benefit());
@@ -73,6 +75,8 @@ public class SpUtil {
 //        entity.setUserage(sp.getString("userage",""));
         entity.setAvatar(sp.getString("avatar",""));
         entity.setNick_name(sp.getString("nickname",""));
+        entity.setPassword(sp.getString("password",""));
+        entity.setPhone_num(sp.getString("phone_num",""));
         entity.setBalance(sp.getFloat("balance",0));
         entity.setCurrent_day_benefit(sp.getFloat("currentdaybenefit",0));
         entity.setCurrent_month_benefit(sp.getFloat("currentmonthbenefit",0));

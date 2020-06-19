@@ -4,7 +4,7 @@
               android:background="@color/colorPrimary"
               android:gravity="center"
               android:layout_width="match_parent"
-              android:layout_height="128px">
+              android:layout_height="@dimen/dp_56">
     <!--返回-->
     <RelativeLayout
             android:id="@+id/mbackLayout"
@@ -36,7 +36,7 @@
                 android:background="@drawable/bg_search_white"
                 android:hint="搜一搜你喜欢的吧..."
                 android:paddingLeft="80px"
-                android:textSize="40px" />
+                android:textSize="@dimen/sp_txt_annotateTextSize" />
 
         <LinearLayout
                 android:layout_width="wrap_content"
@@ -63,6 +63,6 @@
                 android:layout_height="wrap_content"
                 android:text="搜索"
                 android:textColor="@color/white"
-                android:textSize="46px" />
+                android:textSize="@dimen/sp_navigation_title" />
     </LinearLayout>
 </com.zhy.autolayout.AutoLinearLayout>

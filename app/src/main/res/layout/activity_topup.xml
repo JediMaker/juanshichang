@@ -34,7 +34,7 @@
                 android:layout_centerInParent="true"
                 android:text="充值中心"
                 android:textColor="@color/main_text"
-                android:textSize="54px" />
+                android:textSize="@dimen/sp_txt_topBarTextSize" />
     </com.zhy.autolayout.AutoRelativeLayout>
 
     <View
@@ -75,7 +75,7 @@
                 android:maxLines="1"
                 android:textColor="@color/main_text"
                 android:textColorHint="@color/txt_gray"
-                android:textSize="19sp"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textStyle="bold"
                 tools:text="17601619521" />
 
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/phoneId"
                 android:textColor="@color/txt_gray"
-                android:textSize="12sp"
+                android:textSize="@dimen/sp_txt_annotateTextSize"
                 tools:text="默认号码(河南郑州联通)" />
 
         <TextView
@@ -96,7 +96,7 @@
                 android:layout_marginTop="28dp"
                 android:layout_marginRight="18dp"
                 android:textColor="@color/main_text"
-                android:textSize="26sp"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:textStyle="bold"
                 tools:text="300元" />
 
@@ -108,7 +108,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="18dp"
                 android:textColor="@color/txt_gray"
-                android:textSize="12sp"
+                android:textSize="@dimen/sp_txt_annotateTextSize"
                 tools:text="售价:299.40元" />
     </RelativeLayout>
 
@@ -143,6 +143,6 @@
             android:paddingBottom="14dp"
             android:text="立即充值"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/sp_txt_title_icon_name"
             app:layout_constraintTop_toBottomOf="@+id/priceRecycler" />
 </androidx.constraintlayout.widget.ConstraintLayout>

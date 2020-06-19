@@ -99,7 +99,7 @@ class Util {
         /**
          * 判断是否已经登陆
          */
-        fun hasLogin(): Boolean {
+        fun  hasLogin(): Boolean {
             if (TextUtils.isEmpty(SpUtil.getIstance().user.usertoken)) {
                 return false
             }

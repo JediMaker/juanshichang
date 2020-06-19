@@ -1,6 +1,7 @@
 package com.example.juanshichang.fragment
 
-
+import android.view.View
+import com.example.juanshichang.fragment.OneFragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -38,6 +39,7 @@ import org.jetbrains.anko.sdk27.coroutines.onItemClick
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
+
 /**
  * @作者: yzq
  * @创建日期: 2019/12/13 17:57
@@ -46,31 +48,34 @@ import rx.Subscriber
 class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var refresh: SwipeRefreshLayout? = null
     private var banner: Banner? = null
-    private var bList:List<HomeBean.Slideshow>?= null
+    private var bList: List<HomeBean.Slideshow>? = null
     private var grid: OrderConfirmGridView? = null
-    private var gList:List<GridItemBean.Channel>? = null
+    private var gList: List<GridItemBean.Channel>? = null
     private var gAdapter: MainGridAdapter? = null
     private var recycler: RecyclerView? = null
-    private var rAdapter:NewHomeAdapter? = null
-    private var rData:List<HomeBean.Product>? = null
-    private val hand = object :Handler(){
+    private var rAdapter: NewHomeAdapter? = null
+    private var rData: List<HomeBean.Product>? = null
+    private val hand = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            when(msg.what){
-                1->{ //更新grid
+            when (msg.what) {
+                1 -> { //更新grid
                     gList?.let {
-                        setGrid(mContext!!,it)
+                        setGrid(mContext!!, it)
                     }
                 }
-                2 ->{ //用于结束首次加载的网络不佳问题
+                2 -> { //用于结束首次加载的网络不佳问题
                     mContext?.let {
-                        if(Util.ifCurrentActivityTopStack(it) && !IsInternet.isNetworkAvalible(it)){//如果在前台 但是 无网络
+                        if (Util.ifCurrentActivityTopStack(it) && !IsInternet.isNetworkAvalible(it)) {//如果在前台 但是 无网络
                             it.dismissProgressDialog()
-                            ToastUtil.showToast(it,"您的网络状态不佳,请检查网络...")
-                        }else if(Util.ifCurrentActivityTopStack(it) && IsInternet.isNetworkAvalible(it)){ //在前台并且有网络
-                            if(gList == null || bList == null){
+                            ToastUtil.showToast(it, "您的网络状态不佳,请检查网络...")
+                        } else if (Util.ifCurrentActivityTopStack(it) && IsInternet.isNetworkAvalible(
+                                it
+                            )
+                        ) { //在前台并且有网络
+                            if (gList == null || bList == null) {
                                 getHome()
-                            }else{
+                            } else {
                                 setBanner(bList)
                                 rAdapter?.setNewData(rData)
                                 mContext?.dismissProgressDialog()
@@ -78,15 +83,18 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         }
                     }
                 }
-                3 ->{//用于结束 刷新 的网络不佳问题
+                3 -> {//用于结束 刷新 的网络不佳问题
                     mContext?.let {
-                        if(Util.ifCurrentActivityTopStack(it) && !IsInternet.isNetworkAvalible(it)){//如果在前台 但是 无网络
+                        if (Util.ifCurrentActivityTopStack(it) && !IsInternet.isNetworkAvalible(it)) {//如果在前台 但是 无网络
                             refresh?.setRefreshing(false)
-                            ToastUtil.showToast(it,"您的网络状态不佳,请检查网络...")
-                        }else if(Util.ifCurrentActivityTopStack(it) && IsInternet.isNetworkAvalible(it)){ //在前台并且有网络
-                            if(gList == null || bList == null){
+                            ToastUtil.showToast(it, "您的网络状态不佳,请检查网络...")
+                        } else if (Util.ifCurrentActivityTopStack(it) && IsInternet.isNetworkAvalible(
+                                it
+                            )
+                        ) { //在前台并且有网络
+                            if (gList == null || bList == null) {
                                 getHome()
-                            }else{
+                            } else {
                                 setBanner(bList)
                                 rAdapter?.setNewData(rData)
                                 refresh?.setRefreshing(false)
@@ -120,24 +128,25 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         recycler?.layoutManager = lm*/
         recycler?.adapter = rAdapter
     }
+
     override fun onRefresh() {
-        hand.sendEmptyMessageDelayed(3,3000)
-        recycler?.postDelayed(object :Runnable{
+        hand.sendEmptyMessageDelayed(3, 3000)
+        recycler?.postDelayed(object : Runnable {
             override fun run() {
                 getHome("Refresh")
             }
-        },800)
+        }, 800)
     }
 
     override fun onResume() {
         super.onResume()
-        if(gList == null){
-            Thread(object :Runnable {
+        if (gList == null) {
+            Thread(object : Runnable {
                 override fun run() {
-                    val str = Util.readLocalJson(mContext!!,"gridjson.json")
-                    LogTool.e("home1",str)
-                    val data = Gson().fromJson(str,GridItemBean.GridItemBeans::class.java)
-                    LogTool.e("home2",data.toString())
+                    val str = Util.readLocalJson(mContext!!, "gridjson.json")
+                    LogTool.e("home1", str)
+                    val data = Gson().fromJson(str, GridItemBean.GridItemBeans::class.java)
+                    LogTool.e("home2", data.toString())
                     data?.let {
                         gList = data.data.channel_list
                         hand.sendEmptyMessage(1)
@@ -145,9 +154,9 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
             }).start()
         }
-        if(rData == null || bList == null){
+        if (rData == null || bList == null) {
             mContext?.showProgressDialog()
-            hand.sendEmptyMessageDelayed(2,3000)
+            hand.sendEmptyMessageDelayed(2, 3000)
             getHome()
         }
     }
@@ -156,6 +165,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         super.onPause()
         //预留
     }
+
     override fun onStart() {
         super.onStart()
         banner?.startAutoPlay()
@@ -165,16 +175,23 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         super.onStop()
         banner?.stopAutoPlay()
     }
+
     private fun setUiData(data: HomeBean.HomeBeans) {
         bList = data.data.slideshow
         rData = data.data.products
-        setBanner(bList)
+        if (bList != null) {
+            banner?.visibility = View.VISIBLE
+            setBanner(bList)
+        } else {
+            banner?.visibility = View.GONE
+        }
         rAdapter?.setNewData(rData)
     }
-    private fun setBanner(list:List<HomeBean.Slideshow>?){
+
+    private fun setBanner(list: List<HomeBean.Slideshow>?) {
         list?.let {
             val imgs = arrayListOf<String>()
-            for (i in 0 until it.size){
+            for (i in 0 until it.size) {
                 imgs.add(it[i].image)
             }
             banner?.setBannerStyle(BannerConfig.CIRCLE_INDICATOR) //显示数字指示器
@@ -184,28 +201,29 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 ?.setDelayTime(4500)//轮播间隔
                 ?.isAutoPlay(true)
                 ?.setImages(imgs)
-                ?.setOnBannerListener(object : OnBannerListener{
+                ?.setOnBannerListener(object : OnBannerListener {
                     override fun OnBannerClick(position: Int) {
-                        when(it[position].type){
-                            "app/product"->{ //商品详情
-                                val intent = Intent(mContext!!,ShangPinZyContains::class.java)
-                                intent.putExtra("product_id",it[position].value)
+                        when (it[position].type) {
+                            "app/product" -> { //商品详情
+                                val intent = Intent(mContext!!, ShangPinZyContains::class.java)
+                                intent.putExtra("product_id", it[position].value)
                                 startActivity(intent)
                             }
-                            "app/category/goods"->{ //商品列表
-                                val intent = Intent(mContext!!,ZyAllActivity::class.java)
-                                intent.putExtra("category_id",it[position].value)
+                            "app/category/goods" -> { //商品列表
+                                val intent = Intent(mContext!!, ZyAllActivity::class.java)
+                                intent.putExtra("category_id", it[position].value)
                                 startActivity(intent)
                             }
-                            else ->{
-                                ToastUtil.showToast(mContext!!,"未知类型:${it[position].type}")
+                            else -> {
+                                ToastUtil.showToast(mContext!!, "未知类型:${it[position].type}")
                             }
                         }
                     }
                 })?.start()
         }
     }
-    private fun setGrid(mContext: BaseActivity?, data: List<GridItemBean.Channel>){
+
+    private fun setGrid(mContext: BaseActivity?, data: List<GridItemBean.Channel>) {
         val size = data.size   //动态设置列数
         var column = 0
         if (size % 2 != 0) {
@@ -216,38 +234,41 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
         grid?.numColumns = column
         mContext?.let {
-            gAdapter = MainGridAdapter(it,data)
+            gAdapter = MainGridAdapter(it, data)
             grid?.adapter = gAdapter
             gAdapter?.notifyDataSetChanged()
             grid?.onItemClick { p0, p1, p, p3 ->
-                when(data[p].type){
-                    "link" ->{
+                when (data[p].type) {
+                    "link" -> {
                         OneFragment.WebUrl = null
                         OneFragment.getWebLink(data[p].channel_id, mContext)
                     }
-                    "goods" ->{
+                    "goods" -> {
                         val intent = Intent(mContext, PromotionActivity::class.java)
                         intent.putExtra("id", data[p].channel_id)
-                        intent.putExtra("idName","channel_id")
+                        intent.putExtra("idName", "channel_id")
                         BaseActivity.goStartActivity(mContext, intent)
                     }
-                    "zy" ->{
+                    "zy" -> {
                         BaseActivity.goStartActivity(mContext, TopupActivity())
                     }
-                    else ->{
+                    else -> {
                         ToastUtil.showToast(mContext, "不存在的类型:" + data[p].type)
                     }
                 }
             }
         }
     }
+
     //获取主页面数据
-    private fun getHome(vararg tag:String) {
+    private fun getHome(vararg tag: String) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.HOME,
             NewParameter.getHomeMap(),
             object : Subscriber<String>() {
-                override fun onNext(t: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t = result?.substring(result?.indexOf("{"), result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -255,15 +276,17 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!
+                                .equals(JsonParser.JSON_SUCCESS)
+                        ) {
                             ToastUtil.showToast(
                                 mContext!!,
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            if(!tag.isEmpty()){
+                            if (!tag.isEmpty()) {
                                 hand.removeMessages(3) //加载完成则删除hand
-                            }else{
+                            } else {
                                 hand.removeMessages(2)
                             }
                             val data: HomeBean.HomeBeans =
@@ -275,10 +298,10 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
                 override fun onCompleted() {
                     LogTool.e("onCompleted", "Home列表请求完成")
-                    if(!tag.isEmpty()){
+                    if (!tag.isEmpty()) {
                         //刷新完成取消刷新动画
                         refresh?.setRefreshing(false)
-                    }else{
+                    } else {
                         mContext?.dismissProgressDialog()
                     }
                 }
@@ -288,6 +311,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 }
             })
     }
+
     override fun onDestroy() {
         super.onDestroy()
         hand.removeCallbacksAndMessages(null)

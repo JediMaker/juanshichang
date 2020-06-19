@@ -3,7 +3,6 @@ package com.example.juanshichang.adapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -11,10 +10,8 @@ import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewStub
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.bumptech.glide.Glide
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.ConOrderActivity
 import com.example.juanshichang.bean.CartBean
@@ -22,9 +19,7 @@ import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.UtilsBigDecimal
 import com.example.juanshichang.utils.glide.GlideUtil
-import kotlinx.android.synthetic.main.item_shopping_car_child.view.*
-import kotlinx.android.synthetic.main.item_shopping_car_child.view.iv_select
-import kotlinx.android.synthetic.main.item_shopping_car_group.view.*
+import java.math.BigDecimal
 
 /**
  * @作者: yzq
@@ -46,7 +41,8 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
     private val SHOPCARFINISH: Int = 1   //完成状态  按钮显示编辑
     private val SHOPCAREDIT: Int = 2  //编辑状态  按钮显示完成
     private var shopType: Int = SHOPCARFINISH
-    private var cardIdList:ArrayList<String>? = null //这是存放选中的cardid集合
+    private var cardIdList: ArrayList<String>? = null //这是存放选中的cardid集合
+
     constructor(
         context: Context?,
         llSelectAll: LinearLayout?,
@@ -69,11 +65,32 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
      * 通过notifyDataSetChanged()刷新数据，可保持当前位置
      * @param data 需要刷新的数据
      */
-    fun setData(data: CartBean.CartBeans?) {
+    fun setData(
+        catBean: CartBean.CartBeans?,
+        needChange: Boolean
+    ) {
+        //把之前购物车商品的状态copy一份
+        for (z in 0 until (catBean?.data?.products?.size ?: 0)) {
+            for (i in 0 until this.data.size) {
+                for (y in 0 until data[i]?.data?.products?.size!!) {
+                    if (catBean?.data?.products?.get(z)?.cart_id.equals(data[i]?.data?.products!![y].cart_id)) {
+                        catBean?.data?.products?.get(z)?.isSelect =
+                            data[i]?.data?.products!![y].isSelect;
+                    }
+                }
+            }
+
+        }
         this.data.clear()
-        this.data.add(data)
+        this.data.add(catBean)
+        if (needChange){
+            shopType = SHOPCARFINISH //切换为完成状态
+            editor?.text = "编辑"
+        }
+
         LogTool.e("shopcar", "数据填充完成....")
         notifyDataSetChanged()
+
     }
 
     override fun getGroupCount(): Int {
@@ -115,7 +132,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         LogTool.e("shopCarFat", "DATA :  $fatherGroup")
         fatherGroup?.let {
             //设置标题
-            groupViewHolder.tv_store_name?.text = "萌象自营"
+            groupViewHolder.tv_store_name?.text = "商城自营"
 
             //店铺内的商品都选中的时候，店铺的也要选中
             for (i in 0 until it.size) {
@@ -190,21 +207,26 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 }
             })
             //合计的计算
+//            var total_price: Double = 0.0
             var total_price: Double = 0.0
-            total?.text = getGaudyStr("${data[groupPosition]?.data?.totals!![0].text}")
+//            total?.text = getGaudyStr("${data[groupPosition]?.data?.totals!![0].text}")
             for (i in 0 until it.size) {
                 val isSelect = it[i].isSelect
-                /*if (isSelect) {
+                if (isSelect) {
                     val num = it[i].quantity
-                    val price = it[i].price
-                    val v: Double = num.toDouble()
-                    val v1: Double = price.toDouble()
-                    total_price = total_price + UtilsBigDecimal.mul(v, v1, 2)
+                    var price = it[i].price
+                    val rmbInd = price.indexOf("¥") //获取人民币符号的下标
+                    price = price.substring(rmbInd + 1, price.length)
+                    val v: BigDecimal = num.toBigDecimal()
+                    val v1: BigDecimal = price.toBigDecimal()
+//                    total_price = total_price + UtilsBigDecimal.mul2(v, v1, 2)
+                    total_price = UtilsBigDecimal.add(total_price, UtilsBigDecimal.mul2(v, v1, 2))
                     //让Double类型完整显示，不用科学计数法显示大写字母E
 //                    val decimalFormat = DecimalFormat("0.00")
                     total?.text = "¥$total_price"
-                }*/
+                }
             }
+            total?.text = "¥$total_price"
 
             //去结算的点击事件
             goPay?.setOnClickListener(object : View.OnClickListener {
@@ -218,11 +240,14 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                         }
                     }
                     if (temp.size != 0) {
-                        LogTool.e("adapterDate","跳转到确认订单页面，完成后续订单流程 ${temp.size}  内容：${temp.toString()}")
-                        val  intent = Intent(context,ConOrderActivity::class.java)
+                        LogTool.e(
+                            "adapterDate",
+                            "跳转到确认订单页面，完成后续订单流程 ${temp.size}  内容：${temp.toString()}"
+                        )
+                        val intent = Intent(context, ConOrderActivity::class.java)
                         val bundle = Bundle()
-                        bundle.putStringArrayList("checkAll",temp)
-                        intent.putExtra("bundle",bundle)
+                        bundle.putStringArrayList("checkAll", temp)
+                        intent.putExtra("bundle", bundle)
                         context?.startActivity(intent)
                     } else {
                         ToastUtil.showToast(context!!, "请选择要购买的商品")
@@ -233,7 +258,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         }
         if (fatherGroup?.size == 0) {
             v?.visibility = View.GONE
-        }else{
+        } else {
             v?.visibility = View.VISIBLE
         }
         LogTool.e("shopCarFat", v.toString())
@@ -290,7 +315,10 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         val fatherGroup = data[groupPosition]?.data?.products as ArrayList<CartBean.Product>
         LogTool.e("shopCarChild", "data: $fatherGroup")
         fatherGroup.let {
-            LogTool.e("shopCarChild", "groupPosition：$groupPosition  childPosition:$childPosition")
+            LogTool.e(
+                "shopCarChild",
+                "groupPosition：$groupPosition  childPosition:$childPosition"
+            )
             val goodsBean: CartBean.Product = it[childPosition]
             //是否有货
             val isStock: Boolean = goodsBean.stock
@@ -318,9 +346,11 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             if (shopType == SHOPCARFINISH) { //完成状态  按钮显示编辑
                 childViewHolder.llAmount?.visibility = View.VISIBLE
                 childViewHolder.cargoDele?.visibility = View.GONE
+                childViewHolder.noStock?.text="商品缺货"
             } else if (shopType == SHOPCAREDIT) { //编辑状态  按钮显示完成
                 childViewHolder.llAmount?.visibility = View.GONE
                 childViewHolder.cargoDele?.visibility = View.VISIBLE
+                childViewHolder.noStock?.text=""
             }
             if (goodsBean.quantity.toInt() > 1) { //判断减号能否点击
                 childViewHolder.minusAmount?.isEnabled = true
@@ -329,24 +359,29 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             }
             if (isLastChild) {//如果是最后一个
                 LogTool.e("shopcar", "最后一个？: $isLastChild")
-                childViewHolder.endLayout?.visibility = View.VISIBLE
-                childViewHolder.endContent?.text = data[groupPosition]?.data?.totals!![0].text //小计
+                childViewHolder.endLayout?.visibility = View.GONE
+                childViewHolder.endContent?.text =
+                    data[groupPosition]?.data?.totals!![0].text //小计
             } else {
                 childViewHolder.endLayout?.visibility = View.GONE
             }
             if (!isStock) { //设置是否有货的状态
                 childViewHolder.llAmount?.visibility = View.INVISIBLE
+                childViewHolder.noStock?.visibility = View.VISIBLE
                 childViewHolder.iv_select?.isSelected = false
                 childViewHolder.iv_select?.isChecked = false  //设置无货商品 不可选中 todo 注意编辑模式 释放该权限
+                childViewHolder.noStock?.text="商品缺货"
                 goodsBean.isSelect = false  //取消选中数据
                 //设置双按钮 都不可点击
-                if(SHOPCAREDIT == SHOPCAREDIT){ //在编辑模式下
+                if (SHOPCAREDIT == SHOPCAREDIT) { //在编辑模式下
                     //待开发的功能....
+                    childViewHolder.noStock?.text=""
                 }
             } else {
+                childViewHolder.noStock?.visibility = View.INVISIBLE
                 childViewHolder.minusAmount?.isEnabled = false
                 childViewHolder.iv_select?.isChecked = isSelect  //设置是否选中
-                if(isSelect){
+                if (isSelect) {
                     cardIdList?.add(goods_id)
                 }
             }
@@ -378,7 +413,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
 
             val num = goodsBean.quantity
             var integer = num.toInt()
-            if(integer > 1){
+            if (integer > 1) {
                 childViewHolder.minusAmount?.isEnabled = true
             }
             //减号的点击事件
@@ -429,6 +464,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         var minusAmount: TextView? = null
         var amount: TextView? = null
         var addAmount: TextView? = null
+        var noStock: TextView? = null
         var endLayout: ConstraintLayout? = null
         var endContent: TextView? = null
         var cargoDele: View? = null
@@ -439,6 +475,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             cargoTit = view.findViewById(R.id.cargoTit)
             cargoPrice = view.findViewById(R.id.cargoPrice)
             llAmount = view.findViewById(R.id.llAmount)
+            noStock = view.findViewById(R.id.noStock)
             minusAmount = view.findViewById(R.id.minusAmount)
             amount = view.findViewById(R.id.amount)
             addAmount = view.findViewById(R.id.addAmount)
@@ -469,7 +506,12 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         val rmbInd = str.indexOf("¥") //获取人民币符号的下标
         val frontSize = AbsoluteSizeSpan(56) //56px
         val behindSize = AbsoluteSizeSpan(72) //72px
-        spannableString.setSpan(textColor, 0, str.length, Spannable.SPAN_INCLUSIVE_EXCLUSIVE) //设置颜色
+        spannableString.setSpan(
+            textColor,
+            0,
+            str.length,
+            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+        ) //设置颜色
         if (rmbInd != -1) {
             spannableString.setSpan(
                 frontSize,
@@ -518,14 +560,14 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
 
     private lateinit var mChangeCountListener: OnChangeCountListener
 
-    fun getCheckedList():List<String>{ //这个用于多店铺选中数据返回...
+    fun getCheckedList(): List<String> { //这个用于多店铺选中数据返回...
         //先校验一遍
-        for (i in 0 until  data.size){
+        for (i in 0 until data.size) {
             val di = data[i]?.data?.products
-            for (y in 0 until  di?.size!!){
+            for (y in 0 until di?.size!!) {
                 val dy = data[i]?.data?.products!![y]
-                if(dy.isSelect){ //如果数据为选中
-                    if(!cardIdList?.contains(dy.cart_id)!!){
+                if (dy.isSelect) { //如果数据为选中
+                    if (!cardIdList?.contains(dy.cart_id)!!) {
                         cardIdList?.add(dy.cart_id)
                     }
                 }
