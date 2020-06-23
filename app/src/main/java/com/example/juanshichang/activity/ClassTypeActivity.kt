@@ -153,6 +153,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
 //        super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_class_type)
 //    }
+    //-todo 这里暂时修改为自营商品搜索
     /**
      *  商品搜索
      */
@@ -160,7 +161,10 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
         HttpManager.getInstance()
             .post(Api.SEARCH, Parameter.getSearchMap(keyword, page, page_size, sort_type, category_id), object :
                 Subscriber<String>() {
-                override fun onNext(str: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str =result?.substring(result?.indexOf("{"),result.length)
+
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject? = null
                         jsonObj = JSONObject(str)

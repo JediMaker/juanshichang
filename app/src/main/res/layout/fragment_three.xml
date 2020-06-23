@@ -11,12 +11,9 @@
     <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/topbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="45px"
-            android:paddingRight="45px"
+            android:layout_height="@dimen/dp_56"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="35px"
             >
 
         <TextView
@@ -33,14 +30,14 @@
             android:id="@+id/thWeb"
             app:layout_constraintTop_toBottomOf="@+id/topupTab"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/dp_45"
+            android:layout_marginTop="@dimen/dp_56"
             android:layout_height="match_parent" />
 
     <LinearLayout
             android:id="@+id/layout_empty"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dp_45"
+            android:layout_marginTop="@dimen/dp_56"
             android:background="#f8f8f8"
             app:layout_constraintTop_toBottomOf="@+id/topupTab"
             android:gravity="center"

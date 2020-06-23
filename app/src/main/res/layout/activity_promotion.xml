@@ -9,25 +9,27 @@
         android:orientation="vertical"
         tools:context=".activity.PromotionActivity">
     <com.zhy.autolayout.AutoRelativeLayout
-            android:layout_marginTop="20px"
-            android:layout_marginBottom="20px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/dp_56">
         <!--ff_ret-->
-        <View
+        <LinearLayout
                 android:id="@+id/proRet"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ff_ret"
-                android:layout_marginLeft="45px"
-                android:layout_marginBottom="15px"
-                android:layout_width="63px"
-                android:layout_height="43px"/>
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_56"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="63px"
+                    android:layout_height="43px"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ff_ret" />
+        </LinearLayout>
         <TextView
                 android:id="@+id/proTitle"
                 android:gravity="center"
                 android:layout_centerInParent="true"
                 tools:text="我的收益"
-                android:textSize="@dimen/sp_txt_title_icon_name"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:textColor="@color/main_text"
                 android:layout_width="500px"
                 android:ellipsize="end"

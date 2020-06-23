@@ -15,9 +15,8 @@
     <!-- TODO: Update blank fragment layout -->
     <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/rRL"
-            android:layout_marginTop="40px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/dp_56">
         <!--android:layout_marginLeft="49px"-->
         <!--ff_ret-->
         <View
@@ -29,7 +28,7 @@
         <TextView
                 android:id="@+id/ffTitle"
                 android:gravity="center"
-                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:text="我的"
                 android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:textColor="@color/main_text"
@@ -37,8 +36,7 @@
                 android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoRelativeLayout>
     <RelativeLayout
-            android:layout_marginTop="45px"
-            android:layout_width="match_parent" 
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <!--app:qmui_is_circle="true"-->
         <com.qmuiteam.qmui.widget.QMUIRadiusImageView

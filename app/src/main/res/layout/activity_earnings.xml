@@ -25,14 +25,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <!--ff_ret-->
-            <View
+            <LinearLayout
                     android:id="@+id/EaRet"
-                    android:background="@drawable/ret_n"
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/EaTitle"
-                    android:layout_marginLeft="45px"
-                    android:layout_marginBottom="15px"
-                    android:layout_width="63px"
-                    android:layout_height="43px"/>
+                    android:layout_centerVertical="true">
+                <View
+                        android:background="@drawable/ret_n"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:layout_marginBottom="15px"
+                        android:layout_width="63px"
+                        android:layout_centerVertical="true"
+                        android:layout_height="43px"/>
+
+            </LinearLayout>
+
             <TextView
                     android:id="@+id/EaTitle"
                     android:gravity="center"

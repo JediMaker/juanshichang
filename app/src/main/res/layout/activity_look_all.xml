@@ -8,19 +8,24 @@
         android:layout_height="match_parent"
         tools:context=".activity.LookAllActivity">
     <com.zhy.autolayout.AutoRelativeLayout
-            android:layout_marginTop="35px"
-            android:layout_marginBottom="40px"
             android:paddingLeft="45px"
             android:paddingRight="45px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/dp_56">
+
         <!--ff_ret-->
-        <View
+        <LinearLayout
                 android:id="@+id/LaRet"
-                android:background="@drawable/ff_ret"
-                android:layout_centerVertical="true"
-                android:layout_width="63px"
-                android:layout_height="43px"/>
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_45"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="63px"
+                    android:layout_height="43px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ff_ret" />
+        </LinearLayout>
+
         <TextView
                 android:id="@+id/LaTitle"
                 android:layout_centerInParent="true"

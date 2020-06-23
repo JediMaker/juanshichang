@@ -161,7 +161,7 @@ class FourFragment : BaseFragment() {
 
         override fun onTick(p0: Long) {
             val user = SpUtil.getIstance().user
-            if (!TextUtils.isEmpty(user.usertoken) && !TextUtils.isEmpty(user.avatar) && !TextUtils.isEmpty(
+            if (!TextUtils.isEmpty(user.usertoken) && !TextUtils.isEmpty(
                     user.invite_code
                 )
             ) { //通过三个参数判断所有
@@ -169,6 +169,14 @@ class FourFragment : BaseFragment() {
             } else {
                 MainActivity.downUser(mContext!!)
             }
+        /*    if (!TextUtils.isEmpty(user.usertoken) && !TextUtils.isEmpty(user.avatar) && !TextUtils.isEmpty(
+                    user.invite_code
+                )
+            ) { //通过三个参数判断所有
+                setUiData(user)
+            } else {
+                MainActivity.downUser(mContext!!)
+            }*/
             this.cancel()
         }
     }

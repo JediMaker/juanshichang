@@ -5,59 +5,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.HomeFragment">
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/homeSwipe"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
+                android:overScrollMode="never"
                 android:scrollbars="none">
+
             <LinearLayout
-                    android:layout_marginTop="7dp"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
                 <com.youth.banner.Banner
                         android:id="@+id/mainBanner"
                         android:layout_width="match_parent"
                         android:layout_height="468px"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:layout_marginRight="@dimen/dp_8"
+                        android:layout_marginTop="@dimen/dp_8"
                         app:image_scale_type="fit_xy"
-                        app:indicator_drawable_selected="@color/colorPrimary"
-                        ></com.youth.banner.Banner>
+                        app:indicator_drawable_selected="@color/colorPrimary"></com.youth.banner.Banner>
 
                 <com.example.juanshichang.widget.OrderConfirmGridView
                         android:id="@+id/homeGrid"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="20px"
-                        android:layout_marginBottom="20px"
-                        android:paddingTop="17dp"
-                        android:paddingBottom="20dp"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:layout_marginBottom="@dimen/dp_8"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:layout_marginRight="@dimen/dp_8"
                         android:background="@drawable/bg_newzy_home"
                         android:columnWidth="80dp"
                         android:gravity="center"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="8dp"
                         android:scrollbars="none"
                         android:stretchMode="columnWidth"
-                        android:verticalSpacing="39px"
-                        ></com.example.juanshichang.widget.OrderConfirmGridView>
-<!--                android:nestedScrollingEnabled="false"-->
+                        android:verticalSpacing="39px"></com.example.juanshichang.widget.OrderConfirmGridView>
+                <!--                android:nestedScrollingEnabled="false"-->
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/homeRyl"
-                        android:background="@color/ff_back"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/ff_back"
                         android:overScrollMode="never"
                         android:scrollbars="none"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        />
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -69,7 +69,10 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
     }
     private fun getBenefit(){
         HttpManager.getInstance().post(Api.BENFIT, Parameter.getBenefitMap(),object : Subscriber<String>(){
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
+
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     jsonObj = JSONObject(str)

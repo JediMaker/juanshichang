@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.widget.Toast
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.JsonParser
+import com.example.juanshichang.base.NewParameter
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.http.HttpManager
 import org.json.JSONException
@@ -42,7 +43,9 @@ class ToastUtil {
             ensureToast(context)
             sToast?.setText(text)
             sToast?.setDuration(duration)
-            sToast?.show()
+            if (!TextUtils.isEmpty(text)){
+                sToast?.show()
+            }
         }
 
         @SuppressLint("ShowToast")
@@ -77,8 +80,8 @@ class ToastUtil {
                     "INVALID INPUT PARAMS",
                     "INVALID TIMESTAMP",
                     "INVALID SIGN" -> {
-                        retStr = "无效信息"
-                        relogin(context)
+                        retStr = "网络异常，请重试"
+                        getNewToken(context)
                     }
                     "LOGIN UID ERROR" -> {
 //                        retStr = "尚未登陆，请登录"
@@ -99,18 +102,19 @@ class ToastUtil {
             return retStr
         }
 
+
         //无效信息重新请求登录
-        private fun relogin(context: Context) {
+        private fun getNewToken(context: Context) {
             val phone = SpUtil.getIstance().user.phone_num
             val ps = SpUtil.getIstance().user.password
             HttpManager.getInstance()
                 .post(
-                    Api.LOGIN,
-                    Parameter.getLoginMap(phone.toString(), ps.toString()),
+                    Api.GETTOKEN,
+                    NewParameter.getUserTokenMap(),
                     object : Subscriber<String>() {
                         override fun onNext(result: String?) {
                             //todo后台返回数据结构问题，暂时这样处理
-                            val str =result?.substring(result?.indexOf("{"),result.length)
+                            val str = result?.substring(result?.indexOf("{"), result.length)
                             if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                                 var jsonObj: JSONObject? = null
                                 try {
@@ -136,8 +140,6 @@ class ToastUtil {
                                     user.apply {
                                         useruid = uid
                                         usertoken = token
-                                        phone_num = phone
-                                        password = ps
                                     }.let {
                                         SpUtil.getIstance().user = it //写入
                                     }

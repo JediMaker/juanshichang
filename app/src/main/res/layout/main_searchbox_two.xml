@@ -4,7 +4,7 @@
         android:background="@color/white"
         android:paddingLeft="45px"
         android:layout_width="match_parent"
-        android:layout_height="150px">
+        android:layout_height="@dimen/dp_56">
     <RelativeLayout
             android:gravity="center_vertical"
             android:layout_width="0dp"
@@ -35,7 +35,7 @@
             android:text="搜索"
             android:paddingLeft="29px"
             android:paddingRight="45px"
-            android:textSize="@dimen/sp_navigation_title"
+            android:textSize="@dimen/sp_txt_title_icon_name"
             android:textColor="@color/main_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>

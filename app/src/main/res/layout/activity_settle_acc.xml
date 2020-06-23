@@ -9,21 +9,25 @@
             android:background="@color/white"
             android:id="@+id/setAbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="45px"
-            android:paddingRight="45px"
+            android:layout_height="@dimen/dp_56"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             >
-        <View
+        <LinearLayout
                 android:id="@+id/setARet"
-                android:layout_width="63px"
-                android:layout_height="43px"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ff_ret" />
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_56"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="63px"
+                    android:layout_height="43px"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ff_ret" />
+        </LinearLayout>
+
         <TextView
                 android:id="@+id/setATitle"
-                android:layout_marginTop="35dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

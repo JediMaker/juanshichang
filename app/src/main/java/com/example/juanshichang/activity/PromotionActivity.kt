@@ -171,7 +171,10 @@ class PromotionActivity : BaseActivity(),View.OnClickListener , BaseQuickAdapter
         }
         HttpManager.getInstance().post(url, map, object :
             Subscriber<String>() {
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
+
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     jsonObj = JSONObject(str)

@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.ClassTypeActivity
 import com.example.juanshichang.activity.LookAllActivity
+import com.example.juanshichang.activity.SearcheActivity
 import com.example.juanshichang.activity.ZyAllActivity
 import com.example.juanshichang.adapter.ClassifyListAdpater
 import com.example.juanshichang.adapter.NewCLeftAdapter
@@ -46,6 +47,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var tSearch: TextView? = null
     var mTSwipeRefreshLayout: SwipeRefreshLayout? = null
     private var mList: ListView? = null
+
     //老数据数据接口 和 源 替换
     /*private var mLA: ClassifyListAdpater? = null
     private var listData: ArrayList<TabOneBean.Category>? = null
@@ -76,6 +78,8 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         mRecycler = mBaseView?.findViewById<RecyclerView>(R.id.mRecycler)
         recyclerData = arrayListOf()
         mRA = NewCRightAdapter()
+        tEdit?.setKeyListener(null);
+
         /**
          * 渐显 ALPHAIN
          * 缩放 SCALEIN
@@ -90,19 +94,29 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         mRecycler?.adapter = mRA
     }
 
-    @OnClick(R.id.mainTSearch)
+    @OnClick(R.id.mainTSearch, R.id.mainTEdit)
     fun thisOnClick(v: View) {
         when (v.id) {
             R.id.mainTSearch -> {
-                val str = getEditText()
-                if (!TextUtils.isEmpty(str)) {
-                    val intent = Intent(mContext!!, ClassTypeActivity::class.java)
-                    intent.putExtra("keyword", str)
-                    startActivity(intent)
-                    tEdit?.text = null
-                } else {
-                    ToastUtil.showToast(mContext!!, "搜索关键字不能为空")
-                }
+                //todo 暂时改为商品自营搜索
+                val intent = Intent(mContext, SearcheActivity::class.java)
+                //...
+                startActivity(intent)
+                /* val str = getEditText()
+                 if (!TextUtils.isEmpty(str)) {
+                     val intent = Intent(mContext!!, ClassTypeActivity::class.java)
+                     intent.putExtra("keyword", str)
+                     startActivity(intent)
+                     tEdit?.text = null
+                 } else {
+                     ToastUtil.showToast(mContext!!, "搜索关键字不能为空")
+                 }*/
+            }
+            R.id.mainTEdit -> {
+                //todo 暂时改为商品自营搜索
+                val intent = Intent(mContext, SearcheActivity::class.java)
+                //...
+                startActivity(intent)
             }
         }
     }
@@ -115,7 +129,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onResume() {
         super.onResume()
-        if(listData?.size == 0){
+        if (listData?.size == 0) {
             reqCateFat("0")
         }
         mList?.setOnScrollListener(object : AbsListView.OnScrollListener {
@@ -181,7 +195,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         mRA?.setOnItemClickListener { adapter, view, position ->
             recyclerData?.let {
                 val intent = Intent(mContext!!, ZyAllActivity::class.java)
-                intent.putExtra("category_id",it[position].category_id)
+                intent.putExtra("category_id", it[position].category_id)
                 startActivity(intent)
             }
         }
@@ -227,6 +241,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         }
         return ""
     }
+
     //老页面的网络请求
     /*//网络请求
     private fun getOneT(parent_id: Int, leftSelect: Int) {
@@ -317,7 +332,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
-                    val t =result?.substring(result?.indexOf("{"),result.length)
+                    val t = result?.substring(result?.indexOf("{"), result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -325,7 +340,9 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!
+                                .equals(JsonParser.JSON_SUCCESS)
+                        ) {
                             ToastUtil.showToast(
                                 mContext!!,
                                 jsonObj.optString(JsonParser.JSON_MSG)

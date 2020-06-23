@@ -10,7 +10,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.util.Log
+import android.util.TypedValue
+import android.view.Display
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -57,6 +60,7 @@ class OneFragment : BaseFragment() {
     private var tEdit: EditText? = null
     private var tSearch: TextView? = null
     private var mainBack: ImageView? = null
+    private var mainBack2: ImageView? = null
     private var mainTab: MagicIndicator? = null
     private var mainVp: CustomViewPager? = null
     private var mainAdapter: NormalAdapter? = null
@@ -94,6 +98,7 @@ class OneFragment : BaseFragment() {
         mainTab = mBaseView?.findViewById<MagicIndicator>(R.id.mainTab)
         mainVp = mBaseView?.findViewById<CustomViewPager>(R.id.vpOne)
         mainBack = mBaseView?.findViewById<ImageView>(R.id.mainBack)
+        mainBack2 = mBaseView?.findViewById<ImageView>(R.id.mainBack2)
         //头部空间 1
         mOr = mBaseView?.findViewById<RelativeLayout>(R.id.homeRelatie)
         //2
@@ -202,10 +207,13 @@ class OneFragment : BaseFragment() {
     private fun getOneT(parent_id: Int) {
         HttpManager.getInstance()
             .post(Api.CATEGORY, Parameter.getTabData(parent_id, 0), object : Subscriber<String>() {
-                override fun onNext(str: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str =result?.substring(result.indexOf("{"),result.length)
+
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
                             ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
                         } else {
                             val data = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
@@ -234,13 +242,13 @@ class OneFragment : BaseFragment() {
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
-                    val t =result?.substring(result?.indexOf("{"),result.length)
+                    val t =result?.substring(result.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
                             jsonObj = JSONObject(t)
                         } catch (e: JSONException) {
-                            e.printStackTrace();
+                            e.printStackTrace()
                         }
                         if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
                             ToastUtil.showToast(
@@ -250,8 +258,8 @@ class OneFragment : BaseFragment() {
                         } else {
                             val data: HomeBean.HomeBeans =
                                 Gson().fromJson(t, HomeBean.HomeBeans::class.java)
-                            data?.let {
-                                LogTool.e("tast", "HomeTab列表完成 数据${data.toString()}")
+                            data.let {
+                                LogTool.e("tast", "HomeTab列表完成 数据$data")
                                 tabNData = data.data.categroy
                                 handler.sendEmptyMessage(2)
                             }
@@ -279,10 +287,13 @@ class OneFragment : BaseFragment() {
                     Api.CHANNEL,
                     Parameter.getBaseSonMap("channel_id", channel_id, 0, 20),
                     object : Subscriber<String>() {
-                        override fun onNext(str: String?) {
+                        override fun onNext(result: String?) {
+                            //todo后台返回数据结构问题，暂时这样处理
+                            val str =result?.substring(result.indexOf("{"),result.length)
+
                             if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                                 var jsonObj: JSONObject = JSONObject(str)
-                                if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                                if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
                                     ToastUtil.showToast(
                                         context,
                                         jsonObj.optString(JsonParser.JSON_MSG)
@@ -350,13 +361,15 @@ class OneFragment : BaseFragment() {
                             mainVp?.currentItem = 1
                             LiveDataBus.get().with("topisone").value = false
                             LiveDataBus.get().with("mainTopStatusView").value = R.color.white*/
-
+                            mainBack?.visibility = View.GONE
+                            mainBack2?.visibility = View.VISIBLE
                             mainVp?.currentItem = 1
                             LiveDataBus.get().with("topisone").value = true
                             LiveDataBus.get().with("mainTopStatusView").value = R.color.colorPrimary
                             //这里添加广播事件时间
                             val tabDataid = tabData[index - 1].category_id
-                            LiveDataBus.get().with("main_tab").value = "$tabDataid"
+                            LiveDataBus.get().with("main_tab")
+                                .value = "$tabDataid"
                         }
                         tabIndicator = index
                     }

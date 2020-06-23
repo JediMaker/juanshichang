@@ -2,96 +2,105 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".activity.ConOrderActivity">
+
     <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/cobar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="45px"
-            android:paddingRight="45px"
+            android:layout_height="@dimen/dp_56"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-        <View
+            app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
                 android:id="@+id/coRet"
-                android:layout_width="63px"
-                android:layout_height="43px"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ff_ret" />
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_45"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="26dp"
+                    android:layout_height="19dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:background="@drawable/ff_ret" />
+        </LinearLayout>
+
         <TextView
                 android:id="@+id/coTitle"
-                android:layout_marginTop="35dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/main_text"
-                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:text="确认订单"
-                />
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/sp_txt_topBarTextSize" />
     </com.zhy.autolayout.AutoRelativeLayout>
+
     <View
             android:id="@+id/ocTopIv"
-            app:layout_constraintTop_toBottomOf="@+id/cobar"
-            android:background="@drawable/topimg"
             android:layout_width="match_parent"
-            android:layout_height="1.8dp"/>
+            android:layout_height="1.8dp"
+            android:background="@drawable/topimg"
+            app:layout_constraintTop_toBottomOf="@+id/cobar" />
 
     <TextView
             android:id="@+id/ocName"
-            tools:text="张三丰"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="18dp"
-            app:layout_constraintTop_toBottomOf="@+id/ocTopIv"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:textColor="@color/main_text"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ocTopIv"
+            tools:text="张三丰" />
+
     <TextView
             android:id="@+id/coPhone"
-            tools:text="176****7829"
-            android:layout_marginLeft="19dp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/ocName"
-            app:layout_constraintLeft_toRightOf="@+id/ocName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginLeft="19dp"
             android:textColor="@color/main_text"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/ocName"
+            app:layout_constraintLeft_toRightOf="@+id/ocName"
+            tools:text="176****7829" />
+
     <TextView
             android:id="@+id/coSite"
-            tools:text="河南省 郑州市 金水区(郑东新区)龙子湖正商木华广场3号楼B座"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:layout_marginTop="6dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="41dp"
-            android:paddingBottom="18dp"
-            app:layout_constraintTop_toBottomOf="@+id/ocName"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             android:layout_width="0dp"
-            app:layout_constraintHorizontal_weight="1"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="41dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingBottom="18dp"
             android:textColor="@color/txt_gray"
-            android:textSize="@dimen/sp_txt_annotateTextSize" />
+            android:textSize="@dimen/sp_txt_annotateTextSize"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ocName"
+            tools:text="河南省 郑州市 金水区(郑东新区)龙子湖正商木华广场3号楼B座" />
+
     <TextView
             android:id="@+id/hintText"
-            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_24"
-            app:layout_constraintTop_toBottomOf="@+id/ocTopIv"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:text="暂无收货地址信息,点击添加"
             android:textColor="@color/txt_gray"
             android:textSize="@dimen/sp_14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:visibility="visible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ocTopIv" />
+
     <View
             android:id="@+id/siteRig"
             android:layout_width="7dp"
@@ -101,64 +110,71 @@
             app:layout_constraintBottom_toBottomOf="@+id/coSite"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ocTopIv" />
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/coRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/ff_back"
             android:paddingTop="10dp"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:background="@color/ff_back"
-            app:layout_constraintTop_toBottomOf="@+id/coSite"
             app:layout_constraintBottom_toTopOf="@+id/coBotBar"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            app:layout_constraintTop_toBottomOf="@+id/coSite" />
+
     <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/coBotBar"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent">
+
         <com.zhy.autolayout.AutoLinearLayout
                 android:id="@+id/llSelectAll"
-                android:orientation="horizontal"
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1.68"
-                android:layout_height="match_parent">
+                android:orientation="horizontal">
+
             <TextView
-                    android:paddingHorizontal="25px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="24px"
+                    android:paddingHorizontal="25px"
                     android:text="实付款 :"
-                    android:textSize="@dimen/sp_txt_title_icon_name"
                     android:textColor="@color/main_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="@dimen/sp_txt_title_icon_name" />
+
             <TextView
-                    android:visibility="gone"
-                    android:text="¥"
-                    android:textSize="@dimen/sp_txt_topBarTextSize"
-                    android:textColor="@color/indicatorRed"
-                    android:layout_marginLeft="5px"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5px"
+                    android:text="¥"
+                    android:textColor="@color/indicatorRed"
+                    android:textSize="@dimen/sp_txt_topBarTextSize"
+                    android:visibility="gone" />
+
             <TextView
                     android:id="@+id/coPrice"
-                    android:text="¥0.00"
-                    android:textSize="@dimen/sp_txt_topBarTextSize"
-                    android:textColor="@color/indicatorRed"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="¥0.00"
+                    android:textColor="@color/indicatorRed"
+                    android:textSize="@dimen/sp_txt_topBarTextSize" />
         </com.zhy.autolayout.AutoLinearLayout>
+
         <TextView
                 android:id="@+id/coPay"
-                android:text="提交订单"
-                android:gravity="center"
-                android:textSize="@dimen/sp_txt_title_icon_name"
-                android:textColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@color/indicatorRed"
+                android:gravity="center"
                 android:paddingTop="26px"
                 android:paddingBottom="26px"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"/>
+                android:text="提交订单"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_txt_title_icon_name" />
     </com.zhy.autolayout.AutoLinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -145,6 +145,7 @@ public class TabCreateUtils {
                 indicator.setMode(LinePagerIndicator.MODE_EXACTLY);//MODE_WRAP_CONTENT
                 indicator.setLineWidth(32);
 //                indicator.setColors(ContextCompat.getColor(context, R.color.white));
+                indicator.setYOffset(16f);
                 indicator.setRoundRadius(3);
                 indicator.setColors(ContextCompat.getColor(context, R.color.white));
                /* if (type == 0) { //默认

@@ -17,10 +17,7 @@
         <com.zhy.autolayout.AutoRelativeLayout
                 android:id="@+id/fTO"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40px"
-                android:paddingLeft="46px"
-                android:paddingRight="46px">
+                android:layout_height="@dimen/dp_56">
             <!--android:layout_marginLeft="49px"-->
             <!--ff_ret-->
             <View
@@ -34,7 +31,7 @@
                     android:id="@+id/ffTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
                     android:gravity="center"
                     android:text="我的"
                     android:textColor="@color/white"
@@ -44,7 +41,9 @@
                     android:id="@+id/ffUserSet"
                     android:layout_width="60px"
                     android:layout_height="60px"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
+                    android:layout_marginEnd="@dimen/dp_16"
                     android:scaleType="centerCrop"
                     android:src="@drawable/setting_t" />
         </com.zhy.autolayout.AutoRelativeLayout>

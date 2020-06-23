@@ -406,10 +406,12 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj.optString("error_code").equals("0")) {
-                            ToastUtil.showToast(
+                            //                           todo 这里提示异常信息注释之后要放开，demo演示先跳过，原因后续排查
+
+                        /*    ToastUtil.showToast(
                                 this@TopupActivity,
                                 jsonObj.optString("reason")
-                            )
+                            )*/
                         } else {
                             val result = jsonObj.optString("result")
                             if (result.contains("允许")) {
@@ -443,10 +445,10 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj.optString("error_code").equals("0")) {
-                            ToastUtil.showToast(
+                        /*    ToastUtil.showToast(
                                 this@TopupActivity,
                                 jsonObj.optString("reason")
-                            )
+                            )*/
                         } else {
                             val reason = jsonObj.optString("reason")
                             val result = jsonObj.getJSONObject("result")
@@ -482,10 +484,10 @@ class TopupActivity : BaseActivity(), View.OnClickListener {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj.optString("error_code").equals("0")) {
-                            ToastUtil.showToast(
+                       /*     ToastUtil.showToast(
                                 this@TopupActivity,
                                 jsonObj.optString("reason")
-                            )
+                            )*/
                         } else {
                             val data = Gson().fromJson(str, TopUpllBean.TopUpllBeans::class.java)
                             llPrice = convType(data)

@@ -15,18 +15,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <!--ff_ret-->
-        <View
+        <LinearLayout
                 android:id="@+id/orRet"
-                android:background="@drawable/ff_ret"
-                android:layout_alignBottom="@+id/orTitle"
-                android:layout_marginLeft="45px"
-                android:layout_marginBottom="15px"
-                android:layout_width="63px"
-                android:layout_height="43px"/>
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_48"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="63px"
+                    android:layout_height="43px"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ff_ret" />
+        </LinearLayout>
+
         <TextView
                 android:id="@+id/orTitle"
                 android:gravity="center"
-                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:text="我的订单"
                 android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:textColor="@color/main_text"
@@ -37,6 +42,7 @@
                 android:background="@drawable/search"
                 android:layout_alignBottom="@+id/orTitle"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
                 android:layout_width="21dp"
                 android:layout_height="21dp"/>
@@ -56,11 +62,11 @@
             app:tabMode="fixed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></com.google.android.material.tabs.TabLayout>
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/detailList"
-            android:scrollbars="none"
-            android:background="@color/ff_back"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent"
+            android:background="@color/ff_back"
+            android:scrollbars="none"></androidx.recyclerview.widget.RecyclerView>
 </com.zhy.autolayout.AutoLinearLayout>

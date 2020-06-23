@@ -138,7 +138,13 @@ class NewParameter {
             val map = fengMap(0)
             return map
         }
-
+        fun getUserTokenMap(): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=pre/token")
+            val map = fengMap(1)
+            map.put("route", "pre/token")
+            return map
+        }
         fun getBaseMap(): HashMap<String, String> {
             baseList.clear()
             baseList.add("route=app/cart")

@@ -98,7 +98,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                     val ps = regPassword.text.toString().trim()
                     val sms = yzCode.text.toString().trim()
                     val invite = regInviteCode.text.toString().trim()
-                    ToastUtil.showToast(this@Reg2LogActivity, "登录...")
+//                    ToastUtil.showToast(this@Reg2LogActivity, "登录...")
                     regGo(phone, ps,invite,sms)
                 }
             }
@@ -188,7 +188,6 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             if (yzCode.length != mSmsCode!!.length || !mSmsCode!!.equals(yzCode)) {
                 ToastUtil.showToast(this@Reg2LogActivity, "验证码有误!!!")
                 return false
-
             }
         } else {
             ToastUtil.showToast(this@Reg2LogActivity, "获取验证码 错误请稍后重试!!!")
@@ -215,7 +214,10 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
      */
     private fun regGo(phone: String, ps: String,invite_code:String,sms_code:String) {
         HttpManager.getInstance().post(Api.USER, Parameter.getRegisterMap(phone, ps,invite_code,sms_code), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
+
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     try {
@@ -228,10 +230,10 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理
-                        if (token != "") {
+//                        if (token != "") {
                             logGo(phone, ps)  //注册完成 直接登录
                             ToastUtil.showToast(this@Reg2LogActivity, "注册成功,正在登录...")
-                        }
+//                        }
                     }
                 }
             }
@@ -252,7 +254,10 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
      */
     private fun logGo(phone: String, ps: String) {
         HttpManager.getInstance().post(Api.LOGIN, Parameter.getLoginMap(phone, ps), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
+
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     try {
@@ -302,7 +307,10 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     fun getSendSMS(mobile: String, context: Context){
 //        var smsCodes: String? = null
         HttpManager.getInstance().post(Api.SMSSEND, Parameter.getVerifyCode(mobile), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
+
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     try {

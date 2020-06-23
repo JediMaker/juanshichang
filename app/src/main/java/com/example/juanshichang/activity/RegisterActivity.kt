@@ -111,7 +111,10 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
      */
     private fun regGo(phone: String, ps: String) {
         HttpManager.getInstance().post(Api.USER, Parameter.getLoginMap(phone, ps), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
+
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     try {
@@ -147,7 +150,10 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
      */
     private fun logGo(phone: String, ps: String) {
         HttpManager.getInstance().post(Api.LOGIN, Parameter.getLoginMap(phone, ps), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
+
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     try {

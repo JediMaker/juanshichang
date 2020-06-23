@@ -3,12 +3,14 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="@dimen/dp_5"
+        android:paddingRight="@dimen/dp_5"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".fragment.HomeOtherFragment">
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/zyRe"
-            android:paddingTop="@dimen/dp_10"
             android:scrollbars="none"
+            android:layout_marginTop="-8dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
             app:layout_constraintTop_toTopOf="parent"

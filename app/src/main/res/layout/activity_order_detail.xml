@@ -6,43 +6,81 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         tools:context=".activity.OrderDetailActivity">
-    <!--ff_ret-->
-    <View
-            android:id="@+id/oDRet"
-            android:layout_width="21dp"
-            android:layout_height="14.3dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/ff_ret"
+    <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/orderdetailTop"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_56"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            >
+        <!--ff_ret-->
+        <LinearLayout
+                android:id="@+id/oDRet"
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_56"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="63px"
+                    android:layout_height="43px"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ff_ret" />
+        </LinearLayout>
 
-    <TextView
-            android:id="@+id/oDTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="22dp"
-            android:gravity="center"
-            android:text="订单详情"
-            android:textColor="@color/main_text"
-            android:textSize="@dimen/sp_txt_topBarTextSize"
-            android:textStyle="bold"
+        <TextView
+                android:id="@+id/oDTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
+                android:text="订单详情"
+                />
+    </com.zhy.autolayout.AutoRelativeLayout>
+    <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="@dimen/dp_56">
+        <!--ff_ret-->
+        <!--ff_ret-->
+        <LinearLayout
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_56"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="63px"
+                    android:layout_height="43px"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ff_ret" />
+        </LinearLayout>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="订单详情"
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/sp_txt_topBarTextSize"
+                android:textStyle="bold"
+                 />
+
+
+
+    </com.zhy.autolayout.AutoRelativeLayout>
 
     <View
             android:id="@+id/oDLin"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginTop="21dp"
             android:background="@color/set_linear"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/oDTitle" />
-
+            app:layout_constraintTop_toBottomOf="@+id/orderdetailTop" />
     <TextView
             android:id="@+id/oDName"
             android:layout_width="wrap_content"
@@ -86,55 +124,59 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/oDName"
             tools:text="河南省 郑州市 金水区(郑东新区)龙子湖正商木华广场3号楼B座" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/botCons"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
         <TextView
                 android:id="@+id/alignPay"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="13dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:background="@drawable/order_but"
                 android:paddingLeft="17dp"
+                android:paddingTop="10dp"
                 android:paddingRight="17dp"
+                android:paddingBottom="10dp"
+                android:text="再次购买"
                 android:textColor="@color/indicatorRed"
                 android:textSize="@dimen/sp_txt_title_icon_name"
-                android:text="再次购买"
-                android:background="@drawable/order_but"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        <TextView
-                android:visibility="gone"
-                android:id="@+id/applyTk"
-                app:layout_constraintRight_toLeftOf="@+id/alignPay"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/applyTk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="13dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:background="@drawable/order_but"
                 android:paddingLeft="17dp"
+                android:paddingTop="10dp"
                 android:paddingRight="17dp"
+                android:paddingBottom="10dp"
+                android:text="申请退款"
                 android:textColor="@color/txt_gray"
                 android:textSize="@dimen/sp_txt_title_icon_name"
-                android:text="申请退款"
-                android:background="@drawable/order_but"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/alignPay"
+                app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.core.widget.NestedScrollView
-            android:background="@color/ff_back"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@color/ff_back"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:overScrollMode="never"
@@ -143,24 +185,27 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/oDSite">
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/oDList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     android:paddingTop="6dp"
                     android:scrollbars="none"
-                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
             <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="6.67dp"
                     android:layout_marginBottom="6.67dp"
                     android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
@@ -184,10 +229,10 @@
                         android:background="@color/set_linear" />
 
                 <LinearLayout
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -244,9 +289,9 @@
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:gravity="end"
+                            android:text="在线支付"
                             android:textColor="@color/txt_gray"
-                            android:textSize="@dimen/sp_txt_nomal"
-                            android:text="在线支付" />
+                            android:textSize="@dimen/sp_txt_nomal" />
                 </LinearLayout>
 
                 <View

@@ -10,25 +10,29 @@
 
     <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/takeTop"
-            android:layout_marginLeft="45px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="40px"
-            android:paddingBottom="50px">
+            android:layout_height="@dimen/dp_56"
+            >
         <!--android:layout_marginLeft="49px"-->
         <!--ff_ret-->
-        <View
+        <LinearLayout
                 android:id="@+id/takeFin"
-                android:layout_centerVertical="true"
-                android:layout_width="63px"
-                android:layout_height="43px"
-                android:background="@drawable/ff_ret" />
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_56"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="63px"
+                    android:layout_height="43px"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ff_ret" />
+        </LinearLayout>
 
         <TextView
                 android:id="@+id/takeTit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text="提现"
                 android:textColor="@color/main_text"

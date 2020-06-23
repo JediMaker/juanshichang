@@ -11,19 +11,26 @@
             android:background="@color/white"
             android:id="@+id/sitebar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_56"
             android:paddingLeft="45px"
             android:paddingRight="45px"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             >
         <!--ff_ret-->
-        <View
+        <LinearLayout
                 android:id="@+id/eSRet"
-                android:layout_width="63px"
-                android:layout_height="43px"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ff_ret" />
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_45"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="63px"
+                    android:layout_height="43px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ff_ret" />
+        </LinearLayout>
+
+
 
         <TextView
                 android:id="@+id/eSTitle"
@@ -40,7 +47,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:text="保存"
-                android:textSize="@dimen/sp_navigation_title"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:textColor="@color/indicatorRed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

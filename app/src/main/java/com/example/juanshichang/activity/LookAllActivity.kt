@@ -134,7 +134,10 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
         HttpManager.getInstance().post(
             Api.CATEGORY,
             Parameter.getTabData(parent_id,1),object : Subscriber<String>() {
-                override fun onNext(str: String?) {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str =result?.substring(result?.indexOf("{"),result.length)
+
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject = JSONObject(str)
                         if (!jsonObj?.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {

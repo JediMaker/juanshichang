@@ -740,13 +740,12 @@
             android:layout_height="75dp">
         <RelativeLayout
                 android:id="@+id/mZyBL"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dp_48"
                 android:layout_height="match_parent">
             <ImageView
                     android:layout_width="78px"
                     android:layout_height="78px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="42px"
+                    android:layout_centerInParent="true"
                     android:src="@drawable/details_return"/>
         </RelativeLayout>
     </com.zhy.autolayout.AutoLinearLayout>

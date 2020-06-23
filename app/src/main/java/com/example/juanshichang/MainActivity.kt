@@ -178,6 +178,8 @@ class MainActivity : BaseActivity() {
     }*/
     internal inner class NormalAdapter(
         fm: FragmentManager,
+
+
         private val fragmentList: List<Fragment>
     ) :
         FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -316,7 +318,7 @@ class MainActivity : BaseActivity() {
                 }
                 when (position) {
                     0 -> {
-                        bus.with("mainTopStatusView").value = R.color.white
+                        bus.with("mainTopStatusView").value = R.color.colorPrimary
 
                   /*      if (topTabIsOne) {
                             bus.with("mainTopStatusView").value = R.color.colorPrimary
@@ -353,7 +355,10 @@ class MainActivity : BaseActivity() {
         public fun downUser(context: Context) {
             HttpManager.getInstance()
                 .post(Api.USERINFO, NewParameter.getUserMap(), object : Subscriber<String>() {
-                    override fun onNext(str: String?) {
+                    override fun onNext(result: String?) {
+                        //todo后台返回数据结构问题，暂时这样处理
+                        val str =result?.substring(result?.indexOf("{"),result.length)
+
                         if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                             var jsonObj: JSONObject? = null
                             try {
@@ -387,6 +392,8 @@ class MainActivity : BaseActivity() {
                                 user.from_invite_userid = item.from_invite_userid.toLong()
                                 user.invite_code = item.invite_code
                                 user.nick_name = item.nick_name
+                                user.date_added = item.date_added
+                                user.ali_pay_account = item.ali_pay_account
                                 SpUtil.getIstance().user = user //写入
 
                             }

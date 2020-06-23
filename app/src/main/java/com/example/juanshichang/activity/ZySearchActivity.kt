@@ -82,7 +82,7 @@ class ZySearchActivity : BaseActivity(), View.OnClickListener {
                     keySearch = str
                     getSearchData(keySearch)
                 } else {
-                    ToastTool.showToast(this@ZySearchActivity, "你想找啥？？？")
+//                    ToastTool.showToast(this@ZySearchActivity, "你想找啥？？？")
                 }
 
             }

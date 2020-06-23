@@ -172,7 +172,10 @@ class TakeOutActivity : BaseActivity(), View.OnClickListener{
     private fun startTxZfb(amount:String){
         // ¥
         HttpManager.getInstance().post(Api.WITHDRAW, Parameter.getTxZfb(amount), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
+
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     jsonObj = JSONObject(str)
@@ -219,7 +222,10 @@ class TakeOutActivity : BaseActivity(), View.OnClickListener{
 
     private fun pullTxList(page:Int){ //page 请求的页码
         HttpManager.getInstance().post(Api.HISTORY, Parameter.getBenefitMap(), object : Subscriber<String>() {
-            override fun onNext(str: String?) {
+            override fun onNext(result: String?) {
+                //todo后台返回数据结构问题，暂时这样处理
+                val str =result?.substring(result?.indexOf("{"),result.length)
+
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     jsonObj = JSONObject(str)

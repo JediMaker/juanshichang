@@ -18,19 +18,19 @@
 
         <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="125px"
+                android:layout_height="@dimen/dp_56"
                 android:background="@color/colorPrimary">
 
             <RelativeLayout
                     android:id="@+id/mReturnView"
-                    android:layout_width="125px"
+                    android:layout_width="@dimen/dp_48"
                     android:layout_height="match_parent">
 
                 <ImageView
-                        android:layout_width="50px"
-                        android:layout_height="50px"
+                        android:layout_width="26dp"
+                        android:layout_height="11dp"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/i_light_back"/>
+                        android:src="@drawable/i_light_back" />
 
             </RelativeLayout>
 

@@ -13,6 +13,12 @@
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="540px"/>
+    <ImageView
+            android:id="@+id/mainBack2"
+            android:src="@drawable/mback"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_98"/>
     <!--　布局中部分控件或者子布局不想进入到状态栏后面，
         导致无法点击，则需要在该控件或者子布局中添加一个属性：
         android:fitsSystemWindows="true"-->
@@ -85,7 +91,7 @@
         <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/mainTab"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_36"></net.lucode.hackware.magicindicator.MagicIndicator>
+                android:layout_height="@dimen/dp_42"></net.lucode.hackware.magicindicator.MagicIndicator>
 
         <com.example.juanshichang.utils.CustomViewPager
                 android:id="@+id/vpOne"

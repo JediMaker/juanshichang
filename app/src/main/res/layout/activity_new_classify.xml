@@ -9,7 +9,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/dp_56"
             android:id="@+id/newcTop"
             android:visibility="visible"
             layout="@layout/main_searchbox_two"/>

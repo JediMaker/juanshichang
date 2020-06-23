@@ -127,7 +127,8 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             goVx -> {
-                ToastUtil.showToast(this@SettleAccActivity, "去微信...")
+                ToastUtil.showToast(this@SettleAccActivity, "暂未开放入口...")
+//                ToastUtil.showToast(this@SettleAccActivity, "去微信...")
             }
         }
     }

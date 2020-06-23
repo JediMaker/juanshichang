@@ -22,6 +22,7 @@ class User : Serializable {
     var nick_name:String? = null //昵称
     var phone_num:String? = null //电话
     var password:String? = null //密码
+    var date_added:String? = null //注册时间
     var balance:Float = 0f //余额
     var current_day_benefit:Float = 0f//今日预估
     var current_month_benefit:Float = 0f //本月预估

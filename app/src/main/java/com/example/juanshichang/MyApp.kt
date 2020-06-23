@@ -81,7 +81,7 @@ open class MyApp : Application() {
         fun requestPermission(context: Context){
             AndPermission.with(context).runtime().permission(PERMISSION_CAM).onGranted({
                 //使用权限
-                ToastUtil.showToast(context, "劵市场,感谢您的支持!!!")
+//                ToastUtil.showToast(context, "劵市场,感谢您的支持!!!")
             }).onDenied({
                 //拒绝使用权限
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ //如果sdk大于23则跳转

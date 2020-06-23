@@ -14,6 +14,8 @@ interface Api {
         val USER = "/index.php?route=pre/register"
         //登录
         val LOGIN = "/index.php?route=pre/login"
+        //登录
+        val GETTOKEN = "/index.php?route=pre/token"
         //用户信息 login
 //        val USERINFO = "/user/info"   //todo 有更改的接口
 
