@@ -346,7 +346,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             if (shopType == SHOPCARFINISH) { //完成状态  按钮显示编辑
                 childViewHolder.llAmount?.visibility = View.VISIBLE
                 childViewHolder.cargoDele?.visibility = View.GONE
-                childViewHolder.noStock?.text="商品缺货"
+//                childViewHolder.noStock?.text="库存不足"
             } else if (shopType == SHOPCAREDIT) { //编辑状态  按钮显示完成
                 childViewHolder.llAmount?.visibility = View.GONE
                 childViewHolder.cargoDele?.visibility = View.VISIBLE
@@ -354,6 +354,11 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             }
             if (goodsBean.quantity.toInt() > 1) { //判断减号能否点击
                 childViewHolder.minusAmount?.isEnabled = true
+            } else {
+                childViewHolder.minusAmount?.isEnabled = false
+            }
+            if (goodsBean.quantity.toInt() > 1) {
+
             } else {
                 childViewHolder.minusAmount?.isEnabled = false
             }
@@ -366,14 +371,18 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 childViewHolder.endLayout?.visibility = View.GONE
             }
             if (!isStock) { //设置是否有货的状态
-                childViewHolder.llAmount?.visibility = View.INVISIBLE
-                childViewHolder.noStock?.visibility = View.VISIBLE
+//                childViewHolder.llAmount?.visibility = View.INVISIBLE
+//                childViewHolder.noStock?.visibility = View.VISIBLE
+                childViewHolder.llAmount?.visibility = View.VISIBLE
+                childViewHolder.noStock?.visibility = View.INVISIBLE
                 childViewHolder.iv_select?.isSelected = false
                 childViewHolder.iv_select?.isChecked = false  //设置无货商品 不可选中 todo 注意编辑模式 释放该权限
-                childViewHolder.noStock?.text="商品缺货"
+//                childViewHolder.noStock?.text="库存不足"
+                childViewHolder.addAmount?.isEnabled = false
+                childViewHolder.amount?.text = (goodsBean.quantity.toInt()-1).toString()
                 goodsBean.isSelect = false  //取消选中数据
                 //设置双按钮 都不可点击
-                if (SHOPCAREDIT == SHOPCAREDIT) { //在编辑模式下
+                if (shopType == SHOPCAREDIT) { //在编辑模式下
                     //待开发的功能....
                     childViewHolder.noStock?.text=""
                 }
@@ -381,6 +390,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 childViewHolder.noStock?.visibility = View.INVISIBLE
                 childViewHolder.minusAmount?.isEnabled = false
                 childViewHolder.iv_select?.isChecked = isSelect  //设置是否选中
+                childViewHolder.addAmount?.isEnabled = true
                 if (isSelect) {
                     cardIdList?.add(goods_id)
                 }

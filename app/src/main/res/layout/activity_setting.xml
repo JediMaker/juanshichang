@@ -88,6 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <TextView
+                    android:id="@+id/nickName"
                     android:drawableRight="@drawable/details_next"
                     android:layout_alignParentRight="true"
                     android:text="修改"

@@ -20,10 +20,7 @@ import androidx.core.app.ActivityCompat
 import com.bumptech.glide.Glide
 import com.example.juanshichang.MyApp
 import com.example.juanshichang.R
-import com.example.juanshichang.base.Api
-import com.example.juanshichang.base.BaseActivity
-import com.example.juanshichang.base.JsonParser
-import com.example.juanshichang.base.Parameter
+import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.User
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.*
@@ -65,7 +62,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     override fun initData() {
 //        cameraSavePath =
 //            Uri.parse("file://" + "/" + Environment.getExternalStorageDirectory().getPath() + "/" + "small.jpg") //解决小米手机崩溃问题
-        getSetting()
+//        getSetting()//接口取消重新上接口
     }
 
     override fun onClick(v: View?) {
@@ -205,13 +202,10 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     private fun setUi(user: User?) {
         Zfb.text = user!!.ali_pay_account //提现账户
         setUserReg.text = user!!.date_added //日期
+        nickName.text = user!!.nick_name //昵称
         GlideUtil.loadHeadImage(this@SettingActivity, user!!.avatar, userImage!!) //头像
-        userName = "霸王花"  //昵称
-        userZfb = "13122222666"  //提现账户
-/*
         userName = user!!.nick_name  //昵称
         userZfb = user!!.ali_pay_account  //提现账户
-*/
     }
 
     private fun setUi(avatar: String, nickname: String, create_time: Int, ali: String) {
@@ -409,7 +403,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     //修改用户昵称
     private fun setNewName(nickname: String) {
         HttpManager.getInstance()
-            .post(Api.SETINFO, Parameter.getUpdInfo(nickname), object : Subscriber<String>() {
+            .post(Api.SETINFO, NewParameter.getUpdInfo(nickname), object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
                     val str = result?.substring(result?.indexOf("{"), result.length)
@@ -427,6 +421,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                         } else {
                             val user = SpUtil.getIstance().user
                             user.nick_name = nickname
+                            nickName.text = nickname //昵称
                             SpUtil.getIstance().user = user
                             this@SettingActivity.runOnUiThread(object : Runnable {
                                 override fun run() {
@@ -459,51 +454,54 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     //修改用户支付宝
     private fun setNewZfb(ali_pay_account: String) {
         HttpManager.getInstance()
-            .post(Api.UPDZFB, Parameter.getUpdZfb(ali_pay_account), object : Subscriber<String>() {
-                override fun onNext(result: String?) {
-                    //todo后台返回数据结构问题，暂时这样处理
-                    val str = result?.substring(result?.indexOf("{"), result.length)
+            .post(
+                Api.UPDZFB,
+                NewParameter.getUpdZfb(ali_pay_account),
+                object : Subscriber<String>() {
+                    override fun onNext(result: String?) {
+                        //todo后台返回数据结构问题，暂时这样处理
+                        val str = result?.substring(result?.indexOf("{"), result.length)
 
-                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                        var jsonObj: JSONObject? = null
-                        jsonObj = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE)
-                                .equals(JsonParser.JSON_SUCCESS)
-                        ) {
-                            ToastUtil.showToast(
-                                this@SettingActivity,
-                                jsonObj.optString(JsonParser.JSON_MSG)
-                            )
-                        } else {
-                            val user = SpUtil.getIstance().user
-                            user.ali_pay_account = ali_pay_account
-                            SpUtil.getIstance().user = user
-                            this@SettingActivity.runOnUiThread(object : Runnable {
-                                override fun run() {
-                                    ToastTool.showToast(this@SettingActivity, "提现账户修改成功")
-                                    Zfb.text = ali_pay_account
-                                    userZfb = ali_pay_account
-                                    dismissProgressDialog()
-                                }
-                            })
+                        if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                            var jsonObj: JSONObject? = null
+                            jsonObj = JSONObject(str)
+                            if (!jsonObj.optString(JsonParser.JSON_CODE)
+                                    .equals(JsonParser.JSON_SUCCESS)
+                            ) {
+                                ToastUtil.showToast(
+                                    this@SettingActivity,
+                                    jsonObj.optString(JsonParser.JSON_MSG)
+                                )
+                            } else {
+                                val user = SpUtil.getIstance().user
+                                user.ali_pay_account = ali_pay_account
+                                SpUtil.getIstance().user = user
+                                this@SettingActivity.runOnUiThread(object : Runnable {
+                                    override fun run() {
+                                        ToastTool.showToast(this@SettingActivity, "提现账户修改成功")
+                                        Zfb.text = ali_pay_account
+                                        userZfb = ali_pay_account
+                                        dismissProgressDialog()
+                                    }
+                                })
+                            }
                         }
                     }
-                }
 
-                override fun onCompleted() {
-                    LogTool.e("onCompleted", "提现账户修改加载完成!")
-                }
+                    override fun onCompleted() {
+                        LogTool.e("onCompleted", "提现账户修改加载完成!")
+                    }
 
-                override fun onError(e: Throwable?) {
-                    LogTool.e("onError", "提现账户修改失败!" + e)
-                    this@SettingActivity.runOnUiThread(object : Runnable {
-                        override fun run() {
-                            ToastUtil.showToast(this@SettingActivity, "提现账户修改失败,请稍后重试")
-                        }
-                    })
-                }
+                    override fun onError(e: Throwable?) {
+                        LogTool.e("onError", "提现账户修改失败!" + e)
+                        this@SettingActivity.runOnUiThread(object : Runnable {
+                            override fun run() {
+                                ToastUtil.showToast(this@SettingActivity, "提现账户修改失败,请稍后重试")
+                            }
+                        })
+                    }
 
-            })
+                })
     }
 
     //修改用户头像
@@ -517,9 +515,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             )//MediaType.parse("multipart/form-data")
         val body: MultipartBody.Part =
             MultipartBody.Part.createFormData("file", file.name, requestFile)
-
         HttpManager.getInstance()
-            .upload(Api.SETAVATER, Parameter.getBenefitMap(), body, object : Subscriber<String>() {
+            .post(Api.SETAVATER, NewParameter.getUploadUserFaceMap(file), object : Subscriber<String>() {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject? = null
@@ -566,5 +563,53 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 }
 
             })
+        /*HttpManager.getInstance()
+            .upload(Api.SETAVATER, Parameter.getBenefitMap(), body, object : Subscriber<String>() {
+                override fun onNext(str: String?) {
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        var jsonObj: JSONObject? = null
+                        jsonObj = JSONObject(str)
+                        if (!jsonObj.optString(JsonParser.JSON_CODE)
+                                .equals(JsonParser.JSON_SUCCESS)
+                        ) {
+                            ToastUtil.showToast(
+                                this@SettingActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            val user = SpUtil.getIstance().user
+                            SpUtil.getIstance().user = user
+                            this@SettingActivity.runOnUiThread(object : Runnable {
+                                override fun run() {
+                                    dismissProgressDialog()
+                                    ToastUtil.showToast(this@SettingActivity, "头像修改成功")
+                                    if (path != "" && !TextUtils.isEmpty(path)) {
+                                        GlideUtil.loadHeadImage(
+                                            this@SettingActivity,
+                                            path,
+                                            userImage
+                                        )
+                                    }
+                                }
+                            })
+                        }
+                    }
+                }
+
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "头像修改完成!")
+                }
+
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onError", "头像修改失败!" + e)
+                    this@SettingActivity.runOnUiThread(object : Runnable {
+                        override fun run() {
+                            dismissProgressDialog()
+                            ToastUtil.showToast(this@SettingActivity, "头像修改失败,请稍后重试")
+                        }
+                    })
+                }
+
+            })*/
     }
 }

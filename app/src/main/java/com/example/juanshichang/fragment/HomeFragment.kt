@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import com.example.juanshichang.R
-import com.example.juanshichang.activity.PromotionActivity
-import com.example.juanshichang.activity.ShangPinZyContains
-import com.example.juanshichang.activity.TopupActivity
-import com.example.juanshichang.activity.ZyAllActivity
+import com.example.juanshichang.activity.*
 import com.example.juanshichang.adapter.MainGridAdapter
 import com.example.juanshichang.adapter.NewHomeAdapter
 import com.example.juanshichang.base.*
@@ -240,8 +237,16 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             grid?.onItemClick { p0, p1, p, p3 ->
                 when (data[p].type) {
                     "link" -> {
-                        OneFragment.WebUrl = null
-                        OneFragment.getWebLink(data[p].channel_id, mContext)
+                 /*       OneFragment.WebUrl = null
+                        OneFragment.getWebLink(data[p].channel_id, mContext)*/
+                        OneFragment.WebUrl = data[p].image_url
+                        val intent = Intent(mContext, WebActivity::class.java)
+                        intent.putExtra(
+                            "mobile_short_url",
+                            OneFragment.WebUrl!!.trim()
+                        )
+                        BaseActivity.goStartActivity(mContext, intent)
+                        //todo 偷天换日法
                     }
                     "goods" -> {
                         val intent = Intent(mContext, PromotionActivity::class.java)

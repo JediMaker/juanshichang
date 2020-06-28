@@ -53,9 +53,19 @@ interface Api {
         //用户信息
         val SETTINGS = "/user/settings"
         //修改头像
+        val SETAVATER = "/index.php?route=cat/user/eface"
+/*
+        //修改头像
+        val SETAVATER = "/user/settings/upload_avatar"
+*/
+        //修改昵称
+        val SETINFO = "/index.php?route=cat/user/euname"
+/*
+        //修改头像
         val SETAVATER = "/user/settings/upload_avatar"
         //修改昵称
         val SETINFO = "/user/settings/update_info"
+*/
         //列表
         val CATEGORY = "/category"
         //消息
@@ -65,7 +75,11 @@ interface Api {
         //提现列表
         val HISTORY = "/user/withdraw/history"
         //修改提现账户
+        val UPDZFB = "/index.php?route=cat/user/epay"
+/*
+        //修改提现账户
         val UPDZFB = "/user/withdraw/update_alipay_account"
+*/
         //servicer 关键字
         val Pdd = "pdd"
         val TaoBao = "taobao"

@@ -120,7 +120,7 @@
                 android:layout_weight="1"
                 android:visibility="gone"
                 android:gravity="center"
-                android:text="商品缺货"
+                android:text="库存不足"
                 android:textColor="@color/txt_gray"
                 android:textSize="@dimen/sp_txt_nomal"
                 app:layout_constraintBottom_toBottomOf="parent"

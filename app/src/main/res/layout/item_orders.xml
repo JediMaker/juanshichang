@@ -45,15 +45,17 @@
                         android:textColor="@color/main_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
+
                 <TextView
                         android:id="@+id/ordersStateOne"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
-                        android:text="已付款"
-                        android:textSize="@dimen/sp_txt_nomal"
-                        android:textColor="@color/orders_state"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="8dp"
+                        android:text="已付款"
+                        android:textColor="@color/orders_state"
+                        android:textSize="@dimen/sp_txt_annotateTextSize" />
             </RelativeLayout>
             <View   android:background="@color/set_linear"
                     android:layout_width="match_parent" android:layout_height="1px"/>
@@ -114,7 +116,7 @@
                     android:id="@+id/botO"
                     android:visibility="gone"
                     android:paddingTop="8dp"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="8dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent" android:layout_height="wrap_content">
                 <TextView
@@ -125,16 +127,27 @@
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/ordersNum"
-                        tools:text="8846434846434"
+                        tools:text="8846434846546456465465465465465464434"
                         android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/home_gray"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"/>
+                <TextView
+                        android:id="@+id/ensureReceived"
+                        android:background="@drawable/order_item_but"
+                        android:text="确认收货"
+                        android:visibility="visible"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
+                        android:textColor="@color/indicatorRed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
             </LinearLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:visibility="visible"
                     android:id="@+id/botT"
+                    android:paddingBottom="@dimen/dp_8"
+                    android:paddingTop="@dimen/dp_8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <TextView
@@ -143,7 +156,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:text="应付款 :  "
-                        android:textSize="@dimen/sp_txt_nomal"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/home_gray"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -153,18 +166,16 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         tools:text="￥64.00"
-                        android:textSize="@dimen/sp_txt_title_icon_name"
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/indicatorRed"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"/>
                 <TextView
                         android:id="@+id/goPay"
-                        android:layout_marginTop="5dp"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginBottom="6dp"
                         android:background="@drawable/order_item_but"
                         android:text="立即支付"
                         android:textSize="@dimen/sp_txt_annotateTextSize"

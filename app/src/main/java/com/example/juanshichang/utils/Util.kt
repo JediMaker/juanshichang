@@ -21,14 +21,12 @@ import android.webkit.CookieSyncManager
 import androidx.core.text.isDigitsOnly
 import com.example.juanshichang.activity.Reg2LogActivity
 import com.example.juanshichang.base.BaseActivity
-import java.io.BufferedReader
-import java.io.File
-import java.io.InputStreamReader
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-
+import android.util.Base64
 
 /**
  * @作者: yzq
@@ -352,6 +350,41 @@ class Util {
                 sb.delete(0,sb.length)
             }
             return sb.toString().trim()
+        }
+
+        /**
+         * 将图片转换成Base64编码的字符串
+         *
+         *
+         * https://blog.csdn.net/qq_35372900/article/details/69950867
+         */
+        fun imageToBase64(path: File?): String? {
+            var `is`: InputStream? = null
+            val data: ByteArray
+            var result: String? = null
+            try {
+                `is` = FileInputStream(path)
+                //创建一个字符流大小的数组。
+                data = ByteArray(`is`.available())
+                //写入数组
+                `is`.read(data)
+                //用默认的编码格式进行编码
+                result = Base64.encodeToString(
+                    data,
+                    Base64.NO_WRAP
+                )
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            } finally {
+                if (null != `is`) {
+                    try {
+                        `is`.close()
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            return result
         }
     }
 }

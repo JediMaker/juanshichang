@@ -5,9 +5,7 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.example.juanshichang.R
-import com.example.juanshichang.bean.OrdersBean
 import com.example.juanshichang.bean.OrdersBeanT
-import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
 import org.jetbrains.anko.textColorResource
 
@@ -17,7 +15,11 @@ class OrdersAdapter() :
     override fun convert(help: BaseViewHolder?, data: OrdersBeanT.Data?) {
         val status = data?.status
         val ordersStateOne = help?.getView<TextView>(R.id.ordersStateOne)
-        help?.setGone(R.id.botT, false)  //待付款页面 隐藏
+        val goPayOrDelete = help?.getView<TextView>(R.id.goPay)
+        help?.setGone(R.id.botT, false)  //待付款页面页面 隐藏
+        help?.setGone(R.id.botO, false)  //订单编号页面 隐藏
+        help?.setGone(R.id.ensureReceived, false)  //确认收货按钮 隐藏
+        goPayOrDelete?.text = "立即支付"
         when (status) {
             //等待付款
             "已提交" -> {
@@ -31,13 +33,23 @@ class OrdersAdapter() :
                 ordersStateOne?.textColorResource = R.color.indicatorRed  //红色
                 ordersStateOne?.text = "退货中"
             }
-            "已付款", "已发货", "已收货" -> {
+            "已付款", "已收货" -> {
                 ordersStateOne?.textColorResource = R.color.orders_state  //绿色
                 ordersStateOne?.text = status
+                help?.setGone(R.id.botO, true)
+            }
+            "已发货" -> {
+                ordersStateOne?.textColorResource = R.color.orders_state  //绿色
+                ordersStateOne?.text = status
+                help?.setGone(R.id.botO, true)
+                help?.setGone(R.id.ensureReceived, true)
             }
             "已取消" -> {
+                help?.setGone(R.id.botT, true)
                 ordersStateOne?.textColorResource = R.color.home_gray  //灰色
-                ordersStateOne?.text = "已失效"
+                ordersStateOne?.text = "交易关闭"
+                goPayOrDelete?.text = "删除订单"
+                help?.setText(R.id.oPrices, data.total)
             }
             else -> {
                 ordersStateOne?.textColorResource = R.color.orders_state  //绿色
@@ -48,6 +60,7 @@ class OrdersAdapter() :
         help?.setText(R.id.createDate, data?.date_added)
             ?.setText(R.id.ordersTitle, data?.products!![0].name)
             ?.setText(R.id.ordersPrice, data.total)
+            ?.setText(R.id.ordersNum, data.order_id)
         val iv = help?.getView<ImageView>(R.id.ordersImage)
         GlideUtil.loadShopImg(mContext, data?.products!![0].image, iv, iv?.drawable)
         /*help?.setText(R.id.createDate,Util.getTimedate(data?.create_time!!.toLong()))

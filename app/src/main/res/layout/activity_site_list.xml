@@ -1,70 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".activity.SiteListActivity">
-    <com.zhy.autolayout.AutoRelativeLayout
-        android:id="@+id/sitebar"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_56"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".activity.SiteListActivity">
+
+    <com.zhy.autolayout.AutoRelativeLayout
+            android:id="@+id/sitebar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_56"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
         <!--ff_ret-->
         <LinearLayout
                 android:id="@+id/siteRet"
                 android:layout_width="@dimen/dp_48"
                 android:layout_height="@dimen/dp_56"
                 android:layout_centerVertical="true">
+
             <View
                     android:layout_width="63px"
                     android:layout_height="43px"
-                    android:layout_marginLeft="@dimen/dp_16"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_16"
                     android:background="@drawable/ff_ret" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/LaTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/main_text"
-            android:textSize="@dimen/sp_txt_topBarTextSize"
-            android:text="收货地址"
-            />
+                android:id="@+id/LaTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="收货地址"
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/sp_txt_topBarTextSize" />
+
         <TextView
-            android:id="@+id/addNewSite"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:text="添加新地址"
-            android:textSize="@dimen/sp_txt_title_icon_name"
-            android:textColor="@color/main_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                android:id="@+id/addNewSite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_16"
+                android:text="添加新地址"
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/sp_txt_title_icon_name" />
     </com.zhy.autolayout.AutoRelativeLayout>
+
     <View
-        android:id="@+id/backView"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/ff_back"
-        app:layout_constraintTop_toBottomOf="@+id/sitebar" />
+            android:id="@+id/backView"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/ff_back"
+            app:layout_constraintTop_toBottomOf="@+id/sitebar" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/siteList"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@+id/backView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            android:id="@+id/siteList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/backView" />
+
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
         <TextView
-                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

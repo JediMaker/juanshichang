@@ -58,7 +58,7 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener {
             siteType = intent.getIntExtra("type", 0)
             if (ADDSITE == siteType) { //添加地址
                 eSTitle.text = "添加收货地址"
-//                llCheck.visibility = View.VISIBLE  //根据相关参数 新建不具备设为默认能力
+                llCheck.visibility = View.VISIBLE  //根据相关参数 新建不具备设为默认能力
             }
             if (EDITSITE == siteType) {//修改地址
                 eSTitle.text = "编辑收货地址"

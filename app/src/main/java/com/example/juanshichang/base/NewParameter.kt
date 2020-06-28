@@ -6,9 +6,11 @@ import com.example.juanshichang.MyApp.Companion.getMD5uuid
 import com.example.juanshichang.MyApp.Companion.getMD5uuidNew
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
+import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.MD5Utils
 import okhttp3.internal.toImmutableMap
 import okio.utf8Size
+import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.ArrayList
@@ -138,6 +140,7 @@ class NewParameter {
             val map = fengMap(0)
             return map
         }
+
         fun getUserTokenMap(): HashMap<String, String> {
             baseList.clear()
             baseList.add("route=pre/token")
@@ -145,6 +148,7 @@ class NewParameter {
             map.put("route", "pre/token")
             return map
         }
+
         fun getBaseMap(): HashMap<String, String> {
             baseList.clear()
             baseList.add("route=app/cart")
@@ -320,6 +324,52 @@ class NewParameter {
             val maps = fillMap(list, map)
             return maps
         }
+
+        /***
+         * 修改用户信息
+         * @param nickname
+         */
+        fun getUpdInfo(nickname: String): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=cat/user/euname")
+            baseList.add("nickname=$nickname")
+            val map = fengMap(1)
+            map.put("nickname", nickname)
+            map.put("route", "cat/user/euname")
+
+
+            return map
+        }
+
+        /***
+         * 修改用户支付宝
+         * @param ali_pay_account
+         */
+        fun getUpdZfb(ali_pay_account: String): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=cat/user/epay")
+            baseList.add("account=$ali_pay_account")
+            val map = fengMap(1)
+            map.put("account", ali_pay_account)
+            map.put("route", "cat/user/epay")
+            return map
+        }
+        /***
+         * 上传用户头像
+         * @param ali_pay_account
+         */
+        fun getUploadUserFaceMap(path: File?): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=cat/user/eface")
+            baseList.add("source=${Util.imageToBase64(path)}")
+            baseList.add("type=png")
+            val map = fengMap(1)
+            map.put("source", Util.imageToBase64(path).toString())
+            map.put("route", "cat/user/eface")
+            map.put("type", "png")
+            return map
+        }
+
 
         //完成订单
         fun getSucMap(list: List<String>, address_id: String): Map<String, String> {
