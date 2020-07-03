@@ -80,10 +80,10 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
                 startActivityForResult(intent,1)
             }
             coPay ->{
-                 if(addresse == null){
-                    ToastUtil.showToast(this@ConOrderActivity,"收货地址不能为空")
-                    return
-                }
+//                 if(addresse == null){
+//                    ToastUtil.showToast(this@ConOrderActivity,"收货地址不能为空")
+//                    return
+//                }
                 val intent = Intent(this@ConOrderActivity,SettleAccActivity::class.java)
                 bundle?.putString("address_id",addresseId) //携带地址id 跳转
                 intent.putExtra("bundle",bundle)
@@ -127,6 +127,8 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
             LogTool.e("onActivityResult1",bundle.toString())
             bundle.let {
                 val ds = bundle.getParcelable<SiteBean.Addresse>("data")
+                hintText.visibility = View.GONE
+//                addresse=ds
                 LogTool.e("onActivityResult2",ds.toString())
                 addresseId = ds?.address_id
                 ocName.text = ds?.name
@@ -151,12 +153,20 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                      /*  if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
                             ToastUtil.showToast(
                                 this@ConOrderActivity,
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
-                        } else {
+                        }*/
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
+                        ) {
+                            ToastUtil.showToast(
+                                this@ConOrderActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        }
+                        else {
                             val iData = Gson().fromJson(t,ConOrderBean.ConOrderBeans::class.java)
                             data = iData
                             setUI(iData)

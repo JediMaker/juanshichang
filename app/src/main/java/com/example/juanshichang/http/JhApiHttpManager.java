@@ -1,11 +1,19 @@
 package com.example.juanshichang.http;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.juanshichang.utils.SpUtil;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -28,12 +36,25 @@ public class JhApiHttpManager {
     private JhApiHttpManager(String url) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT);//打印retrofit日志
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
+        TokenInterceptor tokenInterceptor = new TokenInterceptor();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(READ_TIME_OUT, TimeUnit.SECONDS)
                 .connectTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
                 .writeTimeout(5,TimeUnit.SECONDS)  //new add
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(new Interceptor() {//  https://www.jianshu.com/p/32612f7e6e41//为请求添加Header
+                    @NotNull
+                    @Override
+                    public Response intercept(@NotNull Interceptor.Chain chain) throws IOException {
+                        Request original = chain.request();
+                        Request request = original.newBuilder()
+                                .header(ConstantsKt.HTTP_HEADER_AUTH,
+                                        ConstantsKt.BEARER + " " + SpUtil.getIstance().getUser().getAccess_token())
+                                .build();
+                        return chain.proceed(request);
+                    }
+                })
+                .addInterceptor(tokenInterceptor)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()

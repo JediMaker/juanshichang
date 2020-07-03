@@ -76,7 +76,7 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     jsonObj = JSONObject(str)
-                    if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                    if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                         ToastUtil.showToast(this@EarningsActivity, jsonObj.optString(JsonParser.JSON_MSG))
                     } else{
                         val data:BenefitBean.BenefitBeans =  Gson().fromJson(str,BenefitBean.BenefitBeans::class.java)

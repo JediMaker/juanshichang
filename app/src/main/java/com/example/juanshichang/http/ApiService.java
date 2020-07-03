@@ -2,10 +2,13 @@ package com.example.juanshichang.http;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.juanshichang.bean.TokenBean;
+
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
+
 import java.util.Map;
 
 
@@ -14,7 +17,6 @@ import java.util.Map;
  */
 
 public interface ApiService {
-
 
 
     @GET()
@@ -43,6 +45,9 @@ public interface ApiService {
     @GET()
     Call<ResponseBody> download(@Url String url);
 
+    @FormUrlEncoded
+    @POST()
+    Call<ResponseBody> requestToken(@Url String url, @FieldMap Map<String, String> params);
 
     rx.Observable<String> post(String url, JSONObject json);
 

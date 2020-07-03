@@ -87,7 +87,7 @@ class Util {
          * 判断是否已经登陆  没有 直接跳转
          */
         fun hasLogin(context: Context): Boolean {
-            if (TextUtils.isEmpty(SpUtil.getIstance().user.usertoken)) {
+            if ("0".equals(SpUtil.getIstance().user.useruid?.toString())!!) {
                 BaseActivity.goStartActivity(context, Reg2LogActivity())
                 return false
             }
@@ -98,7 +98,7 @@ class Util {
          * 判断是否已经登陆
          */
         fun  hasLogin(): Boolean {
-            if (TextUtils.isEmpty(SpUtil.getIstance().user.usertoken)) {
+            if ("0".equals(SpUtil.getIstance().user.useruid.toString())||TextUtils.isEmpty(SpUtil.getIstance().user.useruid.toString())) {
                 return false
             }
             return true

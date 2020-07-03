@@ -46,6 +46,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private var adapterSp: ShangPinXqAdapter? = null
     private var checkMap: ConcurrentHashMap<String, ArrayList<String>>? = null //这个是选择的数据集合
     private var quantity: Int = 1 // 数量
+
     //弹窗布局
     private var dShopImg: ImageView? = null  //小图
     private var dFinish: View? = null  //关闭
@@ -92,7 +93,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 finish()
             }
             R.id.goShopCar -> {
-                if(Util.hasLogin(this)){
+                if (Util.hasLogin(this)) {
                     val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivity(intent)
@@ -264,12 +265,16 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             dLeaveWord = it.findViewById(R.id.dLeaveWord) //备注
             dConfirm = it.findViewById(R.id.dConfirm)
             dialog?.setContentView(inflate)
+            var dLeaveWord_product_option_id: String = ""
+            val dLeaveWordList: ArrayList<String> = arrayListOf() //初始化留言集合
             if (dData.options.size != 0) { //这里动态显示 留言框
                 val dt = dData.options
                 for (i in 0 until dt.size) {
                     if (dt[i].type.contentEquals("textarea")) {
                         dLeaveWord?.visibility = View.VISIBLE
-                        dLeaveWord?.hint = dt[i].name
+                        dLeaveWord?.hint = dt[i].value
+                        dLeaveWord_product_option_id= dt[i].product_option_id
+                        dLeaveWordList.add(dt[i].value) //todo 暂时先这么写
                         break
                     }
                 }
@@ -296,7 +301,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             dShopTit?.text = dData.model
             dAdapter = ShopDetailsAdapter()
             dList?.adapter = dAdapter
-            dAdapter?.setTheData(dData.options)
+            dAdapter?.setTheData(dData)
             checkMap?.let {
                 dAdapter?.setAllCheck(it)
             }
@@ -332,15 +337,16 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 dAmount?.text = "$quantity"
             }
             dConfirm?.setOnClickListener {
-                if (!Util.hasLogin()){
-                    ToastTool.showToast(this@ShangPinZyContains,"尚未登录 请先登录")
-                    val intent  = Intent(this@ShangPinZyContains,Reg2LogActivity::class.java)
+                if (!Util.hasLogin()) {
+                    ToastTool.showToast(this@ShangPinZyContains, "尚未登录 请先登录")
+                    val intent = Intent(this@ShangPinZyContains, Reg2LogActivity::class.java)
                     intent.putExtra("type", Reg2LogActivity.LOGINCODE) // 显示登录
-                    intent.putExtra("one","1")
-                    goStartActivity(this@ShangPinZyContains,intent)
-                }else{
+                    intent.putExtra("one", "1")
+                    goStartActivity(this@ShangPinZyContains, intent)
+                } else {
                     //确定
                     checkMap = dAdapter?.getAllCheck() as ConcurrentHashMap//把选中的信息返回
+                    checkMap?.put(dLeaveWord_product_option_id,dLeaveWordList)
                     showProgressDialog()
                     if (typeDialog == 1) { //加入购物车
                         addShopCar(product_id!!, quantity, checkMap!!, 1)
@@ -367,7 +373,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
-                    val t =result?.substring(result?.indexOf("{"),result.length)
+                    val t = result?.substring(result?.indexOf("{"), result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -375,7 +381,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(
                                 this@ShangPinZyContains,
                                 jsonObj.optString(JsonParser.JSON_MSG)
@@ -421,7 +427,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
-                    val t =result?.substring(result?.indexOf("{"),result.length)
+                    val t = result?.substring(result?.indexOf("{"), result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -429,7 +435,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(
                                 this@ShangPinZyContains,
                                 jsonObj.optString(JsonParser.JSON_MSG)

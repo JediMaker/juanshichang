@@ -178,7 +178,7 @@ class PromotionActivity : BaseActivity(),View.OnClickListener , BaseQuickAdapter
                 if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                     var jsonObj: JSONObject? = null
                     jsonObj = JSONObject(str)
-                    if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                    if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                         ToastUtil.showToast(this@PromotionActivity, jsonObj.optString(JsonParser.JSON_MSG))
                     } else {
                         var bannnerDetailBean = Gson().fromJson(str, BannnerDetailBean.BannnerDetailBeans::class.java)

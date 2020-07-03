@@ -3,8 +3,15 @@ package com.example.juanshichang.http;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.juanshichang.base.Api;
+import com.example.juanshichang.utils.SpUtil;
+
+import org.jetbrains.annotations.NotNull;
+
+import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -14,15 +21,17 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
 /**
  * @作者：yzq
  * @创建时间：2019/11/6 11:16
  * @文件作用: 用于加载本地接口
  */
 
-public class HttpManager{
+public class HttpManager {
 
 
     private static final int READ_TIME_OUT = 5;
@@ -33,12 +42,25 @@ public class HttpManager{
     private HttpManager() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT);//打印retrofit日志
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
+        TokenInterceptor tokenInterceptor = new TokenInterceptor();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(READ_TIME_OUT, TimeUnit.SECONDS)
                 .connectTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
-                .writeTimeout(5,TimeUnit.SECONDS)  //new add
+                .writeTimeout(5, TimeUnit.SECONDS)  //new add
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(new Interceptor() {//  https://www.jianshu.com/p/32612f7e6e41//为请求添加Header
+                    @NotNull
+                    @Override
+                    public Response intercept(@NotNull Interceptor.Chain chain) throws IOException {
+                        Request original = chain.request();
+                        Request request = original.newBuilder()
+                                .header(ConstantsKt.HTTP_HEADER_AUTH,
+                                        ConstantsKt.BEARER + " " + SpUtil.getIstance().getUser().getAccess_token())
+                                .build();
+                        return chain.proceed(request);
+                    }
+                })
+                .addInterceptor(tokenInterceptor)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -69,6 +91,7 @@ public class HttpManager{
         Observable<String> observable = mApiService.get(url, params);
         call(observable, subscriber);
     }
+
     public void get(String url, Subscriber<String> subscriber) {
         Observable<String> observable = mApiService.get(url);
         call(observable, subscriber);
@@ -96,9 +119,9 @@ public class HttpManager{
                 .subscribe(subscriber);
     }
 
-   public void post(String url, JSONObject json, Subscriber<String> subscriber){
-        Observable <String> observable=mApiService.post(url,json);
-        call(observable,subscriber);
-   }
+    public void post(String url, JSONObject json, Subscriber<String> subscriber) {
+        Observable<String> observable = mApiService.post(url, json);
+        call(observable, subscriber);
+    }
 
 }

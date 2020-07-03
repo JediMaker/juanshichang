@@ -251,7 +251,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
                         } else {
                             val data = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
@@ -293,7 +293,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 override fun onNext(str: String?) {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
                         } else {
                             val bean = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
@@ -340,8 +340,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!
-                                .equals(JsonParser.JSON_SUCCESS)
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
                         ) {
                             ToastUtil.showToast(
                                 mContext!!,

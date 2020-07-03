@@ -2,6 +2,7 @@ package com.example.juanshichang
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.text.TextUtils
 import android.view.MenuItem
@@ -11,6 +12,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
+import com.example.juanshichang.activity.Reg2LogActivity
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.UserBean
 import com.example.juanshichang.fragment.*
@@ -147,14 +149,14 @@ class MainActivity : BaseActivity() {
                         vp_main.currentItem = 4
                         return@OnNavigationItemSelectedListener true
                     }
-                    /*if (!Util.hasLogin()) { //登录检查
-                        val intent = Intent(this@MainActivity,Reg2LogActivity::class.java)
+                    if (!Util.hasLogin()) { //登录检查
+                        val intent = Intent(this@MainActivity, Reg2LogActivity::class.java)
                         intent.putExtra("type",Reg2LogActivity.LOGINCODE)
                         BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
                         finish()
                     } else {
                         ToastTool.showToast(this@MainActivity, "登录检查通过2")
-                    }*/
+                    }
                     return@OnNavigationItemSelectedListener false
                 }
             }
@@ -366,12 +368,13 @@ class MainActivity : BaseActivity() {
                             } catch (e: JSONException) {
                                 e.printStackTrace();
                             }
-                            if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                            if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
+                            ) {
                                 ToastUtil.showToast(
                                     context,
-                                    jsonObj!!.optString(JsonParser.JSON_MSG)
+                                    jsonObj.optString(JsonParser.JSON_MSG)
                                 )
-                            } else {
+                            }  else {
                                 /*val data = jsonObj!!.getJSONObject("data")
         //                        val age: String = data.getString("age")
                                 val avatar: String = data.getString("avatar")

@@ -4,7 +4,8 @@ class HomeBean {
     data class HomeBeans(
         var `data`: Data = Data(),
         var errmsg: String = "",
-        var errno: Int = 0
+        var errno: Int = 0,
+        var status:Boolean =false
     )
 
     data class Data(

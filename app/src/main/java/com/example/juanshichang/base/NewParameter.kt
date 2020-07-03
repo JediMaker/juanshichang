@@ -59,9 +59,10 @@ class NewParameter {
         ): HashMap<String, String> { //action: String,
             val map = HashMap<String, String>()
 //            map.put("action", action)
-            map.put("sign", getSignString(signType, fuji))
-            map.put("uuid", uuidNew!!)
-            map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
+            // 2020-07-01 更换新的授权模式 以下签名废弃
+//            map.put("sign", getSignString(signType, fuji))
+//            map.put("uuid", uuidNew!!)
+//            map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
             return map
         }
 
@@ -71,8 +72,9 @@ class NewParameter {
         ): IdentityHashMap<String, String> { //action: String,
             val map = IdentityHashMap<String, String>()
 //            map.put("action", action)
-            map.put("sign", getSignString(signType, fuji))
-            map.put("uuid", uuidNew)
+            // 2020-07-01 更换新的授权模式 以下签名废弃
+//            map.put("sign", getSignString(signType, fuji))
+//            map.put("uuid", uuidNew)
             map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
             return map
         }
@@ -84,8 +86,9 @@ class NewParameter {
 //            list.add("action=$action")
 //            list.add("clienttype=2")
             uuidNew = getMD5uuidNew()
-            list.add("timestamp=" + ((System.currentTimeMillis()) / 1000))
-            list.add("uuid=${uuidNew}")
+            // 2020-07-01 更换新的授权模式 以下签名废弃
+//            list.add("timestamp=" + ((System.currentTimeMillis()) / 1000))
+//            list.add("uuid=${uuidNew}")
 //            list.sort()
             Collections.sort(list)
             val sbs = StringBuffer()
@@ -136,8 +139,88 @@ class NewParameter {
         // --------------------------------------------------------------
         fun getHomeMap(): HashMap<String, String> {
             baseList.clear()
-            baseList.add("route=app/home")
+            baseList.add("route=api/home")
             val map = fengMap(0)
+            return map
+        }
+
+        /**
+         *   获取授权码
+         *   @param client_id
+         * @param response_type 授权作用域【一次有效】
+         * @param redirect_uri 授权域名
+         */
+        fun getAuthorizeMap(
+            client_id: String,
+            response_type: String,
+            redirect_uri: String
+        ): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=oauth/oauth2/authorize")
+            baseList.add("client_id=$client_id")
+            baseList.add("response_type=$response_type")
+            baseList.add("redirect_uri=$redirect_uri")
+            val map = fengMap(1)
+            map.put("route", "oauth/oauth2/authorize")
+            map.put("client_id", client_id)
+            map.put("response_type", response_type)
+            map.put("redirect_uri", redirect_uri)
+            return map
+        }
+
+        /**
+         *   获取令牌
+         *   @param client_id
+         * @param code 授权码
+         * @param client_secret
+         * @param redirect_uri 授权域名
+         */
+        fun getAuthorizeTokenMap(
+            client_id: String,
+            code: String,
+            client_secret: String,
+            redirect_uri: String
+        ): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=oauth/oauth2/token")
+            baseList.add("client_id=$client_id")
+            baseList.add("code=$code")
+            baseList.add("redirect_uri=$redirect_uri")
+            baseList.add("grant_type=authorization_code")//授权模式【固定填写】
+            baseList.add("client_secret=$client_secret")
+            val map = fengMap(1)
+            map.put("route", "oauth/oauth2/authorize")
+            map.put("client_id", client_id)
+            map.put("code", code)
+            map.put("redirect_uri", redirect_uri)
+            map.put("grant_type", "authorization_code")
+            map.put("client_secret", client_secret)
+            return map
+        }
+
+        /**
+         *   获取刷新令牌
+         *   @param client_id
+         * @param refresh_token
+         * @param client_secret
+         */
+        fun getRefreshTokenMap(
+            client_id: String,
+            refresh_token: String,
+            client_secret: String
+        ): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=oauth/oauth2/refresh_token")
+            baseList.add("client_id=$client_id")
+            baseList.add("refresh_token=$refresh_token")
+            baseList.add("grant_type=refresh_token")//授权模式【固定填写】
+            baseList.add("client_secret=$client_secret")
+            val map = fengMap(1)
+            map.put("route", "oauth/oauth2/refresh_token")
+            map.put("client_id", client_id)
+            map.put("refresh_token", refresh_token)
+            map.put("grant_type", "refresh_token")
+            map.put("client_secret", client_secret)
             return map
         }
 
@@ -151,9 +234,9 @@ class NewParameter {
 
         fun getBaseMap(): HashMap<String, String> {
             baseList.clear()
-            baseList.add("route=app/cart")
+            baseList.add("route=api/cart")
             val map = fengMap(1)
-            map.put("route", "app/cart")
+            map.put("route", "api/cart")
             return map
         }
 
@@ -176,17 +259,26 @@ class NewParameter {
         //获取订单列表
         fun getBaseTMap(): HashMap<String, String> {
             baseList.clear()
-            baseList.add("route=app/order/history")
+            baseList.add("route=api/order/history")
             val map = fengMap(1)
-            map.put("route", "app/order/history")
+            map.put("route", "api/order/history")
             return map
         }
 
         //获取地址id列表
         fun getBaseZMap(): HashMap<String, String> {
             baseList.clear()
-            baseList.add("route=app/address/zones")
+            baseList.add("route=api/address/zones")
             val map = fengMap(1)
+            return map
+        }
+
+        //获取省市区三级地址列表
+        fun getRegionsMap(pid: String,status: String): HashMap<String, String> {
+            baseList.clear()
+            val map = fengMap(1)
+            map.put("pid", pid)
+            map.put("status", status)//级别 1省 2市 3县（区）
             return map
         }
 
@@ -194,10 +286,10 @@ class NewParameter {
         fun getProductMap(productId: String): HashMap<String, String> {
             baseList.clear()
             baseList.add("product_id=$productId")
-            baseList.add("route=app/product")
+            baseList.add("route=api/product")
             val map = fengMap(0)
             map.put("product_id", productId)
-            map.put("route", "app/product")
+            map.put("route", "api/product")
             return map
         }
 
@@ -211,11 +303,11 @@ class NewParameter {
             baseList.add("product_id=$productId")
             baseList.add("quantity=$quantity")
 //            baseList.add("option=${getBaseCheckList(checkMap)}")
-            baseList.add("route=app/cart/add")
+            baseList.add("route=api/cart/add")
             val map = fengMap2(1)
             map.put("product_id", productId)
             map.put("quantity", "$quantity")
-            map.put("route", "app/cart/add")
+            map.put("route", "api/cart/add")
             LogTool.e("map1", map.toString())
             //map 排序  https://www.jianshu.com/p/605dbb5e1712
             LogTool.e("map2", map.toString())
@@ -232,17 +324,17 @@ class NewParameter {
             baseList.add("quantity=$count")
 //            baseList.add("cart_id=$cart_id")
             if (type == 1) {
-                baseList.add("route=app/cart/edit")
+                baseList.add("route=api/cart/edit")
             } else if (type == 2) {
-                baseList.add("route=app/cart/remove")
+                baseList.add("route=api/cart/remove")
             }
             val map = fengMap(1)
             map.put("quantity", "$count")
             map.put("cart_id", "$cart_id")
             if (type == 1) {
-                map.put("route", "app/cart/edit")
+                map.put("route", "api/cart/edit")
             } else if (type == 2) {
-                map.put("route", "app/cart/remove")
+                map.put("route", "api/cart/remove")
             }
             return map
         }
@@ -261,14 +353,14 @@ class NewParameter {
             baseList.add("city=$city")
             baseList.add("zone_id=$zone_id")
             baseList.add("iphone=$phone")
-            baseList.add("route=app/address/add")
+            baseList.add("route=api/address/add")
             val map = fengMap(1)
             map.put("name", "$name")
             map.put("address_detail", "$address_detail")
             map.put("city", "$city")
             map.put("zone_id", "$zone_id")
             map.put("iphone", phone)
-            map.put("route", "app/address/add")
+            map.put("route", "api/address/add")
             return map
         }
 
@@ -290,7 +382,7 @@ class NewParameter {
             baseList.add("address_id=$address_id")
             baseList.add("default=$default")
             baseList.add("iphone=$phone")
-            baseList.add("route=app/address/edit")
+            baseList.add("route=api/address/edit")
             val map = fengMap(1)
             map.put("name", name)
             map.put("address_detail", address_detail)
@@ -299,7 +391,7 @@ class NewParameter {
             map.put("address_id", address_id)
             map.put("default", "$default")
             map.put("iphone", phone)
-            map.put("route", "app/address/edit")
+            map.put("route", "api/address/edit")
             return map
         }
 
@@ -309,17 +401,17 @@ class NewParameter {
         ): HashMap<String, String> {
             baseList.clear()
             baseList.add("address_id=$address_id")
-            baseList.add("route=app/address/delete")
+            baseList.add("route=api/address/delete")
             val map = fengMap(1)
             map.put("address_id", address_id)
-            map.put("route", "app/address/delete")
+            map.put("route", "api/address/delete")
             return map
         }
 
         //提交订单
         fun getCoMap(list: List<String>): Map<String, String> {
             baseList.clear()
-            baseList.add("route=app/checkout")
+            baseList.add("route=api/checkout")
             val map = fengMap2(1)
             val maps = fillMap(list, map)
             return maps
@@ -354,6 +446,7 @@ class NewParameter {
             map.put("route", "cat/user/epay")
             return map
         }
+
         /***
          * 上传用户头像
          * @param ali_pay_account
@@ -375,7 +468,7 @@ class NewParameter {
         fun getSucMap(list: List<String>, address_id: String): Map<String, String> {
             baseList.clear()
             baseList.add("address_id=$address_id")
-            baseList.add("route=app/checkout/confirm")
+            baseList.add("route=api/checkout/confirm")
             val map = fengMap2(1)
             val maps = fillMap(list, map)
             maps.put("address_id", address_id)
@@ -386,7 +479,7 @@ class NewParameter {
         fun getCheckWait(order_id: String): Map<String, String> {
             baseList.clear()
             baseList.add("order_id=$order_id")
-            baseList.add("route=app/checkout/checkout")
+            baseList.add("route=api/checkout/checkout")
             val map = fengMap2(1)
             map.put("order_id", order_id)
             return map
@@ -395,7 +488,7 @@ class NewParameter {
         //商品列表分类请求
         fun getNewClassMap(parent_category_id: String): Map<String, String> {
             baseList.clear()
-            baseList.add("route=app/category")
+            baseList.add("route=api/category")
             baseList.add("parent_category_id=$parent_category_id")
             val map = fengMap(0)
             map.put("parent_category_id", parent_category_id)
@@ -405,7 +498,7 @@ class NewParameter {
         //商品列表详情
         fun getNewCGoodMap(category_id: String): Map<String, String> {
             baseList.clear()
-            baseList.add("route=app/category/goods")
+            baseList.add("route=api/category/goods")
             baseList.add("category_id=$category_id")
             val map = fengMap(0)
             map.put("category_id", category_id)
@@ -415,7 +508,7 @@ class NewParameter {
         //商品搜索
         fun getSearchMap(search: String): Map<String, String> {
             baseList.clear()
-            baseList.add("route=app/search")
+            baseList.add("route=api/search")
             baseList.add("search=$search")
             val map = fengMap(0)
             map.put("search", search)
@@ -425,7 +518,7 @@ class NewParameter {
         //商品详情
         fun getOrderDhMap(order_id: String): Map<String, String> {
             baseList.clear()
-            baseList.add("route=app/order")
+            baseList.add("route=api/order")
             baseList.add("order_id=$order_id")
             val map = fengMap(1)
             map.put("order_id", order_id)

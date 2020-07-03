@@ -1,12 +1,10 @@
 package com.example.juanshichang.fragment
 
 import android.view.View
-import com.example.juanshichang.fragment.OneFragment
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
@@ -17,8 +15,6 @@ import com.example.juanshichang.adapter.NewHomeAdapter
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.GridItemBean
 import com.example.juanshichang.bean.HomeBean
-import com.example.juanshichang.bean.SiteBean
-import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.GlideImageLoader
 import com.example.juanshichang.utils.LogTool
@@ -281,8 +277,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!
-                                .equals(JsonParser.JSON_SUCCESS)
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
                         ) {
                             ToastUtil.showToast(
                                 mContext!!,

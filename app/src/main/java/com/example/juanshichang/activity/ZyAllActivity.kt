@@ -87,7 +87,8 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             if(jsonObj.optString(JsonParser.JSON_CODE).equals("10007")){ //对于无商品的处理
                                 zyAdapter?.emptyView = View.inflate(
                                     this@ZyAllActivity,

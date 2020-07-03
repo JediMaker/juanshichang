@@ -95,7 +95,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
                     val str =result?.substring(result?.indexOf("{"),result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(
                                 this@OrderDetailActivity,
                                 jsonObj.optString(JsonParser.JSON_MSG)

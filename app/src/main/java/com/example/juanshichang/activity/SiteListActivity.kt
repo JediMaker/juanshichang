@@ -119,7 +119,7 @@ class SiteListActivity : BaseActivity(), View.OnClickListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(
                                 this@SiteListActivity,
                                 jsonObj.optString(JsonParser.JSON_MSG)

@@ -81,7 +81,7 @@ class HomeOtherFragment : BaseFragment() {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             if(jsonObj.optString(JsonParser.JSON_CODE).equals("10007")){ //
                                 zyAd?.emptyView = View.inflate(
                                     mContext,

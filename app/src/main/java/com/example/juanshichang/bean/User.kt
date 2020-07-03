@@ -30,5 +30,10 @@ class User : Serializable {
     var from_invite_userid:Long? = 0 //邀请用户id
     var invite_code:String? = null  //邀请码
     var ali_pay_account:String? = null  //用户提现账户
+    //新增授权模式
+    var access_token : String? = null  //access_token
+    var expires_in    : Int? = 604800  //access_token 有效期
+    var token_type   : String? = "Bearer"  //token_type
+    var refresh_token: String = ""  //refresh_token
 
 }

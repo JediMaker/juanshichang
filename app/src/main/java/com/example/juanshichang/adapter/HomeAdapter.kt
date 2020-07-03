@@ -13,6 +13,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.PromotionActivity
 import com.example.juanshichang.activity.ShangPinContains
+import com.example.juanshichang.activity.WebActivity
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.bean.*
 import com.example.juanshichang.fragment.OneFragment.Companion.WebUrl
@@ -155,8 +156,15 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
         gridAdapter?.notifyDataSetChanged()
         home_gridView.onItemClick { p0, p1, p, p3 ->
             if (gridList[p].type.equals("link")) {
-                WebUrl = null
-                getWebLink(gridList[p].channel_id, mContext)
+                WebUrl = gridList[p].image_url
+                val intent = Intent(mContext, WebActivity::class.java)
+                intent.putExtra(
+                    "mobile_short_url",
+                    WebUrl!!.trim()
+                )
+                BaseActivity.goStartActivity(mContext, intent)
+                //todo 偷天换日法
+//                getWebLink(gridList[p].channel_id, mContext)
             } else if (gridList[p].type.equals("goods")) {
                 val intent = Intent(mContext!!, PromotionActivity::class.java)
                 intent.putExtra("id", gridList[p].channel_id)

@@ -111,7 +111,7 @@ class ShopListFragment : BaseFragment() {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(
                                 mContext!!,
                                 jsonObj!!.optString(JsonParser.JSON_MSG)
@@ -164,7 +164,7 @@ class ShopListFragment : BaseFragment() {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(
                                 mContext!!,
                                 jsonObj!!.optString(JsonParser.JSON_MSG)
@@ -199,7 +199,7 @@ class ShopListFragment : BaseFragment() {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(
                                 mContext!!,
                                 jsonObj!!.optString(JsonParser.JSON_MSG)

@@ -1,4 +1,5 @@
 package com.example.juanshichang.bean
+
 /**
  * @作者: yzq
  * @创建日期: 2019/11/19 15:16
@@ -29,6 +30,7 @@ class ZyProduct {
         var price: String = "",
         var product_id: Long = 0,
         var products: List<Any> = listOf(),
+        var quantity: String = "",
         var rating: Int = 0,
         var recurrings: List<Any> = listOf(),
         var review_guest: Boolean = false,
@@ -42,6 +44,7 @@ class ZyProduct {
         var tags: List<Any> = listOf(),
         var tax: Boolean = false,
         var thumb: String = ""
+
     )
 
     data class Option(
@@ -60,7 +63,8 @@ class ZyProduct {
         var option_value_id: String = "",
         var price: Boolean = false,
         var price_prefix: String = "",
-        var product_option_value_id: String = ""
+        var product_option_value_id: String = "",
+        var quantity: String = ""
     )
 
     data class Image(

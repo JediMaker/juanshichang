@@ -37,10 +37,12 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     override fun getContentView(): Int {
         return R.layout.activity_reg2_log;
     }
-    companion object{
-        val REGISTERCODE:Int = 0
-        val LOGINCODE:Int = 1
+
+    companion object {
+        val REGISTERCODE: Int = 0
+        val LOGINCODE: Int = 1
     }
+
     override fun initView() {
 //        QMUIStatusBarHelper.translucent(this@Reg2LogActivity)
 //        StatusBarUtil.addStatusViewWithColor(this@Reg2LogActivity, R.color.label_color)
@@ -53,15 +55,20 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             registerInclude.visibility = View.GONE
             loginInclude.visibility = View.VISIBLE
         }
-        if(null!=intent.getStringExtra("one")){ //从个人中心 页面跳转的处理
-            LiveDataBus.get().with("mainGo").value =  0
+        if (null != intent.getStringExtra("one")) { //从个人中心 页面跳转的处理
+            LiveDataBus.get().with("mainGo").value = 0
         }
     }
 
     override fun initData() {
         //设置用户协议字体  设置点击事件
         val spStr = SpannableString(userAgreements.text)
-        spStr.setSpan(ForegroundColorSpan(Color.RED), 4, spStr.length, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+        spStr.setSpan(
+            ForegroundColorSpan(Color.RED),
+            4,
+            spStr.length,
+            Spanned.SPAN_EXCLUSIVE_INCLUSIVE
+        )
         userAgreements.text = spStr
     }
 
@@ -83,13 +90,14 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                     goVerifyCode.isEnabled = false
                     getSendSMS(phone, this@Reg2LogActivity)
                 } else {
-                    showRegisterDialog("温馨提示","请输入正确的手机号","确定","",object : DialogCallback{
+                    showRegisterDialog("温馨提示", "请输入正确的手机号", "确定", "", object : DialogCallback {
                         override fun cancle() { //无取消
                         }
+
                         override fun sure() {
                             regPhone.text.clear()
                         }
-                    },false)
+                    }, false)
                 }
             }
             R.id.registBut -> {//注册按钮
@@ -99,7 +107,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                     val sms = yzCode.text.toString().trim()
                     val invite = regInviteCode.text.toString().trim()
 //                    ToastUtil.showToast(this@Reg2LogActivity, "登录...")
-                    regGo(phone, ps,invite,sms)
+                    regGo(phone, ps, invite, sms)
                 }
             }
             R.id.mRCheckBoxX -> {//用户协议选中
@@ -132,7 +140,8 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             R.id.lookPW -> {//找回密码
                 ToastUtil.showToast(this@Reg2LogActivity, "入口待开放!")
             }
-            else -> { }
+            else -> {
+            }
         }
     }
 
@@ -187,11 +196,11 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         if (mSmsCode != null && !TextUtils.isEmpty(mSmsCode)) {//todo 验证码 判断 ....
             if (yzCode.length != mSmsCode!!.length || !mSmsCode!!.equals(yzCode)) {
                 ToastUtil.showToast(this@Reg2LogActivity, "验证码有误!!!")
-                return false
+                return true
             }
         } else {
-            ToastUtil.showToast(this@Reg2LogActivity, "获取验证码 错误请稍后重试!!!")
-            return false
+//            ToastUtil.showToast(this@Reg2LogActivity, "获取验证码 错误请稍后重试!!!")
+            return true
         }
         if (ps.length < 6) {
             ToastUtil.showToast(this@Reg2LogActivity, "请设置至少6位登录密码!")
@@ -212,143 +221,165 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
      * 注册
      * @return 返回验证码
      */
-    private fun regGo(phone: String, ps: String,invite_code:String,sms_code:String) {
-        HttpManager.getInstance().post(Api.USER, Parameter.getRegisterMap(phone, ps,invite_code,sms_code), object : Subscriber<String>() {
-            override fun onNext(result: String?) {
-                //todo后台返回数据结构问题，暂时这样处理
-                val str =result?.substring(result?.indexOf("{"),result.length)
+    private fun regGo(phone: String, ps: String, invite_code: String, sms_code: String) {
+        HttpManager.getInstance().post(
+            Api.USER,
+            Parameter.getRegisterMap(phone, ps, invite_code, sms_code),
+            object : Subscriber<String>() {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str = result?.substring(result?.indexOf("{"), result.length)
 
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject? = null
-                    try {
-                        jsonObj = JSONObject(str)
-                    } catch (e: JSONException) {
-                        e.printStackTrace();
-                    }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(this@Reg2LogActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val data = jsonObj!!.getJSONObject("data")
-                        val token: String = data.getString("token")  //注册返回Token不做处理
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(str)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        /* if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
+                             ToastUtil.showToast(this@Reg2LogActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
+                         }*/
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
+                        ) {
+                            ToastUtil.showToast(
+                                this@Reg2LogActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+//                        val data = jsonObj!!.getJSONObject("data")
+//                        val token: String = data.getString("token")  //注册返回Token不做处理
 //                        if (token != "") {
                             logGo(phone, ps)  //注册完成 直接登录
                             ToastUtil.showToast(this@Reg2LogActivity, "注册成功,正在登录...")
 //                        }
+                        }
                     }
                 }
-            }
 
-            override fun onCompleted() {
-                LogTool.e("onCompleted", "注册请求完成!")
-            }
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "注册请求完成!")
+                }
 
-            override fun onError(e: Throwable?) {
-                LogTool.e("onError", "注册请求错误!" + e)
-                ToastUtil.showToast(this@Reg2LogActivity, "注册失败,请稍后重试!")
-            }
-        })
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onError", "注册请求错误!" + e)
+                    ToastUtil.showToast(this@Reg2LogActivity, "注册失败,请稍后重试!")
+                }
+            })
     }
 
     /**
      * 登录
      */
     private fun logGo(phone: String, ps: String) {
-        HttpManager.getInstance().post(Api.LOGIN, Parameter.getLoginMap(phone, ps), object : Subscriber<String>() {
-            override fun onNext(result: String?) {
-                //todo后台返回数据结构问题，暂时这样处理
-                val str =result?.substring(result?.indexOf("{"),result.length)
+        HttpManager.getInstance()
+            .post(Api.LOGIN, Parameter.getLoginMap(phone, ps), object : Subscriber<String>() {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str = result?.substring(result?.indexOf("{"), result.length)
 
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject? = null
-                    try {
-                        jsonObj = JSONObject(str)
-                    } catch (e: JSONException) {
-                        e.printStackTrace();
-                    }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(this@Reg2LogActivity, jsonObj.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val data = jsonObj.getJSONObject("data")
-                        val token: String = data.getString("token")  //注册返回Token不做处理
-                        val uid: Long = data.getLong("uid") //这是用于校验新接口的uid
-                        LogTool.e("LogToken", token)
-                        val user = SpUtil.getIstance().user
-                        user.apply {
-                            useruid = uid
-                            usertoken = token
-                            phone_num = phone
-                            password = ps
-                        }.let {
-                            SpUtil.getIstance().user = it //写入
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(str)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
                         }
-                        this@Reg2LogActivity.runOnUiThread(Runnable {
-                            if (token != "" && !TextUtils.isEmpty(token)) {
+                        /*  if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
+                              ToastUtil.showToast(this@Reg2LogActivity, jsonObj.optString(JsonParser.JSON_MSG))
+                          } */
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
+                        ) {
+                            ToastUtil.showToast(
+                                this@Reg2LogActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            val data = jsonObj.getJSONObject("data")
+//                        val token: String = data.getString("token")  //注册返回Token不做处理
+                            val uid: Long = data.getLong("uid") //这是用于校验新接口的uid
+//                        LogTool.e("LogToken", token)
+                            val user = SpUtil.getIstance().user
+                            user.apply {
+                                useruid = uid
+//                            usertoken = token
+//                            phone_num = phone
+//                            password = ps
+                            }.let {
+                                SpUtil.getIstance().user = it //写入
+                            }
+                            this@Reg2LogActivity.runOnUiThread(Runnable {
+//                            if (token != "" && !TextUtils.isEmpty(token)) {
 //                            downUser("login")
                                 goStartActivity(this@Reg2LogActivity, MainActivity())
                                 this@Reg2LogActivity.finish()
-                            }
-                        })
+//                            }
+                            })
 
-                    }
-                }
-            }
-
-            override fun onCompleted() {
-                LogTool.e("onCompleted", "登录请求完成!")
-            }
-
-            override fun onError(e: Throwable?) {
-                LogTool.e("onError", "登录请求错误!" + e)
-            }
-
-        })
-    }
-
-    fun getSendSMS(mobile: String, context: Context){
-//        var smsCodes: String? = null
-        HttpManager.getInstance().post(Api.SMSSEND, Parameter.getVerifyCode(mobile), object : Subscriber<String>() {
-            override fun onNext(result: String?) {
-                //todo后台返回数据结构问题，暂时这样处理
-                val str =result?.substring(result?.indexOf("{"),result.length)
-
-                if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                    var jsonObj: JSONObject? = null
-                    try {
-                        jsonObj = JSONObject(str)
-                    } catch (e: JSONException) {
-                        e.printStackTrace();
-                    }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                        ToastUtil.showToast(context, jsonObj!!.optString(JsonParser.JSON_MSG))
-                    } else {
-                        val data = jsonObj!!.getJSONObject("data")
-                        LogTool.e("zxcv","Date: "+data.toString())
-                        mSmsCode = data.getString("code")  //注册返回Token不做处理
-//                        mSmsCode = data.getString("sms_code")  //注册返回Token不做处理
-                        LogTool.e("zxcv","sms_code: "+mSmsCode.toString())
-                        if (mSmsCode != "") {
-                            timer.start()
-                            ToastUtil.showToast(context, "验证码已发送,请注意查收消息")
-                            //todo 此处可添加 请求读取通知类消息权限
                         }
                     }
                 }
-            }
 
-            override fun onCompleted() {
-                LogTool.e("onCompleted", "验证码请求完成!")
-            }
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "登录请求完成!")
+                }
 
-            override fun onError(e: Throwable?) {
-                mSmsCode = ""
-                LogTool.e("onError", "验证码请求错误!" + e)
-                ToastUtil.showToast(context, "验证码发送失败,请稍后重试!!!")
-            }
-        })
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onError", "登录请求错误!" + e)
+                }
+
+            })
     }
+
+    fun getSendSMS(mobile: String, context: Context) {
+//        var smsCodes: String? = null
+        HttpManager.getInstance()
+            .post(Api.SMSSEND, Parameter.getVerifyCode(mobile), object : Subscriber<String>() {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str = result?.substring(result?.indexOf("{"), result.length)
+
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(str)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!
+                                .equals(JsonParser.JSON_SUCCESS)
+                        ) {
+                            ToastUtil.showToast(context, jsonObj!!.optString(JsonParser.JSON_MSG))
+                        } else {
+                            val data = jsonObj!!.getJSONObject("data")
+                            LogTool.e("zxcv", "Date: " + data.toString())
+                            mSmsCode = data.getString("code")  //注册返回Token不做处理
+//                        mSmsCode = data.getString("sms_code")  //注册返回Token不做处理
+                            LogTool.e("zxcv", "sms_code: " + mSmsCode.toString())
+                            if (mSmsCode != "") {
+                                timer.start()
+                                ToastUtil.showToast(context, "验证码已发送,请注意查收消息")
+                                //todo 此处可添加 请求读取通知类消息权限
+                            }
+                        }
+                    }
+                }
+
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "验证码请求完成!")
+                }
+
+                override fun onError(e: Throwable?) {
+                    mSmsCode = ""
+                    LogTool.e("onError", "验证码请求错误!" + e)
+                    ToastUtil.showToast(context, "验证码发送失败,请稍后重试!!!")
+                }
+            })
+    }
+
     //验证码计时器
 //    var curTime = 60
-    var timer:CountDownTimer = object : CountDownTimer(60000,1000){
+    var timer: CountDownTimer = object : CountDownTimer(60000, 1000) {
         override fun onFinish() {
             goVerifyCode.isEnabled = true
             goVerifyCode.text = "获取验证码"
@@ -357,40 +388,43 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         override fun onTick(millisUntilFinished: Long) {
             //todo millisUntilFinished为剩余时间，也就是30000 - n*1000
             goVerifyCode.isEnabled = false //设置按钮不可点击
-            val s  = millisUntilFinished/1000
+            val s = millisUntilFinished / 1000
             goVerifyCode.text = "$s s"
         }
     }
+
     //取消倒计时（译者：取消后，再次启动会重新开始倒计时）
 //    timer.cancel()
     //这个计时器用于轮询注册是否输入完成
-    var timerReg:CountDownTimer = object : CountDownTimer(Long.MAX_VALUE,500){
+    var timerReg: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
         override fun onFinish() {
 
         }
 
         override fun onTick(millisUntilFinished: Long) {
-            if(goJudgeReg()){
+            if (goJudgeReg()) {
                 registBut.isEnabled = true
-            }else{
+            } else {
                 registBut.isEnabled = false
             }
         }
     }
+
     //这个计时器用于轮询登录是否输入完成
-    var timerLogin:CountDownTimer = object : CountDownTimer(Long.MAX_VALUE,500){
+    var timerLogin: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
         override fun onFinish() {
 
         }
 
         override fun onTick(millisUntilFinished: Long) {
-            if(goJudgeLogin()){
+            if (goJudgeLogin()) {
                 loginBut.isEnabled = true
-            }else{
+            } else {
                 loginBut.isEnabled = false
             }
         }
     }
+
     //判断 信息输入是否正确 无误
     private fun goJudgeReg(): Boolean {
         val phone = regPhone.text.toString()
@@ -403,11 +437,11 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             return false
         }
         if (mSmsCode == null && TextUtils.isEmpty(mSmsCode)) {//todo 验证码 判断 ....
-                return false
+            return false
         }
-        if(!mSmsCode!!.equals(yzCode) || yzCode.length != mSmsCode!!.length){
-            LogTool.e("zxcv","mSmsCode:$mSmsCode")
-            LogTool.e("zxcv","yzCode:$yzCode")
+        if (!mSmsCode!!.equals(yzCode) || yzCode.length != mSmsCode!!.length) {
+            LogTool.e("zxcv", "mSmsCode:$mSmsCode")
+            LogTool.e("zxcv", "yzCode:$yzCode")
             return false
         }
         if (ps.length < 6) {

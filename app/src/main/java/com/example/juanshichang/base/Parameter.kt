@@ -102,9 +102,10 @@ class Parameter {
         ): HashMap<String, String> { //action: String,
             val map = HashMap<String, String>()
 //            map.put("action", action)
-            map.put("sign", getSign(signType, fuji))
-            map.put("uuid", getMD5uuid())
-            map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
+            // 2020-07-01 更换新的授权模式 以下签名废弃
+//            map.put("sign", getSign(signType, fuji))
+//            map.put("uuid", getMD5uuid())
+//            map.put("timestamp", (((System.currentTimeMillis()) / 1000).toString()))
             return map
         }
 
@@ -114,8 +115,8 @@ class Parameter {
         fun getFuji(list: ArrayList<String>): String {//, action: String
 //            list.add("action=$action")
 //            list.add("clienttype=2")
-            list.add("timestamp=" + ((System.currentTimeMillis()) / 1000))
-            list.add("uuid=${getMD5uuid()}")
+//            list.add("timestamp=" + ((System.currentTimeMillis()) / 1000))
+//            list.add("uuid=${getMD5uuid()}")
 //            list.sort()
             Collections.sort(list)
             val sbs = StringBuffer()

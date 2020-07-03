@@ -122,7 +122,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     } catch (e: JSONException) {
                         e.printStackTrace();
                     }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                    if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                         ToastUtil.showToast(this@RegisterActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
@@ -161,7 +161,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     } catch (e: JSONException) {
                         e.printStackTrace();
                     }
-                    if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                    if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                         ToastUtil.showToast(this@RegisterActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj!!.getJSONObject("data")

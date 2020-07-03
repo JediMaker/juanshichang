@@ -138,12 +138,20 @@ class NewClassifyActivity : BaseActivity(), View.OnClickListener,
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                     /*   if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
                             ToastUtil.showToast(
                                 this@NewClassifyActivity,
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
-                        } else {
+                        } */
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
+                        ) {
+                            ToastUtil.showToast(
+                                this@NewClassifyActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        }
+                        else {
                             val data =
                                 Gson().fromJson(t, NewClassifyBean.NewClassifyBeans::class.java)
                             if (parent_category_id == "0") { //一级列表

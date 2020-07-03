@@ -83,7 +83,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         }
         this.data.clear()
         this.data.add(catBean)
-        if (needChange){
+        if (needChange) {
             shopType = SHOPCARFINISH //切换为完成状态
             editor?.text = "编辑"
         }
@@ -217,6 +217,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                     var price = it[i].price
                     val rmbInd = price.indexOf("¥") //获取人民币符号的下标
                     price = price.substring(rmbInd + 1, price.length)
+                    price = price.replace(",", "")
                     val v: BigDecimal = num.toBigDecimal()
                     val v1: BigDecimal = price.toBigDecimal()
 //                    total_price = total_price + UtilsBigDecimal.mul2(v, v1, 2)
@@ -350,7 +351,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             } else if (shopType == SHOPCAREDIT) { //编辑状态  按钮显示完成
                 childViewHolder.llAmount?.visibility = View.GONE
                 childViewHolder.cargoDele?.visibility = View.VISIBLE
-                childViewHolder.noStock?.text=""
+                childViewHolder.noStock?.text = ""
             }
             if (goodsBean.quantity.toInt() > 1) { //判断减号能否点击
                 childViewHolder.minusAmount?.isEnabled = true
@@ -379,12 +380,12 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 childViewHolder.iv_select?.isChecked = false  //设置无货商品 不可选中 todo 注意编辑模式 释放该权限
 //                childViewHolder.noStock?.text="库存不足"
                 childViewHolder.addAmount?.isEnabled = false
-                childViewHolder.amount?.text = (goodsBean.quantity.toInt()-1).toString()
+                childViewHolder.amount?.text = (goodsBean.quantity.toInt() - 1).toString()
                 goodsBean.isSelect = false  //取消选中数据
                 //设置双按钮 都不可点击
                 if (shopType == SHOPCAREDIT) { //在编辑模式下
                     //待开发的功能....
-                    childViewHolder.noStock?.text=""
+                    childViewHolder.noStock?.text = ""
                 }
             } else {
                 childViewHolder.noStock?.visibility = View.INVISIBLE

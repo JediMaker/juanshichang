@@ -1,6 +1,7 @@
 package com.example.juanshichang.adapter
 
 import android.text.Layout
+import android.text.TextUtils
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ class ShopDetailsAdapter() :
     BaseQuickAdapter<ZyProduct.Option, BaseViewHolder>(R.layout.item_shop_details_dialog) {
     //    private var allList = ArrayList<HashMap<String, ArrayList<String>>>() //设置一个存储类
     private var theData: List<ZyProduct.Option>? = null
+    private var data: ZyProduct.Data? = null
     private var allMap: ConcurrentHashMap<String, ArrayList<String>>? = null//设置一个存储的类 hashMapOf()
 
     init {
@@ -53,6 +55,12 @@ class ShopDetailsAdapter() :
                 allMap?.put("${item.product_option_id}", radioList)
             }
             setBackground(floatLayout, fatData, 1)
+        } else if (item.type.contentEquals("textarea")) {
+            val radioList: ArrayList<String> = arrayListOf() //初始化单选集合
+            if (!allMap?.containsKey("${item.product_option_id}")!! && TextUtils.isEmpty(item.value)) {
+                radioList.add(item.value) //todo 暂时先这么写
+                allMap?.put("${item.product_option_id}", radioList)
+            }
         } else {
             helper?.setVisible(R.id.item_main, false)
         }
@@ -423,10 +431,9 @@ class ShopDetailsAdapter() :
     }
 
     //外部更新内部数据
-    fun setTheData(data: List<ZyProduct.Option>) {
-        this.theData = data
-
-        setNewData(data)
+    fun setTheData(data: ZyProduct.Data) {
+        this.theData = data.options
+        setNewData(data.options)
     }
 
     //返回弹窗数据

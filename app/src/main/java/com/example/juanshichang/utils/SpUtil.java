@@ -67,6 +67,10 @@ public class SpUtil {
         editor.putLong("frominviteuserid",entity.getFrom_invite_userid());
         editor.putString("invitecode",entity.getInvite_code());
         editor.putString("ali_pay_account",entity.getAli_pay_account());
+        editor.putString("access_token",entity.getAccess_token());
+        editor.putInt("expires_in",entity.getExpires_in());
+        editor.putString("token_type",entity.getToken_type());
+        editor.putString("refresh_token",entity.getRefresh_token());
         editor.commit();
     }
     public User  getUser(){
@@ -86,6 +90,10 @@ public class SpUtil {
         entity.setFrom_invite_userid(sp.getLong("frominviteuserid",0));
         entity.setInvite_code(sp.getString("invitecode",""));
         entity.setAli_pay_account(sp.getString("ali_pay_account",""));
+        entity.setAccess_token(sp.getString("access_token",""));
+        entity.setExpires_in(sp.getInt("expires_in",604800));
+        entity.setToken_type(sp.getString("token_type",""));
+        entity.setRefresh_token(sp.getString("refresh_token",""));
         return entity;
     }
 

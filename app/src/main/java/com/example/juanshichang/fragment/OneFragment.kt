@@ -213,7 +213,7 @@ class OneFragment : BaseFragment() {
 
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(mContext!!, jsonObj.optString(JsonParser.JSON_MSG))
                         } else {
                             val data = Gson().fromJson(str, TabOneBean.TabOneBeans::class.java)
@@ -250,7 +250,7 @@ class OneFragment : BaseFragment() {
                         } catch (e: JSONException) {
                             e.printStackTrace()
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(
                                 mContext!!,
                                 jsonObj.optString(JsonParser.JSON_MSG)
@@ -293,7 +293,7 @@ class OneFragment : BaseFragment() {
 
                             if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                                 var jsonObj: JSONObject = JSONObject(str)
-                                if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                                if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                                     ToastUtil.showToast(
                                         context,
                                         jsonObj.optString(JsonParser.JSON_MSG)

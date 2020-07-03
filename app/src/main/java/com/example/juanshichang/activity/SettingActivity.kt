@@ -83,7 +83,8 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                             }.start()
                             LogTool.e("uuid", "执行清理程序")
                             MyApp.sp.edit().remove("uu").apply() //延时清理
-                            SpUtil.getIstance().getDelete()
+//                            SpUtil.getIstance().getDelete()
+                            SpUtil.getIstance().remove("useruid")//更改授权模式退出登录只清除uid
                             Util.removeCookie(this@SettingActivity)
                             ToastUtil.showToast(this@SettingActivity, "清理完成")
                             LiveDataBus.get().with("mainGo").value = 0 //发送返回主界面广播

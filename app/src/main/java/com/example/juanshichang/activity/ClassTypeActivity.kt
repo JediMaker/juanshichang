@@ -168,7 +168,7 @@ class ClassTypeActivity : BaseActivity(), View.OnClickListener {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject? = null
                         jsonObj = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE).equals(JsonParser.JSON_SUCCESS)) {
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
                             ToastUtil.showToast(this@ClassTypeActivity, jsonObj.optString(JsonParser.JSON_MSG))
                         } else { //fastjson 解析
 //                        val cargoListBean:CargoListBean = JSON.parseObject(str,CargoListBean::class.java)

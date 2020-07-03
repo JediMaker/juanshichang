@@ -130,15 +130,14 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha03'
     implementation 'com.google.android.material:material:1.0.0'
-
     //引入腾讯UI框架
 //    implementation 'com.qmuiteam:qmui:1.4.0'
-    implementation 'com.qmuiteam:qmui:2.0.0-alpha02'
+    implementation 'com.qmuiteam:qmui:2.0.0-alpha02'//京东地址插件
     //1.2.0
 
     //    implementation 'com.qmuiteam:arch:0.6.1' //0.3.1
     implementation "com.qmuiteam:arch:$qmui_arch_version"
-
+    implementation 'com.github.chihane:JDAddressSelector:1.1.4'
     //    kapt "com.qmuiteam:arch-compiler:$qmui_arch_version" // use annotationProcessor if java
 
     //Banner
