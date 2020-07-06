@@ -359,7 +359,7 @@ class MainActivity : BaseActivity() {
                 .post(Api.USERINFO, NewParameter.getUserMap(), object : Subscriber<String>() {
                     override fun onNext(result: String?) {
                         //todo后台返回数据结构问题，暂时这样处理
-                        val str =result?.substring(result?.indexOf("{"),result.length)
+                        val str =result?.substring(result.indexOf("{"),result.length)
 
                         if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                             var jsonObj: JSONObject? = null
@@ -418,11 +418,10 @@ class MainActivity : BaseActivity() {
     var isExit: Boolean = false
     override fun onBackPressed() {
 //        super.onBackPressed()
-        var tExit: Timer? = null
         if (!isExit) {
             isExit = true
             ToastUtil.showToast(this, "再来一次 退出App")
-            tExit = Timer()
+            var tExit: Timer   = Timer()
             tExit.schedule(object : TimerTask() {
                 override fun run() {
                     isExit = false

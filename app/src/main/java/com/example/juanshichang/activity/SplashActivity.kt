@@ -144,7 +144,7 @@ class SplashActivity : FragmentActivity(), View.OnClickListener {
                         if (jsonObj?.optBoolean(JsonParser.JSON_Status)!!
                         ) {
                             //获取到令牌信息写入缓存
-                            val data = Gson().fromJson(t, TokenBean::class.java)
+                            val data = Gson().fromJson(t, TokenBean.TokenBean::class.java)
                             val user = SpUtil.getIstance().user
                             user.apply {
                                 access_token = data?.data?.access_token!!

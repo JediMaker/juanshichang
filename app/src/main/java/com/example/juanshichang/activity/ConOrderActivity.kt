@@ -31,20 +31,20 @@ import rx.Subscriber
  * @创建日期: 2019/12/4 17:56
  * @文件作用: 提交订单页面
  */
-class ConOrderActivity : BaseActivity(),View.OnClickListener{
-    private var cartList:ArrayList<String>? = null
-    private var data:ConOrderBean.ConOrderBeans? = null
-    private var adapter:ConOrderAdapter? = null
-    private var addresse:ConOrderBean.Addresse? = null
-    private var addresseId:String? = null
-    private var bundle:Bundle? = null
+class ConOrderActivity : BaseActivity(), View.OnClickListener {
+    private var cartList: ArrayList<String>? = null
+    private var data: ConOrderBean.ConOrderBeans? = null
+    private var adapter: ConOrderAdapter? = null
+    private var addresse: ConOrderBean.Addresse? = null
+    private var addresseId: String? = null
+    private var bundle: Bundle? = null
     override fun getContentView(): Int {
         return R.layout.activity_con_order
     }
 
     override fun initView() {
         StatusBarUtil.addStatusViewWithColor(this@ConOrderActivity, R.color.white)
-        if(null != intent.getBundleExtra("bundle")){
+        if (null != intent.getBundleExtra("bundle")) {
             bundle = intent.getBundleExtra("bundle") //获取 bundle
             cartList = bundle?.getStringArrayList("checkAll")
             cartList?.let {
@@ -53,8 +53,8 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
                 adapter = ConOrderAdapter()
                 coRecycler.adapter = adapter
             }
-        }else{
-            ToastUtil.showToast(this@ConOrderActivity,"数据异常,请稍后重试。")
+        } else {
+            ToastUtil.showToast(this@ConOrderActivity, "数据异常,请稍后重试。")
             finish()
         }
     }
@@ -68,52 +68,68 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
     }
 
     override fun onClick(v: View?) {
-        when(v){
-            coRet ->{
+        when (v) {
+            coRet -> {
                 finish()
             }
             hintText,  //无收货地址提示
             coSite,
-            siteRig ->{ //更换地址
-                val intent = Intent(this@ConOrderActivity,SiteListActivity::class.java)
-                intent.putExtra("checkLocal","true")
-                startActivityForResult(intent,1)
+            siteRig -> { //更换地址
+                val intent = Intent(this@ConOrderActivity, SiteListActivity::class.java)
+                intent.putExtra("checkLocal", "true")
+                startActivityForResult(intent, 1)
             }
-            coPay ->{
+            coPay -> {
 //                 if(addresse == null){
 //                    ToastUtil.showToast(this@ConOrderActivity,"收货地址不能为空")
 //                    return
 //                }
-                val intent = Intent(this@ConOrderActivity,SettleAccActivity::class.java)
-                bundle?.putString("address_id",addresseId) //携带地址id 跳转
-                intent.putExtra("bundle",bundle)
+                val intent = Intent(this@ConOrderActivity, SettleAccActivity::class.java)
+                bundle?.putString("address_id", addresseId) //携带地址id 跳转
+                intent.putExtra("bundle", bundle)
                 startActivity(intent)
                 finish()
-                ToastUtil.showToast(this@ConOrderActivity,"确认提交")
+                ToastUtil.showToast(this@ConOrderActivity, "确认提交")
             }
         }
     }
+
     private fun setUI(iData: ConOrderBean.ConOrderBeans?) {
         iData?.let {
             adapter?.setMyData(it)
             val site = it.data.addresses
-            if(site.size > 0){
-                addresse = site[0]
-                addresseId = addresse?.address_id
-                ocName.text = "${addresse?.firstname}${addresse?.lastname}"
-                coPhone.text = addresse?.iphone
-                coSite.text = "${addresse?.city} ${addresse?.address_detail}"
+            val default_address_id = it.data.default_address_id.toString()
+            if (site.size > 0) {
                 hintText.visibility = View.GONE
-            }else{//无地址 处理
+                if ("0".equals(default_address_id)) {//没有默认地址取地址列表首个地址
+                    addresse = site[0]
+                    addresseId = addresse?.address_id
+                    ocName.text = "${addresse?.firstname}${addresse?.lastname}"
+                    coPhone.text = addresse?.iphone
+                    coSite.text = "${addresse?.province} ${addresse?.city} ${addresse?.county} ${addresse?.address_detail}"
+                } else {//取默认地址
+                    for (addressData in site) {
+                        if (addressData.address_id.toString().equals(default_address_id)) {
+                            addresseId=default_address_id
+                            ocName.text = "${addressData?.firstname}${addressData?.lastname}"
+                            coPhone.text = addressData?.iphone
+                            coSite.text = "${addressData?.province} ${addressData?.city} ${addressData?.county} ${addressData?.address_detail}"
+                        }
+                    }
+                }
+
+            } else {//无地址 处理
                 hintText.visibility = View.VISIBLE
             }
+
+
             //设置底部数据
             val totalSum = it.data.total
-            val totalSumStr = "￥${UtilsBigDecimal.mul(totalSum,1.toDouble(),2)}"
+            val totalSumStr = "￥${UtilsBigDecimal.mul(totalSum, 1.toDouble(), 2)}"
             coPrice.text = Util.getGaudyStr(totalSumStr)
             val list = it.data.products
-            if(list.size != 0){
-                val v = View.inflate(this@ConOrderActivity,R.layout.item_sub_oreder_end,null)
+            if (list.size != 0) {
+                val v = View.inflate(this@ConOrderActivity, R.layout.item_sub_oreder_end, null)
                 v.findViewById<TextView>(R.id.allPrice).text = totalSumStr
                 adapter?.addFooterView(v)
             }
@@ -122,14 +138,14 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 1 && resultCode == 2){
+        if (requestCode == 1 && resultCode == 2) {
             val bundle = data?.extras?.get("bundle") as Bundle
-            LogTool.e("onActivityResult1",bundle.toString())
+            LogTool.e("onActivityResult1", bundle.toString())
             bundle.let {
                 val ds = bundle.getParcelable<SiteBean.Addresse>("data")
                 hintText.visibility = View.GONE
 //                addresse=ds
-                LogTool.e("onActivityResult2",ds.toString())
+                LogTool.e("onActivityResult2", ds.toString())
                 addresseId = ds?.address_id
                 ocName.text = ds?.name
                 coPhone.text = ds?.iphone
@@ -137,15 +153,16 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
             }
         }
     }
+
     //提交订单
-    private fun reqOrderFrom(list: ArrayList<String>){
+    private fun reqOrderFrom(list: ArrayList<String>) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.CHECKOUT,
             NewParameter.getCoMap(list),
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
-                    val t =result?.substring(result?.indexOf("{"),result.length)
+                    val t = result?.substring(result?.indexOf("{"), result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -153,21 +170,20 @@ class ConOrderActivity : BaseActivity(),View.OnClickListener{
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                      /*  if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                            ToastUtil.showToast(
-                                this@ConOrderActivity,
-                                jsonObj.optString(JsonParser.JSON_MSG)
-                            )
-                        }*/
+                        /*  if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                              ToastUtil.showToast(
+                                  this@ConOrderActivity,
+                                  jsonObj.optString(JsonParser.JSON_MSG)
+                              )
+                          }*/
                         if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
                         ) {
                             ToastUtil.showToast(
                                 this@ConOrderActivity,
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
-                        }
-                        else {
-                            val iData = Gson().fromJson(t,ConOrderBean.ConOrderBeans::class.java)
+                        } else {
+                            val iData = Gson().fromJson(t, ConOrderBean.ConOrderBeans::class.java)
                             data = iData
                             setUI(iData)
                         }

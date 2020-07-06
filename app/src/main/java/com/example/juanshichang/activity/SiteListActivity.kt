@@ -69,7 +69,7 @@ class SiteListActivity : BaseActivity(), View.OnClickListener {
                             intent.putExtra("data", it[position]) //传输序列化内容
                             intent.putExtra("defid",defId)
                             startActivity(intent)
-                            ToastTool.showToast(this@SiteListActivity, "点击编辑")
+//                            ToastTool.showToast(this@SiteListActivity, "点击编辑")
                         }
                     }
                     R.id.allCon -> { //跳转选择收货地址
@@ -82,7 +82,7 @@ class SiteListActivity : BaseActivity(), View.OnClickListener {
                                 setResult(2, intent)
                                 finish()
                             }
-                            ToastTool.showToast(this@SiteListActivity, "点击返回")
+//                            ToastTool.showToast(this@SiteListActivity, "点击返回")
                         }
                     }
                 }

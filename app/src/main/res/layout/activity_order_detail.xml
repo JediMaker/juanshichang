@@ -232,7 +232,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                     <TextView
                             android:layout_width="wrap_content"
@@ -260,6 +260,7 @@
                             android:layout_height="14dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="12dp"
+                            android:visibility="gone"
                             android:background="@drawable/copydd" />
                 </LinearLayout>
 

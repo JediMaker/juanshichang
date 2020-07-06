@@ -1,15 +1,11 @@
 package com.example.juanshichang.base
 
-import android.util.Log
 import com.example.juanshichang.MyApp
-import com.example.juanshichang.MyApp.Companion.getMD5uuid
 import com.example.juanshichang.MyApp.Companion.getMD5uuidNew
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.SpUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.widget.MD5Utils
-import okhttp3.internal.toImmutableMap
-import okio.utf8Size
 import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
@@ -274,7 +270,7 @@ class NewParameter {
         }
 
         //获取省市区三级地址列表
-        fun getRegionsMap(pid: String,status: String): HashMap<String, String> {
+        fun getRegionsMap(pid: String, status: String): HashMap<String, String> {
             baseList.clear()
             val map = fengMap(1)
             map.put("pid", pid)
@@ -345,21 +341,31 @@ class NewParameter {
             phone: String,
             address_detail: String,
             city: String,
-            zone_id: String
+            cityId: String,
+            province: String,
+            provinceId: String,
+            county: String,
+            countyId: String,
+            default: String
         ): HashMap<String, String> {
             baseList.clear()
             baseList.add("name=$name")
             baseList.add("address_detail=$address_detail")
             baseList.add("city=$city")
-            baseList.add("zone_id=$zone_id")
+            baseList.add("zone_id=$cityId")
             baseList.add("iphone=$phone")
             baseList.add("route=api/address/add")
             val map = fengMap(1)
             map.put("name", "$name")
             map.put("address_detail", "$address_detail")
             map.put("city", "$city")
-            map.put("zone_id", "$zone_id")
-            map.put("iphone", phone)
+            map.put("city_id", "$cityId")
+            map.put("iphone", "$phone")
+            map.put("province", "$province")
+            map.put("province_id", "$provinceId")
+            map.put("county", "$county")
+            map.put("county_id", "$countyId")
+            map.put("default", "$default")
             map.put("route", "api/address/add")
             return map
         }
@@ -370,25 +376,33 @@ class NewParameter {
             phone: String,
             address_detail: String,
             city: String,
-            zone_id: String,
+            cityId: String,
             address_id: String,
-            default: Boolean
+            province: String,
+            provinceId: String,
+            county: String,
+            countyId: String,
+            default: String
         ): HashMap<String, String> {
             baseList.clear()
             baseList.add("name=$name")
             baseList.add("address_detail=$address_detail")
             baseList.add("city=$city")
-            baseList.add("zone_id=$zone_id")
+            baseList.add("zone_id=$cityId")
             baseList.add("address_id=$address_id")
-            baseList.add("default=$default")
+            baseList.add("default=$province")
             baseList.add("iphone=$phone")
             baseList.add("route=api/address/edit")
             val map = fengMap(1)
             map.put("name", name)
             map.put("address_detail", address_detail)
-            map.put("city", city)
-            map.put("zone_id", zone_id)
+            map.put("city", "$city")
+            map.put("city_id", "$cityId")
             map.put("address_id", address_id)
+            map.put("province", "$province")
+            map.put("province_id", "$provinceId")
+            map.put("county", "$county")
+            map.put("county_id", "$countyId")
             map.put("default", "$default")
             map.put("iphone", phone)
             map.put("route", "api/address/edit")

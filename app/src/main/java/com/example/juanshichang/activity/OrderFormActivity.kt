@@ -223,8 +223,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject? = null
                         jsonObj = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE)
-                                .equals(JsonParser.JSON_SUCCESS)
+                        if (!jsonObj.optBoolean(JsonParser.JSON_Status)
                         ) {
                             ToastUtil.showToast(
                                 this@OrderFormActivity,
@@ -274,8 +273,7 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!
-                                .equals(JsonParser.JSON_SUCCESS)
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
                         ) {
                             ToastUtil.showToast(
                                 this@OrderFormActivity,

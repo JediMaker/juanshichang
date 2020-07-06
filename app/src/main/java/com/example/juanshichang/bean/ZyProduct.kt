@@ -61,7 +61,7 @@ class ZyProduct {
         var image: Any? = null,
         var name: String = "",
         var option_value_id: String = "",
-        var price: Boolean = false,
+        var price: String = "",
         var price_prefix: String = "",
         var product_option_value_id: String = "",
         var quantity: String = ""

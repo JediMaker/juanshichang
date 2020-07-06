@@ -24,13 +24,23 @@ class SiteBean() {
     data class Addresse(
         var address_detail: String = "",
         var address_id: String = "",
+        var province: String = "",
         var city: String = "",
+        var county: String = "",
         var iphone: String = "",
+        var province_id: String = "",
+        var city_id: String = "",
+        var county_id: String = "",
         var name: String = "",
         var zone: String = ""
 
     ) : Parcelable {
         constructor(source: Parcel) : this(
+            source.readString().toString(),
+            source.readString().toString(),
+            source.readString().toString(),
+            source.readString().toString(),
+            source.readString().toString(),
             source.readString().toString(),
             source.readString().toString(),
             source.readString().toString(),
@@ -44,8 +54,13 @@ class SiteBean() {
         override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
             writeString(address_detail)
             writeString(address_id)
+            writeString(province)
             writeString(city)
+            writeString(county)
             writeString(iphone)
+            writeString(province_id)
+            writeString(city_id)
+            writeString(county_id)
             writeString(name)
             writeString(zone)
         }

@@ -15,15 +15,21 @@ class ConOrderBean {
     data class Data(
         var addresses: List<Addresse> = listOf(),
         var products: List<Product> = listOf(),
+        var default_address_id: String = "0",
         var total: Double = 0.0
     )
 
     data class Addresse(
         var address_detail: String = "",
         var address_id: String = "",
-        var city: String = "",
-        var firstname: String = "",
         var iphone: String = "",
+        var province: String = "",
+        var city: String = "",
+        var county: String = "",
+        var province_id: String = "",
+        var city_id: String = "",
+        var county_id: String = "",
+        var firstname: String = "",
         var lastname: String = "",
         var zone: String = ""
     )

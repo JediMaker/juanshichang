@@ -412,8 +412,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         var jsonObj: JSONObject? = null
                         jsonObj = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE)
-                                .equals(JsonParser.JSON_SUCCESS)
+                        if (!jsonObj.optBoolean(JsonParser.JSON_Status)
                         ) {
                             ToastUtil.showToast(
                                 this@SettingActivity,
@@ -466,8 +465,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                         if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                             var jsonObj: JSONObject? = null
                             jsonObj = JSONObject(str)
-                            if (!jsonObj.optString(JsonParser.JSON_CODE)
-                                    .equals(JsonParser.JSON_SUCCESS)
+                            if (!jsonObj.optBoolean(JsonParser.JSON_Status)
                             ) {
                                 ToastUtil.showToast(
                                     this@SettingActivity,
@@ -517,100 +515,59 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         val body: MultipartBody.Part =
             MultipartBody.Part.createFormData("file", file.name, requestFile)
         HttpManager.getInstance()
-            .post(Api.SETAVATER, NewParameter.getUploadUserFaceMap(file), object : Subscriber<String>() {
-                override fun onNext(str: String?) {
-                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                        var jsonObj: JSONObject? = null
-                        jsonObj = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE)
-                                .equals(JsonParser.JSON_SUCCESS)
-                        ) {
-                            ToastUtil.showToast(
-                                this@SettingActivity,
-                                jsonObj.optString(JsonParser.JSON_MSG)
-                            )
-                        } else {
-                            val user = SpUtil.getIstance().user
-                            SpUtil.getIstance().user = user
-                            this@SettingActivity.runOnUiThread(object : Runnable {
-                                override fun run() {
-                                    dismissProgressDialog()
-                                    ToastUtil.showToast(this@SettingActivity, "头像修改成功")
-                                    if (path != "" && !TextUtils.isEmpty(path)) {
-                                        GlideUtil.loadHeadImage(
-                                            this@SettingActivity,
-                                            path,
-                                            userImage
-                                        )
+            .post(
+                Api.SETAVATER,
+                NewParameter.getUploadUserFaceMap(file),
+                object : Subscriber<String>() {
+                    override fun onNext(str: String?) {
+                        if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                            var jsonObj: JSONObject? = null
+                            jsonObj = JSONObject(str)
+                            if (!jsonObj.optBoolean(JsonParser.JSON_Status)
+                            ) {
+                                ToastUtil.showToast(
+                                    this@SettingActivity,
+                                    jsonObj.optString(JsonParser.JSON_MSG)
+                                )
+                            } else {
+                                this@SettingActivity.runOnUiThread(object : Runnable {
+                                    override fun run() {
+                                        dismissProgressDialog()
+                                        val data = jsonObj.getJSONObject("data")
+                                        val avatar = data.getString("uri")
+                                        ToastUtil.showToast(this@SettingActivity, "头像修改成功")
+                                        if (path != "" && !TextUtils.isEmpty(path)) {
+                                            GlideUtil.loadHeadImage(
+                                                this@SettingActivity,
+                                                path,
+                                                userImage
+                                            )
+                                        }
+
+                                        val u = SpUtil.getIstance().user
+                                        u.avatar = avatar
+                                        SpUtil.getIstance().user = u  //写入
                                     }
-                                }
-                            })
+                                })
+                            }
                         }
                     }
-                }
 
-                override fun onCompleted() {
-                    LogTool.e("onCompleted", "头像修改完成!")
-                }
-
-                override fun onError(e: Throwable?) {
-                    LogTool.e("onError", "头像修改失败!" + e)
-                    this@SettingActivity.runOnUiThread(object : Runnable {
-                        override fun run() {
-                            dismissProgressDialog()
-                            ToastUtil.showToast(this@SettingActivity, "头像修改失败,请稍后重试")
-                        }
-                    })
-                }
-
-            })
-        /*HttpManager.getInstance()
-            .upload(Api.SETAVATER, Parameter.getBenefitMap(), body, object : Subscriber<String>() {
-                override fun onNext(str: String?) {
-                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
-                        var jsonObj: JSONObject? = null
-                        jsonObj = JSONObject(str)
-                        if (!jsonObj.optString(JsonParser.JSON_CODE)
-                                .equals(JsonParser.JSON_SUCCESS)
-                        ) {
-                            ToastUtil.showToast(
-                                this@SettingActivity,
-                                jsonObj.optString(JsonParser.JSON_MSG)
-                            )
-                        } else {
-                            val user = SpUtil.getIstance().user
-                            SpUtil.getIstance().user = user
-                            this@SettingActivity.runOnUiThread(object : Runnable {
-                                override fun run() {
-                                    dismissProgressDialog()
-                                    ToastUtil.showToast(this@SettingActivity, "头像修改成功")
-                                    if (path != "" && !TextUtils.isEmpty(path)) {
-                                        GlideUtil.loadHeadImage(
-                                            this@SettingActivity,
-                                            path,
-                                            userImage
-                                        )
-                                    }
-                                }
-                            })
-                        }
+                    override fun onCompleted() {
+                        LogTool.e("onCompleted", "头像修改完成!")
                     }
-                }
 
-                override fun onCompleted() {
-                    LogTool.e("onCompleted", "头像修改完成!")
-                }
+                    override fun onError(e: Throwable?) {
+                        LogTool.e("onError", "头像修改失败!" + e)
+                        this@SettingActivity.runOnUiThread(object : Runnable {
+                            override fun run() {
+                                dismissProgressDialog()
+                                ToastUtil.showToast(this@SettingActivity, "头像修改失败,请稍后重试")
+                            }
+                        })
+                    }
 
-                override fun onError(e: Throwable?) {
-                    LogTool.e("onError", "头像修改失败!" + e)
-                    this@SettingActivity.runOnUiThread(object : Runnable {
-                        override fun run() {
-                            dismissProgressDialog()
-                            ToastUtil.showToast(this@SettingActivity, "头像修改失败,请稍后重试")
-                        }
-                    })
-                }
+                })
 
-            })*/
     }
 }

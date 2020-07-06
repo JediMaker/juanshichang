@@ -17,7 +17,6 @@ import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.NewParameter
-import com.example.juanshichang.bean.AreaData
 import com.example.juanshichang.bean.AreaZoneBean
 import com.example.juanshichang.bean.SiteBean
 import com.example.juanshichang.bean.ZoneBean
@@ -43,15 +42,22 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
     private var siteType: Int = 0
     private var address_id: String = ""
     private var zoneList: List<ZoneBean.Zone>? = null
-    private var zoneProvinceList: List<AreaData>? = null
-    private var zoneCityList: List<AreaData>? = null
-    private var zoneStreetList: List<AreaData>? = null
+    private var zoneProvinceList: List<AreaZoneBean.AreaData>? = null
+    private var zoneCityList: List<AreaZoneBean.AreaData>? = null
+    private var zoneStreetList: List<AreaZoneBean.AreaData>? = null
     private var provinces: List<Province>? = null
     private var cities: List<City>? = null
     private var counties: List<County>? = null
-    private var zoneId: String? = null
+    private var cityName: String = ""
+    private var city_id: String = ""
+    private var provinceName: String = ""
+    private var province_id: String = ""
+    private var countyName: String = ""
+    private var county_id: String = ""
     private var zone: String? = null //用于处理编辑数据问题
+    private var zoneId: String? = null //用于处理编辑数据问题
     private var selector: AddressSelector? = null
+    private var dialog: BottomAreaDialog? = null
     private var handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -86,13 +92,22 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
                 val defId = intent.getStringExtra("defid")  //获取默认地址参数
                 data?.let {
                     address_id = it.address_id
+                    cityName = "${if (it.city != null) it.city else ""}"
+                    city_id = "${if (it.city_id != null) it.city_id else ""}"
+                    provinceName = "${if (it.province != null) it.province else ""}"
+                    province_id = "${if (it.province_id != null) it.province_id else ""}"
+                    countyName = "${if (it.county != null) it.county else ""}"
+                    county_id = "${if (it.county_id != null) it.county_id else ""}"
                     sName.setText(it.name)
                     sPhone.setText(it.iphone)
                     zone = it.zone
+                    sArea.textColorResource = R.color.main_text
+                    sArea.text =
+                        "${if (it.province != null) it.province else ""} ${if (it.city != null) it.city else ""} ${if (it.county != null) it.county else ""}"
                     sAdDet.setText(it.address_detail)
                     if (defId?.contentEquals(it.address_id)!!) {
                         defCheck.isChecked = true //默认地址设为选中
-                        removeIt.visibility = View.INVISIBLE
+                        removeIt.visibility = View.VISIBLE
                     }
                 }
             }
@@ -123,6 +138,7 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
                     addressReceiver: AddressProvider.AddressReceiver<Street?>?
                 ) {
                     // blahblahblah
+                    addressReceiver?.send(null)
                 }
             })
 
@@ -171,9 +187,9 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
 //                showPop(v!!)
 
 //                BottomDialog.show(MainActivity.this, MainActivity.this);
-                val dialog = BottomAreaDialog(this, selector?.view)
+                dialog = BottomAreaDialog(this, selector?.view)
 //                dialog.setOnAddressSelectedListener(this)
-                dialog.show()
+                dialog?.show()
             }
         }
     }
@@ -185,9 +201,7 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
         val area = sArea.text.toString().trim()  //地区
         val address_detaill = sAdDet.text.toString().trim()  //详细地址
         var ischeck: Boolean = false
-        if (EDITSITE == siteType) {
-            ischeck = defCheck.isChecked
-        }
+        ischeck = defCheck.isChecked
         if (name.length < 2) {
             ToastUtil.showToast(this@EditSiteActivity, "请输入真实的收货人姓名")
             return
@@ -196,28 +210,59 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
             ToastUtil.showToast(this@EditSiteActivity, "请检查输入的手机号码")
             return
         }
-        if (area.length < 4 || !area.contains("中国")) { //!area.contains("省") || !area.contains("市")
-//            ToastUtil.showToast(this@EditSiteActivity, "请输入省、市、区-县信息")
-            getAddressList(1, sArea)
+        if ("所在地区".equals(area) && area.length < 4) { //!area.contains("省") || !area.contains("市")
+            ToastUtil.showToast(this@EditSiteActivity, "请输入省、市、区-县信息")
+//            getAddressList(1, sArea)
             return
         }
         if (address_detaill.length < 6) {
             ToastUtil.showToast(this@EditSiteActivity, "详细地址应精确到住址门牌号等")
             return
         }
-        if (!address_detaill.contains("市") && !address_detaill.contains("县") && !address_detaill.contains(
-                "区"
-            )
-        ) {
-            ToastUtil.showToast(this@EditSiteActivity, "请确认详细地址是否包含地市！！！")
-            return
-        }
+        /*  if (!address_detaill.contains("市") && !address_detaill.contains("县") && !address_detaill.contains(
+                  "区"
+              )
+          ) {
+              ToastUtil.showToast(this@EditSiteActivity, "请确认详细地址是否包含地市！！！")
+              return
+          }*/
         showProgressDialog()
         val newAddress_detaill = address_detaill.replace(" ", "") //去掉详细地址中的空格
         if (ADDSITE == siteType) { //新建地址
-            addAddress(name, phone, newAddress_detaill, area, zoneId!!)
+            addAddress(
+                name,
+                phone,
+                newAddress_detaill,
+                cityName,
+                city_id,
+                provinceName,
+                province_id,
+                countyName,
+                county_id,
+                "${if (ischeck) {
+                    "1"
+                } else {
+                    ""
+                }}"
+            )
         } else if (EDITSITE == siteType && address_id.isNotEmpty()) {//修改地址
-            defAddress(name, phone, newAddress_detaill, area, zoneId!!, address_id, ischeck)
+            defAddress(
+                name,
+                phone,
+                newAddress_detaill,
+                cityName,
+                city_id,
+                address_id,
+                provinceName,
+                province_id,
+                countyName,
+                county_id,
+                "${if (ischeck) {
+                    "1"
+                } else {
+                    ""
+                }}"
+            )
         }
     }
 
@@ -269,16 +314,33 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
 
     // --------------------------------------- 网络请求 -------------------------------------------------
     //新建地址列表
+
     private fun addAddress(
         name: String,
         phone: String,
         address_detail: String,
         city: String,
-        zone_id: String
+        city_id: String,
+        province: String,
+        province_id: String,
+        county: String,
+        county_id: String,
+        default: String
     ) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.ADDADDRESS,
-            NewParameter.getNewAdMap(name, phone, address_detail, city, zone_id),
+            NewParameter.getNewAdMap(
+                name,
+                phone,
+                address_detail,
+                city,
+                city_id,
+                province,
+                province_id,
+                county,
+                county_id,
+                default
+            ),
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
@@ -326,9 +388,13 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
         phone: String,
         address_detail: String,
         city: String,
-        zone_id: String,
+        city_id: String,
         address_id: String,
-        default: Boolean
+        province: String,
+        province_id: String,
+        county: String,
+        county_id: String,
+        default: String
     ) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.EDITADDRESS,
@@ -337,8 +403,12 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
                 phone,
                 address_detail,
                 city,
-                zone_id,
+                city_id,
                 address_id,
+                province,
+                province_id,
+                county,
+                county_id,
                 default
             ),
             object : Subscriber<String>() {
@@ -358,7 +428,7 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            if (default) {
+                            if ("1".equals(default)) {
                                 showMyLoadD(QMUITipDialog.Builder.ICON_TYPE_SUCCESS, "设置成功", true)
                                 handler.sendEmptyMessageDelayed(1, 1200)
                             }
@@ -459,8 +529,13 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
                                                     break
                                                 }
                                             }
-                                            sArea.textColorResource = R.color.main_text
-                                            sArea.text = "${data.data.name} ${it[index].name}"
+                                            this@EditSiteActivity.runOnUiThread(object : Runnable{
+                                                override fun run() {
+                                                    sArea.textColorResource = R.color.main_text
+                                                    sArea.text = "${data.data.name} ${it[index].name}"
+                                                }
+                                            })
+
                                             zoneId = it[index].zone_id
                                         } else {
                                             finish()
@@ -508,81 +583,76 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
                             e.printStackTrace();
                         }
                         if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
+                            when (status) {
+                                "1" -> {//省级数据
+                                    addressReceiver?.send(provinces)
+                                }
+                                "2" -> {//市级数据
+                                    addressReceiver2?.send(cities)
+                                }
+                                "3" -> {//县（区）级数据
+                                    addressReceiver3?.send(counties)
+                                }
+                            }
                             ToastUtil.showToast(
                                 this@EditSiteActivity,
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            val data = Gson().fromJson(t, AreaZoneBean::class.java)
-                            areaDataList.clear()
-                            when (status) {
-                                "1" -> {//省级数据
-                                    zoneProvinceList = data.data!!
-                                    provinces = listOf()
-                                    for (provinceData in zoneProvinceList!!) {
-                                        val province = Province();
-                                        province.id = provinceData.pid.toInt()
-                                        province.name = provinceData.name
-                                        provinces = provinces?.plus(province)
+                            try {
+                                val data = Gson().fromJson(t, AreaZoneBean.AreaZoneBean::class.java)
+                                when (status) {
+                                    "1" -> {//省级数据
+                                        zoneProvinceList = data.data!!
+                                        provinces = listOf()
+                                        for (provinceData in zoneProvinceList!!) {
+                                            val province = Province();
+                                            province.id = provinceData.pid.toInt()
+                                            province.name = provinceData.name
+                                            provinces = provinces?.plus(province)
+                                        }
+                                        addressReceiver?.send(provinces)
                                     }
-                                    addressReceiver?.send(provinces)
+                                    "2" -> {//市级数据
+                                        zoneCityList = data.data!!
+                                        cities = listOf()
+                                        for (provinceData in zoneCityList!!) {
+                                            val city = City();
+                                            city.id = provinceData.pid.toInt()
+                                            city.name = provinceData.name
+                                            city.province_id = pid.toInt()
+                                            cities = cities?.plus(city)
+                                        }
+                                        addressReceiver2?.send(cities)
+                                    }
+                                    "3" -> {//县（区）级数据
+                                        zoneStreetList = data.data!!
+                                        counties = listOf()
+                                        for (provinceData in zoneStreetList!!) {
+                                            val country = County();
+                                            country.id = provinceData.pid.toInt()
+                                            country.name = provinceData.name
+                                            country.city_id = pid.toInt()
+                                            counties = counties?.plus(country)
+                                        }
+                                        addressReceiver3?.send(counties)
+                                    }
                                 }
-                                "2" -> {//市级数据
-                                    zoneCityList = data.data!!
-                                    cities = listOf()
-                                    for (provinceData in zoneCityList!!) {
-                                        val city = City();
-                                        city.id = provinceData.pid.toInt()
-                                        city.name = provinceData.name
-                                        city.province_id = pid.toInt()
-                                        cities = cities?.plus(city)
+                            } catch (e: Exception) {
+                                when (status) {
+                                    "1" -> {//省级数据
+                                        addressReceiver?.send(provinces)
                                     }
-                                    addressReceiver2?.send(cities)
-                                }
-                                "3" -> {//县（区）级数据
-                                    zoneStreetList = data.data!!
-                                    counties = listOf()
-                                    for (provinceData in zoneStreetList!!) {
-                                        val country = County();
-                                        country.id = provinceData.pid.toInt()
-                                        country.name = provinceData.name
-                                        country.city_id = pid.toInt()
-                                        counties = counties?.plus(country)
+                                    "2" -> {//市级数据
+                                        addressReceiver2?.send(cities)
                                     }
-                                    addressReceiver3?.send(counties)
+                                    "3" -> {//县（区）级数据
+                                        addressReceiver3?.send(counties)
+                                    }
                                 }
                             }
 
-                            /*zoneList = data.data
-                            if (type != 0) {//0 为 首次请求 保存数据  其他要 直接显示
-                                showPop(v as View)
-                            } else {
-                                //设置默认 参数
-                                if (zoneList?.size != 0 && EDITSITE != siteType) { //新建处理
-                                    sArea.textColorResource = R.color.main_text
-                                    sArea.text = "${data.data.name} ${zoneList!![0].name}"
-                                    zoneId = zoneList!![0].zone_id
-                                }
-                                if (zoneList?.size != 0 && EDITSITE == siteType) { //编辑处理
-                                    zoneList?.let {
-                                        if (zone != null) {
-                                            var index: Int = 0
-                                            for (i in 0 until it.size) {
-                                                if (it[i].name.contains(zone!!)) {
-                                                    index = i
-                                                    break
-                                                }
-                                            }
-                                            sArea.textColorResource = R.color.main_text
-                                            sArea.text = "${data.data.name} ${it[index].name}"
-                                            zoneId = it[index].zone_id
-                                        } else {
-                                            finish()
-                                        }
-                                    }
 
-                                }
-                            }*/
                         }
                     }
                 }
@@ -604,7 +674,28 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
         county: County?,
         street: Street?
     ) {
+        dialog?.dismiss()
         sArea.textColorResource = R.color.main_text
-        sArea.text = "${province?.name} ${city?.name} ${county?.name}"
+        sArea.text =
+            "${if (province?.name != null) province?.name else ""} ${if (city?.name != null) city?.name else ""} ${if (county?.name != null) county?.name else ""}"
+        provinceName = province?.name!!
+        cityName = city?.name!!
+        countyName = county?.name!!
+        for (pData in zoneProvinceList!!) {
+            if (pData.pid.toString().equals(province?.id.toString())) {
+                province_id = pData.id
+                break
+            }
+        }
+        for (pData in zoneCityList!!) {
+            if (pData.pid.toString().equals(city?.id.toString())) {
+                city_id = pData.id
+            }
+        }
+        for (pData in zoneStreetList!!) {
+            if (pData.pid.toString().equals(county?.id.toString())) {
+                county_id = pData.id
+            }
+        }
     }
 }
