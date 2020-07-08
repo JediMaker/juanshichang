@@ -38,12 +38,16 @@ class ShopDetailsAdapter() :
     }
 
     override fun convert(helper: BaseViewHolder?, item: ZyProduct.Option?) {
-        helper?.setText(R.id.itemTit, item?.name) //设置标题
+        if (item?.product_option_value?.size!! > 0) {
+            helper?.setText(R.id.itemTit, item?.name) //设置标题
+        }
+
         //设置列表
 //        val ind = data.indexOf(item) //获取item下标
         val fatData = item
         val data = item?.product_option_value
         val floatLayout = helper?.getView<QMUIFloatLayout>(R.id.itemFloat)
+        helper?.setVisible(R.id.item_main, false)
 //       todo 这里暂时改成全单选模式
         if (item?.type?.contentEquals("radio")!! || item.type.contentEquals("select") || item.type.contentEquals(
                 "checkbox"
@@ -55,8 +59,9 @@ class ShopDetailsAdapter() :
                 allMap?.put("${item.product_option_id}", radioList)
             }
             setBackground(floatLayout, fatData, 1)
+            helper?.setVisible(R.id.item_main, true)
         } else if (item.type.contentEquals("textarea")) {
-            val radioList: ArrayList<String> = arrayListOf() //初始化单选集合
+            val radioList: ArrayList<String> = arrayListOf() //wen'ben'shu'ru
             if (!allMap?.containsKey("${item.product_option_id}")!! && TextUtils.isEmpty(item.value)) {
                 radioList.add(item.value) //todo 暂时先这么写
                 allMap?.put("${item.product_option_id}", radioList)
@@ -280,6 +285,7 @@ class ShopDetailsAdapter() :
                                 break
                             }
                         }
+                        mChangeOptionListener.onChangeOptionValue()
 //                        addCheck(fatherId,data[index].product_option_value_id,1)
                     }
                     LogTool.e("tag1", "isCheck：$isCheck  fatherId:$fatherId  index:$index")
@@ -341,7 +347,7 @@ class ShopDetailsAdapter() :
                     )
                 }
                 4 -> {//非必选多选
-                    floatLayout.removeAllViews()
+//                    floatLayout.removeAllViews()
                     if (!isCheck) { //未选中
                         for ((k, v) in allMap!!) {
                             if (k == fatherId) {
@@ -420,6 +426,17 @@ class ShopDetailsAdapter() :
         }
         return 0
     }
+
+    //修改商品规格属性的回调
+    interface OnChangeOptionValueListener {
+        fun onChangeOptionValue()
+    }
+
+    fun setOnChangeOptionValueListener(listener: ShopDetailsAdapter.OnChangeOptionValueListener) {
+        mChangeOptionListener = listener
+    }
+
+    private lateinit var mChangeOptionListener: ShopDetailsAdapter.OnChangeOptionValueListener
 
     //返回选中数据
     fun getAllCheck(): Map<String, ArrayList<String>> {

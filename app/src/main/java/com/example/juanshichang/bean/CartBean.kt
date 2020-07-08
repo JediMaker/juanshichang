@@ -6,7 +6,7 @@ import java.io.Serializable
  * @创建日期: 2019/12/4 18:34
  * @文件作用: 购物车bean 序列化数据
  */
-class CartBean : Serializable{
+class CartBean : Serializable {
     data class CartBeans(
         var `data`: Data = Data(),
         var errmsg: String = "",
@@ -23,8 +23,9 @@ class CartBean : Serializable{
         var cart_id: String = "",
         var href: String = "",
         var model: String = "",  //类型
+        var minTotals: Int = 10,  //最小库存数量
         var name: String = "",  //名称
-        var option: List<Any> = listOf(),
+        var option: List<Option> = ArrayList(),
         var price: String = "",  //单价
         var quantity: String = "", //数量
         var recurring: String = "",
@@ -32,7 +33,7 @@ class CartBean : Serializable{
         var stock: Boolean = false,  //是否 有货 默认 false
         var thumb: String = "",   //商品图片
         var total: String = "",  //总价
-        var isSelect:Boolean = false  //是否选中 默认 false
+        var isSelect: Boolean = false  //是否选中 默认 false
     )
 
     data class Option(
@@ -44,7 +45,7 @@ class CartBean : Serializable{
         var code: String = "",
         var sort_order: String = "",
         var title: String = "",
-        var value:  Double=0.0
+        var value: Double = 0.0
     )
 
     data class TotalX(

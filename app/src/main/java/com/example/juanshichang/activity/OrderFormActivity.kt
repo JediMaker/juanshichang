@@ -91,21 +91,19 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                 when (view?.id) {
                     R.id.goPay -> { //去支付
                         ordersListData?.let {
-                            if ("已取消".equals(ordersAdpater!!.data[position].status)) {//取消状态订单可删除
-                                // todo 调用删除订单接口删除订单
-                            } else if ("已提交".equals(ordersAdpater!!.data[position].status)) {//待支付状态订单{
+                            if ("已失效".equals(ordersAdpater!!.data[position].status)) {//取消状态订单可删除
+                                delOrder(ordersAdpater!!.data[position].order_id)
+                            }
+                            else if ("已发货".equals(ordersAdpater!!.data[position].status)) {//待支付状态订单{
+                                receiveOrder(ordersAdpater!!.data[position].order_id)
+                            }
+                            else if ("已提交".equals(ordersAdpater!!.data[position].status)) {//待支付状态订单{
                                 val intent =
                                     Intent(this@OrderFormActivity, SettleAccActivity::class.java)
                                 intent.putExtra("orderid", ordersAdpater!!.data[position].order_id)
                                 startActivity(intent)
                                 finish()
                             }
-                        }
-                    }
-                    R.id.ensureReceived -> { //确认收货
-                        ordersListData?.let {
-                            // todo 调用订单确认收货接口订单收货
-
                         }
                     }
                     R.id.orderGo -> { //查看订单详情
@@ -286,6 +284,84 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                             val data = Gson().fromJson(t, OrdersBeanT.OrdersBeanTs::class.java)
                             ordersListData?.addAll(data.data)
                             handler.sendEmptyMessage(0)
+                        }
+                    }
+                }
+
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "订单列表请求完成")
+                    dismissProgressDialog()
+                }
+
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onCompleted", "订单列表请求失败: ${e.toString()}")
+                }
+            })
+    }
+
+    //mxsh 确认收货
+    private fun receiveOrder(orderId: String) {
+        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
+            Api.ORDERRECEIVE,
+            NewParameter.getBaseReceiveOrderMap(orderId),
+            object : Subscriber<String>() {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t = result?.substring(result?.indexOf("{"), result.length)
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
+                        ) {
+                            ToastUtil.showToast(
+                                this@OrderFormActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            orderList()
+                        }
+                    }
+                }
+
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "订单列表请求完成")
+                    dismissProgressDialog()
+                }
+
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onCompleted", "订单列表请求失败: ${e.toString()}")
+                }
+            })
+    }
+
+    //mxsh 删除订单
+    private fun delOrder(orderId: String) {
+        JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
+            Api.ORDERDEL,
+            NewParameter.getBaseReceiveOrderMap(orderId),
+            object : Subscriber<String>() {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val t = result?.substring(result?.indexOf("{"), result.length)
+                    if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
+                        var jsonObj: JSONObject? = null
+                        try {
+                            jsonObj = JSONObject(t)
+                        } catch (e: JSONException) {
+                            e.printStackTrace();
+                        }
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
+                        ) {
+                            ToastUtil.showToast(
+                                this@OrderFormActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            orderList()
                         }
                     }
                 }

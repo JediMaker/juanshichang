@@ -1,29 +1,32 @@
 package com.example.juanshichang.adapter
 
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.example.juanshichang.R
 import com.example.juanshichang.bean.ConOrderBean
 import com.example.juanshichang.bean.OrderDetailBean
+import com.example.juanshichang.bean.OrdersBeanT
 import com.example.juanshichang.utils.glide.GlideUtil
 
 /**
- * @作者: yzq
- * @创建日期: 2019/12/18 17:33
- * @文件作用:与 ConOrderAdapter 共用布局
+ * 历史订单列表
  */
-class OrderDetailAdapter :
-    BaseQuickAdapter<OrderDetailBean.Product, BaseViewHolder>(R.layout.item_sub_order_o) {
-    override fun convert(helper: BaseViewHolder?, item: OrderDetailBean.Product?) {
+class OrderListAdapter :
+    BaseQuickAdapter<OrdersBeanT.Product?, BaseViewHolder>(R.layout.item_sub_order_o) {
+    override fun convert(helper: BaseViewHolder?, item: OrdersBeanT.Product?) {
         var result: String = ""
+        helper?.setGone(R.id.cargoPrice, true)
+        helper?.setGone(R.id.endLayout, true)
+        helper?.addOnClickListener(R.id.itemCon) //设置查看订单详情
         helper?.setText(R.id.cargoTit, item?.name)
-            ?.setText(R.id.cargoPrice, item?.price)
             ?.setText(
                 R.id.carOptionValue, "${
 
-                if (item?.option?.size!! > 0) {
-                    for (goosOption in item?.option!!) {
+                if (item?.options?.size!! > 0) {
+                    for (goosOption in item?.options!!) {
                         result += goosOption.value + " "
                     }
                     result
@@ -33,8 +36,11 @@ class OrderDetailAdapter :
                 }"
             )
             ?.setText(R.id.iQuantity, "×${item?.quantity}")
-            ?.setText(R.id.endContent, item?.total)
         val iv = helper?.getView<ImageView>(R.id.cargoImg)
+        val tv = helper?.getView<TextView>(R.id.endTit)
+        val viewLinear = helper?.getView<View>(R.id.viewLinear)
+        tv?.visibility = View.GONE
+        viewLinear?.visibility = View.GONE
         GlideUtil.loadShopImg(
             mContext,
             item?.image,
@@ -43,4 +49,5 @@ class OrderDetailAdapter :
         )
 
     }
+
 }

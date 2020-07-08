@@ -130,32 +130,27 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     private fun setUIData(data: OrderDetailBean.Data?) {
         data?.let {
             oDAdapter?.setNewData(it.products)
+            ddBh.text = it.order_num
+            xdDate.text = it.date_added
+            //地址信息
+            val site = it.shipping_address
+            oDName.text = site.name
+            oDPhone.text = site.iphone
+            oDSite.text = site.address_detail
             if (it.products.size != 0) {
                 val v: View =
                     View.inflate(this@OrderDetailActivity, R.layout.order_detail_end, null)
                 var sum: Int = 0
                 for (i in 0 until it.products.size) {
-                    sum = +it.products[i].quantity.toInt()
+                    sum += it.products[i].quantity.toInt()
                 }
                 v.findViewById<TextView>(R.id.rigPrice).text = it.totals[0].text
                 v.findViewById<TextView>(R.id.parentTit).text = "共$sum 件商品"
-                v.findViewById<TextView>(R.id.leftTit).text =it.histories[0].status
-                    /*"${if (it.histories[0].status.toString().equals("已提交")) {
-                        "待支付"
-                    } else if (it.histories[0].status.toString().equals("已提交")){
-                        "已支付"
-                    } else if (it.histories[0].status.toString().equals("已发货")){
-                        "待收货"
-                    }
-                    else{""}}"*/
+                v.findViewById<TextView>(R.id.leftTit).text = it.status
+
                 oDAdapter?.addFooterView(v)
             }
-            xdDate.text = it.date_added
-            //地址信息
-            val site = it.shipping_address
-            oDName.text = site.name
-            oDPhone.text = site.telephone
-            oDSite.text = "${site.country} ${site.city} ${site.address_1}"
+
         }
     }
 }

@@ -11,7 +11,8 @@ class JsonParser {
     companion object {
         val JSON_SUCCESS = "0"
         val JSON_FAILED = ""
-        val JSON_CODE = "errno"
+//        val JSON_CODE = "errno"
+        val JSON_CODE = "err_code"
         val JSON_MSG = "errmsg"
         val JSON_DATA = "data"
         val JSON_Status = "status"

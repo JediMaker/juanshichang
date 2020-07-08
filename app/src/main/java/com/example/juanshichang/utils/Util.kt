@@ -16,6 +16,7 @@ import android.text.TextUtils
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Base64
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import androidx.core.text.isDigitsOnly
@@ -26,7 +27,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import android.util.Base64
 
 /**
  * @作者: yzq
@@ -58,6 +58,19 @@ class Util {
             )
         }
 
+        // 两次点击按钮之间的点击间隔不能少于500毫秒
+        private const val MIN_CLICK_DELAY_TIME = 51000
+        private var lastClickTime: Long = 0
+
+        fun isFastClick(): Boolean {
+            var flag = false
+            val curClickTime = System.currentTimeMillis()
+            if (curClickTime - lastClickTime >= MIN_CLICK_DELAY_TIME) {
+                flag = true
+            }
+            lastClickTime = curClickTime
+            return flag
+        }
         /**
          * 加载圈
          * @param activity

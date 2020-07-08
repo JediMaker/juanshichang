@@ -162,17 +162,38 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             setBannerData(data.images)
         }
         spZyName.text = data.model  // 商品名称 todo 待定
-        if (!data.price.contains("¥")) { //设置现价
-//            val xPrice = data.price.substring(1,data.special.length)
-//            val xPrice = data.price.drop(1)// 舍弃前1个
-            val xPrice = "¥${data.price}"
-            spZyJinEr.text = Util.getGaudyStr(xPrice)
+        if (data.options.size > 0) {//多规格商品价格展示设置
+            countPriceAndStock(data)
+            spZyJinEr.text = Util.getGaudyStr("¥${realPrice.toString()}")
+            try {
+                val discountPrice = data.special.toDouble()
+                originalZy_cost_view.text = "¥${originalPrice}" //获取原价
+            } catch (e: Exception) {
+                originalZy_cost_view.text = realPrice.toString() //获取原价
+            }
+
         } else {
-            spZyJinEr.text = Util.getGaudyStr(data.price)
+            if (!data.price.contains("¥")) { //设置现价
+                val xPrice = "¥${data.price}"
+                spZyJinEr.text = Util.getGaudyStr(xPrice)
+            } else {
+                spZyJinEr.text = Util.getGaudyStr(data.price)
+            }
+            originalZy_cost_view.text = data.price //获取原价
         }
-        originalZy_cost_view.text = data.price //获取原价
+
+        /*       if (!data.price.contains("¥")) { //设置现价
+       //            val xPrice = data.price.substring(1,data.special.length)
+       //            val xPrice = data.price.drop(1)// 舍弃前1个
+                   val xPrice = "¥${data.price}"
+                   spZyJinEr.text = Util.getGaudyStr(xPrice)
+               } else {
+                   spZyJinEr.text = Util.getGaudyStr(data.price)
+               }*/
+
         shangPinJs.text = data.description  //描述
         //todo 加入购物车 弹窗待定
+
 
     }
 
@@ -233,6 +254,10 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         handler.removeCallbacksAndMessages(null)
     }
 
+    var realPrice: Double = 0.0;//多规格商品实际价格
+    var originalPrice: Double = 0.0;//多规格商品实际价格
+    var minStockNum: Int = 999999999;//多规格库存数量展示最小库存
+
     //规格弹窗
     private fun PopDialog(dData: ZyProduct.Data, tag: String) { //tag 用于标识 是否已加入购物车等状态
         dialog = Dialog(this@ShangPinZyContains, R.style.Dialog)
@@ -273,7 +298,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                     if (dt[i].type.contentEquals("textarea")) {
                         dLeaveWord?.visibility = View.VISIBLE
                         dLeaveWord?.hint = dt[i].value
-                        dLeaveWord_product_option_id= dt[i].product_option_id
+                        dLeaveWord_product_option_id = dt[i].product_option_id
                         dLeaveWordList.add(dt[i].value) //todo 暂时先这么写
                         break
                     }
@@ -292,16 +317,115 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             } else {//设置空数据
                 GlideUtil.loadImage(this@ShangPinZyContains, "", dShopImg)
             }
-            if (!dData.price.contains("¥")) { //设置现价
-                val xPrice = "¥${dData.price}"
-                dShopPrice?.text = Util.getGaudyStr(xPrice)
+
+            val stockNum: Int = dData.quantity.toString().toInt();//多规格库存数量展示最小库存
+            minStockNum = stockNum
+            if (dData.options.size > 0) {//多规格商品价格展示设置
+                var isMultiOption: Boolean = false
+                for (op in dData?.options) {
+                    if (op.product_option_value.size > 0) {
+                        isMultiOption = true
+                    }
+                }
+                if (isMultiOption) {
+                    countPriceAndStock(dData)
+                    dShopTit?.text = "库存${minStockNum}件"
+
+                } else {
+                    dShopTit?.text = "库存${dData.quantity}件"
+                }
+                dShopPrice?.text = Util.getGaudyStr("¥${realPrice.toString()}")
             } else {
-                dShopPrice?.text = Util.getGaudyStr(dData.price)
+                if (!dData.price.contains("¥")) { //设置现价
+                    val xPrice = "¥${dData.price}"
+                    dShopPrice?.text = Util.getGaudyStr(xPrice)
+                } else {
+                    dShopPrice?.text = Util.getGaudyStr(dData.price)
+                }
+                dShopTit?.text = "库存${dData.quantity}件"
             }
-            dShopTit?.text = dData.model
+
             dAdapter = ShopDetailsAdapter()
             dList?.adapter = dAdapter
             dAdapter?.setTheData(dData)
+            dAdapter?.setOnChangeOptionValueListener(object :
+                ShopDetailsAdapter.OnChangeOptionValueListener {
+                override fun onChangeOptionValue() {
+                    //根据选中的规格属性重新设置价格和库存数量
+                    realPrice = 0.0;//多规格商品实际价格
+                    minStockNum = 999999999
+                    checkMap = dAdapter?.getAllCheck() as ConcurrentHashMap//把选中的信息返回
+                    if (dData.options.size > 0) {//多规格商品价格展示设置
+                        if (dData.price.contains("¥")) { //
+                            dData.price = dData.price.substring(1, dData.price.length)
+                            dData.price = dData.price.replace(",", "")
+                        }
+                        if (dData.special.toString().contains("¥")) { //促销价格为实际商品售价
+                            dData.special = dData.special.substring(1, dData.special.length)
+                            dData.special = dData.special.replace(",", "")
+                        }
+                        var priceNomal: Double = 0.0
+                        try {
+                            priceNomal = dData.special.toDouble()
+                        } catch (e: Exception) {
+                            priceNomal = dData.price.toDouble()
+                        }
+                        realPrice = UtilsBigDecimal.add(priceNomal, realPrice)
+                        for (option in dData.options) {//初始多规格商品金额展示
+                            var increPrice: Double = 0.0
+                            for ((k, v) in checkMap!!) {
+                                if (k == option.product_option_id) {
+                                    if (option.product_option_value.size > 0) {
+                                        for (opValue in option.product_option_value) {
+                                            if (opValue.product_option_value_id.toString()
+                                                    .equals(v[0].toString())
+                                            ) {
+                                                if (opValue.quantity.toInt() < minStockNum) {//取最小库存
+                                                    minStockNum = opValue.quantity.toInt()
+                                                }
+                                                if (opValue.price.contains("¥")) {
+                                                    opValue.price =
+                                                        opValue.price.substring(
+                                                            1,
+                                                            opValue.price.length
+                                                        )
+                                                }
+                                                opValue.price =
+                                                    opValue.price.replace(",", "")
+                                                try {
+                                                    increPrice = opValue.price.toDouble()
+                                                } catch (e: Exception) {
+                                                    increPrice = 0.0
+                                                }
+
+                                                if ("+".equals(opValue.price_prefix)) {
+                                                    realPrice =
+                                                        UtilsBigDecimal.add(
+                                                            realPrice,
+                                                            increPrice
+                                                        )
+                                                } else if ("-".equals(opValue.price_prefix)) {
+                                                    realPrice =
+                                                        UtilsBigDecimal.sub(
+                                                            realPrice,
+                                                            increPrice
+                                                        )
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        dShopTit?.text = "库存${minStockNum}件"
+                        dShopPrice?.text = Util.getGaudyStr("¥${realPrice.toString()}")
+                    }
+
+
+                }
+
+            });
             checkMap?.let {
                 dAdapter?.setAllCheck(it)
             }
@@ -315,7 +439,8 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 //减少--
                 if (quantity < 2) {
                     return@setOnClickListener
-                } else {
+                } else if (quantity <= minStockNum) {
+                    dAddAmount?.isEnabled = true
                     quantity--
                     if (quantity == 1) {
                         dMinusAmount?.isEnabled = false
@@ -325,8 +450,9 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             }
             dAddAmount?.setOnClickListener {
                 //增加数量
-                if (quantity >= 99) {
+                if (quantity >= minStockNum) {
                     dAddAmount?.isEnabled = false
+                    ToastUtil.showToast(this@ShangPinZyContains!!, "该商品不能购买更多了")
                     return@setOnClickListener
                 } else {
                     quantity++
@@ -346,7 +472,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 } else {
                     //确定
                     checkMap = dAdapter?.getAllCheck() as ConcurrentHashMap//把选中的信息返回
-                    checkMap?.put(dLeaveWord_product_option_id,dLeaveWordList)
+                    checkMap?.put(dLeaveWord_product_option_id, dLeaveWordList)
                     showProgressDialog()
                     if (typeDialog == 1) { //加入购物车
                         addShopCar(product_id!!, quantity, checkMap!!, 1)
@@ -361,6 +487,80 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 dMinusAmount?.isEnabled = true
             }
             dialog?.show()
+        }
+    }
+
+    /**
+     *计算多规格商品初始价格和库存
+     */
+    private fun countPriceAndStock(dData: ZyProduct.Data) {
+        //根据选中的规格属性重新设置价格和库存数量
+        realPrice = 0.0;//多规格商品实际价格
+        originalPrice = 0.0;//多规格商品原始价格
+        minStockNum = 999999999
+        if (dData.price.contains("¥")) { //
+            dData.price = dData.price.substring(1, dData.price.length)
+            dData.price = dData.price.replace(",", "")
+        }
+        if (dData.special.toString().contains("¥")) { //促销价格为实际商品售价
+            dData.special = dData.special.substring(1, dData.special.length)
+            dData.special = dData.special.replace(",", "")
+        }
+        var priceNomal: Double = 0.0
+        try {
+            priceNomal = dData.special.toDouble()
+        } catch (e: Exception) {
+            priceNomal = dData.price.toDouble()
+        }
+        realPrice = UtilsBigDecimal.add(priceNomal, realPrice)
+        originalPrice = UtilsBigDecimal.add(dData.price.toDouble(), originalPrice)
+        for (option in dData.options) {//初始多规格商品金额展示
+            var increPrice: Double = 0.0
+            if (option.product_option_value.size > 0) {
+                if (option.product_option_value[0].price.contains("¥")) {
+                    option.product_option_value[0].price =
+                        option.product_option_value[0].price.substring(
+                            1,
+                            option.product_option_value[0].price.length
+                        )
+                }
+                option.product_option_value[0].price =
+                    option.product_option_value[0].price.replace(",", "")
+                try {
+                    increPrice = option.product_option_value[0].price.toDouble()
+                } catch (e: Exception) {
+                    increPrice = 0.0
+                }
+
+                if ("+".equals(option.product_option_value[0].price_prefix)) {
+                    realPrice =
+                        UtilsBigDecimal.add(
+                            realPrice,
+                            increPrice
+                        )
+                    originalPrice = UtilsBigDecimal.add(
+                        originalPrice,
+                        increPrice
+                    )
+                } else if ("-".equals(option.product_option_value[0].price_prefix)) {
+                    realPrice =
+                        UtilsBigDecimal.sub(
+                            realPrice,
+                            increPrice
+                        )
+                    originalPrice =
+                        UtilsBigDecimal.sub(
+                            originalPrice,
+                            increPrice
+                        )
+                }
+                //计算多规格商品最小库存
+                for (productOptionValue in option.product_option_value) {
+                    if (productOptionValue.quantity.toInt() < minStockNum) {
+                        minStockNum = productOptionValue.quantity.toInt()
+                    }
+                }
+            }
         }
     }
 

@@ -16,6 +16,7 @@ class OrdersBeanT {
         var date_added: String = "",
         var name: String = "",
         var order_id: String = "",
+        var order_num: String = "",
         var products: List<Product> = listOf(),
         var products_total: Int = 0,
         var status: String = "",
@@ -25,8 +26,13 @@ class OrdersBeanT {
     data class Product(
         var image: String = "",
         var name: String = "",
+        var options:List<Options> = listOf(),
         var order_product_id: String = "",
         var product_id: String = "",
         var quantity: String = ""
+    )
+    data class Options(
+        var name: String = "",
+        var value: String = ""
     )
 }

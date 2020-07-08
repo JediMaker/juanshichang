@@ -17,6 +17,7 @@ import com.example.juanshichang.activity.ConOrderActivity
 import com.example.juanshichang.bean.CartBean
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.UtilsBigDecimal
 import com.example.juanshichang.utils.glide.GlideUtil
 import java.math.BigDecimal
@@ -28,6 +29,7 @@ import java.math.BigDecimal
  * ck: https://my.oschina.net/longxuanzhigu/blog/3063650
  *  https://blog.csdn.net/qq941263013/article/details/80901277
  */
+@Suppress("IMPLICIT_CAST_TO_ANY")
 class ShoppingCarAdapter : BaseExpandableListAdapter {
     private var context: Context? = null
     private var llSelectAll: LinearLayout? = null //全选
@@ -335,15 +337,31 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             val goods_num: String = goodsBean.quantity
             //商品是否被选中
             val isSelect: Boolean = goodsBean.isSelect
-            GlideUtil.loadShopImg(
-                context,
-                goods_image,
-                childViewHolder.cargoImg,
-                childViewHolder.cargoImg?.drawable
-            )
+            val goodsOptionsValue: String = ""
+            childViewHolder.cargoImg?.tag = goods_image
+            if (childViewHolder.cargoImg?.tag != null && childViewHolder.cargoImg?.tag!!.equals(
+                    goods_image
+                )
+            ) {
+                GlideUtil.loadShopImg(
+                    context,
+                    goods_image,
+                    childViewHolder.cargoImg,
+                    childViewHolder.cargoImg?.drawable
+                )
+            }
+            var result = ""
+            if (goodsBean.option.size > 0) {
+                for (goosOption in goodsBean.option) {
+                    result += goosOption.value + " "
+                }
+            } else {
+                ""
+            }
             childViewHolder.cargoTit?.text = goods_name ?: ""
             childViewHolder.cargoPrice?.text = goods_price ?: ""
             childViewHolder.amount?.text = goods_num
+            childViewHolder.carOptionValue?.text = result
             if (shopType == SHOPCARFINISH) { //完成状态  按钮显示编辑
                 childViewHolder.llAmount?.visibility = View.VISIBLE
                 childViewHolder.cargoDele?.visibility = View.GONE
@@ -351,7 +369,6 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             } else if (shopType == SHOPCAREDIT) { //编辑状态  按钮显示完成
                 childViewHolder.llAmount?.visibility = View.GONE
                 childViewHolder.cargoDele?.visibility = View.VISIBLE
-                childViewHolder.noStock?.text = ""
             }
             if (goodsBean.quantity.toInt() > 1) { //判断减号能否点击
                 childViewHolder.minusAmount?.isEnabled = true
@@ -375,23 +392,25 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
 //                childViewHolder.llAmount?.visibility = View.INVISIBLE
 //                childViewHolder.noStock?.visibility = View.VISIBLE
                 childViewHolder.llAmount?.visibility = View.VISIBLE
-                childViewHolder.noStock?.visibility = View.INVISIBLE
+                childViewHolder.stockStatus?.visibility = View.VISIBLE
                 childViewHolder.iv_select?.isSelected = false
-                childViewHolder.iv_select?.isChecked = false  //设置无货商品 不可选中 todo 注意编辑模式 释放该权限
+                childViewHolder.iv_select?.isEnabled = false  //设置无货商品 不可选中 todo 注意编辑模式 释放该权限
 //                childViewHolder.noStock?.text="库存不足"
                 childViewHolder.addAmount?.isEnabled = false
-                childViewHolder.amount?.text = (goodsBean.quantity.toInt() - 1).toString()
+//                childViewHolder.amount?.text = (goodsBean.quantity.toInt() - 1).toString()
                 goodsBean.isSelect = false  //取消选中数据
+                childViewHolder.stockStatus?.text="库存不足"
                 //设置双按钮 都不可点击
                 if (shopType == SHOPCAREDIT) { //在编辑模式下
                     //待开发的功能....
-                    childViewHolder.noStock?.text = ""
+                    childViewHolder.llAmount?.visibility = View.INVISIBLE
                 }
             } else {
-                childViewHolder.noStock?.visibility = View.INVISIBLE
+                childViewHolder.stockStatus?.visibility = View.INVISIBLE
                 childViewHolder.minusAmount?.isEnabled = false
                 childViewHolder.iv_select?.isChecked = isSelect  //设置是否选中
                 childViewHolder.addAmount?.isEnabled = true
+                childViewHolder.iv_select?.isEnabled = true
                 if (isSelect) {
                     cardIdList?.add(goods_id)
                 }
@@ -430,12 +449,17 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             //减号的点击事件
             childViewHolder.minusAmount?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
+                    childViewHolder.addAmount?.isEnabled = true
                     if (integer > 1) {
                         integer--
-                        goodsBean.quantity = "$integer"
-                        childViewHolder.amount?.text = "$integer"
+//                        goodsBean.quantity = "$integer"
+//                        childViewHolder.amount?.text = "$integer"
                         //回调请求后台接口实现数量的加减
-                        mChangeCountListener.onChangeCount(goods_id, integer)
+                        if (Util.isFastClick()){
+                            return
+                        }else{
+                            mChangeCountListener.onChangeCount(goods_id, integer)
+                        }
 //                        notifyDataSetChanged()
                     } else {
                         childViewHolder.minusAmount?.isEnabled = false
@@ -446,15 +470,28 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             //加号的点击事件
             childViewHolder.addAmount?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
-                    integer++
-                    if (!childViewHolder.minusAmount?.isEnabled!! || integer > 1) {
-                        childViewHolder.minusAmount?.isEnabled = true
-                    }
-                    goodsBean.quantity = "$integer"
-                    childViewHolder.amount?.text = "$integer"
-                    //回调请求后台接口实现数量的加减
-                    mChangeCountListener.onChangeCount(goods_id, integer)
+                    if (goodsBean.minTotals.toString().toInt()-childViewHolder.amount?.text.toString()
+                            .toInt()<=0
+                    ) {
+                        childViewHolder.addAmount?.isEnabled = false
+                        ToastUtil.showToast(context!!, "该商品不能购买更多了")
+                        return
+                    } else {
+                        integer++
+                        if (!childViewHolder.minusAmount?.isEnabled!! || integer > 1) {
+                            childViewHolder.minusAmount?.isEnabled = true
+                        }
+//                        goodsBean.quantity = "$integer"
+//                        childViewHolder.amount?.text = "$integer"
+                        //回调请求后台接口实现数量的加减
+                        if (Util.isFastClick()){
+                            return
+                        }else{
+                            mChangeCountListener.onChangeCount(goods_id, integer)
+                        }
 //                    notifyDataSetChanged()
+                    }
+
                 }
             })
             //删除按钮的点击事件
@@ -470,12 +507,13 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         var iv_select: CheckBox? = null
         var cargoImg: ImageView? = null
         var cargoTit: TextView? = null
+        var carOptionValue: TextView? = null
         var cargoPrice: TextView? = null
         var llAmount: LinearLayout? = null
         var minusAmount: TextView? = null
         var amount: TextView? = null
         var addAmount: TextView? = null
-        var noStock: TextView? = null
+        var stockStatus: TextView? = null
         var endLayout: ConstraintLayout? = null
         var endContent: TextView? = null
         var cargoDele: View? = null
@@ -484,9 +522,11 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             iv_select = view.findViewById(R.id.iv_select)
             cargoImg = view.findViewById(R.id.cargoImg)
             cargoTit = view.findViewById(R.id.cargoTit)
+            carOptionValue = view.findViewById(R.id.carOptionValue)
             cargoPrice = view.findViewById(R.id.cargoPrice)
+            stockStatus = view.findViewById(R.id.stockStatus)
             llAmount = view.findViewById(R.id.llAmount)
-            noStock = view.findViewById(R.id.noStock)
+            stockStatus = view.findViewById(R.id.stockStatus)
             minusAmount = view.findViewById(R.id.minusAmount)
             amount = view.findViewById(R.id.amount)
             addAmount = view.findViewById(R.id.addAmount)

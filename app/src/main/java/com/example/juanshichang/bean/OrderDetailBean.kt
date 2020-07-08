@@ -20,6 +20,8 @@ class OrderDetailBean {
         var shipping_address: ShippingAddress = ShippingAddress(),
         var shipping_method: String = "",
         var success: String = "",
+        var status: String = "",
+        var order_num: String = "",
         var totals: List<Total> = listOf(),
         var vouchers: List<Any> = listOf()
     )
@@ -56,7 +58,8 @@ class OrderDetailBean {
         var country: String = "",
         var name: String = "",
         var postcode: String = "",
-        var telephone: String = "",
+        var iphone: String = "",
+        var address_detail: String = "",
         var zone: String = ""
     )
 

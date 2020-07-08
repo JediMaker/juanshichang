@@ -39,7 +39,7 @@ class ConOrderBean {
         var href: String = "",
         var model: String = "",
         var name: String = "",
-        var option: List<Any> = listOf(),
+        var option: List<Option> = ArrayList(),
         var price: String = "",
         var quantity: String = "",
         var recurring: String = "",
@@ -48,4 +48,9 @@ class ConOrderBean {
         var thumb: String = "",
         var total: String = ""
     )
+    data class Option(
+        var name: String = "",
+        var value: String = ""
+    )
+
 }

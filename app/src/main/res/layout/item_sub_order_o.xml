@@ -40,7 +40,23 @@
                 app:layout_constraintRight_toRightOf="parent"
                 tools:ignore="MissingConstraints"
                 tools:text="哈哈哈哈哈这是一个什么神仙货物嗯?????哈哈哈哈哈哈加减" />
-
+        <TextView
+                android:id="@+id/carOptionValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/dp_6"
+                android:layout_marginRight="16dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/txt_gray"
+                android:textSize="@dimen/sp_txt_annotateTextSize"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@+id/cargoImg"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cargoTit"
+                tools:ignore="MissingConstraints"
+                tools:text="16G 褐色 官方标配" />
         <TextView
                 android:id="@+id/cargoPrice"
                 android:layout_width="wrap_content"
@@ -99,6 +115,7 @@
             android:id="@+id/endLayout"
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content">
         <TextView
                 android:id="@+id/endTit"

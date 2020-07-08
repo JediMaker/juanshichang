@@ -59,9 +59,19 @@
             </RelativeLayout>
             <View   android:background="@color/set_linear"
                     android:layout_width="match_parent" android:layout_height="1px"/>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/oDList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:paddingTop="6dp"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
             <RelativeLayout
                     android:id="@+id/orderGo"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content">
 <!--                com.qmuiteam.qmui.widget.QMUIRadiusImageView-->
                 <ImageView
@@ -155,7 +165,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:text="应付款 :  "
+                        android:text="订单总额 :  "
                         android:textSize="@dimen/sp_txt_annotateTextSize"
                         android:textColor="@color/home_gray"
                         android:layout_width="wrap_content"

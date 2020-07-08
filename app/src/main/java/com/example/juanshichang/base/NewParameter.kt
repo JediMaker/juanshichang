@@ -260,6 +260,16 @@ class NewParameter {
             map.put("route", "api/order/history")
             return map
         }
+        //获取订单列表
+        fun getBaseReceiveOrderMap(order_id: String): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("route=api/order/status")
+            baseList.add("order_id=$order_id")
+            val map = fengMap(1)
+            map.put("route", "api/order/status")
+            map.put("order_id", order_id)
+            return map
+        }
 
         //获取地址id列表
         fun getBaseZMap(): HashMap<String, String> {

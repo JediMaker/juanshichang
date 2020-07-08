@@ -121,6 +121,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/backView"
             android:layout_marginTop="70dp"
+            android:visibility="gone"
             android:background="@drawable/empty_sc"
             android:layout_width="167.7dp"
             android:layout_height="207dp"/>
@@ -138,6 +139,7 @@
             android:textColor="@color/indicatorRed"
             android:textSize="@dimen/sp_txt_title_icon_name"
             android:text="去逛逛"
+            android:visibility="gone"
             android:background="@drawable/shopcar_but"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

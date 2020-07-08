@@ -20,9 +20,22 @@ import com.example.juanshichang.utils.glide.GlideUtil
 class ConOrderAdapter : BaseQuickAdapter<ConOrderBean.Product, BaseViewHolder>(R.layout.item_sub_order_o){
     private var fatData:ConOrderBean.ConOrderBeans? = null
     override fun convert(helper: BaseViewHolder?, item: ConOrderBean.Product?) {
+        var result=""
         helper?.setText(R.id.cargoTit,item?.name)
             ?.setText(R.id.cargoPrice,item?.price)
-            ?.setText(R.id.iQuantity,"×${item?.quantity}")
+            ?.setText(
+                R.id.carOptionValue, "${
+
+                if (item?.option?.size!! > 0) {
+                    for (goosOption in item?.option!!) {
+                        result += goosOption.value + " "
+                    }
+                    result
+                } else {
+                    ""
+                }
+                }"
+            )            ?.setText(R.id.iQuantity,"×${item?.quantity}")
             ?.setText(R.id.endContent,item?.total)
         val iv = helper?.getView<ImageView>(R.id.cargoImg)
         GlideUtil.loadShopImg(

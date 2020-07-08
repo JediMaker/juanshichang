@@ -126,6 +126,8 @@ interface Api {
         val CHECKOUTCONFIRM = "/api/index.php?route=api/checkout/confirm" //确定提交
         val NEWORDER = "/api/index.php?route=api/order" //订单详情
         val NEWHISORDER = "/api/index.php?route=api/order/history" //历史订单
+        val ORDERRECEIVE = "/api/index.php?route=api/order/status" //订单确认收货
+        val ORDERDEL = "/api/index.php?route=api/order/del" //订单删除
         val NEWCATEGORY = "/api/index.php?route=api/category" //列表信息
         val NEWCATEGORYCON = "/api/index.php?route=api/category/goods" //商品列表
         val ADDRESSZONES = "/api/index.php?route=api/address/zones" //地址列表参数
