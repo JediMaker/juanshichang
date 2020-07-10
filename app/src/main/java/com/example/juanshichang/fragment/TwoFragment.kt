@@ -347,17 +347,37 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            val data =
-                                Gson().fromJson(t, NewClassifyBean.NewClassifyBeans::class.java)
-                            if (parent_category_id == "0") { //一级列表
-                                listData = data.data as ArrayList<NewClassifyBean.Data>
-                                mLA?.setNewData(listData!!)
-                                if (listData?.size != 0) { //直接唤起第一个子页面
-                                    reqCateFat(listData!![0].category_id)
+                            try {
+                                val data =
+                                    Gson().fromJson(t, NewClassifyBean.NewClassifyBeans::class.java)
+                                if (data.data.size > 0) {
+                                    if (parent_category_id == "0") { //一级列表
+                                        listData = data.data as ArrayList<NewClassifyBean.Data>
+                                        mLA?.setNewData(listData!!)
+                                        if (listData?.size != 0) { //直接唤起第一个子页面
+                                            reqCateFat(listData!![0].category_id)
+                                        }
+                                    } else { //赋予子列表
+                                        recyclerData = data.data as ArrayList<NewClassifyBean.Data>
+                                        mRA?.setNewData(recyclerData)
+                                        //设置 空数据view
+                                        mRA?.emptyView = View.inflate(
+                                            mContext,
+                                            R.layout.activity_not_null,
+                                            null
+                                        )
+                                    }
+                                } else {
+                                    mRA?.setNewData(null)
+                                    //设置 空数据view
+                                    mRA?.emptyView = View.inflate(
+                                        mContext,
+                                        R.layout.activity_not_null,
+                                        null
+                                    )
                                 }
-                            } else { //赋予子列表
-                                recyclerData = data.data as ArrayList<NewClassifyBean.Data>
-                                mRA?.setNewData(recyclerData)
+                            } catch (e: Exception) {
+                                mRA?.setNewData(null)
                                 //设置 空数据view
                                 mRA?.emptyView = View.inflate(
                                     mContext,
@@ -365,6 +385,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                                     null
                                 )
                             }
+
                         }
                     }
                 }

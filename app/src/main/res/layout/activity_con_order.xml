@@ -101,15 +101,23 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ocTopIv" />
 
-    <View
+    <LinearLayout
             android:id="@+id/siteRig"
-            android:layout_width="7dp"
-            android:layout_height="12dp"
-            android:layout_marginRight="13dp"
-            android:background="@drawable/details_next"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_48"
+            android:layout_centerVertical="true"
+            android:gravity="clip_vertical|right"
+            android:paddingRight="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="@+id/coSite"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ocTopIv" />
+            app:layout_constraintTop_toBottomOf="@+id/ocTopIv">
+
+        <View
+                android:layout_width="7dp"
+                android:layout_height="12dp"
+                android:background="@drawable/details_next" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/coRecycler"

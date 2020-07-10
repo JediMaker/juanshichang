@@ -138,24 +138,25 @@ class MainActivity : BaseActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.store -> {
-                    if (Util.hasLogin(this)) {
+                    if (!Util.hasLogin()) { //登录检查
+                        val intent = Intent(this@MainActivity, Reg2LogActivity::class.java)
+                        intent.putExtra("type",Reg2LogActivity.LOGINCODE)
+                        BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
+                    } else {
                         vp_main.currentItem = 3
                         return@OnNavigationItemSelectedListener true
                     }
                     return@OnNavigationItemSelectedListener false
                 }
                 R.id.me -> {
-                    if (Util.hasLogin(this)) {
-                        vp_main.currentItem = 4
-                        return@OnNavigationItemSelectedListener true
-                    }
                     if (!Util.hasLogin()) { //登录检查
                         val intent = Intent(this@MainActivity, Reg2LogActivity::class.java)
                         intent.putExtra("type",Reg2LogActivity.LOGINCODE)
                         BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
-                        finish()
                     } else {
-                        ToastTool.showToast(this@MainActivity, "登录检查通过2")
+//                        ToastTool.showToast(this@MainActivity, "登录检查通过2")
+                        vp_main.currentItem = 4
+                        return@OnNavigationItemSelectedListener true
                     }
                     return@OnNavigationItemSelectedListener false
                 }

@@ -13,12 +13,11 @@ class JsonParser {
         val JSON_FAILED = ""
 //        val JSON_CODE = "errno"
         val JSON_CODE = "err_code"
-        val JSON_MSG = "errmsg"
+        val JSON_MSG = "err_msg"
         val JSON_DATA = "data"
         val JSON_Status = "status"
         /**
          * 校验是否是json格式的数据
-         *
          * @param jsonString
          * @return
          */

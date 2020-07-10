@@ -95,11 +95,11 @@ class NewClassifyActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         })
-        rightAdapter?.setOnItemClickListener(object:BaseQuickAdapter.OnItemClickListener{
+        rightAdapter?.setOnItemClickListener(object : BaseQuickAdapter.OnItemClickListener {
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
                 rigData?.let {
-                    val intent = Intent(this@NewClassifyActivity,ZyAllActivity::class.java)
-                    intent.putExtra("category_id",it[position].category_id)
+                    val intent = Intent(this@NewClassifyActivity, ZyAllActivity::class.java)
+                    intent.putExtra("category_id", it[position].category_id)
                     startActivity(intent)
                 }
             }
@@ -130,7 +130,7 @@ class NewClassifyActivity : BaseActivity(), View.OnClickListener,
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
-                    val t =result?.substring(result?.indexOf("{"),result.length)
+                    val t = result?.substring(result?.indexOf("{"), result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -138,38 +138,58 @@ class NewClassifyActivity : BaseActivity(), View.OnClickListener,
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                     /*   if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
-                            ToastUtil.showToast(
-                                this@NewClassifyActivity,
-                                jsonObj.optString(JsonParser.JSON_MSG)
-                            )
-                        } */
+                        /*   if (!jsonObj?.optString(JsonParser.JSON_CODE)!!.equals(JsonParser.JSON_SUCCESS)) {
+                               ToastUtil.showToast(
+                                   this@NewClassifyActivity,
+                                   jsonObj.optString(JsonParser.JSON_MSG)
+                               )
+                           } */
                         if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
                         ) {
                             ToastUtil.showToast(
                                 this@NewClassifyActivity,
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
-                        }
-                        else {
-                            val data =
-                                Gson().fromJson(t, NewClassifyBean.NewClassifyBeans::class.java)
-                            if (parent_category_id == "0") { //一级列表
-                                leftData = data.data as ArrayList<NewClassifyBean.Data>
-                                leftAdapter?.setNewData(leftData!!)
-                                if (leftData?.size != 0) { //直接唤起第一个子页面
-                                    reqCateFat(leftData!![0].category_id)
+                        } else {
+                            try {
+                                val data =
+                                    Gson().fromJson(t, NewClassifyBean.NewClassifyBeans::class.java)
+                                if (data.data.size > 0) {
+                                    if (parent_category_id == "0") { //一级列表
+                                        leftData = data.data as ArrayList<NewClassifyBean.Data>
+                                        leftAdapter?.setNewData(leftData!!)
+                                        if (leftData?.size != 0) { //直接唤起第一个子页面
+                                            reqCateFat(leftData!![0].category_id)
+                                        }
+                                    } else { //赋予子列表
+                                        rigData = data.data as ArrayList<NewClassifyBean.Data>
+                                        rightAdapter?.setNewData(rigData)
+                                        //设置 空数据view
+                                        rightAdapter?.emptyView = View.inflate(
+                                            this@NewClassifyActivity,
+                                            R.layout.activity_not_null,
+                                            null
+                                        )
+                                    }
+                                }else{
+                                    //设置 空数据view
+                                    rightAdapter?.setNewData(null)
+                                    rightAdapter?.emptyView = View.inflate(
+                                        this@NewClassifyActivity,
+                                        R.layout.activity_not_null,
+                                        null
+                                    )
                                 }
-                            } else { //赋予子列表
-                                rigData = data.data as ArrayList<NewClassifyBean.Data>
-                                rightAdapter?.setNewData(rigData)
+                            } catch (e: Exception) {
                                 //设置 空数据view
+                                rightAdapter?.setNewData(null)
                                 rightAdapter?.emptyView = View.inflate(
                                     this@NewClassifyActivity,
                                     R.layout.activity_not_null,
                                     null
                                 )
                             }
+
                         }
                     }
                 }

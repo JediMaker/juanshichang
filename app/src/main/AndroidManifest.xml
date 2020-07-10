@@ -67,6 +67,9 @@
                 android:name=".activity.ClassTypeActivity"
                 android:launchMode="singleTask" />
         <activity
+                android:name=".activity.FastLoginActivity"
+                android:launchMode="singleTask" />
+        <activity
                 android:name=".activity.SearcheActivity"
                 android:launchMode="singleTask" />
         <activity

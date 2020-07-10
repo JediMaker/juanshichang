@@ -7,33 +7,38 @@
         android:background="@color/white"
         tools:context=".activity.Reg2LogActivity">
 
-    <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitStart"
-            android:src="@drawable/log_logo"
-            android:visibility="gone" />
-
     <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/rRL"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40px">
+            android:layout_height="@dimen/dp_56"
+            android:background="@color/colorPrimary"
+           >
 
-        <View
+        <LinearLayout
                 android:id="@+id/log_ret"
-                android:layout_width="63px"
-                android:layout_height="43px"
-                android:layout_alignBottom="@+id/log_title"
-                android:layout_marginLeft="49px"
-                android:layout_marginBottom="15px"
-                android:background="@drawable/ret_n" />
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_45"
+                android:layout_centerVertical="true">
+            <View
+                    android:layout_width="@dimen/dp_13"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:background="@drawable/c_back" />
+<!--            <View
+                    android:layout_width="26dp"
+                    android:layout_height="19dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:visibility="gone"
+                    android:background="@drawable/ff_ret" />-->
+        </LinearLayout>
 
         <TextView
                 android:id="@+id/log_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text="登录"
                 android:textColor="@color/white"

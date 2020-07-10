@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.ConOrderActivity
+import com.example.juanshichang.activity.ShangPinZyContains
 import com.example.juanshichang.bean.CartBean
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
@@ -399,7 +400,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 childViewHolder.addAmount?.isEnabled = false
 //                childViewHolder.amount?.text = (goodsBean.quantity.toInt() - 1).toString()
                 goodsBean.isSelect = false  //取消选中数据
-                childViewHolder.stockStatus?.text="库存不足"
+                childViewHolder.stockStatus?.text = "库存不足"
                 //设置双按钮 都不可点击
                 if (shopType == SHOPCAREDIT) { //在编辑模式下
                     //待开发的功能....
@@ -455,9 +456,9 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
 //                        goodsBean.quantity = "$integer"
 //                        childViewHolder.amount?.text = "$integer"
                         //回调请求后台接口实现数量的加减
-                        if (Util.isFastClick()){
+                        if (Util.isFastClick()) {
                             return
-                        }else{
+                        } else {
                             mChangeCountListener.onChangeCount(goods_id, integer)
                         }
 //                        notifyDataSetChanged()
@@ -470,8 +471,9 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             //加号的点击事件
             childViewHolder.addAmount?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
-                    if (goodsBean.minTotals.toString().toInt()-childViewHolder.amount?.text.toString()
-                            .toInt()<=0
+                    if (goodsBean.minTotals.toString()
+                            .toInt() - childViewHolder.amount?.text.toString()
+                            .toInt() <= 0
                     ) {
                         childViewHolder.addAmount?.isEnabled = false
                         ToastUtil.showToast(context!!, "该商品不能购买更多了")
@@ -484,9 +486,9 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
 //                        goodsBean.quantity = "$integer"
 //                        childViewHolder.amount?.text = "$integer"
                         //回调请求后台接口实现数量的加减
-                        if (Util.isFastClick()){
+                        if (Util.isFastClick()) {
                             return
-                        }else{
+                        } else {
                             mChangeCountListener.onChangeCount(goods_id, integer)
                         }
 //                    notifyDataSetChanged()
@@ -497,6 +499,12 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             //删除按钮的点击事件
             childViewHolder.cargoDele?.setOnClickListener {
                 mDeleteListener.onDelete(goods_id, goods_num)
+            }
+            //删除按钮的点击事件
+            childViewHolder.itemCon?.setOnClickListener {//跳转到商品详情页
+                val intent = Intent(context, ShangPinZyContains::class.java)
+                intent.putExtra("product_id", goodsBean.product_id)
+                context?.startActivity(intent)
             }
         }
         LogTool.e("shopCarChild", v.toString())
@@ -517,6 +525,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         var endLayout: ConstraintLayout? = null
         var endContent: TextView? = null
         var cargoDele: View? = null
+        var itemCon: View? = null
 
         constructor(view: View) {
             iv_select = view.findViewById(R.id.iv_select)
@@ -533,6 +542,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             endLayout = view.findViewById(R.id.endLayout)
             endContent = view.findViewById(R.id.endContent)
             cargoDele = view.findViewById(R.id.cargoDele)
+            itemCon = view.findViewById(R.id.itemCon)
         }
     }
 

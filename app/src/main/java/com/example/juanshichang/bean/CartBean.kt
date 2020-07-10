@@ -21,6 +21,7 @@ class CartBean : Serializable {
 
     data class Product(
         var cart_id: String = "",
+        var product_id: String = "",
         var href: String = "",
         var model: String = "",  //类型
         var minTotals: Int = 10,  //最小库存数量

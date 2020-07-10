@@ -23,6 +23,9 @@ class ToastUtil {
         internal var sToast: Toast? = null
 
         fun showToast(context: Context, text: String) {
+            if ("非法请求".equals(text.trim())){
+                return
+            }
             showToastInner(context, getError(text, context), Toast.LENGTH_SHORT)
         }
 

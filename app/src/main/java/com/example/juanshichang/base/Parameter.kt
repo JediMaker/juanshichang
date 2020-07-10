@@ -155,7 +155,31 @@ class Parameter {
             map.put("password", password)
             return map
         }
-
+        /**
+         * 快速登录
+         */
+        fun getFastLoginMap(mobile: String, sms_code: String): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("mobile=$mobile")
+            baseList.add("sms_code=$sms_code")
+            val map = fengMap("unlogin")
+            map.put("mobile", mobile)
+            map.put("sms_code", sms_code)
+            return map
+        }
+        /**
+         * 重置密码
+         */
+        fun resetPasswordMap(mobile: String, sms_code: String,password: String): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("mobile=$mobile")
+            baseList.add("sms_code=$sms_code")
+            val map = fengMap("unlogin")
+            map.put("mobile", mobile)
+            map.put("sms_code", sms_code)
+            map.put("password", password)
+            return map
+        }
         fun getRegisterMap(
             mobile: String,
             password: String,
@@ -374,11 +398,12 @@ class Parameter {
         /**
          * @param mobile 传入要发送短信的手机号
          */
-        fun getVerifyCode(mobile: String): HashMap<String, String> {
+        fun getVerifyCode(mobile: String,type: String): HashMap<String, String> {
             baseList.clear()
             baseList.add("mobile=$mobile")
             val map = fengMap("unlogin")
             map.put("mobile", mobile)
+            map.put("type", type)
             return map
         }
 

@@ -2,18 +2,15 @@ package com.example.juanshichang.http
 
 import android.text.TextUtils
 import android.util.Log
-import com.alibaba.fastjson.JSON
 import com.example.juanshichang.base.Api
-import com.example.juanshichang.base.Api.Companion.BASEURL
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.NewParameter
 import com.example.juanshichang.bean.TokenBean
-import com.example.juanshichang.http.HttpCode.REFRESH_TOKEN_ERROR
 import com.example.juanshichang.http.HttpCode.TOKEN_ERROR
 import com.example.juanshichang.utils.SpUtil
 import com.google.gson.Gson
 import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
@@ -57,8 +54,6 @@ class TokenInterceptor : Interceptor {
                         return chain.proceed(newRequest)
                     }
 
-                } else if (baseResponseBean.err_code == REFRESH_TOKEN_ERROR) {
-//                    refreshToken过期,
                 }
             }
         } catch (e: Exception) {
@@ -66,7 +61,6 @@ class TokenInterceptor : Interceptor {
         }
         return response
     }
-
 
 
     private fun refreshToken(): String? {
@@ -101,20 +95,86 @@ class TokenInterceptor : Interceptor {
             val string = buffer?.clone()?.readString(UTF8)
             val t = string?.substring(string?.indexOf("{"), string.length)
             val data = Gson().fromJson(t, TokenBean.TokenBean::class.java)
-            val user = SpUtil.getIstance().user
-            newToken = data.data.access_token
-            user.apply {
-                access_token = data?.data?.access_token!!
-                expires_in = data?.data?.expires_in!!
-                token_type = data?.data?.token_type!!
-                refresh_token = data?.data?.refresh_token!!
-            }.let {
-                SpUtil.getIstance().user = it //写入
+            if (data.data.error != null && data.data.token_type == null) {//refreshToken失效,
+                //获取code授权码
+                val clientCode = OkHttpClient()
+                val requestBuilder = Request.Builder()
+                val urlBuilder = (Api.NEWBASEURL + Api.AUTHORIZE2).toHttpUrlOrNull()?.newBuilder()
+                urlBuilder?.addQueryParameter("client_id", CLIENT_ID)
+                urlBuilder?.addQueryParameter("response_type", CODE)
+                urlBuilder?.addQueryParameter("redirect_uri", REDIRECT_URI)
+                requestBuilder.url(urlBuilder?.build()!!).get().build();
+                val callCode = clientCode.newCall(requestBuilder.build())
+                val responseCode = callCode.execute()
+                val sourceCode = responseCode!!.body?.source()
+                sourceCode?.request(Long.MAX_VALUE) // Buffer the entire body.
+                val bufferCode = sourceCode?.buffer()
+                val UTF8Code = Charset.forName("UTF-8")
+                val stringCode = bufferCode?.clone()?.readString(UTF8Code)
+                val tCode = stringCode?.substring(stringCode?.indexOf("{"), stringCode.length)
+                val dataCode = Gson().fromJson(tCode, TokenBean.TokenBean::class.java)
+                if (dataCode.data.code != null) {
+                    //获取access_token
+                    val client_access_token = OkHttpClient()
+                    val access_token_parameterMap = NewParameter.getAuthorizeTokenMap(
+                        CLIENT_ID,
+                        dataCode.data.code.toString(),
+                        CLIENT_SECRET,
+                        REDIRECT_URI
+                    )
+                    /*     val jsonObj = Gson().toJson(parameterMap).toString()
+                         val requestBody: RequestBody = RequestBody.create(json, parameterMap.toString())*/
+                    val access_token_builder = FormBody.Builder()
+                    for (key in access_token_parameterMap.keys) {
+                        //追加表单信息
+                        access_token_builder.add(key, access_token_parameterMap[key]!!)
+                    }
+                    val access_token_formBody: RequestBody = access_token_builder.build()
+                    val access_token_request: Request =
+                        Request.Builder().url(Api.NEWBASEURL + Api.ACCESS_TOKEN2)
+                            .post(access_token_formBody)
+                            .build();
+                    val access_token_call = client_access_token.newCall(access_token_request)
+                    val access_token_response = access_token_call.execute()
+                    val access_token_source = access_token_response!!.body?.source()
+                    access_token_source?.request(Long.MAX_VALUE) // Buffer the entire body.
+                    val access_token_buffer = access_token_source?.buffer()
+                    val access_token_UTF8 = Charset.forName("UTF-8")
+                    val access_token_string =
+                        access_token_buffer?.clone()?.readString(access_token_UTF8)
+                    val access_token_t = access_token_string?.substring(
+                        access_token_string?.indexOf("{"),
+                        access_token_string.length
+                    )
+                    val access_token_data =
+                        Gson().fromJson(access_token_t, TokenBean.TokenBean::class.java)
+                    val user = SpUtil.getIstance().user
+                    newToken = access_token_data.data.access_token
+                    user.apply {
+                        access_token = access_token_data?.data?.access_token!!
+                        expires_in = access_token_data?.data?.expires_in!!
+                        token_type = access_token_data?.data?.token_type!!
+                        refresh_token = access_token_data?.data?.refresh_token!!
+                    }.let {
+                        SpUtil.getIstance().user = it //写入
+                    }
+                }
+            } else {
+                val user = SpUtil.getIstance().user
+                newToken = data.data.access_token
+                user.apply {
+                    access_token = data?.data?.access_token!!
+                    expires_in = data?.data?.expires_in!!
+                    token_type = data?.data?.token_type!!
+                    refresh_token = data?.data?.refresh_token!!
+                }.let {
+                    SpUtil.getIstance().user = it //写入
+                }
             }
+
         } catch (e: Exception) {
             newToken = ""
         }
         return newToken
     }
-
 }

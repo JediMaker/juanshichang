@@ -16,6 +16,8 @@ interface Api {
         val LOGIN = "/api/index.php?route=api/user/login"
         //快速登录
         val FASTLOGIN = "/api/index.php?route=api/user/tel_login"
+        //重置密码
+        val RESETPASSWORD = "/api/index.php?route=api/user/tel_login"
         //登录
         val GETTOKEN = "/api/index.php?route=api/token"
         //用户信息 login
@@ -136,7 +138,9 @@ interface Api {
         val CHECKOUTXX = "/api/index.php?route=api/checkout/checkout" //订单列表页面去支付调用
 
         val AUTHORIZE = "/api/index.php?route=oauth/oauth2/authorize" //获取授权码
+        val AUTHORIZE2 = "api/index.php?route=oauth/oauth2/authorize" //获取授权码
         val ACCESS_TOKEN = "/api/index.php?route=oauth/oauth2/token" //获取令牌access_token
+        val ACCESS_TOKEN2 = "api/index.php?route=oauth/oauth2/token" //获取令牌access_token
         val REFRESH_TOKEN = "/api/index.php?route=oauth/oauth2/refresh_token" //刷新令牌
         val REFRESH_TOKEN2 = "api/index.php?route=oauth/oauth2/refresh_token" //刷新令牌
 

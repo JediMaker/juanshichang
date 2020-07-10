@@ -467,7 +467,6 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                     ToastTool.showToast(this@ShangPinZyContains, "尚未登录 请先登录")
                     val intent = Intent(this@ShangPinZyContains, Reg2LogActivity::class.java)
                     intent.putExtra("type", Reg2LogActivity.LOGINCODE) // 显示登录
-                    intent.putExtra("one", "1")
                     goStartActivity(this@ShangPinZyContains, intent)
                 } else {
                     //确定

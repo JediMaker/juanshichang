@@ -1,6 +1,7 @@
 package com.example.juanshichang.activity
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.CountDownTimer
 import android.text.SpannableString
@@ -45,7 +46,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
 //        QMUIStatusBarHelper.translucent(this@Reg2LogActivity)
-//        StatusBarUtil.addStatusViewWithColor(this@Reg2LogActivity, R.color.label_color)
+        StatusBarUtil.addStatusViewWithColor(this@Reg2LogActivity, R.color.colorPrimary)
         rRL.setPadding(0, QMUIDisplayHelper.getStatusBarHeight(this@Reg2LogActivity), 0, 0)
         SoftHideKeyBoardUtil.assistActivity(this@Reg2LogActivity)
         setOnClick() //注册点击事件
@@ -54,6 +55,9 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         if (type != REGISTERCODE) {
             registerInclude.visibility = View.GONE
             loginInclude.visibility = View.VISIBLE
+            log_title.text="登录"
+        }else{
+            log_title.text="注册"
         }
         if (null != intent.getStringExtra("one")) { //从个人中心 页面跳转的处理
             LiveDataBus.get().with("mainGo").value = 0
@@ -75,10 +79,18 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.log_ret -> {
+         /*       if (!Util.hasLogin(this)) {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    startActivity(intent)
+                    LiveDataBus.get().with("mainGo").value = 0 //返回到购物车
+                    finish()
+                }*/
                 this@Reg2LogActivity.finish()
             }
             //注册页面
             R.id.goLog -> {//登录
+                log_title.text="登录"
                 registerInclude.visibility = View.GONE
                 loginInclude.visibility = View.VISIBLE
             }
@@ -124,6 +136,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
             //登录界面
             R.id.goReg -> {//注册
+                log_title.text="注册"
                 loginInclude.visibility = View.GONE
                 registerInclude.visibility = View.VISIBLE
             }
@@ -136,9 +149,15 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.fastLogin -> {//快速登录
                 ToastUtil.showToast(this@Reg2LogActivity, "入口待开放!")
+                val intent = Intent(this@Reg2LogActivity, FastLoginActivity::class.java)
+                intent.putExtra("type", FastLoginActivity.LOGINCODE) // 显示登录
+                goStartActivity(this@Reg2LogActivity, intent)
             }
             R.id.lookPW -> {//找回密码
                 ToastUtil.showToast(this@Reg2LogActivity, "入口待开放!")
+                val intent = Intent(this@Reg2LogActivity, FastLoginActivity::class.java)
+                intent.putExtra("type", FastLoginActivity.RESETPASSWORDCODE) // 显示登录
+                goStartActivity(this@Reg2LogActivity, intent)
             }
             else -> {
             }
@@ -334,7 +353,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     fun getSendSMS(mobile: String, context: Context) {
 //        var smsCodes: String? = null
         HttpManager.getInstance()
-            .post(Api.SMSSEND, Parameter.getVerifyCode(mobile), object : Subscriber<String>() {
+            .post(Api.SMSSEND, Parameter.getVerifyCode(mobile,"1"), object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
                     val str = result?.substring(result?.indexOf("{"), result.length)
@@ -346,8 +365,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                         } catch (e: JSONException) {
                             e.printStackTrace();
                         }
-                        if (!jsonObj?.optString(JsonParser.JSON_CODE)!!
-                                .equals(JsonParser.JSON_SUCCESS)
+                        if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!
                         ) {
                             ToastUtil.showToast(context, jsonObj!!.optString(JsonParser.JSON_MSG))
                         } else {
