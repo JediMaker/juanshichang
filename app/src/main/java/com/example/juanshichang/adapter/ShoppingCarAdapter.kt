@@ -8,6 +8,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
+import android.util.SparseBooleanArray
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -22,6 +23,7 @@ import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.UtilsBigDecimal
 import com.example.juanshichang.utils.glide.GlideUtil
 import java.math.BigDecimal
+
 
 /**
  * @作者: yzq
@@ -45,7 +47,8 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
     private val SHOPCAREDIT: Int = 2  //编辑状态  按钮显示完成
     private var shopType: Int = SHOPCARFINISH
     private var cardIdList: ArrayList<String>? = null //这是存放选中的cardid集合
-
+    //存储选中状态
+    private  val mCheckStates = SparseBooleanArray()
     constructor(
         context: Context?,
         llSelectAll: LinearLayout?,
@@ -149,7 +152,9 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 }
             }
             //店铺是否在购物车中被选中  --- 因为 没有父类Group数据  故放弃此段逻辑
-
+            var allStockOK: Boolean = true
+            var state: Boolean = false
+            var isAllHasStock = true
             //店铺选择框的点击事件
             groupViewHolder.ll?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(v: View?) {
@@ -159,8 +164,19 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                     groupViewHolder.iv_select?.isChecked = state
                     //数据结构因素 ....
                     for (i in 0 until it.size) {
-                        it[i].isSelect = state
+                        if (!it[i].stock) {
+                            it[i].isSelect = state
+                            allStockOK = false
+                        } else {
+                            it[i].isSelect = false
+                        }
                     }
+                    if (allStockOK) {
+                        groupViewHolder.iv_select?.isChecked = state
+                    } else {
+                        groupViewHolder.iv_select?.isChecked = false
+                    }
+
                     notifyDataSetChanged()
                 }
             })
@@ -168,10 +184,16 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             for (i in 0 until it.size) {
                 val isSelect = it[i].isSelect
                 if (isSelect) {
-                    allSelect = true
-                    isSelectAll?.isChecked = true
+                    if (!it[i].stock) {
+                        isSelectAll?.isChecked = true
+                        allSelect = true
+                    }
                 } else {
-                    allSelect = false
+                    if (!it[i].stock) {
+                        allSelect = true
+                    } else {
+                        allSelect = false
+                    }
                     isSelectAll?.isChecked = false
                     break
                 }
@@ -187,6 +209,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 }
                 notifyDataSetChanged()
             }
+
             //全选的点击事件
             llSelectAll?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
@@ -194,14 +217,25 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                     if (allSelect) {
                         for (i in 0 until data?.size) {
                             for (y in 0 until data[i]?.data?.products?.size!!) {
-                                data[i]?.data?.products!![y].isSelect = true
+                                if (!data[i]?.data?.products!![y].stock) {//没有库存
+                                    data[i]?.data?.products!![y].isSelect = false
+                                    isAllHasStock = false
+                                } else {
+                                    data[i]?.data?.products!![y].isSelect = true
+                                }
+                                mCheckStates.put(y, data[i]?.data?.products!![y].isSelect);
                             }
                         }
-                        isSelectAll?.isChecked = true
+                        if (isAllHasStock) {
+                            isSelectAll?.isChecked = true
+                        } else {
+                            isSelectAll?.isChecked = false
+                        }
                     } else {
                         for (i in 0 until data?.size) {
                             for (y in 0 until data[i]?.data?.products?.size!!) {
                                 data[i]?.data?.products!![y].isSelect = false
+                                mCheckStates.put(y, data[i]?.data?.products!![y].isSelect);
                             }
                         }
                         isSelectAll?.isChecked = false
@@ -299,6 +333,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         return childPosition.toLong()
     }
 
+
     override fun getChildView(
         groupPosition: Int,
         childPosition: Int,
@@ -316,6 +351,8 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             v = convertView
             childViewHolder = v.tag as ChildViewHolder
         }
+        childViewHolder.iv_select?.tag = childPosition
+
         val fatherGroup = data[groupPosition]?.data?.products as ArrayList<CartBean.Product>
         LogTool.e("shopCarChild", "data: $fatherGroup")
         fatherGroup.let {
@@ -337,8 +374,10 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             //商品数量
             val goods_num: String = goodsBean.quantity
             //商品是否被选中
-            val isSelect: Boolean = goodsBean.isSelect
-            val goodsOptionsValue: String = ""
+            var isSelect: Boolean = goodsBean.isSelect
+            if (isSelect) {
+                mCheckStates.put(childPosition, isSelect)
+            }
             childViewHolder.cargoImg?.tag = goods_image
             if (childViewHolder.cargoImg?.tag != null && childViewHolder.cargoImg?.tag!!.equals(
                     goods_image
@@ -359,6 +398,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             } else {
                 ""
             }
+
             childViewHolder.cargoTit?.text = goods_name ?: ""
             childViewHolder.cargoPrice?.text = goods_price ?: ""
             childViewHolder.amount?.text = goods_num
@@ -389,16 +429,13 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             } else {
                 childViewHolder.endLayout?.visibility = View.GONE
             }
+            childViewHolder.iv_select?.setOnCheckedChangeListener(null)
             if (!isStock) { //设置是否有货的状态
-//                childViewHolder.llAmount?.visibility = View.INVISIBLE
-//                childViewHolder.noStock?.visibility = View.VISIBLE
                 childViewHolder.llAmount?.visibility = View.VISIBLE
                 childViewHolder.stockStatus?.visibility = View.VISIBLE
                 childViewHolder.iv_select?.isSelected = false
                 childViewHolder.iv_select?.isEnabled = false  //设置无货商品 不可选中 todo 注意编辑模式 释放该权限
-//                childViewHolder.noStock?.text="库存不足"
-                childViewHolder.addAmount?.isEnabled = false
-//                childViewHolder.amount?.text = (goodsBean.quantity.toInt() - 1).toString()
+                isSelect = false;
                 goodsBean.isSelect = false  //取消选中数据
                 childViewHolder.stockStatus?.text = "库存不足"
                 //设置双按钮 都不可点击
@@ -409,13 +446,26 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             } else {
                 childViewHolder.stockStatus?.visibility = View.INVISIBLE
                 childViewHolder.minusAmount?.isEnabled = false
-                childViewHolder.iv_select?.isChecked = isSelect  //设置是否选中
                 childViewHolder.addAmount?.isEnabled = true
                 childViewHolder.iv_select?.isEnabled = true
                 if (isSelect) {
                     cardIdList?.add(goods_id)
                 }
             }
+
+            childViewHolder.iv_select?.setOnCheckedChangeListener(object :
+                CompoundButton.OnCheckedChangeListener {
+                override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+                    goodsBean.isSelect = isChecked
+                    val poi = childViewHolder.iv_select?.tag as Int
+                    if (isChecked) {
+                        mCheckStates.put(poi, true)
+                    } else {
+                        mCheckStates.delete(poi)
+                    }
+                }
+            })
+
             //商品选择框的点击事件
             childViewHolder.iv_select?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
@@ -441,7 +491,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                     notifyDataSetChanged()
                 }
             })
-
+            childViewHolder.iv_select?.isChecked = mCheckStates.get(childPosition)  //设置是否选中
             val num = goodsBean.quantity
             var integer = num.toInt()
             if (integer > 1) {
@@ -471,27 +521,34 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             //加号的点击事件
             childViewHolder.addAmount?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
-                    if (goodsBean.minTotals.toString()
-                            .toInt() - childViewHolder.amount?.text.toString()
-                            .toInt() <= 0
-                    ) {
-                        childViewHolder.addAmount?.isEnabled = false
-                        ToastUtil.showToast(context!!, "该商品不能购买更多了")
-                        return
-                    } else {
-                        integer++
-                        if (!childViewHolder.minusAmount?.isEnabled!! || integer > 1) {
-                            childViewHolder.minusAmount?.isEnabled = true
-                        }
-//                        goodsBean.quantity = "$integer"
-//                        childViewHolder.amount?.text = "$integer"
-                        //回调请求后台接口实现数量的加减
-                        if (Util.isFastClick()) {
-                            return
+
+                    try {
+                        val maxStockNum = goodsBean.minTotals.toString()
+                            .toInt()
+                        val currentAmount = integer
+                            .toInt()
+                        if (maxStockNum - currentAmount > 0
+                        ) {
+                            integer++
+                            if (!childViewHolder.minusAmount?.isEnabled!! || integer > 1) {
+                                childViewHolder.minusAmount?.isEnabled = true
+                            }
+                            //                        goodsBean.quantity = "$integer"
+                            //                        childViewHolder.amount?.text = "$integer"
+                            //回调请求后台接口实现数量的加减
+                            if (Util.isFastClick()) {
+                                return
+                            } else {
+                                mChangeCountListener.onChangeCount(goods_id, integer)
+                            }
+                            //                    notifyDataSetChanged()
                         } else {
-                            mChangeCountListener.onChangeCount(goods_id, integer)
+                            childViewHolder.addAmount?.isEnabled = false
+                            ToastUtil.showToast(context!!, "该商品不能购买更多了")
+                            return
+
                         }
-//                    notifyDataSetChanged()
+                    } catch (e: Exception) {
                     }
 
                 }
@@ -500,12 +557,38 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
             childViewHolder.cargoDele?.setOnClickListener {
                 mDeleteListener.onDelete(goods_id, goods_num)
             }
-            //删除按钮的点击事件
-            childViewHolder.itemCon?.setOnClickListener {//跳转到商品详情页
+            //------------------------------跳转到商品详情的点击事件------------------------------------
+            //
+            childViewHolder.cargoImg?.setOnClickListener {
                 val intent = Intent(context, ShangPinZyContains::class.java)
                 intent.putExtra("product_id", goodsBean.product_id)
                 context?.startActivity(intent)
             }
+
+            childViewHolder.cargoTit?.setOnClickListener {
+                val intent = Intent(context, ShangPinZyContains::class.java)
+                intent.putExtra("product_id", goodsBean.product_id)
+                context?.startActivity(intent)
+            }
+
+            childViewHolder.carOptionValue?.setOnClickListener {
+                val intent = Intent(context, ShangPinZyContains::class.java)
+                intent.putExtra("product_id", goodsBean.product_id)
+                context?.startActivity(intent)
+            }
+
+            childViewHolder.stockStatus?.setOnClickListener {
+                val intent = Intent(context, ShangPinZyContains::class.java)
+                intent.putExtra("product_id", goodsBean.product_id)
+                context?.startActivity(intent)
+            }
+
+            childViewHolder.cargoPrice?.setOnClickListener {
+                val intent = Intent(context, ShangPinZyContains::class.java)
+                intent.putExtra("product_id", goodsBean.product_id)
+                context?.startActivity(intent)
+            }
+            //----------------------------------END---------------------------------------
         }
         LogTool.e("shopCarChild", v.toString())
         return v!!

@@ -43,7 +43,7 @@ class PromotionActivity : BaseActivity(),View.OnClickListener , BaseQuickAdapter
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
         proRet.setOnClickListener(this)
         if (banner_id_def != intent.getLongExtra("id", 0) && null != intent.getStringExtra("idName")) {
             id = intent.getLongExtra("id", 0)

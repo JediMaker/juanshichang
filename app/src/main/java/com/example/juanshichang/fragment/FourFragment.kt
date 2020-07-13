@@ -47,7 +47,7 @@ class FourFragment : BaseFragment() {
     }
 
     override fun initViews(savedInstanceState: Bundle) {
-        setUiData(SpUtil.getIstance().user)
+//        setUiData(SpUtil.getIstance().user)
     }
 
     override fun initData() {
@@ -106,6 +106,8 @@ class FourFragment : BaseFragment() {
             R.id.tastGwc ->{ //自营商品详情
                 BaseActivity.goStartActivity(this.mContext!!, ShangPinZyContains())
             }
+
+
             R.id.tastLb ->{ //自营商品列表
                 getGrid()
             }

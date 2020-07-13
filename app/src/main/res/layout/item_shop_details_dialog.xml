@@ -3,6 +3,7 @@
         android:layout_width="match_parent"
         android:id="@+id/item_main"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 <!--    android:paddingLeft="16dp"-->
 <!--    android:paddingRight="15dp"-->

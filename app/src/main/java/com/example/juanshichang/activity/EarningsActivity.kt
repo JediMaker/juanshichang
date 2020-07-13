@@ -10,6 +10,7 @@ import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.bean.BenefitBean
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.utils.LogTool
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.google.gson.Gson
@@ -31,7 +32,7 @@ class EarningsActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun initView() {
-//        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
+        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
         isOne.setPadding(0,QMUIStatusBarHelper.getStatusbarHeight(this),0,0)
         EaRet.setOnClickListener(this)
         syDetail.setOnClickListener(this)

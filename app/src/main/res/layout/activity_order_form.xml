@@ -1,72 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoLinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
+        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/ordTast"
-        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".activity.OrderFormActivity">
+
     <com.zhy.autolayout.AutoRelativeLayout
             android:id="@+id/orderTop"
-            android:layout_marginTop="40px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/dp_56"
+            android:background="@color/colorPrimary"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
         <!--ff_ret-->
         <LinearLayout
                 android:id="@+id/orRet"
                 android:layout_width="@dimen/dp_48"
                 android:layout_height="@dimen/dp_48"
                 android:layout_centerVertical="true">
+
             <View
                     android:layout_width="63px"
                     android:layout_height="43px"
-                    android:layout_marginLeft="@dimen/dp_16"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ff_ret" />
+                    android:layout_marginLeft="@dimen/dp_16"
+                    android:background="@drawable/ret_n" />
         </LinearLayout>
 
         <TextView
                 android:id="@+id/orTitle"
-                android:gravity="center"
-                android:layout_centerInParent="true"
-                android:text="我的订单"
-                android:textSize="@dimen/sp_txt_topBarTextSize"
-                android:textColor="@color/main_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="我的订单"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_txt_topBarTextSize" />
+
         <View
                 android:id="@+id/orSearch"
-                android:background="@drawable/search"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
                 android:layout_alignBottom="@+id/orTitle"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="15dp"
-                android:layout_width="21dp"
-                android:layout_height="21dp"/>
+                android:visibility="gone"
+                android:background="@drawable/search" />
     </com.zhy.autolayout.AutoRelativeLayout>
+
     <com.google.android.material.tabs.TabLayout
             android:id="@+id/detailTab"
-            app:tabIndicatorHeight="9px"
-            app:tabRippleColor="@android:color/transparent"
-            app:tabBackground="@null"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@null"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderTop"
+            app:tabBackground="@null"
+            app:tabGravity="fill"
             app:tabIndicatorColor="@color/label_color"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="9px"
+            app:tabMode="fixed"
+            app:tabRippleColor="@android:color/transparent"
             app:tabSelectedTextColor="@color/label_color"
             app:tabTextAppearance="@style/OrderTabLayoutTextAppearance"
-            app:tabTextColor="@color/home_gray"
-            app:tabIndicatorFullWidth="false"
-            app:tabGravity="fill"
-            app:tabMode="fixed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="@color/home_gray"></com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/detailList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:background="@color/ff_back"
-            android:scrollbars="none"></androidx.recyclerview.widget.RecyclerView>
-</com.zhy.autolayout.AutoLinearLayout>
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailTab"></androidx.recyclerview.widget.RecyclerView>
+</androidx.constraintlayout.widget.ConstraintLayout>

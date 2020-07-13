@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".activity.EditSiteActivity">
     <com.zhy.autolayout.AutoRelativeLayout
-            android:background="@color/white"
+            android:background="@color/colorPrimary"
             android:id="@+id/sitebar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_56"
@@ -27,7 +27,7 @@
                     android:layout_width="63px"
                     android:layout_height="43px"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ff_ret" />
+                    android:background="@drawable/ret_n" />
         </LinearLayout>
 
 
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/main_text"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:text="收货地址"
                 />
@@ -48,7 +48,7 @@
                 android:layout_alignParentRight="true"
                 android:text="保存"
                 android:textSize="@dimen/sp_txt_title_icon_name"
-                android:textColor="@color/indicatorRed"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoRelativeLayout>

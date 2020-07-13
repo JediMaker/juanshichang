@@ -17,7 +17,7 @@ interface Api {
         //快速登录
         val FASTLOGIN = "/api/index.php?route=api/user/tel_login"
         //重置密码
-        val RESETPASSWORD = "/api/index.php?route=api/user/tel_login"
+        val RESETPASSWORD = "/api/index.php?route=api/user/reset_password"
         //登录
         val GETTOKEN = "/api/index.php?route=api/token"
         //用户信息 login

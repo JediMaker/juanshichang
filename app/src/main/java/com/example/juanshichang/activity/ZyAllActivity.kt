@@ -36,7 +36,7 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this@ZyAllActivity, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this@ZyAllActivity, R.color.colorPrimary)
         if (intent.getStringExtra("category_id").isNotEmpty()) {
             category_id = intent.getStringExtra("category_id")
         } else {

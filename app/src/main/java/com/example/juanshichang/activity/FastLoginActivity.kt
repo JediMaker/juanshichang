@@ -61,7 +61,7 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
             fastLoginTitle.text = "快速登录"
         } else {
             loginBut.text = "设置"
-            fastLoginTitle.text = "重置密码"
+            fastLoginTitle.text = "忘记密码"
         }
     }
 
@@ -103,7 +103,9 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
                         logGo(phone, smscode)
                     }
                 } else {//重置密码
-                    resetPassword(phone, smscode, password)
+                    if (goResetPassword(phone, smscode,password)) {
+                        resetPassword(phone, smscode, password)
+                    }
                 }
 
             }
@@ -122,13 +124,13 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
         return true
     }
 
-    private fun goLogin2(phone: String, smscode: String, ps: String): Boolean {
+    private fun goResetPassword(phone: String, smscode: String, ps: String): Boolean {
         if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(smscode) || TextUtils.isEmpty(ps)) {
             ToastUtil.showToast(this@FastLoginActivity, "请根据提示框输入正确的信息!")
             return false
         }
-        if (!Util.validateMobile(phone)) {
-            ToastUtil.showToast(this@FastLoginActivity, "请输入正确的手机号!")
+        if (!TextUtils.isEmpty(smscode)) {
+            ToastUtil.showToast(this@FastLoginActivity, "请输入验证码!")
             return false
         }
         if (ps.length < 6) {

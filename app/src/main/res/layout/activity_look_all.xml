@@ -10,6 +10,7 @@
     <com.zhy.autolayout.AutoRelativeLayout
             android:paddingLeft="45px"
             android:paddingRight="45px"
+            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_56">
 
@@ -23,7 +24,7 @@
                     android:layout_width="63px"
                     android:layout_height="43px"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ff_ret" />
+                    android:background="@drawable/ret_n" />
         </LinearLayout>
 
         <TextView
@@ -31,7 +32,7 @@
                 android:layout_centerInParent="true"
                 tools:text="全部"
                 android:textSize="@dimen/sp_txt_topBarTextSize"
-                android:textColor="@color/main_text"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoRelativeLayout>

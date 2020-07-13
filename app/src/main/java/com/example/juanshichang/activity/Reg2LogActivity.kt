@@ -47,7 +47,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     override fun initView() {
 //        QMUIStatusBarHelper.translucent(this@Reg2LogActivity)
         StatusBarUtil.addStatusViewWithColor(this@Reg2LogActivity, R.color.colorPrimary)
-        rRL.setPadding(0, QMUIDisplayHelper.getStatusBarHeight(this@Reg2LogActivity), 0, 0)
+//        rRL.setPadding(0, QMUIDisplayHelper.getStatusBarHeight(this@Reg2LogActivity), 0, 0)
         SoftHideKeyBoardUtil.assistActivity(this@Reg2LogActivity)
         setOnClick() //注册点击事件
         //传入非0 就显示登录界面
@@ -148,13 +148,11 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.fastLogin -> {//快速登录
-                ToastUtil.showToast(this@Reg2LogActivity, "入口待开放!")
                 val intent = Intent(this@Reg2LogActivity, FastLoginActivity::class.java)
                 intent.putExtra("type", FastLoginActivity.LOGINCODE) // 显示登录
                 goStartActivity(this@Reg2LogActivity, intent)
             }
             R.id.lookPW -> {//找回密码
-                ToastUtil.showToast(this@Reg2LogActivity, "入口待开放!")
                 val intent = Intent(this@Reg2LogActivity, FastLoginActivity::class.java)
                 intent.putExtra("type", FastLoginActivity.RESETPASSWORDCODE) // 显示登录
                 goStartActivity(this@Reg2LogActivity, intent)

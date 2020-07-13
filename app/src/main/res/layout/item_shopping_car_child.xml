@@ -16,8 +16,8 @@
 
         <CheckBox
                 android:id="@+id/iv_select"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_48"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="8dp"
                 android:button="@drawable/shoppingcar_check"

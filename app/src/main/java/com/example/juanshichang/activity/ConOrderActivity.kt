@@ -43,7 +43,7 @@ class ConOrderActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this@ConOrderActivity, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this@ConOrderActivity, R.color.colorPrimary)
         if (null != intent.getBundleExtra("bundle")) {
             bundle = intent.getBundleExtra("bundle") //获取 bundle
             cartList = bundle?.getStringArrayList("checkAll")

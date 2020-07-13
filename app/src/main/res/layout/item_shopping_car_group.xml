@@ -16,6 +16,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:button="@drawable/shoppingcar_check"
                 android:clickable="false" />
 
@@ -33,10 +34,10 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/dp_16"
                 android:text="店铺名称"
                 android:textColor="@color/main_text"
-                android:textSize="@dimen/sp_txt_nomal"
+                android:textSize="@dimen/sp_txt_title_icon_name"
                 android:maxLines="1"
                 android:maxLength="10"
                 android:ellipsize="end"/>

@@ -38,7 +38,7 @@ class OrderDetailActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this@OrderDetailActivity, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this@OrderDetailActivity, R.color.colorPrimary)
         if (null != intent.getStringExtra("orderid")) {
             orderId = intent.getStringExtra("orderid")
             oDAdapter = OrderDetailAdapter()

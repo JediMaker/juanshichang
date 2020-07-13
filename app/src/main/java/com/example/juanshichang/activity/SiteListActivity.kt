@@ -39,7 +39,7 @@ class SiteListActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this@SiteListActivity, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this@SiteListActivity, R.color.colorPrimary)
         checkLocal = intent.getStringExtra("checkLocal") //用于标记 提交订单 选择地址
         siteAdapter = SiteListAdapter()
         siteList.adapter = siteAdapter

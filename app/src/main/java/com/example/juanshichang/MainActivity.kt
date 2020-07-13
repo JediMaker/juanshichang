@@ -69,7 +69,7 @@ class MainActivity : BaseActivity() {
         bus.with("mainTopStatusView", Int::class.java)
             .observe(this, object : Observer<Int> {
                 override fun onChanged(t: Int?) {
-                    StatusBarUtil.addStatusViewWithBack(this@MainActivity, t!!)
+//                    StatusBarUtil.addStatusViewWithBack(this@MainActivity, t!!)
                 }
             })
     }

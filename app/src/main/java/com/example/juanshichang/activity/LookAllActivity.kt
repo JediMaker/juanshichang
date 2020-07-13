@@ -41,7 +41,7 @@ class LookAllActivity : BaseActivity(), View.OnClickListener, BaseQuickAdapter.R
         return R.layout.activity_look_all
     }
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
         LaRet.setOnClickListener(this)
         if(categoryidDef != intent.getIntExtra("category_id",Int.MAX_VALUE)){
             category_id = intent.getIntExtra("category_id",Int.MAX_VALUE)

@@ -76,7 +76,7 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this@EditSiteActivity, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this@EditSiteActivity, R.color.colorPrimary)
         if (ADDSITE == intent.getIntExtra("type", 0) || EDITSITE == intent.getIntExtra("type", 0)) {
             siteType = intent.getIntExtra("type", 0)
             if (ADDSITE == siteType) { //添加地址

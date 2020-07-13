@@ -47,7 +47,7 @@ class ShopDetailsAdapter() :
         val fatData = item
         val data = item?.product_option_value
         val floatLayout = helper?.getView<QMUIFloatLayout>(R.id.itemFloat)
-        helper?.setVisible(R.id.item_main, false)
+        helper?.setGone(R.id.item_main, false)
 //       todo 这里暂时改成全单选模式
         if (item?.type?.contentEquals("radio")!! || item.type.contentEquals("select") || item.type.contentEquals(
                 "checkbox"
@@ -67,7 +67,7 @@ class ShopDetailsAdapter() :
                 allMap?.put("${item.product_option_id}", radioList)
             }
         } else {
-            helper?.setVisible(R.id.item_main, false)
+            helper?.setGone(R.id.item_main, false)
         }
 /*
         if (item?.type?.contentEquals("radio")!! || item.type.contentEquals("select")) { //单选

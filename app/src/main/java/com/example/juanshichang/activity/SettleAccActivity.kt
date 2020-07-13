@@ -72,7 +72,7 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this@SettleAccActivity, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this@SettleAccActivity, R.color.colorPrimary)
         if (null != intent.getBundleExtra("bundle")) { //正常购物车进入流程
             val bundle = intent.getBundleExtra("bundle")
             address_id = bundle.getString("address_id")

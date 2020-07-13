@@ -41,6 +41,7 @@
                             android:textColor="@color/main_text"
                             android:layout_width="0dp"
                             android:layout_weight="1"
+                            android:textStyle="bold"
                             android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
@@ -106,7 +107,7 @@
                         android:layout_height="wrap_content"/>
                 <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_marginTop="23px"
+                        android:layout_marginTop="@dimen/dp_16"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                     <TextView
@@ -121,7 +122,7 @@
                     <TextView
                             android:id="@+id/lookPW"
                             android:gravity="right"
-                            android:text="找回密码"
+                            android:text="忘记密码"
                             android:textSize="@dimen/sp_txt_title_icon_name"
                             android:textColor="@color/home_gray"
                             android:layout_width="0dp"

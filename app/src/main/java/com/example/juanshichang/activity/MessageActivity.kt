@@ -28,7 +28,7 @@ class MessageActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
         MsRet.setOnClickListener(this) //返回
         titClose.setOnClickListener(this) //关闭
         titOpen.setOnClickListener(this) // 打开

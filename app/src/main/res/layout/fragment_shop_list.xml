@@ -11,6 +11,7 @@
             android:id="@+id/shopbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_56"
+            android:background="@color/colorPrimary"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
     >
@@ -28,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/main_text"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:text="购物车"
         />
@@ -39,7 +40,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/dp_16"
-                android:textColor="@color/main_text"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp_txt_title_icon_name"
                 android:text="编辑"
         />

@@ -47,7 +47,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     private var zfbDialog: QMUIDialog.EditTextDialogBuilder? = null
     private var cameraSavePath: Uri? = null
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this@SettingActivity, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this@SettingActivity, R.color.colorPrimary)
         unlogin.setOnClickListener(this)
         setRet.setOnClickListener(this)
         setUserImage.setOnClickListener(this)

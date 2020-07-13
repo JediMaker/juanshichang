@@ -34,7 +34,7 @@ class RealNameActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this, R.color.colorPrimary)
     }
 
     override fun initData() {

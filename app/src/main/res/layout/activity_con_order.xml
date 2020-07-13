@@ -11,6 +11,7 @@
             android:id="@+id/cobar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_56"
+            android:background="@color/colorPrimary"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -19,12 +20,13 @@
                 android:layout_width="@dimen/dp_48"
                 android:layout_height="@dimen/dp_45"
                 android:layout_centerVertical="true">
+
             <View
                     android:layout_width="26dp"
                     android:layout_height="19dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dp_16"
-                    android:background="@drawable/ff_ret" />
+                    android:background="@drawable/ret_n" />
         </LinearLayout>
 
         <TextView
@@ -33,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="确认订单"
-                android:textColor="@color/main_text"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp_txt_topBarTextSize" />
     </com.zhy.autolayout.AutoRelativeLayout>
 

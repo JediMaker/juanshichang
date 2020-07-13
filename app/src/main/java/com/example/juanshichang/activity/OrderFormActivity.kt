@@ -15,6 +15,7 @@ import com.example.juanshichang.bean.OrdersBeanT
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.LogTool
+import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastTool
 import com.example.juanshichang.utils.ToastUtil
 import com.google.android.material.tabs.TabLayout
@@ -54,7 +55,8 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
         showProgressDialog()
-        orderTop.setPadding(0, QMUIStatusBarHelper.getStatusbarHeight(this), 0, 0)
+        StatusBarUtil.addStatusViewWithColor(this@OrderFormActivity, R.color.colorPrimary)
+//        orderTop.setPadding(0, QMUIStatusBarHelper.getStatusbarHeight(this), 0, 0)
         setTab()
     }
 

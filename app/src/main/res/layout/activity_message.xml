@@ -9,6 +9,7 @@
         tools:context=".activity.MessageActivity">
     <com.zhy.autolayout.AutoRelativeLayout
             android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
             android:layout_height="@dimen/dp_56">
         <!--ff_ret-->
         <LinearLayout
@@ -21,7 +22,7 @@
                     android:layout_height="43px"
                     android:layout_marginLeft="@dimen/dp_16"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ff_ret" />
+                    android:background="@drawable/ret_n" />
         </LinearLayout>
 
         <TextView
@@ -29,7 +30,7 @@
                 android:layout_centerInParent="true"
                 android:text="消息"
                 android:textSize="@dimen/sp_txt_topBarTextSize"
-                android:textColor="@color/main_text"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoRelativeLayout>

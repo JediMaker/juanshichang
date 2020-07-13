@@ -24,7 +24,7 @@ class CartBean : Serializable {
         var product_id: String = "",
         var href: String = "",
         var model: String = "",  //类型
-        var minTotals: Int = 10,  //最小库存数量
+        var minTotals: Int = 1,  //最小库存数量
         var name: String = "",  //名称
         var option: List<Option> = ArrayList(),
         var price: String = "",  //单价

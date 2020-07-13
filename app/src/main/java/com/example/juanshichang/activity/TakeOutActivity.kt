@@ -56,7 +56,7 @@ class TakeOutActivity : BaseActivity(), View.OnClickListener{
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this@TakeOutActivity, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this@TakeOutActivity, R.color.colorPrimary)
         if(Int.MAX_VALUE != intent.getIntExtra("type", Int.MAX_VALUE)){
             vType = intent.getIntExtra("type", Int.MAX_VALUE)
         }

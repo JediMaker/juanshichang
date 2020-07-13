@@ -45,7 +45,7 @@ class NewClassifyActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun initView() {
-        StatusBarUtil.addStatusViewWithColor(this@NewClassifyActivity, R.color.white)
+        StatusBarUtil.addStatusViewWithColor(this@NewClassifyActivity, R.color.colorPrimary)
     }
 
     override fun initData() {
