@@ -45,6 +45,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginEnd="@dimen/dp_16"
                     android:scaleType="centerCrop"
+                    android:visibility="visible"
                     android:src="@drawable/setting_t" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
@@ -89,7 +90,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="邀请码:"
+                        android:text="积分:"
                         android:textColor="@color/xcolor"
                         android:textSize="@dimen/sp_txt_nomal" />
 
@@ -112,16 +113,74 @@
                         android:paddingTop="7px"
                         android:paddingRight="19px"
                         android:paddingBottom="7px"
+                        android:visibility="gone"
                         android:text="复制"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_txt_annotateTextSize" />
             </LinearLayout>
         </RelativeLayout>
+        <LinearLayout
+                android:id="@+id/meBar"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/fTT"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="100px"
+                android:paddingBottom="50px">
 
+            <TextView
+                    android:id="@+id/orderAll"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@mipmap/icon_order_all"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:gravity="center"
+                    android:text="全部订单"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:id="@+id/orderWaitPay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@mipmap/icon_order_wait_pay"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:gravity="center"
+                    android:text="待付款"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:id="@+id/orderWaitSend"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@mipmap/icon_order_wait_send"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:gravity="center"
+                    android:text="待发货"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:id="@+id/orderWaitReceive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@mipmap/icon_order_wait_receive"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:gravity="center"
+                    android:text="待收货"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_txt_nomal" />
+        </LinearLayout>
         <View
                 android:layout_width="match_parent"
                 android:layout_height="330px"
                 android:layout_below="@id/fTT"
+                android:visibility="gone"
                 android:layout_marginTop="162px"
                 android:background="@color/ff_back" />
 
@@ -133,6 +192,7 @@
                 android:layout_marginLeft="46px"
                 android:layout_marginTop="84px"
                 android:layout_marginRight="46px"
+                android:visibility="gone"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="10px">
@@ -256,10 +316,11 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:orientation="vertical"
+            android:background="@color/ff_back">
         <!--<androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -270,64 +331,11 @@
             app:cardCornerRadius="5dp"
             app:cardElevation="10px">-->
 
-        <LinearLayout
-                android:id="@+id/meBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="50px"
-                android:paddingBottom="50px">
-
-            <TextView
-                    android:id="@+id/earnings"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ff_one_image"
-                    android:gravity="center"
-                    android:text="收益"
-                    android:textColor="@color/ff_gray"
-                    android:textSize="@dimen/sp_txt_nomal" />
-
-            <TextView
-                    android:id="@+id/orderForm"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ff_two_image"
-                    android:gravity="center"
-                    android:text="订单"
-                    android:textColor="@color/ff_gray"
-                    android:textSize="@dimen/sp_txt_nomal" />
-
-            <TextView
-                    android:id="@+id/myFans"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ff_three_image"
-                    android:gravity="center"
-                    android:text="粉丝"
-                    android:textColor="@color/ff_gray"
-                    android:textSize="@dimen/sp_txt_nomal" />
-
-            <TextView
-                    android:id="@+id/myInvite"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ff_four_image"
-                    android:gravity="center"
-                    android:text="邀请"
-                    android:textColor="@color/ff_gray"
-                    android:textSize="@dimen/sp_txt_nomal" />
-        </LinearLayout>
         <!--        </androidx.cardview.widget.CardView>-->
         <Button
                 android:id="@+id/tastCz"
                 android:layout_width="300px"
                 android:layout_height="100px"
-                android:layout_below="@+id/meBar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="100px"
                 android:text="充值缴费"
@@ -337,7 +345,6 @@
                 android:id="@+id/tastGwc"
                 android:layout_width="300px"
                 android:layout_height="100px"
-                android:layout_below="@+id/meBar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="100px"
                 android:layout_toLeftOf="@+id/tastCz"
@@ -348,11 +355,149 @@
                 android:id="@+id/tastLb"
                 android:layout_width="300px"
                 android:layout_height="100px"
-                android:layout_below="@+id/meBar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="100px"
                 android:layout_toRightOf="@+id/tastCz"
                 android:text="商品列表"
                 android:visibility="gone" />
-    </RelativeLayout>
+        <RelativeLayout
+                android:id="@+id/setUserName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp_10"
+                android:paddingLeft="46px"
+                android:paddingRight="46px">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="昵称"
+                    android:textColor="@color/ff_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:id="@+id/nickName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="修改"
+                    android:textColor="@color/txt_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+        </RelativeLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="46px"
+                android:layout_marginRight="46px"
+                android:background="@color/set_linear" />
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="46px"
+                android:paddingRight="46px">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="注册时间"
+                    android:textColor="@color/ff_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:id="@+id/setUserReg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawablePadding="29px"
+                    android:textColor="@color/txt_gray"
+                    android:textSize="@dimen/sp_txt_nomal"
+                    tools:text="2020-12-30" />
+        </RelativeLayout>
+
+        <TextView
+                android:id="@+id/mSite"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/white"
+                android:drawableRight="@drawable/details_next"
+                android:gravity="center_vertical"
+                android:paddingLeft="46px"
+                android:paddingRight="46px"
+                android:text="我的收货地址"
+                android:textColor="@color/ff_gray"
+                android:textSize="@dimen/sp_txt_nomal" />
+
+        <RelativeLayout
+                android:id="@+id/setFaq"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="46px"
+                android:paddingRight="46px">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="使用帮助"
+                    android:drawableRight="@mipmap/icon_help"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:textColor="@color/ff_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:id="@+id/Zfb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawableRight="@drawable/details_next"
+                    android:drawablePadding="29px"
+                    android:textColor="@color/txt_gray"
+                    android:textSize="@dimen/sp_txt_nomal"
+                    tools:text="" />
+        </RelativeLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="46px"
+                android:layout_marginRight="46px"
+                android:background="@color/set_linear" />
+
+        <RelativeLayout
+                android:id="@+id/settings"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="46px"
+                android:paddingRight="46px">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置"
+                    android:textColor="@color/ff_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:id="@+id/realIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawableRight="@drawable/details_next"
+                    android:drawablePadding="29px"
+                    android:text=""
+                    android:textColor="@color/txt_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+        </RelativeLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
 </com.zhy.autolayout.AutoLinearLayout>

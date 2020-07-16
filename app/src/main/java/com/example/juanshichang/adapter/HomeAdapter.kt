@@ -23,8 +23,7 @@ import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
-import com.youth.banner.BannerConfig
-import com.youth.banner.Transformer
+import com.youth.banner.config.BannerConfig
 import com.youth.banner.listener.OnBannerListener
 import com.zhy.autolayout.AutoLinearLayout
 import kotlinx.android.synthetic.main.fragment_one.*
@@ -135,8 +134,8 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
         val home_gridView = helper!!.getView<GridView>(R.id.home_gridView)
         gridList.clear()
         if (g_i == 1) {
-            gridAdapter = MainGridAdapter(mContext, gridList)
-            home_gridView.adapter = gridAdapter
+         /*   gridAdapter = MainGridAdapter(mContext, gridList)
+            home_gridView.adapter = gridAdapter*/
             g_i = 2
         }
         for (index in 0 until item.grids?.size!!){
@@ -180,7 +179,7 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
         val main_banner = helper!!.getView<AutoLinearLayout>(R.id.auto_1).main_banner
         imgUrls?.clear()
         imgs?.clear()
-        if (b_i == 1) {
+     /*   if (b_i == 1) {
             main_banner.visibility = View.VISIBLE
             main_banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR) //显示数字指示器
             //设置指示器位置（当banner模式中有指示器时）
@@ -221,9 +220,9 @@ class HomeAdapter : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
                     "id:" + imgs!![it].banner_id + "  type" + imgs!![it].type
                 ) //1.列表
             }
-        })
+        })*/
         //banner设置方法全部调用完毕时最后调用
-        main_banner.start()
+//        main_banner.start()
     }
 
 }

@@ -20,7 +20,6 @@ import com.example.juanshichang.utils.ToastTool
 import com.example.juanshichang.utils.ToastUtil
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
-import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_order_form.*
 import kotlinx.coroutines.Runnable
 import org.json.JSONException
@@ -32,9 +31,11 @@ import rx.Subscriber
  * @创建时间：2019/9/3 16:32
  * @文件作用: 订单
  */
-class OrderFormActivity : BaseActivity(), View.OnClickListener {
+class OrderFormActivity() : BaseActivity(), View.OnClickListener {
+
     private var ordersListData: ArrayList<OrdersBeanT.Data>? = null
     private var ordersAdpater: OrdersAdapter? = null
+    private var type: Int = 0
     private val handler: Handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -43,7 +44,8 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
                     ordersAdpater?.emptyView =
                         View.inflate(this@OrderFormActivity, R.layout.activity_not_null, null)
                     ordersAdpater?.setNewData(ordersListData)
-                    ToastTool.showToast(this@OrderFormActivity, "" + ordersListData?.size)
+//                    ToastTool.showToast(this@OrderFormActivity, "" + ordersListData?.size)
+                    detailTab.selectTab(detailTab.getTabAt(type))
                 }
             }
         }
@@ -61,6 +63,9 @@ class OrderFormActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun initData() {
+        if(Int.MAX_VALUE != intent.getIntExtra("type", Int.MAX_VALUE)){
+            type = intent.getIntExtra("type", Int.MAX_VALUE)
+        }
         ordersListData = ArrayList()
         ordTast.postDelayed(object : Runnable {
             override fun run() {

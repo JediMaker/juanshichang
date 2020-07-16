@@ -1,32 +1,35 @@
 package com.example.juanshichang.fragment
 
-import android.view.View
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-
+import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.juanshichang.R
 import com.example.juanshichang.activity.*
+import com.example.juanshichang.adapter.ImageBannerNetAdapter
 import com.example.juanshichang.adapter.MainGridAdapter
 import com.example.juanshichang.adapter.NewHomeAdapter
 import com.example.juanshichang.base.*
 import com.example.juanshichang.bean.GridItemBean
 import com.example.juanshichang.bean.HomeBean
+import com.example.juanshichang.bean.User
 import com.example.juanshichang.http.JhApiHttpManager
-import com.example.juanshichang.utils.GlideImageLoader
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
+import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.IsInternet
 import com.example.juanshichang.widget.OrderConfirmGridView
 import com.google.gson.Gson
 import com.youth.banner.Banner
-import com.youth.banner.BannerConfig
-import com.youth.banner.Transformer
-import com.youth.banner.listener.OnBannerListener
+import com.youth.banner.indicator.CircleIndicator
+import com.youth.banner.transformer.RotateYTransformer
+import com.youth.banner.util.BannerUtils
+import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.coroutines.Runnable
 import org.jetbrains.anko.sdk27.coroutines.onItemClick
 import org.json.JSONException
@@ -40,7 +43,7 @@ import rx.Subscriber
  */
 class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var refresh: SwipeRefreshLayout? = null
-    private var banner: Banner? = null
+    private var banner: Banner<HomeBean.Slideshow?, ImageBannerNetAdapter>? = null
     private var bList: List<HomeBean.Slideshow>? = null
     private var grid: OrderConfirmGridView? = null
     private var gList: List<GridItemBean.Channel>? = null
@@ -185,10 +188,38 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         list?.let {
             val imgs = arrayListOf<String>()
             for (i in 0 until it.size) {
-                imgs.add(it[i].image)
+                imgs?.add(it[i].image)
             }
-            banner?.setBannerStyle(BannerConfig.CIRCLE_INDICATOR) //显示数字指示器
-                ?.setIndicatorGravity(BannerConfig.LEFT)//指示器居右
+
+            banner!!.setAdapter(ImageBannerNetAdapter(list)) //设置适配器
+                //              .setCurrentItem(3,false)
+                .addBannerLifecycleObserver(this) //添加生命周期观察者
+                //              .setBannerRound(BannerUtils.dp2px(5))//圆角
+                .addPageTransformer(RotateYTransformer())//添加切换效果
+                .setDelayTime(4500)//轮播间隔
+                .setIndicator(CircleIndicator(mContext)) //设置指示器
+                //添加间距(如果使用了画廊效果就不要添加间距了，因为内部已经添加过了)
+                .addPageTransformer(MarginPageTransformer(BannerUtils.dp2px(0F).toInt()))
+                .setOnBannerListener { data: Any, position: Int ->
+                    when (it[position].type) {
+                        "app/product" -> { //商品详情
+                            val intent = Intent(mContext!!, ShangPinZyContains::class.java)
+                            intent.putExtra("product_id", it[position].value)
+                            startActivity(intent)
+                        }
+                        "app/category/goods" -> { //商品列表
+                            val intent = Intent(mContext!!, ZyAllActivity::class.java)
+                            intent.putExtra("category_id", it[position].value)
+                            startActivity(intent)
+                        }
+                        else -> {
+                            ToastUtil.showToast(mContext!!, "未知类型:${it[position].type}")
+                        }
+                    }
+                } //设置点击事件,传this也行
+
+            /*banner?.setBannerStyle(BannerConfig.CIRCLE_INDICATOR) //显示数字指示器
+                ?.setIndicatorGravity(BannerConfig.CENTER)//指示器居右
                 ?.setImageLoader(GlideImageLoader(0))//设置图片加载器
                 ?.setBannerAnimation(Transformer.Tablet) //设置动画效果
                 ?.setDelayTime(4500)//轮播间隔

@@ -8,7 +8,8 @@ package com.example.juanshichang.base
 interface Api {
     companion object {
         //        const val BASEURL = "http://dev.0371.ml:8080/" // 内网环境
-        const val BASEURL = "http://mxss.bainianmao.com:88/" // 阿里环境
+        const val BASEURL = "http://mxss.bainianmao.com/" // 阿里环境
+//        const val BASEURL = "http://mxss.local.com/" // 测试环境
         //        const val BASEURL = "http://192.168.5.67:8080/" // 本地环境
         //注册
         val USER = "/api/index.php?route=api/user/register"
@@ -110,7 +111,7 @@ interface Api {
         // ------------------------------------------------ new  port ------------------------------------------
 //        const val NEWBASEURL2 = "http://s.0371.ml/"  //内网环境
 //        const val NEWBASEURL = "http://mxss.0371.ml:88/"  //外网测试
-        const val NEWBASEURL = "http://mxss.bainianmao.com:88/"//外网测试
+        const val NEWBASEURL = "http://mxss.bainianmao.com/"//外网测试
 //        const val NEWBASEURL = "http://mxss.local.com/" // 测试环境
 
         val HOME = "/api/index.php?route=api/home"     //首页

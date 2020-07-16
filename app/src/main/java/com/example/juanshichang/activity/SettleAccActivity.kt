@@ -81,8 +81,7 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
             if (cartList != null && address_id != null) {
                 sucOrderFrom(cartList!!, address_id!!)
             } else {
-                ToastUtil.showToast(this@SettleAccActivity, "网络异常,请稍后重新提交订单")
-                finish()
+                ToastUtil.showToast(this@SettleAccActivity, "收货地址不能为空，请选择收货地址！")
             }
         } else if(null != intent.getStringExtra("orderid")){ //从订单列表进入流程
             orderId = intent.getStringExtra("orderid")
@@ -92,7 +91,6 @@ class SettleAccActivity : BaseActivity(), View.OnClickListener {
             }
         }else {
             ToastUtil.showToast(this@SettleAccActivity, "数据异常,请稍后重试。")
-            finish()
         }
     }
 

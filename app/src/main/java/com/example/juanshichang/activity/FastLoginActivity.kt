@@ -1,6 +1,7 @@
 package com.example.juanshichang.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.CountDownTimer
 import android.text.TextUtils
 import android.view.View
@@ -103,7 +104,7 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
                         logGo(phone, smscode)
                     }
                 } else {//重置密码
-                    if (goResetPassword(phone, smscode,password)) {
+                    if (goResetPassword(phone, smscode, password)) {
                         resetPassword(phone, smscode, password)
                     }
                 }
@@ -127,10 +128,6 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
     private fun goResetPassword(phone: String, smscode: String, ps: String): Boolean {
         if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(smscode) || TextUtils.isEmpty(ps)) {
             ToastUtil.showToast(this@FastLoginActivity, "请根据提示框输入正确的信息!")
-            return false
-        }
-        if (!TextUtils.isEmpty(smscode)) {
-            ToastUtil.showToast(this@FastLoginActivity, "请输入验证码!")
             return false
         }
         if (ps.length < 6) {
@@ -293,25 +290,16 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
                                     jsonObj.optString(JsonParser.JSON_MSG)
                                 )
                             } else {
-                                val data = jsonObj.getJSONObject("data")
-//                        val token: String = data.getString("token")  //注册返回Token不做处理
-                                val uid: Long = data.getLong("uid") //这是用于校验新接口的uid
-//                        LogTool.e("LogToken", token)
-                                val user = SpUtil.getIstance().user
-                                user.apply {
-                                    useruid = uid
-//                            usertoken = token
-//                            phone_num = phone
-//                            password = ps
-                                }.let {
-                                    SpUtil.getIstance().user = it //写入
-                                }
+                                ToastUtil.showToast(
+                                    this@FastLoginActivity,
+                                    "修改成功"
+                                )
                                 this@FastLoginActivity.runOnUiThread(Runnable {
-//                            if (token != "" && !TextUtils.isEmpty(token)) {
-//                            downUser("login")
-                                    goStartActivity(this@FastLoginActivity, MainActivity())
+                                    val intent =
+                                        Intent(this@FastLoginActivity, Reg2LogActivity::class.java)
+                                    intent.putExtra("type", Reg2LogActivity.LOGINCODE) // 显示登录
+                                    goStartActivity(this@FastLoginActivity, intent)
                                     this@FastLoginActivity.finish()
-//                            }
                                 })
 
                             }
@@ -319,11 +307,11 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     override fun onCompleted() {
-                        LogTool.e("onCompleted", "登录请求完成!")
+                        LogTool.e("onCompleted", "修改密码请求完成!")
                     }
 
                     override fun onError(e: Throwable?) {
-                        LogTool.e("onError", "登录请求错误!" + e)
+                        LogTool.e("onError", "修改密码请求错误!" + e)
                     }
 
                 })

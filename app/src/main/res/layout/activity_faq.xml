@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.SettingActivity">
+
+    <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/ff_back"
+            android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/faqTitle"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_56"
+                android:background="@color/colorPrimary">
+            <!--android:layout_marginLeft="49px"-->
+            <!--ff_ret-->
+            <LinearLayout
+                    android:id="@+id/faqRet"
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_56"
+                    android:layout_centerVertical="true">
+
+                <View
+                        android:layout_width="63px"
+                        android:layout_height="43px"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:background="@drawable/ret_n" />
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/faqsTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="使用帮助"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_txt_topBarTextSize"
+                    android:textStyle="bold" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="46px"
+                android:layout_marginRight="46px"
+                android:background="@color/set_linear" />
+
+
+
+
+
+        <RelativeLayout
+                android:id="@+id/serviceAgreement"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="46px"
+                android:paddingRight="46px">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="易甲商城用户服务协议"
+                    android:textColor="@color/ff_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawableRight="@drawable/details_next"
+                    android:drawablePadding="29px"
+                    android:textColor="@color/txt_gray"
+                    android:textSize="@dimen/sp_txt_nomal"
+                    tools:text="" />
+        </RelativeLayout>
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="46px"
+                android:layout_marginRight="46px"
+                android:background="@color/set_linear" />
+
+        <RelativeLayout
+                android:id="@+id/protectionAgreement"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="46px"
+                android:paddingRight="46px">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="易甲商城隐私保护协议"
+                    android:textColor="@color/ff_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawableRight="@drawable/details_next"
+                    android:drawablePadding="29px"
+                    android:text=""
+                    android:textColor="@color/txt_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+        </RelativeLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+
+</com.zhy.autolayout.AutoRelativeLayout>

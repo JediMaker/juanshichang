@@ -24,25 +24,23 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                <com.youth.banner.Banner
+                <com.youth.banner.Banner xmlns:banner="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/mainBanner"
                         android:layout_width="match_parent"
-                        android:layout_height="468px"
-                        android:layout_marginLeft="@dimen/dp_8"
-                        android:layout_marginRight="@dimen/dp_8"
+                        android:layout_height="480px"
+                        android:layout_marginLeft="@dimen/dp_12"
                         android:layout_marginTop="@dimen/dp_8"
-                        app:image_scale_type="fit_xy"
-                        app:indicator_drawable_selected="@color/colorPrimary"></com.youth.banner.Banner>
+                        android:layout_marginRight="@dimen/dp_12"
+                        banner:banner_radius="5dp"
+                        banner:indicator_normal_color="@android:color/white"
+                        banner:indicator_selected_color="@color/colorPrimary"></com.youth.banner.Banner>
 
                 <com.example.juanshichang.widget.OrderConfirmGridView
                         android:id="@+id/homeGrid"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
-                        android:layout_marginBottom="@dimen/dp_8"
-                        android:layout_marginLeft="@dimen/dp_8"
-                        android:layout_marginRight="@dimen/dp_8"
-                        android:background="@drawable/bg_newzy_home"
+                        android:background="@color/ff_back"
                         android:columnWidth="80dp"
                         android:gravity="center"
                         android:paddingTop="17dp"

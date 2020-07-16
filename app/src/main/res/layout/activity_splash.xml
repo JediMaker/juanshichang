@@ -19,12 +19,6 @@
     <com.youth.banner.Banner
             android:visibility="gone"
             android:id="@+id/sBanner"
-            app:indicator_width="21px"
-            app:indicator_height="21px"
-            app:indicator_margin="35px"
-            app:is_auto_play="false"
-            app:indicator_drawable_selected="@color/label_color"
-            app:indicator_drawable_unselected="@color/shangpin_tit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     <TextView

@@ -53,8 +53,9 @@ import java.io.IOException
  */
 class OneFragment : BaseFragment() {
     private var tabIndicator: Int = 0 //Tab 下标值
-//    private var tabData: List<TabOneBean.Category>? = null
-    private var tabNData:List<HomeBean.Categroy>? = null
+
+    //    private var tabData: List<TabOneBean.Category>? = null
+    private var tabNData: List<HomeBean.Categroy>? = null
     private var mOr: RelativeLayout? = null
     private var mTl: LinearLayout? = null
     private var tEdit: EditText? = null
@@ -65,6 +66,7 @@ class OneFragment : BaseFragment() {
     private var mainVp: CustomViewPager? = null
     private var mainAdapter: NormalAdapter? = null
     private var fragmentList: ArrayList<Fragment>? = null
+
     //    private var oneFragment: SelectionFragment? = null
     private var oneFragment: HomeFragment? = null
     private var twoFragment: HomeOtherFragment? = null
@@ -92,9 +94,9 @@ class OneFragment : BaseFragment() {
     override fun initViews(savedInstanceState: Bundle) {
         MyApp.requestPermission(mContext!!)
         //判断 设置状态栏颜色
-    /*    if (tabIndicator != 0) {
-            StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.white)
-        }*/
+        /*    if (tabIndicator != 0) {
+                StatusBarUtil.addStatusViewWithColor(this@OneFragment.activity, R.color.white)
+            }*/
         mainTab = mBaseView?.findViewById<MagicIndicator>(R.id.mainTab)
         mainVp = mBaseView?.findViewById<CustomViewPager>(R.id.vpOne)
         mainBack = mBaseView?.findViewById<ImageView>(R.id.mainBack)
@@ -209,7 +211,7 @@ class OneFragment : BaseFragment() {
             .post(Api.CATEGORY, Parameter.getTabData(parent_id, 0), object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
-                    val str =result?.substring(result.indexOf("{"),result.length)
+                    val str = result?.substring(result.indexOf("{"), result.length)
 
                     if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                         val jsonObj: JSONObject = JSONObject(str)
@@ -234,6 +236,7 @@ class OneFragment : BaseFragment() {
                 }
             })
     }
+
     //这个 还是主页面接口 但是 只剥离需要 categroy
     private fun getHomeTab() {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
@@ -242,7 +245,7 @@ class OneFragment : BaseFragment() {
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
-                    val t =result?.substring(result.indexOf("{"),result.length)
+                    val t = result?.substring(result.indexOf("{"), result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -277,8 +280,10 @@ class OneFragment : BaseFragment() {
                 }
             })
     }
+
     companion object {
         var WebUrl: String? = null
+
         //获取链接 跳转
         fun getWebLink(channel_id: Long, context: Context) {
             //Parameter.getGridClickMap(channel_id, 0, 20)
@@ -289,7 +294,7 @@ class OneFragment : BaseFragment() {
                     object : Subscriber<String>() {
                         override fun onNext(result: String?) {
                             //todo后台返回数据结构问题，暂时这样处理
-                            val str =result?.substring(result.indexOf("{"),result.length)
+                            val str = result?.substring(result.indexOf("{"), result.length)
 
                             if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                                 var jsonObj: JSONObject = JSONObject(str)
@@ -348,19 +353,19 @@ class OneFragment : BaseFragment() {
                         mOr?.visibility = View.VISIBLE
                         mainBack?.visibility = View.VISIBLE
                         if (index == 0) {
-                     /*       mTl?.visibility = View.GONE
-                            mOr?.visibility = View.VISIBLE
-                            mainBack?.visibility = View.VISIBLE*/
+                            /*       mTl?.visibility = View.GONE
+                                   mOr?.visibility = View.VISIBLE
+                                   mainBack?.visibility = View.VISIBLE*/
                             mainVp?.currentItem = 0
                             LiveDataBus.get().with("topisone").value = true
                             LiveDataBus.get().with("mainTopStatusView").value = R.color.colorPrimary
                         } else {
-               /*             mOr?.visibility = View.GONE
-                            mTl?.visibility = View.VISIBLE
-                            mainBack?.visibility = View.INVISIBLE
-                            mainVp?.currentItem = 1
-                            LiveDataBus.get().with("topisone").value = false
-                            LiveDataBus.get().with("mainTopStatusView").value = R.color.white*/
+                            /*             mOr?.visibility = View.GONE
+                                         mTl?.visibility = View.VISIBLE
+                                         mainBack?.visibility = View.INVISIBLE
+                                         mainVp?.currentItem = 1
+                                         LiveDataBus.get().with("topisone").value = false
+                                         LiveDataBus.get().with("mainTopStatusView").value = R.color.white*/
                             mainBack?.visibility = View.GONE
                             mainBack2?.visibility = View.VISIBLE
                             mainVp?.currentItem = 1
@@ -395,5 +400,13 @@ class OneFragment : BaseFragment() {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null)
+    }
+
+    fun selectTabOne() {
+        mainVp?.currentItem = 0
+        LiveDataBus.get().with("topisone").value = true
+        LiveDataBus.get().with("mainTopStatusView").value = R.color.colorPrimary
+        tabIndicator = 0
+        mainTab?.onPageSelected(0)
     }
 }

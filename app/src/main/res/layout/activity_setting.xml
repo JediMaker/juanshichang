@@ -155,6 +155,7 @@
                 android:textSize="@dimen/sp_txt_nomal" />
 
         <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/setZfb"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
@@ -192,6 +193,7 @@
 
         <RelativeLayout
                 android:id="@+id/realName"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
                 android:background="@color/white"

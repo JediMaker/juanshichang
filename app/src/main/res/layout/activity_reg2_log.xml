@@ -1,61 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:fillViewport="true"
+        tools:context=".activity.Reg2LogActivity">
 
-    <com.zhy.autolayout.AutoRelativeLayout
-            android:id="@+id/rRL"
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_56"
-            android:background="@color/colorPrimary">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
-        <LinearLayout
-                android:id="@+id/log_ret"
-                android:layout_width="@dimen/dp_48"
-                android:layout_height="@dimen/dp_56"
-                android:layout_centerVertical="true">
-            <View
-                    android:layout_width="@dimen/dp_13"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_16"
-                    android:background="@drawable/c_back" />
-
-        </LinearLayout>
-        <TextView
-                android:id="@+id/log_title"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="登录"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_txt_topBarTextSize" />
-    </com.zhy.autolayout.AutoRelativeLayout>
-
-    <com.zhy.autolayout.AutoLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
-        <RelativeLayout
+        <ImageView
+                android:id="@+id/bgLogin"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="@dimen/dp_300"
+                android:scaleType="fitXY"
+                android:src="@drawable/log_logo"
+                android:visibility="visible"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <include
-                    android:id="@+id/registerInclude"
-                    layout="@layout/regist_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="930px" />
+        <com.zhy.autolayout.AutoRelativeLayout
+                android:id="@+id/rRL"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_56"
+                android:background="@color/aphla_white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <include
-                    android:id="@+id/loginInclude"
-                    layout="@layout/login_item"
+            <LinearLayout
+                    android:id="@+id/log_ret"
+                    android:layout_width="@dimen/dp_48"
+                    android:layout_height="@dimen/dp_56"
+                    android:layout_centerVertical="true">
+
+                <View
+                        android:layout_width="26dp"
+                        android:layout_height="19dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:background="@drawable/ret_n" />
+
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/log_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_56"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="登录"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_txt_topBarTextSize" />
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+        <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/contentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-40dp"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bgLogin">
+
+            <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="930px"
-                    android:visibility="gone" />
-        </RelativeLayout>
-    </com.zhy.autolayout.AutoLinearLayout>
-</com.zhy.autolayout.AutoRelativeLayout>
+                    android:layout_height="match_parent">
+
+                <include
+                        android:id="@+id/registerInclude"
+                        layout="@layout/regist_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="930px" />
+
+                <include
+                        android:id="@+id/loginInclude"
+                        layout="@layout/login_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="930px"
+                        android:visibility="gone" />
+            </RelativeLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+
+
+

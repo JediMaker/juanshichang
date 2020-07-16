@@ -29,7 +29,6 @@
                         android:visibility="invisible"
                         android:id="@+id/mBZy"
                         android:layout_width="match_parent"
-                        app:image_scale_type="fit_xy"
                         android:layout_height="986px"/>
 
                 <View

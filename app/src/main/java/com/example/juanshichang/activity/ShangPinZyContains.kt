@@ -15,24 +15,28 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import butterknife.BindView
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
+import com.example.juanshichang.adapter.GoodsImageAdapter
+import com.example.juanshichang.adapter.ImageBannerNetAdapter
 import com.example.juanshichang.adapter.ShangPinXqAdapter
 import com.example.juanshichang.adapter.ShopDetailsAdapter
 import com.example.juanshichang.base.Api
 import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.NewParameter
+import com.example.juanshichang.bean.HomeBean
 import com.example.juanshichang.bean.ZyProduct
-
 import com.example.juanshichang.http.JhApiHttpManager
+import com.example.juanshichang.indicator.NumIndicator
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
-import com.youth.banner.BannerConfig
-import com.youth.banner.Transformer
+import com.youth.banner.Banner
+import com.youth.banner.config.IndicatorConfig
 import kotlinx.android.synthetic.main.activity_shang_pin_zy_contains.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -46,6 +50,9 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private var adapterSp: ShangPinXqAdapter? = null
     private var checkMap: ConcurrentHashMap<String, ArrayList<String>>? = null //这个是选择的数据集合
     private var quantity: Int = 1 // 数量
+    @field:JvmField
+    @BindView(R.id.mBZy)
+    var mBZy: Banner<ZyProduct.Image?, GoodsImageAdapter>? = null
 
     //弹窗布局
     private var dShopImg: ImageView? = null  //小图
@@ -142,6 +149,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
             product_id = "30"
             getZyDetails(product_id) //请求网络数据
         }
+        mBZy
     }
 
     override fun initData() {
@@ -202,23 +210,25 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
         for (i in 0 until images.size) {
             bannerList.add(images[i].popup)
         }
-        mBZy.setBannerStyle(BannerConfig.NUM_INDICATOR) //显示数字指示器
-        mBZy.setIndicatorGravity(BannerConfig.RIGHT)//指示器居右
+//        mBZy.setBannerStyle(BannerConfig.NUM_INDICATOR) //显示数字指示器
+//        mBZy.setIndicatorGravity(BannerConfig.RIGHT)//指示器居右
         //设置图片加载器
-        mBZy.setImageLoader(GlideImageLoader(1))
+//        mBZy.setImageLoader(GlideImageLoader(1))
         //设置图片集合
-        mBZy.setImages(bannerList)
+//        mBZy.setImages(bannerList)
         //设置动画效果
-        mBZy.setBannerAnimation(Transformer.Default)
+//        mBZy.setBannerAnimation(Transformer.Default)
         //设置轮播图片间隔时间（不设置默认为2000）
-        mBZy.setDelayTime(3500)
+        mBZy?.setAdapter(GoodsImageAdapter(images))
+            ?.setDelayTime(3500)
+            ?.setIndicator(NumIndicator(this))
+            ?.setIndicatorGravity(IndicatorConfig.Direction.RIGHT)
         //设置是否自动轮播（不设置则默认自动）
-        mBZy.isAutoPlay(true)
         //设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
         //meBanner.setBannerTitles(images);
         //banner设置方法全部调用完毕时最后调用
-        mBZy.start()
-        mBZy.visibility = View.VISIBLE
+        mBZy?.start()
+        mBZy?.visibility = View.VISIBLE
         //这里初始化商品详情...
         setRecycler(bannerList)
     }
@@ -241,12 +251,12 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        mBZy?.startAutoPlay()
+        mBZy?.start()
     }
 
     override fun onStop() {
         super.onStop()
-        mBZy?.stopAutoPlay()
+        mBZy?.stop()
     }
 
     override fun onDestroy() {
@@ -421,11 +431,19 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                         dShopTit?.text = "库存${minStockNum}件"
                         dShopPrice?.text = Util.getGaudyStr("¥${realPrice.toString()}")
                     }
-
-
+                    if (minStockNum > 0) {
+                        dConfirm?.isEnabled = true
+                    } else {
+                        dConfirm?.isEnabled = false
+                    }
                 }
 
             });
+            if (minStockNum > 0) {
+                dConfirm?.isEnabled = true
+            } else {
+                dConfirm?.isEnabled = false
+            }
             checkMap?.let {
                 dAdapter?.setAllCheck(it)
             }

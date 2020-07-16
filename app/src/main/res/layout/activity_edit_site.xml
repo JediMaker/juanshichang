@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"/>
     </com.zhy.autolayout.AutoRelativeLayout>
     <LinearLayout
-            android:layout_marginTop="30px"
+            android:layout_marginTop="@dimen/dp_10"
             android:paddingLeft="47px"
             android:paddingRight="46px"
             android:background="@color/white"
@@ -62,10 +62,9 @@
             android:layout_height="wrap_content">
         <RelativeLayout
                 android:id="@+id/itemOne"
-                android:paddingTop="32px"
-                android:paddingBottom="26px"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:gravity="center_vertical"
+                android:layout_height="@dimen/dp_48">
             <EditText
                     android:id="@+id/sName"
                     android:inputType="text"
@@ -96,16 +95,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/itemOne"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:id="@+id/setUserName"
-                android:paddingTop="23px"
-                android:paddingBottom="21px"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="@dimen/dp_48">
             <EditText
                     android:id="@+id/sPhone"
                     android:inputType="phone"
                     android:maxLines="1"
                     android:maxLength="11"
                     android:background="@null"
+                    android:layout_centerVertical="true"
                     android:hint="手机号码"
                     android:textColorHint="@color/txt_gray"
                     android:textColor="@color/main_text"
@@ -165,10 +164,9 @@
                 android:drawableRight="@drawable/details_next"
                 android:textSize="@dimen/sp_txt_nomal"
                 android:textColor="@color/txt_gray"
-                android:paddingTop="33px"
-                android:paddingBottom="29px"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="@dimen/dp_48"/>
         <View
                 android:background="@color/set_linear"
                 android:layout_width="match_parent"
@@ -190,18 +188,18 @@
     <RelativeLayout
             android:visibility="gone"
             android:id="@+id/llCheck"
-            android:layout_marginTop="30px"
+            android:layout_marginTop="@dimen/dp_10"
             android:paddingLeft="47px"
             android:paddingRight="46px"
             android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:gravity="center_vertical"
+            android:layout_height="@dimen/dp_48">
         <TextView
-                android:paddingTop="40px"
-                android:paddingBottom="38px"
                 android:text="设为默认地址"
                 android:textColor="@color/main_text"
                 android:textSize="@dimen/sp_txt_nomal"
+                android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         <CheckBox

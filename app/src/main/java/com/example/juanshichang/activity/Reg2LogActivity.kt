@@ -3,12 +3,15 @@ package com.example.juanshichang.activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.CountDownTimer
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.base.Api
@@ -55,9 +58,9 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         if (type != REGISTERCODE) {
             registerInclude.visibility = View.GONE
             loginInclude.visibility = View.VISIBLE
-            log_title.text="登录"
-        }else{
-            log_title.text="注册"
+            log_title.text = "登录"
+        } else {
+            log_title.text = "注册"
         }
         if (null != intent.getStringExtra("one")) { //从个人中心 页面跳转的处理
             LiveDataBus.get().with("mainGo").value = 0
@@ -79,18 +82,18 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.log_ret -> {
-         /*       if (!Util.hasLogin(this)) {
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    startActivity(intent)
-                    LiveDataBus.get().with("mainGo").value = 0 //返回到购物车
-                    finish()
-                }*/
+                /*       if (!Util.hasLogin(this)) {
+                           val intent = Intent(this, MainActivity::class.java)
+                           intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                           startActivity(intent)
+                           LiveDataBus.get().with("mainGo").value = 0 //返回到购物车
+                           finish()
+                       }*/
                 this@Reg2LogActivity.finish()
             }
             //注册页面
             R.id.goLog -> {//登录
-                log_title.text="登录"
+                log_title.text = "登录"
                 registerInclude.visibility = View.GONE
                 loginInclude.visibility = View.VISIBLE
             }
@@ -136,7 +139,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
             //登录界面
             R.id.goReg -> {//注册
-                log_title.text="注册"
+                log_title.text = "注册"
                 loginInclude.visibility = View.GONE
                 registerInclude.visibility = View.VISIBLE
             }
@@ -320,7 +323,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                             user.apply {
                                 useruid = uid
 //                            usertoken = token
-//                            phone_num = phone
+                                phone_num = phone
 //                            password = ps
                             }.let {
                                 SpUtil.getIstance().user = it //写入
@@ -351,7 +354,7 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
     fun getSendSMS(mobile: String, context: Context) {
 //        var smsCodes: String? = null
         HttpManager.getInstance()
-            .post(Api.SMSSEND, Parameter.getVerifyCode(mobile,"1"), object : Subscriber<String>() {
+            .post(Api.SMSSEND, Parameter.getVerifyCode(mobile, "1"), object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
                     val str = result?.substring(result?.indexOf("{"), result.length)
@@ -467,6 +470,46 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             return false
         }
         return true
+    }
+
+    /**
+     * @param root
+     *            最外层布局，需要调整的布局
+     * @param scrollToView
+     *            被键盘遮挡的scrollToView，滚动root,使scrollToView在root可视区域的底部
+     *            https://blog.csdn.net/HarryWeasley/java/article/details/50266749
+
+     */
+    private fun controlKeyboardLayout(root: View, scrollToView: View) {
+        // 注册一个回调函数，当在一个视图树中全局布局发生改变或者视图树中的某个视图的可视状态发生改变时调用这个回调函数。
+        root.getViewTreeObserver().addOnGlobalLayoutListener(
+            ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                fun onGlobalLayout() {
+                    val rect = Rect();
+                    // 获取root在窗体的可视区域
+                    root.getWindowVisibleDisplayFrame(rect);
+                    // 当前视图最外层的高度减去现在所看到的视图的最底部的y坐标
+                    val rootInvisibleHeight = root.getRootView()
+                        .getHeight() - rect.bottom;
+                    Log.i("tag", "最外层的高度" + root.getRootView().getHeight());
+                    // 若rootInvisibleHeight高度大于100，则说明当前视图上移了，说明软键盘弹出了
+                    if (rootInvisibleHeight > 100) {
+                        val location = IntArray(2)
+                        // 获取scrollToView在窗体的坐标
+                        scrollToView.getLocationInWindow(location);
+                        // 计算root滚动高度，使scrollToView在可见区域的底部
+                        val srollHeight = (
+                                location[1] + scrollToView
+                                    .getHeight()
+                                ) - rect.bottom;
+                        root.scrollTo(0, srollHeight);
+                    } else {
+                        // 软键盘没有弹出来的时候
+                        root.scrollTo(0, 0);
+                    }
+                }
+            });
     }
 
     private fun goJudgeLogin(): Boolean {

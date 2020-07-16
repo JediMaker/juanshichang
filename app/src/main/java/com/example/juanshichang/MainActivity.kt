@@ -43,6 +43,7 @@ class MainActivity : BaseActivity() {
     private var fourFragment: FourFragment? = null
     private var normalAdapter: NormalAdapter? = null
     private var bus = LiveDataBus.get()
+
     // 用于确定 首页面Tab 是否处在第一个
     private var topTabIsOne: Boolean = true
     override fun getContentView(): Int {
@@ -122,6 +123,7 @@ class MainActivity : BaseActivity() {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu -> {
+                    oneFragment?.selectTabOne()
                     vp_main.currentItem = 0
                     return@OnNavigationItemSelectedListener true
                 }
@@ -140,7 +142,7 @@ class MainActivity : BaseActivity() {
                 R.id.store -> {
                     if (!Util.hasLogin()) { //登录检查
                         val intent = Intent(this@MainActivity, Reg2LogActivity::class.java)
-                        intent.putExtra("type",Reg2LogActivity.LOGINCODE)
+                        intent.putExtra("type", Reg2LogActivity.LOGINCODE)
                         BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
                     } else {
                         vp_main.currentItem = 3
@@ -151,7 +153,7 @@ class MainActivity : BaseActivity() {
                 R.id.me -> {
                     if (!Util.hasLogin()) { //登录检查
                         val intent = Intent(this@MainActivity, Reg2LogActivity::class.java)
-                        intent.putExtra("type",Reg2LogActivity.LOGINCODE)
+                        intent.putExtra("type", Reg2LogActivity.LOGINCODE)
                         BaseActivity.Companion.goStartActivity(this@MainActivity, intent)
                     } else {
 //                        ToastTool.showToast(this@MainActivity, "登录检查通过2")
@@ -163,6 +165,7 @@ class MainActivity : BaseActivity() {
             }
             false
         }
+
     /*private val mTencentBottomView = object : QMUITabSegment.OnTabSelectedListener{
         override fun onDoubleTap(index: Int) { //当某个 Tab 被双击时会触发
         }
@@ -233,6 +236,7 @@ class MainActivity : BaseActivity() {
             }
         })*/
     }
+
     private val mTabLayoutBottom = object : TabLayout.OnTabSelectedListener {
         override fun onTabReselected(p0: TabLayout.Tab?) {
         }
@@ -278,6 +282,7 @@ class MainActivity : BaseActivity() {
         }
 
     }
+
     /**
      *  原生谷歌官方底部栏
      */
@@ -323,11 +328,11 @@ class MainActivity : BaseActivity() {
                     0 -> {
                         bus.with("mainTopStatusView").value = R.color.colorPrimary
 
-                  /*      if (topTabIsOne) {
-                            bus.with("mainTopStatusView").value = R.color.colorPrimary
-                        } else {
-                            bus.with("mainTopStatusView").value = R.color.white
-                        }*/
+                        /*      if (topTabIsOne) {
+                                  bus.with("mainTopStatusView").value = R.color.colorPrimary
+                              } else {
+                                  bus.with("mainTopStatusView").value = R.color.white
+                              }*/
                     }
                     1, 2, 3 -> {
                         bus.with("mainTopStatusView").value = R.color.white
@@ -352,6 +357,7 @@ class MainActivity : BaseActivity() {
 
     companion object {
         private const val CAM_CODE = 101
+
         /**
          * 获取用户信息
          */
@@ -360,7 +366,7 @@ class MainActivity : BaseActivity() {
                 .post(Api.USERINFO, NewParameter.getUserMap(), object : Subscriber<String>() {
                     override fun onNext(result: String?) {
                         //todo后台返回数据结构问题，暂时这样处理
-                        val str =result?.substring(result.indexOf("{"),result.length)
+                        val str = result?.substring(result.indexOf("{"), result.length)
 
                         if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
                             var jsonObj: JSONObject? = null
@@ -375,7 +381,7 @@ class MainActivity : BaseActivity() {
                                     context,
                                     jsonObj.optString(JsonParser.JSON_MSG)
                                 )
-                            }  else {
+                            } else {
                                 /*val data = jsonObj!!.getJSONObject("data")
         //                        val age: String = data.getString("age")
                                 val avatar: String = data.getString("avatar")
@@ -422,7 +428,7 @@ class MainActivity : BaseActivity() {
         if (!isExit) {
             isExit = true
             ToastUtil.showToast(this, "再来一次 退出App")
-            var tExit: Timer   = Timer()
+            var tExit: Timer = Timer()
             tExit.schedule(object : TimerTask() {
                 override fun run() {
                     isExit = false

@@ -28,7 +28,6 @@
                 <com.youth.banner.Banner
                         android:id="@+id/meBanner"
                         android:layout_width="match_parent"
-                        app:image_scale_type="fit_xy"
                         android:layout_height="986px"/>
                 <TextView
                         android:id="@+id/sPSY"

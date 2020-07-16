@@ -31,8 +31,7 @@ import com.google.gson.Gson
 import com.umeng.socialize.UMShareAPI
 import com.umeng.socialize.UMShareListener
 import com.umeng.socialize.bean.SHARE_MEDIA
-import com.youth.banner.BannerConfig
-import com.youth.banner.Transformer
+import com.youth.banner.config.BannerConfig
 import kotlinx.android.synthetic.main.activity_shang_pin_contains.*
 import kotlinx.coroutines.Runnable
 import org.json.JSONObject
@@ -595,18 +594,18 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         //开始轮播
-        meBanner.startAutoPlay()
+        meBanner.start()
     }
 
     override fun onStop() {
         super.onStop()
         //结束轮播
-        meBanner.stopAutoPlay()
+        meBanner.stop()
     }
 
     private fun setBanner(imgUrls: MutableList<String>) {
         meBanner.visibility = View.VISIBLE
-        meBanner.setBannerStyle(BannerConfig.NUM_INDICATOR) //显示数字指示器
+        /*meBanner.setBannerStyle(BannerConfig.NUM_INDICATOR) //显示数字指示器
         //设置指示器位置（当banner模式中有指示器时）
         meBanner.setIndicatorGravity(BannerConfig.RIGHT)//指示器居右
         //设置图片加载器
@@ -618,7 +617,7 @@ class ShangPinContains : BaseActivity(), View.OnClickListener {
         //设置轮播图片间隔时间（不设置默认为2000）
         meBanner.setDelayTime(4500)
         //设置是否自动轮播（不设置则默认自动）
-        meBanner.isAutoPlay(true)
+        meBanner.isAutoPlay(true)*/
         //设置轮播要显示的标题和图片对应（如果不传默认不显示标题）
         //meBanner.setBannerTitles(images);
         //banner设置方法全部调用完毕时最后调用

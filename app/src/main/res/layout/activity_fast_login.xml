@@ -19,11 +19,11 @@
                 android:layout_centerVertical="true">
 
             <View
-                    android:layout_width="@dimen/dp_13"
-                    android:layout_height="@dimen/dp_20"
+                    android:layout_width="26dp"
+                    android:layout_height="19dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dp_16"
-                    android:background="@drawable/c_back" />
+                    android:background="@drawable/ret_n" />
         </LinearLayout>
 
         <TextView

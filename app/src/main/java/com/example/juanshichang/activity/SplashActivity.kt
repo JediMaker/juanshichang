@@ -13,7 +13,7 @@ import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.NewParameter
 import com.example.juanshichang.bean.TokenBean
-import com.example.juanshichang.http.JhApiHttpManager
+import com.example.juanshichang.http.*
 import com.example.juanshichang.utils.*
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -36,7 +36,7 @@ class SplashActivity : FragmentActivity(), View.OnClickListener {
 //        StatusBarUtil.addStatusViewWithColor(this, R.color.white)
         val GxmQ: Boolean = MyApp.sp.getBoolean("FIRST", true)
         val edit = MyApp.sp.edit()
-        edit.putString("appkey", "0371.ml.appkey")
+//        edit.putString("appkey", "0371.ml.appkey")
         edit.apply()
         setContentView(R.layout.activity_splash)
         if (GxmQ) { //第一次登录
@@ -87,9 +87,9 @@ class SplashActivity : FragmentActivity(), View.OnClickListener {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).get(
             Api.AUTHORIZE,
             NewParameter.getAuthorizeMap(
-                "mxss_test",
-                "code",
-                "mxss.local.com"
+                CLIENT_ID,
+                CODE,
+                REDIRECT_URI
             ),
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
@@ -125,10 +125,10 @@ class SplashActivity : FragmentActivity(), View.OnClickListener {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.ACCESS_TOKEN,
             NewParameter.getAuthorizeTokenMap(
-                "mxss_test",
+                CLIENT_ID,
                 code.toString(),
-                "mxss_test",
-                "mxss.local.com"
+                CLIENT_SECRET,
+                REDIRECT_URI
             ),
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
