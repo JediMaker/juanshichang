@@ -62,7 +62,7 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
             fastLoginTitle.text = "快速登录"
         } else {
             loginBut.text = "设置"
-            fastLoginTitle.text = "忘记密码"
+            fastLoginTitle.text = "修改密码"
         }
     }
 
@@ -238,11 +238,12 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
                                     SpUtil.getIstance().user = it //写入
                                 }
                                 this@FastLoginActivity.runOnUiThread(Runnable {
-//                            if (token != "" && !TextUtils.isEmpty(token)) {
-//                            downUser("login")
+                                    ToastUtil.showToast(
+                                        this@FastLoginActivity,
+                                       "登陆成功"
+                                    )
                                     goStartActivity(this@FastLoginActivity, MainActivity())
                                     this@FastLoginActivity.finish()
-//                            }
                                 })
 
                             }
@@ -261,7 +262,7 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     /**
-     * 登录
+     * 修改密码
      */
     private fun resetPassword(phone: String, smscode: String, password: String) {
         HttpManager.getInstance()
@@ -292,14 +293,17 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
                             } else {
                                 ToastUtil.showToast(
                                     this@FastLoginActivity,
-                                    "修改成功"
+                                    "修改密码成功"
                                 )
+
                                 this@FastLoginActivity.runOnUiThread(Runnable {
-                                    val intent =
-                                        Intent(this@FastLoginActivity, Reg2LogActivity::class.java)
-                                    intent.putExtra("type", Reg2LogActivity.LOGINCODE) // 显示登录
-                                    goStartActivity(this@FastLoginActivity, intent)
-                                    this@FastLoginActivity.finish()
+                                    if (!Util.hasLogin()){
+                                        val intent =
+                                            Intent(this@FastLoginActivity, Reg2LogActivity::class.java)
+                                        intent.putExtra("type", Reg2LogActivity.LOGINCODE) // 显示登录
+                                        goStartActivity(this@FastLoginActivity, intent)
+                                        this@FastLoginActivity.finish()
+                                    }
                                 })
 
                             }

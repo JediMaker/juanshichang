@@ -69,7 +69,6 @@ class SearcheActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             mbackLayout -> {//返回
-                ToastTool.showToast(this@SearcheActivity, "返回")
                 finish()
             }
             etsearch -> {//搜索框

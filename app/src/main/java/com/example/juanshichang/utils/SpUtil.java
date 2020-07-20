@@ -65,6 +65,7 @@ public class SpUtil {
         editor.putFloat("currentmonthbenefit",entity.getCurrent_month_benefit());
         editor.putFloat("lastdaybenefit",entity.getLast_day_benefit());
         editor.putLong("frominviteuserid",entity.getFrom_invite_userid());
+        editor.putInt("points",entity.getPoints());
         editor.putString("invitecode",entity.getInvite_code());
         editor.putString("ali_pay_account",entity.getAli_pay_account());
         editor.putString("access_token",entity.getAccess_token());
@@ -88,6 +89,7 @@ public class SpUtil {
         entity.setCurrent_month_benefit(sp.getFloat("currentmonthbenefit",0));
         entity.setLast_day_benefit(sp.getFloat("lastdaybenefit",0));
         entity.setFrom_invite_userid(sp.getLong("frominviteuserid",0));
+        entity.setPoints(sp.getInt("points",0));
         entity.setInvite_code(sp.getString("invitecode",""));
         entity.setAli_pay_account(sp.getString("ali_pay_account",""));
         entity.setAccess_token(sp.getString("access_token",""));

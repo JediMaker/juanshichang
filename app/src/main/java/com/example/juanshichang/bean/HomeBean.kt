@@ -11,7 +11,8 @@ class HomeBean {
     data class Data(
         var categroy: List<Categroy> = listOf(),
         var products: List<Product> = listOf(),
-        var slideshow: List<Slideshow> = listOf()
+        var slideshow: List<Slideshow> = listOf(),
+        var items: List<Items> = listOf()
     )
 
     data class Categroy(
@@ -56,5 +57,11 @@ class HomeBean {
         var title: String = "",
         var type: String = "",
         var value: String = ""
+    )
+    data class Items(
+        var id: String = "",
+        var icon: String = "",
+        var name: String = "",
+        var uri: String = ""
     )
 }

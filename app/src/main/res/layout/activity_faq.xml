@@ -85,12 +85,17 @@
                     tools:text="" />
         </RelativeLayout>
 
-        <View
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="46px"
-                android:layout_marginRight="46px"
-                android:background="@color/set_linear" />
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="46px"
+                    android:layout_marginRight="46px"
+                    android:background="@color/ff_back" />
+        </RelativeLayout>
 
         <RelativeLayout
                 android:id="@+id/protectionAgreement"

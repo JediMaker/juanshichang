@@ -72,7 +72,7 @@ class SplashActivity : FragmentActivity(), View.OnClickListener {
         } else {
 //            BaseActivity.goStartActivity(context,LoginActivity())
             BaseActivity.goStartActivity(context, MainActivity())
-            ToastTool.showToast(this@SplashActivity, "大侠 尚未登录 如何畅游江湖")
+//            ToastTool.showToast(this@SplashActivity, "大侠 尚未登录 如何畅游江湖")
         }
         finish()
     }

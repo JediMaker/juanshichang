@@ -15,6 +15,6 @@ class NewHomeSonAdapter: BaseQuickAdapter<HomeBean.Date, BaseViewHolder>(R.layou
     override fun convert(helper: BaseViewHolder?, item: HomeBean.Date?) {
         helper?.setText(R.id.zyTitle,item?.name)
             ?.setText(R.id.zyPrice,item?.price)
-        GlideUtil.loadImage(mContext,item?.thumb,helper!!.getView(R.id.zyIv),2)
+        GlideUtil.loadImage(mContext,item?.thumb,helper!!.getView(R.id.zyIv),6)
     }
 }

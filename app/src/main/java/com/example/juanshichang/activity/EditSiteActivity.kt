@@ -25,6 +25,7 @@ import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
@@ -465,11 +466,19 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
                             e.printStackTrace();
                         }
                         if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
-                            ToastUtil.showToast(
-                                this@EditSiteActivity,
-                                jsonObj.optString(JsonParser.JSON_MSG)
-                            )
+                            if ("211".equals(jsonObj?.optString(JsonParser.JSON_CODE))) {
+                                ToastUtil.showToast(
+                                    this@EditSiteActivity,
+                                    "需保留一条地址信息")
+                            }else{
+                                ToastUtil.showToast(
+                                    this@EditSiteActivity,
+                                    jsonObj.optString(JsonParser.JSON_MSG)
+                                )
+                            }
+
                         } else {
+                            LiveDataBus.get().with("delAddress").value=address_id
                             finish()
                         }
                     }
@@ -529,10 +538,11 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
                                                     break
                                                 }
                                             }
-                                            this@EditSiteActivity.runOnUiThread(object : Runnable{
+                                            this@EditSiteActivity.runOnUiThread(object : Runnable {
                                                 override fun run() {
                                                     sArea.textColorResource = R.color.main_text
-                                                    sArea.text = "${data.data.name} ${it[index].name}"
+                                                    sArea.text =
+                                                        "${data.data.name} ${it[index].name}"
                                                 }
                                             })
 
@@ -678,9 +688,12 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
         sArea.textColorResource = R.color.main_text
         sArea.text =
             "${if (province?.name != null) province?.name else ""} ${if (city?.name != null) city?.name else ""} ${if (county?.name != null) county?.name else ""}"
-        provinceName = province?.name!!
-        cityName = city?.name!!
-        countyName = county?.name!!
+        try {
+            provinceName = province?.name!!
+            cityName = city?.name!!
+            countyName = county?.name!!
+        } catch (e: Exception) {
+        }
         for (pData in zoneProvinceList!!) {
             if (pData.pid.toString().equals(province?.id.toString())) {
                 province_id = pData.id
@@ -692,10 +705,13 @@ class EditSiteActivity : BaseActivity(), View.OnClickListener, OnAddressSelected
                 city_id = pData.id
             }
         }
-        for (pData in zoneStreetList!!) {
-            if (pData.pid.toString().equals(county?.id.toString())) {
-                county_id = pData.id
+        try {
+            for (pData in zoneStreetList!!) {
+                if (pData.pid.toString().equals(county?.id.toString())) {
+                    county_id = pData.id
+                }
             }
+        } catch (e: Exception) {
         }
     }
 }

@@ -123,7 +123,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                         e.printStackTrace();
                     }
                     if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
-                        ToastUtil.showToast(this@RegisterActivity, jsonObj!!.optString(JsonParser.JSON_MSG))
+                        ToastUtil.showToast(this@RegisterActivity, jsonObj.optString(JsonParser.JSON_MSG))
                     } else {
                         val data = jsonObj!!.getJSONObject("data")
                         val token: String = data.getString("token")  //注册返回Token不做处理

@@ -5,7 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="transparentM">#00000000</color>
     <color name="reg_dialog">#000000</color>
-    <color name="main_text">#222222</color>
+    <color name="main_text">#FF222222</color>
     <color name="txt_hei">#333333</color>
     <color name="txt_black">#333333</color>
     <color name="home_gray2">#444444</color>
@@ -15,6 +15,7 @@
     <color name="red">#ca0000</color>
     <color name="bt">#da002f</color>
     <color name="white">#ffffff</color>
+    <color name="aphla_white">#1affffff</color>
     <color name="line">#eeeeee</color>
     <color name="xian">#cccccc</color>
     <color name="edit_gray">#cccccc</color>

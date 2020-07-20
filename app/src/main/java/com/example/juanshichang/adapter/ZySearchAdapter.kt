@@ -14,6 +14,6 @@ class ZySearchAdapter : BaseQuickAdapter<ZySearchBean.Product, BaseViewHolder>(R
     override fun convert(helper: BaseViewHolder?, item: ZySearchBean.Product?) {
         helper?.setText(R.id.zyTitle,item?.name)
             ?.setText(R.id.zyPrice,item?.price)
-        GlideUtil.loadImage(mContext,item?.thumb,helper!!.getView(R.id.zyIv),2)
+        GlideUtil.loadImage(mContext,item?.thumb,helper!!.getView(R.id.zyIv),6)
     }
 }

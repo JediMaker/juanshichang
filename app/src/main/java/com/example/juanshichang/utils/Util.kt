@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
 import android.provider.Settings
@@ -17,9 +18,15 @@ import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Base64
+import android.util.Log
+import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
+import android.widget.ImageView
 import androidx.core.text.isDigitsOnly
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestListener
+import com.example.juanshichang.R
 import com.example.juanshichang.activity.Reg2LogActivity
 import com.example.juanshichang.base.BaseActivity
 import java.io.*
@@ -58,14 +65,14 @@ class Util {
             )
         }
 
-        // 两次点击按钮之间的点击间隔不能少于500毫秒
-        private const val MIN_CLICK_DELAY_TIME = 51000
+        // 两次点击按钮之间的点击间隔不能少于300毫秒
+        private const val MIN_CLICK_DELAY_TIME = 300
         private var lastClickTime: Long = 0
 
         fun isFastClick(): Boolean {
             var flag = false
             val curClickTime = System.currentTimeMillis()
-            if (curClickTime - lastClickTime >= MIN_CLICK_DELAY_TIME) {
+            if (curClickTime - lastClickTime <= MIN_CLICK_DELAY_TIME) {
                 flag = true
             }
             lastClickTime = curClickTime

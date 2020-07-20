@@ -28,8 +28,8 @@ import org.json.JSONObject
 import rx.Subscriber
 
 class HomeOtherFragment : BaseFragment() {
-    private var zyRc:RecyclerView? = null
-    private var FathPage:String = ""
+    private var zyRc: RecyclerView? = null
+    private var FathPage: String = ""
     private var zyAd: ZyAllAdapter? = null
     private var zyData: List<ZyAllBean.Product>? = null
     override fun getLayoutId(): Int {
@@ -45,14 +45,14 @@ class HomeOtherFragment : BaseFragment() {
 
     override fun initData() {
         LiveDataBus.get()
-            .with("main_tab",String::class.java)
-            .observe(this,object : Observer<String> {
+            .with("main_tab", String::class.java)
+            .observe(this, object : Observer<String> {
                 override fun onChanged(t: String?) {
-                    LogTool.e("yyyyyyy","监听到了消息:"+t)
-                    if(!t?.contentEquals(FathPage)!!){ //判断是否重复点击同一条目
+                    LogTool.e("yyyyyyy", "监听到了消息:" + t)
+                    if (!t?.contentEquals(FathPage)!!) { //判断是否重复点击同一条目
                         FathPage = t
                         mContext?.showProgressDialog()
-                        reqCateSon(FathPage)//网络请求
+                        reqCateSon(FathPage,"1")//网络请求
                     }
                 }
             })
@@ -60,20 +60,21 @@ class HomeOtherFragment : BaseFragment() {
         zyAd?.setOnItemClickListener { adapter, view, position ->
             zyData?.let {
                 val intent = Intent(mContext!!, ShangPinZyContains::class.java)
-                intent.putExtra("product_id",it[position].product_id)
+                intent.putExtra("product_id", it[position].product_id)
                 startActivity(intent)
             }
         }
     }
+
     //商品列表
-    private fun reqCateSon(category_id: String) {
+    private fun reqCateSon(category_id: String, page: String) {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.NEWCATEGORYCON,
-            NewParameter.getNewCGoodMap(category_id),
+            NewParameter.getNewCGoodMap(category_id, page),
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
-                    val t =result?.substring(result?.indexOf("{"),result.length)
+                    val t = result?.substring(result?.indexOf("{"), result.length)
                     if (JsonParser.isValidJsonWithSimpleJudge(t!!)) {
                         var jsonObj: JSONObject? = null
                         try {
@@ -82,7 +83,7 @@ class HomeOtherFragment : BaseFragment() {
                             e.printStackTrace();
                         }
                         if (!jsonObj?.optBoolean(JsonParser.JSON_Status)!!) {
-                            if(jsonObj.optString(JsonParser.JSON_CODE).equals("10007")){ //
+                            if (jsonObj.optString(JsonParser.JSON_CODE).equals("10007")) { //
                                 zyAd?.emptyView = View.inflate(
                                     mContext,
                                     R.layout.activity_not_null,
@@ -94,7 +95,7 @@ class HomeOtherFragment : BaseFragment() {
                                 mContext!!,
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
-                        }else{
+                        } else {
                             val data = Gson().fromJson(t, ZyAllBean.ZyAllBeans::class.java)
                             zyData = data.data.products
                             zyAd?.setNewData(zyData)

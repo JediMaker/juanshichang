@@ -23,6 +23,7 @@ import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.utils.Util
 import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.IsInternet
+import com.example.juanshichang.widget.LiveDataBus
 import com.example.juanshichang.widget.OrderConfirmGridView
 import com.google.gson.Gson
 import com.youth.banner.Banner
@@ -46,11 +47,13 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var banner: Banner<HomeBean.Slideshow?, ImageBannerNetAdapter>? = null
     private var bList: List<HomeBean.Slideshow>? = null
     private var grid: OrderConfirmGridView? = null
-    private var gList: List<GridItemBean.Channel>? = null
+    private var gList: List<HomeBean.Items>? = null
     private var gAdapter: MainGridAdapter? = null
     private var recycler: RecyclerView? = null
     private var rAdapter: NewHomeAdapter? = null
     private var rData: List<HomeBean.Product>? = null
+    private var itemData: List<HomeBean.Items>? = null
+    private var bus = LiveDataBus.get()
     private val hand = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -130,6 +133,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         recycler?.postDelayed(object : Runnable {
             override fun run() {
                 getHome("Refresh")
+                bus.with("refresh").value = true
             }
         }, 800)
     }
@@ -141,35 +145,20 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 override fun run() {
                     val str = Util.readLocalJson(mContext!!, "gridjson.json")
                     LogTool.e("home1", str)
-                    val data = Gson().fromJson(str, GridItemBean.GridItemBeans::class.java)
-                    LogTool.e("home2", data.toString())
-                    data?.let {
-                        gList = data.data.channel_list
-                        hand.sendEmptyMessage(1)
-                    }
+                    /*  val data = Gson().fromJson(str, GridItemBean.GridItemBeans::class.java)
+                      LogTool.e("home2", data.toString())
+                      data?.let {
+                          gList = data.data.channel_list
+                          hand.sendEmptyMessage(1)
+                      }*/
                 }
             }).start()
         }
-        if (rData == null || bList == null) {
+        if (rData == null || bList == null || itemData == null) {
             mContext?.showProgressDialog()
             hand.sendEmptyMessageDelayed(2, 3000)
             getHome()
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        //预留
-    }
-
-    override fun onStart() {
-        super.onStart()
-        banner?.startAutoPlay()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        banner?.stopAutoPlay()
     }
 
     private fun setUiData(data: HomeBean.HomeBeans) {
@@ -182,6 +171,11 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
             banner?.visibility = View.GONE
         }
         rAdapter?.setNewData(rData)
+        itemData = data.data.items
+        data?.let {
+            gList = itemData
+            hand.sendEmptyMessage(1)
+        }
     }
 
     private fun setBanner(list: List<HomeBean.Slideshow>?) {
@@ -209,6 +203,7 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                         }
                         "app/category/goods" -> { //商品列表
                             val intent = Intent(mContext!!, ZyAllActivity::class.java)
+                            intent.putExtra("type", "2")
                             intent.putExtra("category_id", it[position].value)
                             startActivity(intent)
                         }
@@ -243,11 +238,11 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                             }
                         }
                     }
-                })?.start()
+                })?.start()*/
         }
     }
 
-    private fun setGrid(mContext: BaseActivity?, data: List<GridItemBean.Channel>) {
+    private fun setGrid(mContext: BaseActivity?, data: List<HomeBean.Items>) {
         val size = data.size   //动态设置列数
         var column = 0
         if (size % 2 != 0) {
@@ -256,16 +251,23 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         } else {
             column = size / 2 as Int
         }
-        grid?.numColumns = column
+        grid?.numColumns = 4
         mContext?.let {
             gAdapter = MainGridAdapter(it, data)
             grid?.adapter = gAdapter
             gAdapter?.notifyDataSetChanged()
             grid?.onItemClick { p0, p1, p, p3 ->
-                when (data[p].type) {
-                    "link" -> {
-                 /*       OneFragment.WebUrl = null
-                        OneFragment.getWebLink(data[p].channel_id, mContext)*/
+                OneFragment.WebUrl = data[p].uri
+                val intent = Intent(mContext, WebActivity::class.java)
+                intent.putExtra(
+                    "mobile_short_url",
+                    OneFragment.WebUrl!!.trim()
+                )
+                BaseActivity.goStartActivity(mContext, intent)
+                /* when (data[p].type) {
+                     "link" -> {
+                         *//*       OneFragment.WebUrl = null
+                               OneFragment.getWebLink(data[p].channel_id, mContext)*//*
                         OneFragment.WebUrl = data[p].image_url
                         val intent = Intent(mContext, WebActivity::class.java)
                         intent.putExtra(
@@ -287,10 +289,11 @@ class HomeFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                     else -> {
                         ToastUtil.showToast(mContext, "不存在的类型:" + data[p].type)
                     }
-                }
+                }*/
             }
         }
     }
+
 
     //获取主页面数据
     private fun getHome(vararg tag: String) {

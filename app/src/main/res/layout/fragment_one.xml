@@ -11,8 +11,9 @@
             android:id="@+id/mainBack"
             android:src="@drawable/mback"
             android:scaleType="centerCrop"
+            android:visibility="visible"
             android:layout_width="match_parent"
-            android:layout_height="540px"/>
+            android:layout_height="0dp"/>
     <ImageView
             android:id="@+id/mainBack2"
             android:src="@drawable/mback"
@@ -60,7 +61,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_33"
                         android:gravity="center_vertical"
-                        android:text="粘贴宝贝标题，先领劵再购物"
+                        android:hint="搜索你想要的吧！"
                         android:paddingLeft="93px"
                         android:textSize="@dimen/sp_txt_annotateTextSize"/>
 

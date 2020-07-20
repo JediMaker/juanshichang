@@ -2,9 +2,9 @@ package com.example.juanshichang.bean
 
 class UserBean {
     data class UserBeans(
-    var `data`: Data = Data(),
-    var errmsg: String = "",
-    var errno: Int = 0
+        var `data`: Data = Data(),
+        var errmsg: String = "",
+        var errno: Int = 0
     )
 
     data class Data(
@@ -13,6 +13,8 @@ class UserBean {
         var current_day_benefit: Float = 0f,
         var current_month_benefit: Float = 0f,
         var from_invite_userid: Int = 0,
+        var points: Int = 0,
+        var mobile: String = "",
         var invite_code: String = "",
         var last_day_benefit: Float = 0f,
         var nick_name: String = "",

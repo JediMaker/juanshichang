@@ -12,6 +12,7 @@
     <RelativeLayout
             android:id="@+id/fT"
             android:layout_width="match_parent"
+            android:background="@mipmap/bg_wave"
             android:layout_height="wrap_content">
 
         <com.zhy.autolayout.AutoRelativeLayout
@@ -39,14 +40,13 @@
 
             <ImageView
                     android:id="@+id/ffUserSet"
-                    android:layout_width="60px"
-                    android:layout_height="60px"
-                    android:layout_centerVertical="true"
+                    android:layout_width="@dimen/dp_21"
+                    android:layout_height="@dimen/dp_21"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="@dimen/dp_16"
-                    android:scaleType="centerCrop"
-                    android:visibility="visible"
-                    android:src="@drawable/setting_t" />
+                    android:src="@drawable/setting_t"
+                    android:visibility="visible" />
         </com.zhy.autolayout.AutoRelativeLayout>
 
         <RelativeLayout
@@ -63,6 +63,7 @@
                     android:layout_width="173px"
                     android:layout_height="173px"
                     android:src="@drawable/defaultt"
+                    app:qmui_border_width="@dimen/dp_0"
                     app:qmui_is_circle="true" />
 
             <TextView
@@ -70,20 +71,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30px"
-                    android:layout_marginTop="27px"
+                    android:layout_marginTop="@dimen/dp_4"
                     android:layout_marginRight="65px"
                     android:layout_toRightOf="@+id/ffUserImage"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_txt_title_icon_name"
-                    tools:text="昵称" />
+                    tools:text="" />
 
             <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/ffUserName"
                     android:layout_marginLeft="29px"
+                    android:layout_marginTop="@dimen/dp_6"
                     android:layout_toRightOf="@+id/ffUserImage"
                     android:orientation="horizontal">
 
@@ -97,10 +99,10 @@
                 <TextView
                         android:id="@+id/ffUserInvite"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:textColor="@color/xcolor"
                         android:textSize="@dimen/sp_txt_nomal"
-                        tools:text="WW7HKS" />
+                        tools:text="0" />
                 <!--            ff_tx_but-->
                 <TextView
                         android:id="@+id/ffCopy"
@@ -113,20 +115,21 @@
                         android:paddingTop="7px"
                         android:paddingRight="19px"
                         android:paddingBottom="7px"
-                        android:visibility="gone"
                         android:text="复制"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/sp_txt_annotateTextSize" />
+                        android:textSize="@dimen/sp_txt_annotateTextSize"
+                        android:visibility="gone" />
             </LinearLayout>
         </RelativeLayout>
+
         <LinearLayout
                 android:id="@+id/meBar"
                 android:layout_width="match_parent"
-                android:layout_below="@+id/fTT"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/fTT"
                 android:orientation="horizontal"
-                android:paddingTop="100px"
-                android:paddingBottom="50px">
+                android:paddingTop="@dimen/dp_40"
+                android:paddingBottom="8dp">
 
             <TextView
                     android:id="@+id/orderAll"
@@ -176,13 +179,14 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_txt_nomal" />
         </LinearLayout>
-        <View
+
+       <!-- <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="330px"
+                android:layout_height="@dimen/dp_330"
                 android:layout_below="@id/fTT"
-                android:visibility="gone"
-                android:layout_marginTop="162px"
-                android:background="@color/ff_back" />
+                android:layout_marginTop="-270dp"
+                android:background="@mipmap/bg_wave"
+                android:visibility="visible" />-->
 
         <androidx.cardview.widget.CardView
                 android:id="@+id/fTTh"
@@ -319,8 +323,8 @@
     <com.zhy.autolayout.AutoLinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/ff_back">
+            android:background="@color/ff_back"
+            android:orientation="vertical">
         <!--<androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -360,13 +364,14 @@
                 android:layout_toRightOf="@+id/tastCz"
                 android:text="商品列表"
                 android:visibility="gone" />
+
         <RelativeLayout
                 android:id="@+id/setUserName"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
+                android:layout_marginTop="@dimen/dp_10"
                 android:background="@color/white"
                 android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/dp_10"
                 android:paddingLeft="46px"
                 android:paddingRight="46px">
 
@@ -382,17 +387,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="修改"
+                    android:text=""
                     android:textColor="@color/txt_gray"
                     android:textSize="@dimen/sp_txt_nomal" />
         </RelativeLayout>
 
-        <View
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="46px"
-                android:layout_marginRight="46px"
-                android:background="@color/set_linear" />
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="46px"
+                    android:layout_marginRight="46px"
+                    android:background="@color/ff_back" />
+        </RelativeLayout>
+
 
         <RelativeLayout
                 android:layout_width="match_parent"
@@ -417,7 +429,7 @@
                     android:drawablePadding="29px"
                     android:textColor="@color/txt_gray"
                     android:textSize="@dimen/sp_txt_nomal"
-                    tools:text="2020-12-30" />
+                    tools:text="" />
         </RelativeLayout>
 
         <TextView
@@ -447,9 +459,9 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="使用帮助"
                     android:drawableRight="@mipmap/icon_help"
                     android:drawablePadding="@dimen/dp_4"
+                    android:text="使用帮助"
                     android:textColor="@color/ff_gray"
                     android:textSize="@dimen/sp_txt_nomal" />
 
@@ -465,12 +477,17 @@
                     tools:text="" />
         </RelativeLayout>
 
-        <View
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="46px"
-                android:layout_marginRight="46px"
-                android:background="@color/set_linear" />
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="46px"
+                    android:layout_marginRight="46px"
+                    android:background="@color/ff_back" />
+        </RelativeLayout>
 
         <RelativeLayout
                 android:id="@+id/settings"

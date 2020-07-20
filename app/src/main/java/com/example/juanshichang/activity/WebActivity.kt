@@ -3,28 +3,20 @@ package com.example.juanshichang.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.webkit.*
 import android.widget.ZoomButtonsController
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat.startActivity
-import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
 import com.example.juanshichang.base.BaseActivity
-import com.example.juanshichang.utils.AutoLayoutActivity
 import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.StatusBarUtil
 import com.example.juanshichang.widget.IsInternet
 import kotlinx.android.synthetic.main.activity_not_car.*
 import kotlinx.android.synthetic.main.activity_web.*
 import java.lang.reflect.Method
-import kotlin.Exception
 
 class WebActivity : BaseActivity(), View.OnClickListener {
     var mobile_short_url: String? = null
@@ -49,6 +41,12 @@ class WebActivity : BaseActivity(), View.OnClickListener {
     override fun initView() {
         if (null != intent.getStringExtra("mobile_short_url")) {
             mobile_short_url = intent.getStringExtra("mobile_short_url")
+            if (null != intent.getStringExtra("title")){
+                refreshTV.visibility=View.GONE
+                mTitleTV.text=intent.getStringExtra("title")
+            }else{
+                refreshTV.visibility=View.VISIBLE
+            }
             setWebView(mobile_short_url)
         } else {
             if (null != intent.getStringExtra("mobile_url")) {
@@ -177,11 +175,26 @@ class WebActivity : BaseActivity(), View.OnClickListener {
                 }
                 LogTool.e("web2",url.toString())
                 try {
+                    if(url!!.startsWith("taobao://")||url!!.startsWith("tmall://")){
+                        val intent = Intent()
+                        intent.action = "android.intent.action.View"
+                        intent.setClassName("com.taobao.taobao", "com.taobao.browser.BrowserActivity")
+                        val uri = Uri.parse(url) //clickUrl,领券地址
+                        intent.data = uri
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                                  return true
+                    }
+                } catch (e: java.lang.Exception) {
+                    return true
+                }
+                try {
                     if (url!!.startsWith("weixin://") //微信
                         || url!!.startsWith("alipays://") //支付宝
                         || url!!.startsWith("mailto://") //邮件
                         || url!!.startsWith("tel://")//电话
                         || url!!.startsWith("dianping://")//大众点评
+                        || url!!.contains("dianping://")//大众点评
 //                        || url!!.startsWith("pinduoduo://")//拼多多   //todo 暂且忽略拼多多
                     //其他自定义的scheme
                     ) {

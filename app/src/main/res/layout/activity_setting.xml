@@ -59,6 +59,7 @@
                     android:layout_width="173px"
                     android:layout_height="173px"
                     android:layout_gravity="center"
+                    app:qmui_border_width="@dimen/dp_0"
                     android:src="@drawable/head_img_def"
                     app:qmui_is_circle="true" />
 
@@ -107,12 +108,17 @@
                     android:textSize="@dimen/sp_txt_nomal" />
         </RelativeLayout>
 
-        <View
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginLeft="46px"
-                android:layout_marginRight="46px"
-                android:background="@color/set_linear" />
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="46px"
+                    android:layout_marginRight="46px"
+                    android:background="@color/ff_back" />
+        </RelativeLayout>
 
         <RelativeLayout
                 android:layout_width="match_parent"
@@ -141,7 +147,7 @@
         </RelativeLayout>
 
         <TextView
-                android:id="@+id/mSite"
+                android:id="@+id/modifyPassword"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
                 android:layout_marginTop="30px"
@@ -150,7 +156,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="46px"
                 android:paddingRight="46px"
-                android:text="我的收货地址"
+                android:text="修改密码"
                 android:textColor="@color/ff_gray"
                 android:textSize="@dimen/sp_txt_nomal" />
 

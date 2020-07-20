@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.HomeFragment">
+
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/homeSwipe"
@@ -28,9 +29,10 @@
                         android:id="@+id/mainBanner"
                         android:layout_width="match_parent"
                         android:layout_height="480px"
-                        android:layout_marginLeft="@dimen/dp_12"
-                        android:layout_marginTop="@dimen/dp_8"
-                        android:layout_marginRight="@dimen/dp_12"
+                        android:paddingRight="@dimen/dp_12"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingLeft="@dimen/dp_12"
+                        android:background="@drawable/mback_1"
                         banner:banner_radius="5dp"
                         banner:indicator_normal_color="@android:color/white"
                         banner:indicator_selected_color="@color/colorPrimary"></com.youth.banner.Banner>
@@ -60,4 +62,4 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</FrameLayout>
+</com.zhy.autolayout.AutoFrameLayout>

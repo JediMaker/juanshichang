@@ -54,7 +54,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         setUserName.setOnClickListener(this)
         setZfb.setOnClickListener(this)
         realName.setOnClickListener(this)
-        mSite.setOnClickListener(this)
+        modifyPassword.setOnClickListener(this)
         setUND()//创建 用户昵称对话框 和 图片选择器
         setUi(SpUtil.getIstance().user)
     }
@@ -86,7 +86,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
 //                            SpUtil.getIstance().getDelete()
                             SpUtil.getIstance().remove("useruid")//更改授权模式退出登录只清除uid
                             Util.removeCookie(this@SettingActivity)
-                            ToastUtil.showToast(this@SettingActivity, "清理完成")
+//                            ToastUtil.showToast(this@SettingActivity, "清理完成")
                             LiveDataBus.get().with("mainGo").value = 0 //发送返回主界面广播
                             finish()
                         }
@@ -110,8 +110,11 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                 }
                 uNDialog?.show()
             }
-            mSite -> { //我的收货地址
-                goStartActivity(this@SettingActivity, SiteListActivity())
+            modifyPassword -> { //修改密码
+//                goStartActivity(this@SettingActivity, SiteListActivity())
+                val intent = Intent(this@SettingActivity, FastLoginActivity::class.java)
+                intent.putExtra("type", FastLoginActivity.RESETPASSWORDCODE) // 忘记密码，重新设置密码
+                goStartActivity(this@SettingActivity, intent)
             }
             setZfb -> {
                 if (userZfb != null && !TextUtils.isEmpty(userZfb)) {

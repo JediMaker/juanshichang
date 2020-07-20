@@ -8,7 +8,7 @@
         android:layout_marginLeft="@dimen/dp_8"
         android:layout_marginRight="@dimen/dp_8"
         android:layout_height="wrap_content">
-        <LinearLayout
+        <RelativeLayout
                 android:id="@+id/topHL"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -20,16 +20,19 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="4.3dp"
                     android:src="@drawable/index_hot"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             <TextView
                     android:id="@+id/topHTit"
                     tools:text="热销商品"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="12dp"
-                    android:textStyle="bold"
                     android:textColor="@color/main_text"
+                    android:layout_toRightOf="@+id/topHImg"
+                    android:layout_centerVertical="true"
                     android:textSize="@dimen/sp_txt_title_icon_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -40,11 +43,12 @@
                     android:textSize="@dimen/sp_txt_annotateTextSize"
                     android:textColor="@color/txt_gray"
                     android:layout_gravity="center_vertical"
+                    android:layout_centerVertical="true"
                     android:gravity="right"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-        </LinearLayout>
+        </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/botGrid"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

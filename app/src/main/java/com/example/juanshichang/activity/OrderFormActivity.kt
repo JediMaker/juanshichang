@@ -43,9 +43,13 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
                 0 -> {
                     ordersAdpater?.emptyView =
                         View.inflate(this@OrderFormActivity, R.layout.activity_not_null, null)
-                    ordersAdpater?.setNewData(ordersListData)
+                    if (ordersListData != null && ordersListData?.size != 0) {
+                        ordersAdpater?.setNewData(ordersListData)
+                    } else {
+                        ordersAdpater?.setNewData(null)
+                        ToastTool.showToast(this@OrderFormActivity, "暂无数据")
+                    }
 //                    ToastTool.showToast(this@OrderFormActivity, "" + ordersListData?.size)
-                    detailTab.selectTab(detailTab.getTabAt(type))
                 }
             }
         }
@@ -56,23 +60,27 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        showProgressDialog()
+        oldTab=-1
         StatusBarUtil.addStatusViewWithColor(this@OrderFormActivity, R.color.colorPrimary)
 //        orderTop.setPadding(0, QMUIStatusBarHelper.getStatusbarHeight(this), 0, 0)
         setTab()
     }
 
     override fun initData() {
-        if(Int.MAX_VALUE != intent.getIntExtra("type", Int.MAX_VALUE)){
+        if (Int.MAX_VALUE != intent.getIntExtra("type", Int.MAX_VALUE)) {
             type = intent.getIntExtra("type", Int.MAX_VALUE)
         }
         ordersListData = ArrayList()
-        ordTast.postDelayed(object : Runnable {
-            override fun run() {
+        detailTab.selectTab(detailTab.getTabAt(type))
+        if(type==0){
+            ordTast.postDelayed(object : Runnable {
+                override fun run() {
 //                getOrders(0,20)
-                orderList()
-            }
-        }, 300)
+                    showProgressDialog()
+                    orderList()
+                }
+            }, 300)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -100,11 +108,9 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
                         ordersListData?.let {
                             if ("已失效".equals(ordersAdpater!!.data[position].status)) {//取消状态订单可删除
                                 delOrder(ordersAdpater!!.data[position].order_id)
-                            }
-                            else if ("已发货".equals(ordersAdpater!!.data[position].status)) {//待支付状态订单{
+                            } else if ("已发货".equals(ordersAdpater!!.data[position].status)) {//待支付状态订单{
                                 receiveOrder(ordersAdpater!!.data[position].order_id)
-                            }
-                            else if ("已提交".equals(ordersAdpater!!.data[position].status)) {//待支付状态订单{
+                            } else if ("已提交".equals(ordersAdpater!!.data[position].status)) {//待支付状态订单{
                                 val intent =
                                     Intent(this@OrderFormActivity, SettleAccActivity::class.java)
                                 intent.putExtra("orderid", ordersAdpater!!.data[position].order_id)
@@ -142,7 +148,7 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
         orSearch.setOnClickListener(this)
     }
 
-    private var oldTab: Int = 0
+    private var oldTab: Int = -1
     private val mTabLayoutBottom = object : TabLayout.OnTabSelectedListener {
         override fun onTabReselected(p0: TabLayout.Tab?) {
 
@@ -152,51 +158,75 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
         }
 
         override fun onTabSelected(t: TabLayout.Tab?) {
-            if (t?.position != oldTab) {
-                if (ordersListData != null && ordersListData?.size != 0) {
-                    showProgressDialog()
-                    ordersAdpater?.setNewData(null)
-                    LogTool.e("text", "${t?.text}")
-                    ordTast.postDelayed(object : Runnable {
-                        override fun run() {
-                            when (t?.text) {
-                                "全部" -> {
-                                    ordersAdpater?.setNewData(ordersListData)
-                                }
-                                "待付款" -> {
-                                    val d = getTabData("已提交")
-                                    if (d != null) {
-                                        ordersAdpater?.setNewData(d)
-                                    } else {
-                                        ordersAdpater?.setNewData(null)
-                                        ToastTool.showToast(this@OrderFormActivity, "暂无数据")
-                                    }
-                                }
-                                "待发货" -> {
-                                    val d = getTabData("已付款")
-                                    if (d != null) {
-                                        ordersAdpater?.setNewData(d)
-                                    } else {
-                                        ordersAdpater?.setNewData(null)
-                                        ToastTool.showToast(this@OrderFormActivity, "暂无数据")
-                                    }
-                                }
-                                "待收货" -> {
-                                    val d = getTabData("已发货")
-                                    if (d != null) {
-                                        ordersAdpater?.setNewData(d)
-                                    } else {
-                                        ordersAdpater?.setNewData(null)
-                                        ToastTool.showToast(this@OrderFormActivity, "暂无数据")
-                                    }
-                                }
-                            }
-                            dismissProgressDialog()
-                        }
-                    }, 500)
-                } else {
-                    ToastUtil.showToast(this@OrderFormActivity, "您还没有任何订单")
+            if (ordersListData != null && ordersListData?.size != 0) {
+                ordersListData?.clear()
+            }
+            when (t?.text) {
+                "全部" -> {
+                    type = 0
                 }
+                "待付款" -> {
+                    type = 1
+                }
+                "待发货" -> {
+                    type = 2
+                }
+                "待收货" -> {
+                    type = 3
+                }
+            }
+            if (t?.position != oldTab) {
+                ordTast.postDelayed(object : Runnable {
+                    override fun run() {
+//                getOrders(0,20)
+                        showProgressDialog()
+                        orderList()
+                    }
+                }, 300)
+                /* if (ordersListData != null && ordersListData?.size != 0) {
+                     showProgressDialog()
+                     ordersAdpater?.setNewData(null)
+                     LogTool.e("text", "${t?.text}")
+                     ordTast.postDelayed(object : Runnable {
+                         override fun run() {
+                             when (t?.text) {
+                                 "全部" -> {
+                                     ordersAdpater?.setNewData(ordersListData)
+                                 }
+                                 "待付款" -> {
+                                     val d = getTabData("已提交")
+                                     if (d != null) {
+                                         ordersAdpater?.setNewData(d)
+                                     } else {
+                                         ordersAdpater?.setNewData(null)
+                                         ToastTool.showToast(this@OrderFormActivity, "暂无数据")
+                                     }
+                                 }
+                                 "待发货" -> {
+                                     val d = getTabData("已付款")
+                                     if (d != null) {
+                                         ordersAdpater?.setNewData(d)
+                                     } else {
+                                         ordersAdpater?.setNewData(null)
+                                         ToastTool.showToast(this@OrderFormActivity, "暂无数据")
+                                     }
+                                 }
+                                 "待收货" -> {
+                                     val d = getTabData("已发货")
+                                     if (d != null) {
+                                         ordersAdpater?.setNewData(d)
+                                     } else {
+                                         ordersAdpater?.setNewData(null)
+                                         ToastTool.showToast(this@OrderFormActivity, "暂无数据")
+                                     }
+                                 }
+                             }
+                             dismissProgressDialog()
+                         }
+                     }, 500)
+                 } else {
+                     ToastUtil.showToast(this@OrderFormActivity, "您还没有任何订单")
+                 }*/
                 oldTab = t?.position!!
             } else {
                 ToastTool.showToast(this@OrderFormActivity, "您已在该列表下")
@@ -266,7 +296,7 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
     private fun orderList() {
         JhApiHttpManager.getInstance(Api.NEWBASEURL).post(
             Api.NEWHISORDER,
-            NewParameter.getBaseTMap(),
+            NewParameter.getBaseTMap(type),
             object : Subscriber<String>() {
                 override fun onNext(result: String?) {
                     //todo后台返回数据结构问题，暂时这样处理
@@ -285,12 +315,17 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
+                            dismissProgressDialog()
                             if (ordersListData != null && ordersListData?.size != 0) {
                                 ordersListData?.clear()
                             }
-                            val data = Gson().fromJson(t, OrdersBeanT.OrdersBeanTs::class.java)
-                            ordersListData?.addAll(data.data)
-                            handler.sendEmptyMessage(0)
+                            try {
+                                val data = Gson().fromJson(t, OrdersBeanT.OrdersBeanTs::class.java)
+                                ordersListData?.addAll(data.data)
+                                handler.sendEmptyMessage(0)
+                            } catch (e: Exception) {
+                                handler.sendEmptyMessage(0)
+                            }
                         }
                     }
                 }
@@ -301,6 +336,7 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
                 }
 
                 override fun onError(e: Throwable?) {
+                    dismissProgressDialog()
                     LogTool.e("onCompleted", "订单列表请求失败: ${e.toString()}")
                 }
             })

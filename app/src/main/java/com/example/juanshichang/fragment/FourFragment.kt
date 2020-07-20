@@ -109,7 +109,8 @@ class FourFragment : BaseFragment() {
             R.id.orderWaitPay -> {//待付款订单
                 val intent = Intent(mContext, OrderFormActivity::class.java)
                 intent.putExtra("type", 1)
-                BaseActivity.goStartActivity(this.mContext!!, intent)            }
+                BaseActivity.goStartActivity(this.mContext!!, intent)
+            }
             R.id.orderWaitSend -> {//待发货订单
 //                ToastUtil.showToast(this.mContext!!,"暂未开放入口")
 //                BaseActivity.goStartActivity(this.mContext!!, FansActivity())
@@ -279,7 +280,7 @@ class FourFragment : BaseFragment() {
         val isMon = mBaseView?.findViewById<TextView>(R.id.ffEstimateMOn) //本月收入
         val isDay = mBaseView?.findViewById<TextView>(R.id.ffEstimateDay) //今日收入
         GlideUtil.loadHeadImage(mContext!!, user?.avatar, fi)
-        fiv?.text = user?.invite_code
+        fiv?.text = user?.points.toString()
         ft?.text = user?.phone_num
         top?.text = "" + Util.getFloatPrice(user?.balance!!)
         isMon?.text = "" + Util.getFloatPrice(user?.current_month_benefit!!.toLong())
@@ -295,9 +296,7 @@ class FourFragment : BaseFragment() {
 
         override fun onTick(p0: Long) {
             val user = SpUtil.getIstance().user
-            if (!TextUtils.isEmpty(user.avatar) && !TextUtils.isEmpty(
-                    user.invite_code
-                )
+            if (!TextUtils.isEmpty(user.phone_num)
             ) { //通过三个参数判断所有
                 setUiData(user)
                 this.cancel()
@@ -321,9 +320,7 @@ class FourFragment : BaseFragment() {
         if (Util.hasLogin()) {
             if (goNet == 0) {
                 val user = SpUtil.getIstance().user
-                if (!TextUtils.isEmpty(user.avatar) && !TextUtils.isEmpty(
-                        user.invite_code
-                    )
+                if (!TextUtils.isEmpty(user.avatar) && user.points!=0
                 ) { //通过三个参数判断所有
                     setUiData(user)
                     goNet = 1

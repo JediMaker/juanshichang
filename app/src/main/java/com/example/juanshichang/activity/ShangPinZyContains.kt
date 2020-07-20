@@ -97,6 +97,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                 startActivity(intent)
+                LiveDataBus.get().with("mainGo").value = 0
                 finish()
             }
             R.id.goShopCar -> {

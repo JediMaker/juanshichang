@@ -13,11 +13,11 @@
             android:layout_weight="0.15">
 
         <ImageView
-                android:layout_width="28px"
-                android:layout_height="50px"
+                android:layout_width="@dimen/dp_21"
+                android:layout_height="@dimen/dp_16"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="40px"
-                android:src="@drawable/i_light_back" />
+                android:src="@drawable/ret_n" />
     </RelativeLayout>
     <RelativeLayout
             android:layout_width="0px"

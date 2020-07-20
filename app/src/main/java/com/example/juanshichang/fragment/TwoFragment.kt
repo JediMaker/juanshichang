@@ -195,6 +195,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
         mRA?.setOnItemClickListener { adapter, view, position ->
             recyclerData?.let {
                 val intent = Intent(mContext!!, ZyAllActivity::class.java)
+                intent.putExtra("type", "2")
                 intent.putExtra("category_id", it[position].category_id)
                 startActivity(intent)
             }

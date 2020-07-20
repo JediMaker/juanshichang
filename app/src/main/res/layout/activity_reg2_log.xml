@@ -39,8 +39,8 @@
                     android:layout_centerVertical="true">
 
                 <View
-                        android:layout_width="26dp"
-                        android:layout_height="19dp"
+                        android:layout_width="63px"
+                        android:layout_height="43px"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/dp_16"
                         android:background="@drawable/ret_n" />

@@ -253,11 +253,12 @@ class NewParameter {
         }
 
         //获取订单列表
-        fun getBaseTMap(): HashMap<String, String> {
+        fun getBaseTMap(status:Int): HashMap<String, String> {
             baseList.clear()
             baseList.add("route=api/order/history")
             val map = fengMap(1)
             map.put("route", "api/order/history")
+            map.put("status", "$status")
             return map
         }
         //获取订单列表
@@ -519,13 +520,32 @@ class NewParameter {
             return map
         }
 
-        //商品列表详情
-        fun getNewCGoodMap(category_id: String): Map<String, String> {
+        //分类商品列表
+        fun getNewCGoodMap(category_id: String,page: String): Map<String, String> {
             baseList.clear()
             baseList.add("route=api/category/goods")
-            baseList.add("category_id=$category_id")
+            baseList.add("category_id=$page")
+            baseList.add("p=$category_id")
             val map = fengMap(0)
             map.put("category_id", category_id)
+            map.put("p", page)
+            return map
+        }
+
+        //最新商品列表
+        fun getNewProductListMap(page: String): Map<String, String> {
+            baseList.clear()
+            baseList.add("route=api/home/getProductList")
+            val map = fengMap(0)
+            map.put("p", page)
+            return map
+        }
+        //热门商品列表
+        fun getHotProductListMap(page: String): Map<String, String> {
+            baseList.clear()
+            baseList.add("route=api/home/getProductHotList")
+            val map = fengMap(0)
+            map.put("p", page)
             return map
         }
 

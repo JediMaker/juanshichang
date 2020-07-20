@@ -99,6 +99,7 @@ class NewClassifyActivity : BaseActivity(), View.OnClickListener,
             override fun onItemClick(adapter: BaseQuickAdapter<*, *>?, view: View?, position: Int) {
                 rigData?.let {
                     val intent = Intent(this@NewClassifyActivity, ZyAllActivity::class.java)
+                    intent.putExtra("type", "2")
                     intent.putExtra("category_id", it[position].category_id)
                     startActivity(intent)
                 }

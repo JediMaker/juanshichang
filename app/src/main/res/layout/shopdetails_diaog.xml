@@ -1,108 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:fillViewport="true">
 
-    <ImageView
-            android:id="@+id/dShopImg"
-            android:layout_width="83dp"
-            android:layout_height="83dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/c_error"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    <!--ff_ret-->
-    <LinearLayout
-            android:id="@+id/dFinish"
-            android:layout_width="@dimen/dp_48"
-            android:layout_height="@dimen/dp_45"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_centerVertical="true">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+        <ImageView
+                android:id="@+id/dShopImg"
+                android:layout_width="83dp"
+                android:layout_height="83dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/c_error"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        <!--ff_ret-->
+        <LinearLayout
+                android:id="@+id/dFinish"
+                android:layout_width="@dimen/dp_48"
+                android:layout_height="@dimen/dp_45"
+                android:layout_centerVertical="true"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp_17"
+                    android:background="@drawable/money_del" />
+        </LinearLayout>
+
+
+        <TextView
+                android:id="@+id/dShopPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:text="¥32.80"
+                android:textColor="@color/indicatorRed"
+                android:textSize="@dimen/sp_txt_title_icon_name"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@+id/dShopImg"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/dShopTit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="70dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/main_text"
+                android:textSize="@dimen/sp_txt_annotateTextSize"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@id/dShopImg"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dShopPrice"
+                tools:text="我是一个小标题 嗯嗯啊啊啊去啊啊啊说的是个" />
 
         <View
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="@dimen/dp_17"
-                android:layout_gravity="center"
-                android:background="@drawable/money_del" />
-    </LinearLayout>
+                android:id="@+id/dView"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/set_linear"
+                app:layout_constraintTop_toBottomOf="@+id/dShopImg" />
 
-
-    <TextView
-            android:id="@+id/dShopPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="40dp"
-            android:text="¥32.80"
-            android:textColor="@color/indicatorRed"
-            android:textSize="@dimen/sp_txt_title_icon_name"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toRightOf="@+id/dShopImg"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-            android:id="@+id/dShopTit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="70dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/main_text"
-            android:textSize="@dimen/sp_txt_annotateTextSize"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/dShopImg"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dShopPrice"
-            tools:text="我是一个小标题 嗯嗯啊啊啊去啊啊啊说的是个" />
-
-    <View
-            android:id="@+id/dView"
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="15dp"
-            android:background="@color/set_linear"
-            app:layout_constraintTop_toBottomOf="@+id/dShopImg" />
-
-    <!--<androidx.core.widget.NestedScrollView
-            android:id="@+id/dScroll"
-            android:scrollbars="none"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintVertical_weight="1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dView">-->
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/parentView"
+        <!--<androidx.core.widget.NestedScrollView
+                android:id="@+id/dScroll"
+                android:scrollbars="none"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 app:layout_constraintVertical_weight="1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dView"
+                app:layout_constraintTop_toBottomOf="@+id/dView">-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parentView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dView"
+                app:layout_constraintVertical_weight="1">
 
             <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="visible"
-                    android:nestedScrollingEnabled="false"
                     android:id="@+id/dList"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="15dp"
+                    android:nestedScrollingEnabled="false"
                     android:scrollbars="none"
+                    android:visibility="visible"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -164,17 +174,16 @@
             </LinearLayout>
 
             <EditText
-                    android:visibility="gone"
                     android:id="@+id/dLeaveWord"
                     android:layout_width="0dp"
                     android:layout_height="70dp"
-                    android:maxHeight="71dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="15dp"
                     android:background="@color/ff_back"
-                    android:hint="留言"
                     android:gravity="top|left"
+                    android:hint="留言"
+                    android:maxHeight="71dp"
                     android:maxLength="120"
                     android:paddingLeft="12dp"
                     android:paddingTop="5dp"
@@ -183,28 +192,30 @@
                     android:textColor="@color/main_text"
                     android:textColorHint="@color/txt_gray"
                     android:textSize="@dimen/sp_txt_annotateTextSize"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/dLl" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-<!--    </androidx.core.widget.NestedScrollView>-->
+        <!--    </androidx.core.widget.NestedScrollView>-->
 
-<!--    app:layout_constraintBottom_toBottomOf="parent"-->
-    <TextView
-            android:id="@+id/dConfirm"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:text="确定"
-            android:textSize="@dimen/sp_txt_nomal"
-            android:textColor="@color/white"
-            android:background="@color/indicatorRed"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/parentView"
-            app:layout_constraintHorizontal_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="49dp"
-            />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!--    app:layout_constraintBottom_toBottomOf="parent"-->
+        <TextView
+                android:id="@+id/dConfirm"
+                android:layout_width="0dp"
+                android:layout_height="49dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_button_status"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_txt_nomal"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/parentView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+

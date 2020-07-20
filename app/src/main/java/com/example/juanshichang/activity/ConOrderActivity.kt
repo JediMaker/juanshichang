@@ -9,6 +9,7 @@ import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import com.example.juanshichang.R
 import com.example.juanshichang.adapter.ConOrderAdapter
 import com.example.juanshichang.base.Api
@@ -19,6 +20,7 @@ import com.example.juanshichang.bean.ConOrderBean
 import com.example.juanshichang.bean.SiteBean
 import com.example.juanshichang.http.JhApiHttpManager
 import com.example.juanshichang.utils.*
+import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_con_order.*
 import kotlinx.android.synthetic.main.item_txxq.*
@@ -57,6 +59,17 @@ class ConOrderActivity : BaseActivity(), View.OnClickListener {
             ToastUtil.showToast(this@ConOrderActivity, "数据异常,请稍后重试。")
             finish()
         }
+        //监听地址是否被删除
+        LiveDataBus.get().with("delAddress", String::class.java).observe(this, object : Observer<String> {
+            override fun onChanged(address_id: String?) {
+                if (address_id.equals(addresseId)){//地址被删除
+                    cartList?.let {
+                        showProgressDialog()
+                        reqOrderFrom(it)
+                    }
+                }
+            }
+        })
     }
 
     override fun initData() {

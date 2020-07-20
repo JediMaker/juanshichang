@@ -19,6 +19,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import butterknife.OnClick
 import com.example.juanshichang.MyApp
@@ -66,7 +67,7 @@ class OneFragment : BaseFragment() {
     private var mainVp: CustomViewPager? = null
     private var mainAdapter: NormalAdapter? = null
     private var fragmentList: ArrayList<Fragment>? = null
-
+    private var bus = LiveDataBus.get()
     //    private var oneFragment: SelectionFragment? = null
     private var oneFragment: HomeFragment? = null
     private var twoFragment: HomeOtherFragment? = null
@@ -120,7 +121,15 @@ class OneFragment : BaseFragment() {
 
     override fun initData() {
         getHomeTab() //网络请求
+        bus.with("refresh", Boolean::class.java).observe(this, object : Observer<Boolean> {
+            override fun onChanged(t: Boolean?) {
+                if (t!!){
+                    getHomeTab()
+                }
+            }
+        })
     }
+
 
     @SuppressLint("WrongConstant")
     @OnClick(R.id.etsearchs, R.id.scan_home, R.id.message_home, R.id.mainTSearch)
@@ -236,6 +245,8 @@ class OneFragment : BaseFragment() {
                 }
             })
     }
+
+
 
     //这个 还是主页面接口 但是 只剥离需要 categroy
     private fun getHomeTab() {
@@ -408,5 +419,8 @@ class OneFragment : BaseFragment() {
         LiveDataBus.get().with("mainTopStatusView").value = R.color.colorPrimary
         tabIndicator = 0
         mainTab?.onPageSelected(0)
+        if (  mainVp?.currentItem !=0){
+            mainVp?.currentItem = 0
+        }
     }
 }

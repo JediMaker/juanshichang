@@ -73,6 +73,7 @@ class MainActivity : BaseActivity() {
 //                    StatusBarUtil.addStatusViewWithBack(this@MainActivity, t!!)
                 }
             })
+
     }
 
     override fun initData() {
@@ -80,9 +81,9 @@ class MainActivity : BaseActivity() {
             NormalAdapter(supportFragmentManager, fragmentList!!)//supportFragmentManager
         vp_main.adapter = normalAdapter
 //        vp_main.offscreenPageLimit = fragmentList!!.size  //设置预加载  todo 后期需调优Fragment为懒加载...
-        val token = SpUtil.getIstance().user.usertoken
+        val token = SpUtil.getIstance().user.useruid
         LogTool.e("token", "本地的token值为:" + token)
-        if (token != null && !TextUtils.isEmpty(token)) {
+        if (Util.hasLogin()) {
             downUser(this@MainActivity)
         }
     }
@@ -92,9 +93,9 @@ class MainActivity : BaseActivity() {
         if (!Util.hasLogin()) { //如果没有登录就关闭滑动
             vp_main.setPagingEnabled(false)
         } else {
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
-                vp_main.setPagingEnabled(true) //如果登录 并且版本大于25 开启滑动
-            }
+            /*  if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+                  vp_main.setPagingEnabled(true) //如果登录 并且版本大于25 开启滑动
+              }*/
         }
 
     }
@@ -103,12 +104,14 @@ class MainActivity : BaseActivity() {
     private fun setBottomView() {
 //        val xpp = resources.getXml(R.drawable.selector_tab_color)
 //        val csl = ColorStateList.createFromXml(resources,xpp)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) { // todo 此处 待确定 版本 预设25...
-            //如果SDK版本过低 就关闭 滑动事件
-            vp_main.setPagingEnabled(false)
-//            views.visibility = View.VISIBLE
-//            setTabBottom()
-        }
+        /*       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) { // todo 此处 待确定 版本 预设25...
+                   //如果SDK版本过低 就关闭 滑动事件
+                   vp_main.setPagingEnabled(false)
+       //            views.visibility = View.VISIBLE
+       //            setTabBottom()
+               }*/
+        vp_main.setPagingEnabled(false)
+
 //        else {}
         view.visibility = View.VISIBLE
         setGoogleBottom()
@@ -351,6 +354,9 @@ class MainActivity : BaseActivity() {
                 vp_main.currentItem = t!!
                 menuItem?.isChecked = false
                 view.getMenu().getItem(t).isChecked = true
+                if (t==0){
+                    oneFragment?.selectTabOne()
+                }
             }
         })
     }
@@ -390,6 +396,7 @@ class MainActivity : BaseActivity() {
         //                        user.userage = age
                                 user.avatar = avatar
                                 user.nick_name = name*/
+
                                 val data: UserBean.UserBeans =
                                     Gson().fromJson(str, UserBean.UserBeans::class.java)
                                 val item = data.data
@@ -401,7 +408,12 @@ class MainActivity : BaseActivity() {
                                 user.last_day_benefit = item.last_day_benefit
                                 user.from_invite_userid = item.from_invite_userid.toLong()
                                 user.invite_code = item.invite_code
-                                user.nick_name = item.nick_name
+                                user.points = item.points
+                                if (item.nick_name != null) {
+                                    user.nick_name = item.nick_name
+                                } else {
+                                    user.nick_name = item.mobile
+                                }
                                 user.date_added = item.date_added
                                 user.ali_pay_account = item.ali_pay_account
                                 SpUtil.getIstance().user = user //写入

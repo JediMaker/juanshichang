@@ -47,8 +47,10 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
     private val SHOPCAREDIT: Int = 2  //编辑状态  按钮显示完成
     private var shopType: Int = SHOPCARFINISH
     private var cardIdList: ArrayList<String>? = null //这是存放选中的cardid集合
+
     //存储选中状态
-    private  val mCheckStates = SparseBooleanArray()
+    private val mCheckStates = SparseBooleanArray()
+
     constructor(
         context: Context?,
         llSelectAll: LinearLayout?,
@@ -502,16 +504,18 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 override fun onClick(p0: View?) {
                     childViewHolder.addAmount?.isEnabled = true
                     if (integer > 1) {
-                        integer--
-//                        goodsBean.quantity = "$integer"
+
 //                        childViewHolder.amount?.text = "$integer"
                         //回调请求后台接口实现数量的加减
                         if (Util.isFastClick()) {
                             return
                         } else {
+                            integer--
                             mChangeCountListener.onChangeCount(goods_id, integer)
+                            childViewHolder.amount?.text = "$integer"
+                            goodsBean.quantity = "$integer"
                         }
-//                        notifyDataSetChanged()
+                        notifyDataSetChanged()
                     } else {
                         childViewHolder.minusAmount?.isEnabled = false
                         ToastUtil.showToast(context!!, "客官 不能再少了")
@@ -529,19 +533,22 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                             .toInt()
                         if (maxStockNum - currentAmount > 0
                         ) {
-                            integer++
+
                             if (!childViewHolder.minusAmount?.isEnabled!! || integer > 1) {
                                 childViewHolder.minusAmount?.isEnabled = true
                             }
-                            //                        goodsBean.quantity = "$integer"
                             //                        childViewHolder.amount?.text = "$integer"
                             //回调请求后台接口实现数量的加减
                             if (Util.isFastClick()) {
                                 return
                             } else {
+                                integer++
                                 mChangeCountListener.onChangeCount(goods_id, integer)
+                                childViewHolder.amount?.text = "$integer"
+                                goodsBean.quantity = "$integer"
+
                             }
-                            //                    notifyDataSetChanged()
+                            notifyDataSetChanged()
                         } else {
                             childViewHolder.addAmount?.isEnabled = false
                             ToastUtil.showToast(context!!, "该商品不能购买更多了")
@@ -695,7 +702,7 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
 
     //修改商品数量的回调
     interface OnChangeCountListener {
-        fun onChangeCount(cart_id: String, count: Int)
+        fun onChangeCount(cart_id: String, count: Int): Boolean
     }
 
     fun setOnChangeCountListener(listener: OnChangeCountListener) {

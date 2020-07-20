@@ -91,8 +91,8 @@ class ShopListFragment : BaseFragment() {
             //修改商品数量的回调
             goodsAdapter?.setOnChangeCountListener(object :
                 ShoppingCarAdapter.OnChangeCountListener {
-                override fun onChangeCount(cart_id: String,count:Int){
-                    editShopNum(cart_id,"$count")
+                override fun onChangeCount(cart_id: String,count:Int): Boolean {
+                  return  editShopNum(cart_id,"$count")
                 }
             })
         }
@@ -151,7 +151,8 @@ class ShopListFragment : BaseFragment() {
             })
     }
     //更改商品数量
-    private fun editShopNum(cart_id: String,count:String){
+    private fun editShopNum(cart_id: String,count:String):Boolean{
+        var resultStatus=false
         JhApiHttpManager.getInstance(Api.NEWBASEURL)
             .post(Api.CARTEDIT, NewParameter.getEditSCMap(cart_id,count,1), object : Subscriber<String>() {
                 override fun onNext(result: String?) {
@@ -170,7 +171,8 @@ class ShopListFragment : BaseFragment() {
                                 jsonObj!!.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            getShopData(true) //请求购物车
+//                            getShopData(true) //请求购物车
+                            resultStatus=true
                         }
                     }
                 }
@@ -184,6 +186,7 @@ class ShopListFragment : BaseFragment() {
                     LogTool.e("onCompleted", "购物车增减请求失败: ${e.toString()}")
                 }
             })
+        return resultStatus
     }
     //删除商品
     private fun removeShopNum(cart_id: String,count:String){

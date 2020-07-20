@@ -19,9 +19,9 @@ import com.example.juanshichang.base.BaseActivity
 import com.example.juanshichang.base.JsonParser
 import com.example.juanshichang.base.Parameter
 import com.example.juanshichang.http.HttpManager
+import com.example.juanshichang.http.REGISTRATION_AGREEMENT_URL
 import com.example.juanshichang.utils.*
 import com.example.juanshichang.widget.LiveDataBus
-import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import kotlinx.android.synthetic.main.activity_reg2_log.*
 import kotlinx.android.synthetic.main.login_item.*
 import kotlinx.android.synthetic.main.regist_item.*
@@ -89,7 +89,9 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                            LiveDataBus.get().with("mainGo").value = 0 //返回到购物车
                            finish()
                        }*/
-                this@Reg2LogActivity.finish()
+                if (!this@Reg2LogActivity.isFinishing) {
+                    this@Reg2LogActivity.finish()
+                }
             }
             //注册页面
             R.id.goLog -> {//登录
@@ -135,7 +137,14 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.userAgreements -> {//用户协议字体
-                ToastUtil.showToast(this@Reg2LogActivity, "《注册协议》准备中...")
+                val intent = Intent(this@Reg2LogActivity, WebActivity::class.java)
+                intent.putExtra("title","注册协议")
+                intent.putExtra(
+                    "mobile_short_url",
+                    REGISTRATION_AGREEMENT_URL
+                )
+                BaseActivity.goStartActivity(this@Reg2LogActivity, intent)
+//                ToastUtil.showToast(this@Reg2LogActivity, "《注册协议》准备中...")
             }
             //登录界面
             R.id.goReg -> {//注册
@@ -205,11 +214,14 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
         val phone = regPhone.text.toString()
         val ps = regPassword.text.toString()
         val yzCode = yzCode.text.toString()
-        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(ps) || TextUtils.isEmpty(yzCode)) {
+        if (TextUtils.isEmpty(phone.trim()) || TextUtils.isEmpty(ps.trim()) || TextUtils.isEmpty(
+                yzCode.trim()
+            )
+        ) {
             ToastUtil.showToast(this@Reg2LogActivity, "请根据提示框输入正确的信息!")
             return false
         }
-        if (!Util.validateMobile(phone)) {
+        if (!Util.validateMobile(phone.trim())) {
             ToastUtil.showToast(this@Reg2LogActivity, "请输入正确的手机号!")
             return false
         }
@@ -331,14 +343,23 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
                             this@Reg2LogActivity.runOnUiThread(Runnable {
 //                            if (token != "" && !TextUtils.isEmpty(token)) {
 //                            downUser("login")
+                                ToastUtil.showToast(
+                                    this@Reg2LogActivity,
+                                    "登陆成功"
+                                )
                                 goStartActivity(this@Reg2LogActivity, MainActivity())
-                                this@Reg2LogActivity.finish()
+                                LiveDataBus.get().with("mainGo").value = 0
+                                if(!this@Reg2LogActivity.isFinishing){
+                                    this@Reg2LogActivity.finish()
+                                }
 //                            }
                             })
 
                         }
                     }
                 }
+
+
 
                 override fun onCompleted() {
                     LogTool.e("onCompleted", "登录请求完成!")

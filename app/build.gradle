@@ -50,15 +50,21 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true //启用资源压缩  否则无法移除无用的resourse文件
+            minifyEnabled false //启用资源压缩  否则无法移除无用的resourse文件
             //开启混淆
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             multiDexEnabled true //dex 分包
             zipAlignEnabled true //zipAlign优化
-            shrinkResources true //移除无用的resourse文件
+            shrinkResources false //移除无用的resourse文件
             signingConfig signingConfigs.release
         }
         debug {
+/*            minifyEnabled false //启用资源压缩  否则无法移除无用的resourse文件
+            //开启混淆
+            multiDexEnabled true //dex 分包
+            zipAlignEnabled true //zipAlign优化
+            shrinkResources false //移除无用的resourse文件
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'*/
             signingConfig signingConfigs.debug
         }
     }
@@ -137,7 +143,8 @@ dependencies {
 
     //    implementation 'com.qmuiteam:arch:0.6.1' //0.3.1
     implementation "com.qmuiteam:arch:$qmui_arch_version"
-    implementation 'com.github.chihane:JDAddressSelector:1.1.4'//京东地址插件 https://github.com/chihane/JDAddressSelector
+    implementation 'com.github.chihane:JDAddressSelector:1.1.4'
+//京东地址插件 https://github.com/chihane/JDAddressSelector
     //    kapt "com.qmuiteam:arch-compiler:$qmui_arch_version" // use annotationProcessor if java
 
     //Banner
@@ -164,6 +171,10 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.1.0'
     // New Add
     kapt 'com.jakewharton:butterknife-compiler:10.1.0'
+    //下拉刷新上拉加载更多
+    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
+    implementation 'com.scwang.smart:refresh-footer-classics:2.0.1'//经典加载
+    implementation 'com.scwang.smart:refresh-header-classics:2.0.1'//经典刷新头
 
     //添加这行
     //eventbus  广播不使用eventbus...

@@ -7,6 +7,7 @@ import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -14,23 +15,30 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.juanshichang.MyApp;
 import com.example.juanshichang.R;
+import com.example.juanshichang.utils.LogTool;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUIRadiusImageView;
 
 import java.security.MessageDigest;
 
+import static android.content.ContentValues.TAG;
 import static com.bumptech.glide.request.target.Target.SIZE_ORIGINAL;
+import static net.lucode.hackware.magicindicator.buildins.UIUtil.getScreenWidth;
 
 /**
  * Created by Administrator on 2019/5/27/027.
@@ -88,11 +96,61 @@ public class GlideUtil {
         try {
             RequestOptions options = new RequestOptions();
             options.transform(new StaggeredBitmapTransform(MyApp.app))
-//                    .placeholder(R.drawable.c_placeholderlong)
+                    .placeholder(R.drawable.c_error)
                     .error(R.drawable.c_error)
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE); //ALL
             if (type != 0) {
                 options.format(DecodeFormat.PREFER_ARGB_8888);
+            }
+            if (type == 6) {//加载商品图片
+
+              /*  Glide.with(mContext).load(url)
+                        .listener(RequestListener<Integer,Glide>())
+                        .apply(options)
+
+
+                            https://blog.csdn.net/qq939782569/java/article/details/60135790
+                        .into(mImageView);*/
+                SimpleTarget target = new SimpleTarget<Drawable>(500, 500) {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        if (mImageView.getScaleType() != ImageView.ScaleType.FIT_XY) {
+                            mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                        }
+
+                        int width = resource.getIntrinsicWidth();
+                        int height = resource.getIntrinsicHeight();
+//                        Log.d(TAG, "width = " + width + " height = " + height);
+                        float ratio = (float) width / height;
+
+//                        Log.d(TAG, "ratio = " + ratio);
+
+                /*        ViewGroup.LayoutParams layoutParams = mImageView.getLayoutParams();
+//                                layoutParams.height = getScreenWidth(mImageView.getContext());;
+                        layoutParams.height = (int) Math.floor(getScreenWidth(mImageView.getContext()) / ratio );
+                        layoutParams.width = getScreenWidth(mImageView.getContext());
+                        mImageView.setLayoutParams(layoutParams);*/
+
+                        ViewGroup.LayoutParams params = mImageView.getLayoutParams();
+                        int vw = mImageView.getWidth() - mImageView.getPaddingLeft() - mImageView.getPaddingRight();
+                        //float scale = (float) vw / (float) resource.getIntrinsicWidth();
+//                        int vh = (int) ((float)vw/(float) 0.5);
+                        int vh = mImageView.getWidth() ;
+                        params.height = vh + mImageView.getPaddingTop() + mImageView.getPaddingBottom();
+                        mImageView.setLayoutParams(params);
+                        mImageView.setImageDrawable(resource);
+                     /*   Log.d(TAG, "viewWidth = " + mImageView.getLayoutParams().width
+                                + " viewHeight = " + mImageView.getLayoutParams().height
+                                + " viewRatio = " + (float) mImageView.getLayoutParams().width / mImageView.getLayoutParams().height);*/
+                    }
+
+                };
+                Glide.with(mImageView.getContext())
+                        .load(url)
+                        .placeholder(R.drawable.c_error)
+                        .error(R.drawable.c_error)
+//                        .apply(options)
+                        .into(target);
             }
             if (type == 2) {
                 int screenWidth = mContext.getResources().getDisplayMetrics().widthPixels;
@@ -123,9 +181,9 @@ public class GlideUtil {
     public static void loadShopImg(Context context, String url, ImageView imageView, Drawable draw) { //加载购物车默认使用888等
         try { //glide设置了内存缓存skipMemoryCache(true)导致的 刷新闪烁
             //https://blog.csdn.net/wbw522/article/details/71195249
-            if(TextUtils.isEmpty(url+"")){
+            if (TextUtils.isEmpty(url + "")) {
                 imageView.setImageResource(R.drawable.c_error);
-            }else { //https://blog.csdn.net/u011814346/article/details/89521542  oom处理
+            } else { //https://blog.csdn.net/u011814346/article/details/89521542  oom处理
                 RequestOptions options = new RequestOptions();
                 options.transform(new StaggeredBitmapTransform(MyApp.app))
                         .placeholder(draw)
