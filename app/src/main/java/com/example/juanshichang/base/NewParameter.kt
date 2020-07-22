@@ -558,6 +558,24 @@ class NewParameter {
             map.put("search", search)
             return map
         }
+        //商品搜索
+        fun getSearchMap(search: String,
+                         page: String,
+                         limit: String,
+                         order: String
+        ): Map<String, String> {
+            baseList.clear()
+            baseList.add("route=api/search")
+            baseList.add("page=$page")
+            baseList.add("limit=$limit")
+            baseList.add("order=$order")
+            val map = fengMap(0)
+            map.put("search", search)
+            map.put("page", page)
+            map.put("limit", limit)
+            map.put("order", order)
+            return map
+        }
 
         //商品详情
         fun getOrderDhMap(order_id: String): Map<String, String> {

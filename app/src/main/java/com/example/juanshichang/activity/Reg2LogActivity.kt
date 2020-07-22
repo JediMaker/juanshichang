@@ -129,11 +129,11 @@ class Reg2LogActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.mRCheckBoxX -> {//用户协议选中
                 if (tag == 1) {
-                    mRCheckBoxX.backgroundResource = R.drawable.noselect
+                    mRCheckBoxX.backgroundResource = R.drawable.reg_nocheck
                     tag = 0
                 } else {
                     tag = 1
-                    mRCheckBoxX.backgroundResource = R.drawable.is_sel
+                    mRCheckBoxX.backgroundResource = R.drawable.reg_checked
                 }
             }
             R.id.userAgreements -> {//用户协议字体

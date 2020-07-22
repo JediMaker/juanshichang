@@ -7,10 +7,10 @@
         tools:context=".activity.ZyAllActivity">
 
     <com.zhy.autolayout.AutoRelativeLayout
-            android:background="@color/colorPrimary"
             android:id="@+id/zyBar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_56"
+            android:background="@color/colorPrimary"
             tools:ignore="MissingConstraints">
         <!--ff_ret-->
         <LinearLayout
@@ -18,11 +18,12 @@
                 android:layout_width="@dimen/dp_48"
                 android:layout_height="@dimen/dp_56"
                 android:layout_centerVertical="true">
+
             <View
                     android:layout_width="63px"
                     android:layout_height="43px"
-                    android:layout_marginLeft="@dimen/dp_16"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_16"
                     android:background="@drawable/ret_n" />
         </LinearLayout>
 
@@ -31,35 +32,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_txt_topBarTextSize"
                 android:text="商城自营"
-                />
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_txt_topBarTextSize" />
     </com.zhy.autolayout.AutoRelativeLayout>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/refreshLayout"
-            app:layout_constraintTop_toBottomOf="@+id/zyBar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:srlEnableAutoLoadMore="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-        <com.scwang.smart.refresh.header.ClassicsHeader
+            app:layout_constraintTop_toBottomOf="@+id/zyBar">
+
+        <com.scwang.smart.refresh.header.MaterialHeader
+                android:id="@+id/header"
+                app:mhShowBezierWave="true"
+                app:mhPrimaryColor="@color/colorPrimary"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="@dimen/dp_56" />
+
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/zyRecycler"
-                android:scrollbars="none"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp_5"
                 android:layout_marginRight="@dimen/dp_5"
+                android:scrollbars="none"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                app:spanCount="2" />
+
         <com.scwang.smart.refresh.footer.ClassicsFooter
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                app:srlTextSizeTitle="@dimen/sp_txt_annotateTextSize"
+                android:layout_height="@dimen/dp_28" />
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

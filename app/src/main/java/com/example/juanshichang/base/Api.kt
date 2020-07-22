@@ -7,8 +7,8 @@ package com.example.juanshichang.base
  */
 interface Api {
     companion object {
-//        const val BASEURL = "http://mxss.bainianmao.com/" // 阿里环境
-        const val BASEURL = "http://mxss.local.com/" // 测试环境
+        const val BASEURL = "http://mxss.bainianmao.com/" // 阿里环境
+//        const val BASEURL = "http://mxss.local.com/" // 测试环境
         //注册
         val USER = "/api/index.php?route=api/user/register"
         //登录
@@ -107,8 +107,8 @@ interface Api {
         val Jd = "jd"
 
         // ------------------------------------------------ new  port ------------------------------------------
-//        const val NEWBASEURL = "http://mxss.bainianmao.com/"//外网测试
-        const val NEWBASEURL = "http://mxss.local.com/" // 测试环境
+        const val NEWBASEURL = "http://mxss.bainianmao.com/"//外网测试
+//        const val NEWBASEURL = "http://mxss.local.com/" // 测试环境
         val HOME = "/api/index.php?route=api/home"     //首页
         val CART = "/api/index.php?route=api/cart"         //购物车
         val CARTADD = "/api/index.php?route=api/cart/add"  //添加商品
@@ -128,6 +128,8 @@ interface Api {
         val ORDERDEL = "/api/index.php?route=api/order/del" //订单删除
         val NEWCATEGORY = "/api/index.php?route=api/category" //列表信息
         val NEWCATEGORYCON = "/api/index.php?route=api/category/goods" //商品列表
+        val PRODUCTNEWLIST = "/api/index.php?route=api/home/getProductList" //最新商品列表带分页
+        val PRODUCTHOTLIST = "/api/index.php?route=api/home/getProductHotList" //热门商品列表
         val ADDRESSZONES = "/api/index.php?route=api/address/zones" //地址列表参数
         val GET_REGIONS = "/api/index.php?route=api/checkout/get_regions" //地址列表参数
         val NEWAEARCH = "/api/index.php?route=api/search" //商品搜索接口

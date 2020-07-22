@@ -62,6 +62,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="手机号"
+                            android:maxLines="1"
+                            android:maxLength="11"
                             android:inputType="phone"
                             android:layout_marginLeft="31px"
                             style="@style/RegistEdit"/>
@@ -195,7 +197,7 @@
                             android:id="@+id/mRCheckBoxX"
                             android:layout_width="36px"
                             android:layout_height="36px"
-                            android:background="@drawable/is_sel"
+                            android:background="@drawable/reg_checked"
                     />
                     <TextView
                             android:id="@+id/userAgreements"

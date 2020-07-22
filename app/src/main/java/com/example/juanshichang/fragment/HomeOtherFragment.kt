@@ -23,14 +23,22 @@ import com.example.juanshichang.utils.LogTool
 import com.example.juanshichang.utils.ToastUtil
 import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
+import com.scwang.smart.refresh.header.MaterialHeader
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.scwang.smart.refresh.layout.api.RefreshLayout
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener
+import kotlinx.android.synthetic.main.activity_zy_all.*
 import org.json.JSONException
 import org.json.JSONObject
 import rx.Subscriber
 
 class HomeOtherFragment : BaseFragment() {
-    private var zyRc: RecyclerView? = null
     private var FathPage: String = ""
+    private var zyRc: RecyclerView? = null
     private var zyAd: ZyAllAdapter? = null
+    private var header: MaterialHeader? = null
+    private var refreshLayout: SmartRefreshLayout? = null
+    private var page = 1
     private var zyData: List<ZyAllBean.Product>? = null
     override fun getLayoutId(): Int {
         return R.layout.fragment_home_other
@@ -40,6 +48,19 @@ class HomeOtherFragment : BaseFragment() {
         zyRc = mBaseView?.findViewById(R.id.zyRe)
         zyAd = ZyAllAdapter()
         zyRc?.adapter = zyAd
+        refreshLayout = mBaseView?.findViewById(R.id.refreshLayout)
+        header = mBaseView?.findViewById(R.id.header)
+        refreshLayout?.setOnRefreshListener(object : OnRefreshListener {
+            override fun onRefresh(refreshlayout: RefreshLayout) {
+                page = 1
+                reqCateSon(FathPage, page.toString())//网络请求
+            }
+        })
+        refreshLayout?.setOnLoadMoreListener { refreshlayout ->
+            page++
+            reqCateSon(FathPage, page.toString())//网络请求
+        }
+        header?.setColorSchemeResources(R.color.colorPrimary)
     }
 
 
@@ -49,10 +70,12 @@ class HomeOtherFragment : BaseFragment() {
             .observe(this, object : Observer<String> {
                 override fun onChanged(t: String?) {
                     LogTool.e("yyyyyyy", "监听到了消息:" + t)
+                    page = 1
+                    refreshLayout?.setNoMoreData(false)
                     if (!t?.contentEquals(FathPage)!!) { //判断是否重复点击同一条目
                         FathPage = t
                         mContext?.showProgressDialog()
-                        reqCateSon(FathPage,"1")//网络请求
+                        reqCateSon(FathPage, page.toString())//网络请求
                     }
                 }
             })
@@ -89,16 +112,30 @@ class HomeOtherFragment : BaseFragment() {
                                     R.layout.activity_not_null,
                                     null
                                 )
-                                zyAd?.setNewData(null)
+                                if (page.toInt() == 1) {
+                                    zyAd?.setNewData(null)
+                                }
+                                if (refreshLayout?.isLoading!!)
+                                    refreshLayout?.finishLoadMoreWithNoMoreData()
+                            } else {
+                                ToastUtil.showToast(
+                                    mContext!!,
+                                    jsonObj.optString(JsonParser.JSON_MSG)
+                                )
                             }
-                            ToastUtil.showToast(
-                                mContext!!,
-                                jsonObj.optString(JsonParser.JSON_MSG)
-                            )
+
                         } else {
                             val data = Gson().fromJson(t, ZyAllBean.ZyAllBeans::class.java)
-                            zyData = data.data.products
-                            zyAd?.setNewData(zyData)
+                            if (page.toInt() == 1) {
+                                zyData = data.data.products
+                            } else {
+                                zyData = zyData?.plus(data.data.products)
+                            }
+                            if (page.toInt() > 1) {
+                                zyAd?.addData(data.data.products!!)
+                            } else {
+                                zyAd?.setNewData(data.data.products!!)
+                            }
                             zyAd?.emptyView = View.inflate(
                                 mContext,
                                 R.layout.activity_not_null,
@@ -111,10 +148,19 @@ class HomeOtherFragment : BaseFragment() {
                 override fun onCompleted() {
                     LogTool.e("onCompleted", "列表详情请求完成")
                     mContext?.dismissProgressDialog()
+                    if (refreshLayout?.state?.isOpening!!) {
+                        refreshLayout?.finishRefresh(true)
+                        refreshLayout?.finishLoadMore(true)
+                    }
                 }
 
                 override fun onError(e: Throwable?) {
                     LogTool.e("onCompleted", "列表详情请求失败: ${e.toString()}")
+                    mContext?.dismissProgressDialog()
+                    if (refreshLayout?.state?.isOpening!!) {
+                        refreshLayout?.finishRefresh(false)
+                        refreshLayout?.finishLoadMore(false)
+                    }
                 }
             })
     }

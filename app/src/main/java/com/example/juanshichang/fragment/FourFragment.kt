@@ -279,7 +279,7 @@ class FourFragment : BaseFragment() {
         val top = mBaseView?.findViewById<TextView>(R.id.ffBalance) //余额
         val isMon = mBaseView?.findViewById<TextView>(R.id.ffEstimateMOn) //本月收入
         val isDay = mBaseView?.findViewById<TextView>(R.id.ffEstimateDay) //今日收入
-        GlideUtil.loadHeadImage(mContext!!, user?.avatar, fi)
+        GlideUtil.loadHeadImage2(mContext!!, user?.avatar, fi)
         fiv?.text = user?.points.toString()
         ft?.text = user?.phone_num
         top?.text = "" + Util.getFloatPrice(user?.balance!!)
@@ -353,7 +353,7 @@ class FourFragment : BaseFragment() {
             if (Util.hasLogin()) {
                 val fi = mBaseView?.findViewById<QMUIRadiusImageView>(R.id.ffUserImage) //头像
                 val ft = mBaseView?.findViewById<TextView>(R.id.ffUserName) //昵称
-                GlideUtil.loadHeadImage(mContext!!, user?.avatar, fi)
+                GlideUtil.loadHeadImage2(mContext!!, user?.avatar, fi)
                 ft?.text = user?.nick_name
                 ToastUtil.showToast(mContext!!, "更新")
             }

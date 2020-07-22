@@ -63,6 +63,7 @@ class NewClassifyActivity : BaseActivity(), View.OnClickListener,
         rightAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT)
         mRecycler.adapter = rightAdapter
         reqCateFat("0")
+        mNSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary)
     }
 
     override fun onClick(v: View?) {

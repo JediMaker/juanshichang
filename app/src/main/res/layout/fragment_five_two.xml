@@ -99,8 +99,14 @@
                 <TextView
                         android:id="@+id/ffUserInvite"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/xcolor"
+                        android:minWidth="@dimen/dp_40"
+                        android:paddingLeft="@dimen/dp_4"
+                        android:paddingRight="@dimen/dp_4"
+                        android:layout_height="@dimen/dp_16"
+                        android:gravity="center"
+                        android:background="@drawable/ff_copy_but"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="@dimen/dp_8"
                         android:textSize="@dimen/sp_txt_nomal"
                         tools:text="0" />
                 <!--            ff_tx_but-->

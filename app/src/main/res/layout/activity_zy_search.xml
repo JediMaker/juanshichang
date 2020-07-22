@@ -11,17 +11,35 @@
             app:layout_constraintLeft_toLeftOf="parent"
             android:id="@+id/topLy"
             layout="@layout/activity_seek_bar"/>
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/zySRec"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"
-            android:layout_marginLeft="@dimen/dp_5"
-            android:layout_marginRight="@dimen/dp_5"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/refreshLayout"
             app:layout_constraintTop_toBottomOf="@+id/topLy"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:srlEnableAutoLoadMore="true"
             android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp">
+        <com.scwang.smart.refresh.header.MaterialHeader
+                android:id="@+id/headerSearch"
+                app:mhShowBezierWave="true"
+                app:mhPrimaryColor="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_56" />
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/zySRec"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                app:srlTextSizeTitle="@dimen/sp_txt_annotateTextSize"
+                android:layout_height="@dimen/dp_28"/>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

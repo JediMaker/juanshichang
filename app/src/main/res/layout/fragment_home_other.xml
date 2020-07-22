@@ -13,11 +13,15 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:srlEnableAutoLoadMore="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <com.scwang.smart.refresh.header.ClassicsHeader
+        <com.scwang.smart.refresh.header.MaterialHeader
+                android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="@dimen/dp_56"
+                app:mhPrimaryColor="@color/colorPrimary"
+                app:mhShowBezierWave="false" />
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/zyRe"
                 android:scrollbars="none"
@@ -27,7 +31,8 @@
                 android:layout_height="match_parent"/>
         <com.scwang.smart.refresh.footer.ClassicsFooter
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                app:srlTextSizeTitle="@dimen/sp_txt_annotateTextSize"
+                android:layout_height="@dimen/dp_28"/>
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

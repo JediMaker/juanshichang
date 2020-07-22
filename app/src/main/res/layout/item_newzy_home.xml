@@ -19,11 +19,11 @@
                     android:id="@+id/topHImg"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="4.3dp"
-                    android:src="@drawable/index_hot"
+                    android:src="@drawable/img_product_hot"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_width="@dimen/dp_174"
+                    android:layout_height="@dimen/dp_17"/>
             <TextView
                     android:id="@+id/topHTit"
                     tools:text="热销商品"
@@ -31,10 +31,10 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="12dp"
                     android:textColor="@color/main_text"
-                    android:layout_toRightOf="@+id/topHImg"
                     android:layout_centerVertical="true"
+                    android:visibility="invisible"
                     android:textSize="@dimen/sp_txt_title_icon_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             <TextView
                     android:id="@+id/topHMore"
@@ -43,6 +43,7 @@
                     android:textSize="@dimen/sp_txt_annotateTextSize"
                     android:textColor="@color/txt_gray"
                     android:layout_gravity="center_vertical"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:gravity="right"
                     android:visibility="visible"

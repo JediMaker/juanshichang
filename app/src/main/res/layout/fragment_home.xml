@@ -7,10 +7,22 @@
         tools:context=".fragment.HomeFragment">
 
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/homeSwipe"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:srlEnableAutoLoadMore="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/zyBar">
+
+        <com.scwang.smart.refresh.header.MaterialHeader
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_56"
+                app:mhPrimaryColor="@color/colorPrimary"
+                app:mhShowBezierWave="false" />
 
         <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -29,10 +41,10 @@
                         android:id="@+id/mainBanner"
                         android:layout_width="match_parent"
                         android:layout_height="480px"
-                        android:paddingRight="@dimen/dp_12"
-                        android:paddingTop="@dimen/dp_10"
-                        android:paddingLeft="@dimen/dp_12"
                         android:background="@drawable/mback_1"
+                        android:paddingLeft="@dimen/dp_12"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingRight="@dimen/dp_12"
                         banner:banner_radius="5dp"
                         banner:indicator_normal_color="@android:color/white"
                         banner:indicator_selected_color="@color/colorPrimary"></com.youth.banner.Banner>
@@ -54,12 +66,34 @@
                 <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/homeRyl"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:background="@color/ff_back"
                         android:overScrollMode="never"
                         android:scrollbars="none"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/homeNewList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/ff_back"
+                        android:overScrollMode="never"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:layout_marginRight="@dimen/dp_8"
+                        android:scrollbars="none"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="2" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+                android:layout_width="match_parent"
+                app:srlTextSizeTitle="@dimen/sp_txt_annotateTextSize"
+                android:layout_height="@dimen/dp_28" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+    <!--    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/homeSwipe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 </com.zhy.autolayout.AutoFrameLayout>

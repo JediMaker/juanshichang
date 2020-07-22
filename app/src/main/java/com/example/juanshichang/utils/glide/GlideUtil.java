@@ -91,6 +91,23 @@ public class GlideUtil {
 
         }
     }
+    public static void loadHeadImage2(Context mContext, String url, ImageView mImageView) {
+        try {
+            RequestOptions options = new RequestOptions();
+            options.transform(new StaggeredBitmapTransform(MyApp.app))
+//                    .placeholder(R.drawable.c_placeholderlong)
+                    .error(R.drawable.defaultt)
+//                    .format(DecodeFormat.PREFER_ARGB_8888)
+                    .placeholder(R.drawable.c_error)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .dontAnimate(); //ALL
+            Glide.with(mContext).load(url)
+                    .apply(options)
+                    .into(mImageView);
+        } catch (Exception e) {
+
+        }
+    }
 
     public static void loadImage(Context mContext, String url, ImageView mImageView, int type) {
         try {

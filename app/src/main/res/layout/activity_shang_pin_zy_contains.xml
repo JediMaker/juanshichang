@@ -144,6 +144,7 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                     <LinearLayout
@@ -671,7 +672,7 @@
                 android:id="@+id/spZyHome"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
+                android:layout_weight="0.15"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -692,13 +693,14 @@
         <View
                 android:layout_width="0.5dp"
                 android:layout_height="45dp"
+                android:visibility="visible"
                 android:background="@color/line" />
 
         <LinearLayout
                 android:id="@+id/goShopCar"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
+                android:layout_weight="0.16"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -720,12 +722,8 @@
         <View
                 android:layout_width="0.5dp"
                 android:layout_height="45dp"
+                android:visibility="gone"
                 android:background="@color/line" />
-        <RelativeLayout
-                android:layout_width="@dimen/dp_0"
-                android:layout_weight="0.1"
-                android:layout_height="match_parent">
-        </RelativeLayout>
 
         <LinearLayout
                 android:id="@+id/spZySC"

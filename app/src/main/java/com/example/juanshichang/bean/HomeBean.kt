@@ -35,11 +35,12 @@ class HomeBean {
     )
 
     data class Product(
-        var date: List<Date> = listOf(),
+        var date: List<Date> = ArrayList(),
         var name: String = ""
     )
 
     data class Date(
+        var minimum: String = "",
         var description: String = "",
         var href: String = "",
         var name: String = "",
