@@ -77,25 +77,25 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
         catBean: CartBean.CartBeans?,
         needChange: Boolean
     ) {
-        //把之前购物车商品的状态copy一份
-        for (z in 0 until (catBean?.data?.products?.size ?: 0)) {
-            for (i in 0 until this.data.size) {
-                for (y in 0 until data[i]?.data?.products?.size!!) {
-                    if (catBean?.data?.products?.get(z)?.cart_id.equals(data[i]?.data?.products!![y].cart_id)) {
-                        catBean?.data?.products?.get(z)?.isSelect =
-                            data[i]?.data?.products!![y].isSelect;
+        /*    //把之前购物车商品的状态copy一份
+            for (z in 0 until (catBean?.data?.products?.size ?: 0)) {
+                for (i in 0 until this.data.size) {
+                    for (y in 0 until data[i]?.data?.products?.size!!) {
+                        if (catBean?.data?.products?.get(z)?.cart_id.equals(data[i]?.data?.products!![y].cart_id)) {
+                            catBean?.data?.products?.get(z)?.isSelect =
+                                data[i]?.data?.products!![y].isSelect;
+                        }
                     }
                 }
-            }
 
-        }
+            }*/
         this.data.clear()
         this.data.add(catBean)
         if (needChange) {
             shopType = SHOPCARFINISH //切换为完成状态
             editor?.text = "编辑"
         }
-
+        mCheckStates.clear()
         LogTool.e("shopcar", "数据填充完成....")
         notifyDataSetChanged()
 
@@ -381,8 +381,8 @@ class ShoppingCarAdapter : BaseExpandableListAdapter {
                 mCheckStates.put(childPosition, isSelect)
             }
             childViewHolder.cargoImg?.tag = goods_image
-            if (childViewHolder.cargoImg?.tag != null && childViewHolder.cargoImg?.tag!!.equals(
-                    goods_image
+            if (childViewHolder.cargoImg?.tag != null && goods_image.equals(
+                    childViewHolder.cargoImg?.tag
                 )
             ) {
                 GlideUtil.loadShopImg(
