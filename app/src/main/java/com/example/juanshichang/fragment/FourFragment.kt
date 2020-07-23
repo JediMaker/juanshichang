@@ -153,11 +153,6 @@ class FourFragment : BaseFragment() {
         }
     }
 
-    private fun setUi(user: User?) {
-        setUserReg.text = user!!.date_added //日期
-        nickName.text = user!!.nick_name //昵称
-        userName = user!!.nick_name  //昵称
-    }
 
     private fun setUND() {
         //修改昵称 Dialog
@@ -285,7 +280,9 @@ class FourFragment : BaseFragment() {
         top?.text = "" + Util.getFloatPrice(user?.balance!!)
         isMon?.text = "" + Util.getFloatPrice(user?.current_month_benefit!!.toLong())
         isDay?.text = "" + Util.getFloatPrice(user?.current_day_benefit!!.toLong())
-        setUi(user)
+        setUserReg.text = user.date_added //日期
+        nickName.text = user.nick_name //昵称
+        userName = user.nick_name  //昵称
         myUser = user
     }
 
@@ -296,7 +293,7 @@ class FourFragment : BaseFragment() {
 
         override fun onTick(p0: Long) {
             val user = SpUtil.getIstance().user
-            if (!TextUtils.isEmpty(user.phone_num)
+            if (!TextUtils.isEmpty(user.phone_num)&&!TextUtils.isEmpty(user.date_added)&&!TextUtils.isEmpty(user.nick_name)
             ) { //通过三个参数判断所有
                 setUiData(user)
                 this.cancel()
@@ -320,7 +317,7 @@ class FourFragment : BaseFragment() {
         if (Util.hasLogin()) {
             if (goNet == 0) {
                 val user = SpUtil.getIstance().user
-                if (!TextUtils.isEmpty(user.avatar) && user.points!=0
+                if (!TextUtils.isEmpty(user.avatar) && user.points != 0
                 ) { //通过三个参数判断所有
                     setUiData(user)
                     goNet = 1

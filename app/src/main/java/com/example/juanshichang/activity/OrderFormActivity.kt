@@ -3,7 +3,9 @@ package com.example.juanshichang.activity
 import android.content.Intent
 import android.os.Handler
 import android.os.Message
+import android.view.MotionEvent
 import android.view.View
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -14,10 +16,7 @@ import com.example.juanshichang.bean.OrdersBean
 import com.example.juanshichang.bean.OrdersBeanT
 import com.example.juanshichang.http.HttpManager
 import com.example.juanshichang.http.JhApiHttpManager
-import com.example.juanshichang.utils.LogTool
-import com.example.juanshichang.utils.StatusBarUtil
-import com.example.juanshichang.utils.ToastTool
-import com.example.juanshichang.utils.ToastUtil
+import com.example.juanshichang.utils.*
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_order_form.*
@@ -60,7 +59,7 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
     }
 
     override fun initView() {
-        oldTab=-1
+        oldTab = -1
         StatusBarUtil.addStatusViewWithColor(this@OrderFormActivity, R.color.colorPrimary)
 //        orderTop.setPadding(0, QMUIStatusBarHelper.getStatusbarHeight(this), 0, 0)
         setTab()
@@ -72,7 +71,7 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
         }
         ordersListData = ArrayList()
         detailTab.selectTab(detailTab.getTabAt(type))
-        if(type==0){
+        if (type == 0) {
             ordTast.postDelayed(object : Runnable {
                 override fun run() {
 //                getOrders(0,20)
@@ -115,7 +114,6 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
                                     Intent(this@OrderFormActivity, SettleAccActivity::class.java)
                                 intent.putExtra("orderid", ordersAdpater!!.data[position].order_id)
                                 startActivity(intent)
-                                finish()
                             }
                         }
                     }
@@ -158,9 +156,10 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
         }
 
         override fun onTabSelected(t: TabLayout.Tab?) {
-            if (ordersListData != null && ordersListData?.size != 0) {
-                ordersListData?.clear()
-            }
+             if (ordersListData != null && ordersListData?.size != 0) {
+                 ordersListData?.clear()
+                 ordersAdpater?.notifyDataSetChanged()
+             }
             when (t?.text) {
                 "全部" -> {
                     type = 0
@@ -315,13 +314,14 @@ class OrderFormActivity() : BaseActivity(), View.OnClickListener {
                                 jsonObj.optString(JsonParser.JSON_MSG)
                             )
                         } else {
-                            dismissProgressDialog()
-                            if (ordersListData != null && ordersListData?.size != 0) {
-                                ordersListData?.clear()
-                            }
                             try {
+                                dismissProgressDialog()
+//                                if (ordersListData != null && ordersListData?.size != 0) {
+//                                    ordersListData?.clear()
+//                                }
                                 val data = Gson().fromJson(t, OrdersBeanT.OrdersBeanTs::class.java)
                                 ordersListData?.addAll(data.data)
+                                ordersAdpater?.notifyDataSetChanged()
                                 handler.sendEmptyMessage(0)
                             } catch (e: Exception) {
                                 handler.sendEmptyMessage(0)

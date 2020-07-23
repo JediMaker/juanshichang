@@ -303,6 +303,8 @@ class FastLoginActivity : BaseActivity(), View.OnClickListener {
                                         intent.putExtra("type", Reg2LogActivity.LOGINCODE) // 显示登录
                                         goStartActivity(this@FastLoginActivity, intent)
                                         this@FastLoginActivity.finish()
+                                    }else{
+                                        this@FastLoginActivity.finish()
                                     }
                                 })
 

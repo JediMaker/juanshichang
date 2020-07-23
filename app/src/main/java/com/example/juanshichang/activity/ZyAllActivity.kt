@@ -61,6 +61,7 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
                     when (type?.trim()) {
                         "0" -> {// 热销商品
                             reqHostList(page.toString())
+                            refreshlayout.setNoMoreData(true)
                         }
                         "1" -> {//最新商品
                             reqProductNewList(page.toString())
@@ -77,7 +78,7 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
             if (type != null) {
                 when (type?.trim()) {
                     "0" -> {// 热销商品
-                        reqHostList(page.toString())
+//                        reqHostList(page.toString())
                     }
                     "1" -> {//最新商品
                         reqProductNewList(page.toString())
@@ -101,6 +102,7 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
             when (type?.trim()) {
                 "0" -> {// 热销商品
                     reqHostList(page.toString())
+                    refreshLayout.setNoMoreData(true)
                 }
                 "1" -> {//最新商品
                     reqProductNewList(page.toString())

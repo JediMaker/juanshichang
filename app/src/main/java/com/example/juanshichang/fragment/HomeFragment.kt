@@ -284,7 +284,7 @@ class HomeFragment : BaseFragment() {
                 //              .setCurrentItem(3,false)
                 .addBannerLifecycleObserver(this) //添加生命周期观察者
                 //              .setBannerRound(BannerUtils.dp2px(5))//圆角
-                .addPageTransformer(RotateYTransformer())//添加切换效果
+//                .addPageTransformer(RotateYTransformer())//添加切换效果
                 .setDelayTime(4500)//轮播间隔
                 .setIndicator(CircleIndicator(mContext)) //设置指示器
                 //添加间距(如果使用了画廊效果就不要添加间距了，因为内部已经添加过了)
