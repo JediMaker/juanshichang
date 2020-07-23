@@ -93,10 +93,10 @@ class ConOrderActivity : BaseActivity(), View.OnClickListener {
                 startActivityForResult(intent, 1)
             }
             coPay -> {
-//                 if(addresse == null){
-//                    ToastUtil.showToast(this@ConOrderActivity,"收货地址不能为空")
-//                    return
-//                }
+                 if(addresse == null){
+                    ToastUtil.showToast(this@ConOrderActivity,"收货地址不能为空")
+                    return
+                }
                 val intent = Intent(this@ConOrderActivity, SettleAccActivity::class.java)
                 bundle?.putString("address_id", addresseId) //携带地址id 跳转
                 intent.putExtra("bundle", bundle)
