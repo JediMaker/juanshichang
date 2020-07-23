@@ -93,7 +93,7 @@ class ConOrderActivity : BaseActivity(), View.OnClickListener {
                 startActivityForResult(intent, 1)
             }
             coPay -> {
-                 if(addresse == null){
+                 if(addresseId == null){
                     ToastUtil.showToast(this@ConOrderActivity,"收货地址不能为空")
                     return
                 }
