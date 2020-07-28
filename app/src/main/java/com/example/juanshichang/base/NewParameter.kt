@@ -459,6 +459,17 @@ class NewParameter {
         }
 
         /***
+         * 修改用户手机号
+         * @param mobile
+         */
+        fun getUpdMobile(mobile: String): HashMap<String, String> {
+            baseList.clear()
+            baseList.add("mobile=$mobile")
+            val map = fengMap(1)
+            map.put("mobile", mobile)
+            return map
+        }
+        /***
          * 修改用户支付宝
          * @param ali_pay_account
          */

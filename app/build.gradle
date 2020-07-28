@@ -41,6 +41,12 @@ android {
             storeFile file('keystore/jsc.jks')
             storePassword 'wifi741'
         }
+ /*       debug {//测试友盟分享
+            storeFile file('debug.keystore')
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }*/
         release {
             keyAlias 'key0'
             keyPassword 'wifi741'

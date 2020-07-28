@@ -67,6 +67,7 @@ class MainActivity : BaseActivity() {
         fragmentList?.add(fourFragment!!)
 //            PermissionHelper.with(this).requestPermission(*PERMISSION_CAM).requestCode(CAM_CODE).request
         MyApp.requestPermission(this@MainActivity)
+        MyApp.sp.edit().putBoolean("FIRST", false).apply()
         bus.with("mainTopStatusView", Int::class.java)
             .observe(this, object : Observer<Int> {
                 override fun onChanged(t: Int?) {
@@ -126,8 +127,8 @@ class MainActivity : BaseActivity() {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu -> {
-                    oneFragment?.selectTabOne()
                     vp_main.currentItem = 0
+                    oneFragment?.selectTabOne()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.study -> {

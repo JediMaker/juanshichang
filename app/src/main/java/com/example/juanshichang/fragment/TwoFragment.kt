@@ -197,6 +197,7 @@ class TwoFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
                 val intent = Intent(mContext!!, ZyAllActivity::class.java)
                 intent.putExtra("type", "2")
                 intent.putExtra("category_id", it[position].category_id)
+                intent.putExtra("category_name", it[position].name)
                 startActivity(intent)
             }
         }

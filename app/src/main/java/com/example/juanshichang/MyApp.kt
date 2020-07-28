@@ -24,10 +24,22 @@ open class MyApp : Application() {
 
     companion object {
         //todo 正式包 isDebug 一定要修改为 false ！！！
-        val isDebug:Boolean = true
+        val isDebug:Boolean = false
         lateinit var app: MyApp
         lateinit var sp: SharedPreferences
         lateinit var applicationContext: Context
+        var mPermissionList = arrayOf(
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.READ_LOGS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.SET_DEBUG_APP,
+            Manifest.permission.SYSTEM_ALERT_WINDOW,
+            Manifest.permission.GET_ACCOUNTS,
+            Manifest.permission.WRITE_APN_SETTINGS
+        )
         private val PERMISSION_CAM = arrayOf(
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.CAMERA,
@@ -100,12 +112,28 @@ open class MyApp : Application() {
         app = this
         Companion.applicationContext = this
         QMUISwipeBackActivityManager.init(this)  //初始化 腾讯QMUI_Android
+
         //友盟相关平台配置，如果不配置会调不起来相关界面
-        PlatformConfig.setWeixin("","")//微信APPID和AppSecret
+   /*     PlatformConfig.setWeixin("","")//微信APPID和AppSecret
         PlatformConfig.setQQZone("","")//QQAPPID和AppSecret
-        PlatformConfig.setSinaWeibo("","","http://sns.whalecloud.com")//微博  微博APPID  微博APPSecret  微博的后台配置回调地址
+        PlatformConfig.setSinaWeibo("","","http://sns.whalecloud.com")//微博  微博APPID  微博APPSecret  微博的后台配置回调地址*/
+    /*    PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        //豆瓣RENREN平台目前只能在服务器端配置
+        PlatformConfig.setSinaWeibo("40777395", "43150b5d2aecb064be3f1c5de6be0dc7","http://sns.whalecloud.com");
+        PlatformConfig.setYixin("yxc0614e80c9304c11b0391514d09f13bf");
+        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+        PlatformConfig.setTwitter("3aIN7fuF685MuZ7jtXkQxalyi", "MK6FEYG63eWcpDFgRYw4w9puJhzDl0tyuqWjZ3M7XJuuG7mMbO");
+        PlatformConfig.setAlipay("2015111700822536");
+        PlatformConfig.setLaiwang("laiwangd497e70d4", "d497e70d4c3e4efeab1381476bac4c5e");
+        PlatformConfig.setPinterest("1439206");
+        PlatformConfig.setKakao("e4f60e065048eb031e235c806b31c70f");
+        PlatformConfig.setDing("dingoalmlnohc0wggfedpk");
+        PlatformConfig.setVKontakte("5764965","5My6SNliAaLxEm3Lyd9J");
+        PlatformConfig.setDropbox("oz8v5apet3arcdy","h7p2pjbzkkxt02a");*/
         UMConfigure.setLogEnabled(BuildConfig.DEBUG) //是否开启日志
         UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE,null)
+        UMConfigure.init(this,"5f1a9a96d62dd10bc71bdfc8"
+            ,"umeng",UMConfigure.DEVICE_TYPE_PHONE,"");//58edcfeb310c93091c000be2 5965ee00734be40b580001a0
         initTencentBugly() //初始化腾讯bugly
         EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX) //支付宝 沙盒环境...
     }

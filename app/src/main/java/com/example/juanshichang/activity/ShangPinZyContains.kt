@@ -9,15 +9,14 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import com.example.juanshichang.MainActivity
 import com.example.juanshichang.R
+import com.example.juanshichang.activity.Defaultcontent.musicurl
+import com.example.juanshichang.activity.Defaultcontent.videourl
 import com.example.juanshichang.adapter.GoodsImageAdapter
 import com.example.juanshichang.adapter.ImageBannerNetAdapter
 import com.example.juanshichang.adapter.ShangPinXqAdapter
@@ -35,6 +34,11 @@ import com.example.juanshichang.utils.glide.GlideUtil
 import com.example.juanshichang.widget.LiveDataBus
 import com.google.gson.Gson
 import com.qmuiteam.qmui.widget.dialog.QMUITipDialog
+import com.umeng.socialize.ShareAction
+import com.umeng.socialize.UMShareAPI
+import com.umeng.socialize.UMShareListener
+import com.umeng.socialize.bean.SHARE_MEDIA
+import com.umeng.socialize.media.*
 import com.youth.banner.Banner
 import com.youth.banner.config.IndicatorConfig
 import kotlinx.android.synthetic.main.activity_shang_pin_zy_contains.*
@@ -50,6 +54,7 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
     private var adapterSp: ShangPinXqAdapter? = null
     private var checkMap: ConcurrentHashMap<String, ArrayList<String>>? = null //这个是选择的数据集合
     private var quantity: Int = 1 // 数量
+
     @field:JvmField
     @BindView(R.id.mBZy)
     var mBZy: Banner<ZyProduct.Image?, GoodsImageAdapter>? = null
@@ -78,6 +83,51 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                     }
                 }
             }
+        }
+    }
+    private var umShareListener = object : UMShareListener {
+        /**
+         * @descrption 分享成功的回调
+         * @param platform 平台类型
+         */
+        override fun onResult(p0: SHARE_MEDIA?) {
+            Toast.makeText(
+                this@ShangPinZyContains,
+                "成功                                        了",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        /**
+         * @descrption 分享取消的回调
+         * @param platform 平台类型
+         */
+        override fun onCancel(p0: SHARE_MEDIA?) {
+            val makeText = Toast.makeText(
+                this@ShangPinZyContains,
+                "取消了", Toast.LENGTH_LONG
+            )
+            makeText.show();
+        }
+
+        /**
+         * @descrption 分享失败的回调
+         * @param platform 平台类型
+         * @param t 错误原因
+         */
+        override fun onError(p0: SHARE_MEDIA?, p1: Throwable?) {
+            Toast.makeText(
+                this@ShangPinZyContains,
+                "失 败" + p1?.message,
+                Toast.LENGTH_LONG
+            ).show();
+        }
+
+        /**
+         * @descrption 分享开始的回调
+         * @param platform 平台类型
+         */
+        override fun onStart(p0: SHARE_MEDIA?) {
         }
     }
 
@@ -110,6 +160,88 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                 }
             }
             R.id.spZySC -> {
+
+                //分享（带面板）
+                ShareAction(this).withText("hello")
+                    .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                    .setCallback(umShareListener).open();
+           /*     //分享（不带面板）
+                ShareAction(this)
+                    .setPlatform(SHARE_MEDIA.QQ)//传入平台
+                    .withText("hello")//分享内容
+                    .setCallback(umShareListener)//回调监听器
+                    .share();*/
+/*
+//                   * 图片
+//   在使用ShareAction的时候，调用withMedia可以设置一个UMImage（图片分享），UMImage的构建有如下几种形式
+//                   *
+                var image = UMImage(this, "imageurl");//网络图片
+//               image = UMImage(this, file);//本地文件
+                image = UMImage(this, R.drawable.defaultt);//资源文件
+//               image = UMImage(this, bitmap);//bitmap文件
+//               image = UMImage(this, byte[]);//字节流
+//                纯文本分享如下：
+//                ShareAction(this).withText("hello").withMedia(image).share();
+                ShareAction(this).withText("hello").withMedia(image)
+                    .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                    .setCallback(umShareListener).open();*/
+//                链接分享
+                val web = UMWeb(Defaultcontent.url)
+                web.setTitle("This is music title") //标题
+
+                web.setThumb(null) //缩略图
+
+                web.setDescription("my description") //描述
+               /* ShareAction(this)
+                    .withMedia(web)
+                    .share();*/
+                ShareAction(this).withText("hello").withMedia(web)
+                    .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                    .setCallback(umShareListener).open();
+              /*  //------------------视频
+                val video = UMVideo(videourl)
+                video.setTitle("This is music title") //视频的标题
+                video.setThumb(
+                    UMImage(
+                        this,
+                        "http://www.umeng.com/images/pic/social/chart_1.png"
+                    )
+                ) //视频的缩略图
+
+                video.setDescription("my description") //视频的描述
+                ShareAction(this).withText("hello").withMedia(video).share();*/
+              /*  ShareAction(this).withText("hello").withMedia(video)
+                    .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                    .setCallback(umShareListener).open();*/
+/*//                音乐
+                val music = UMusic(musicurl) //音乐的播放链接
+
+                music.setTitle("This is music title") //音乐的标题
+
+                music.setThumb(
+                    UMImage(
+                        this, "http://www.umeng.com/images/pic/social/chart_1.png"
+                    )
+                ) //音乐的缩略图
+
+                music.setDescription("my description") //音乐的描述
+
+                music.setmTargetUrl(Defaultcontent.url) //音乐的跳转链接
+                ShareAction(this).withMedia(music).share();*/
+//                ShareAction(this).withMedia(music)
+//                    .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+//                    .setCallback(umShareListener).open();
+//                gif
+          /*      val emoji = UMEmoji(
+                    this,
+                    "http://img5.imgtn.bdimg.com/it/u=2749190246,3857616763&fm=21&gp=0.jpg"
+                )
+                emoji.setThumb(UMImage(this, R.drawable.defaultt))
+*//*                ShareAction(this)
+                    .withMedia(emoji).share()*//*
+                ShareAction(this).withMedia(emoji)
+                    .setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                    .setCallback(umShareListener).open();*/
 
             }
             R.id.spAddShopCar -> {
@@ -699,5 +831,14 @@ class ShangPinZyContains : BaseActivity(), View.OnClickListener {
                     }
                 }
             })
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data)
     }
 }

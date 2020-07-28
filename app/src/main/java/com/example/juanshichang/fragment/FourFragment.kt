@@ -276,12 +276,12 @@ class FourFragment : BaseFragment() {
         val isDay = mBaseView?.findViewById<TextView>(R.id.ffEstimateDay) //今日收入
         GlideUtil.loadHeadImage2(mContext!!, user?.avatar, fi)
         fiv?.text = user?.points.toString()
-        ft?.text = user?.phone_num
+        ft?.text = user?.nick_name//昵称
         top?.text = "" + Util.getFloatPrice(user?.balance!!)
         isMon?.text = "" + Util.getFloatPrice(user?.current_month_benefit!!.toLong())
         isDay?.text = "" + Util.getFloatPrice(user?.current_day_benefit!!.toLong())
         setUserReg.text = user.date_added //日期
-        nickName.text = user.nick_name //昵称
+        nickName.text = user.phone_num
         userName = user.nick_name  //昵称
         myUser = user
     }

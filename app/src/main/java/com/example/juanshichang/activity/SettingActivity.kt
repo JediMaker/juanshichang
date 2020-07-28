@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.InputType
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -41,7 +42,9 @@ import java.io.File
 
 class SettingActivity : BaseActivity(), View.OnClickListener {
     private var userName: String? = null
+    private var mobileNum: String? = null
     private var uNDialog: QMUIDialog.EditTextDialogBuilder? = null
+    private var mobileDialog: QMUIDialog.EditTextDialogBuilder? = null
     private var uIADialog: QMUIDialog.MenuDialogBuilder? = null
     private var userZfb: String? = null
     private var zfbDialog: QMUIDialog.EditTextDialogBuilder? = null
@@ -54,6 +57,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
         setUserName.setOnClickListener(this)
         setZfb.setOnClickListener(this)
         realName.setOnClickListener(this)
+        setMobile.setOnClickListener(this)
         modifyPassword.setOnClickListener(this)
         setUND()//创建 用户昵称对话框 和 图片选择器
         setUi(SpUtil.getIstance().user)
@@ -109,6 +113,12 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                     uNDialog?.setDefaultText(userName)
                 }
                 uNDialog?.show()
+            }
+            setMobile -> {
+                if (mobileNum != null && !TextUtils.isEmpty(mobileNum)) {
+                    mobileDialog?.setDefaultText(mobileNum)
+                }
+                mobileDialog?.show()
             }
             modifyPassword -> { //修改密码
 //                goStartActivity(this@SettingActivity, SiteListActivity())
@@ -184,6 +194,7 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
+//        MyApp.requestPermission(this@SettingActivity)
         AndPermission.with(this@SettingActivity).runtime().permission(PERMISSION_CAM).onGranted({
             //使用权限
             /*imageUriP = null
@@ -204,12 +215,14 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setUi(user: User?) {
-        Zfb.text = user!!.ali_pay_account //提现账户
-        setUserReg.text = user!!.date_added //日期
-        nickName.text = user!!.nick_name //昵称
+        Zfb.text = user?.ali_pay_account //提现账户
+        setUserReg.text = user?.date_added //日期
+        nickName.text = user?.nick_name //昵称
+        mobileT.text = user?.phone_num //手机号.text = user!!.nick_name //昵称
         GlideUtil.loadHeadImage(this@SettingActivity, user!!.avatar, userImage!!) //头像
-        userName = user!!.nick_name  //昵称
-        userZfb = user!!.ali_pay_account  //提现账户
+        userName = user?.nick_name  //昵称
+        userZfb = user?.ali_pay_account  //提现账户
+        mobileNum = user?.phone_num  //手机号
     }
 
     private fun setUi(avatar: String, nickname: String, create_time: Int, ali: String) {
@@ -346,6 +359,38 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
             }
         })
         uNDialog?.create()
+        //修改手机号 Dialog
+        mobileDialog = QMUIDialog.EditTextDialogBuilder(this)
+        mobileDialog?.setInputType(InputType.TYPE_CLASS_PHONE)
+        mobileDialog?.setTitle("手机号")
+        mobileDialog?.setPlaceholder("在此输入您的手机号") //Hint
+        mobileDialog?.addAction("取消", QMUIDialogAction.ActionListener { dialog, index ->
+            ToastTool.showToast(this@SettingActivity, "取消修改")
+            dialog.dismiss()
+        })
+        mobileDialog?.addAction("确定", QMUIDialogAction.ActionListener { dialog, index ->
+            val newmobilenum = mobileDialog?.editText?.text.toString()
+            if (!newmobilenum.equals(mobileNum.toString())) {
+                if (!TextUtils.isEmpty(newmobilenum) && newmobilenum != "") {
+                    if (newmobilenum.length < 11) {
+                        ToastUtil.showToast(this@SettingActivity, "请检查输入的手机号码")
+                    }
+                    if (!Util.validateMobile(newmobilenum)) {
+                        ToastUtil.showToast(this@SettingActivity, "请输入正确的手机号")
+                    } else {
+                        showProgressDialog()  //
+                        setNewMobile(newmobilenum.toString().trim())
+                        dialog.dismiss()
+                    }
+                } else {
+                    ToastUtil.showToast(this@SettingActivity, "手机号不能为空")
+                }
+            } else {
+                ToastUtil.showToast(this@SettingActivity, "手机号未修改")
+                dialog.dismiss()
+            }
+        })
+        mobileDialog?.create()
         //设置头像弹窗
         uIADialog = QMUIDialog.MenuDialogBuilder(this)
         uIADialog?.addItem("拍照", DialogInterface.OnClickListener { dialogInterface, i ->
@@ -446,6 +491,56 @@ class SettingActivity : BaseActivity(), View.OnClickListener {
                     this@SettingActivity.runOnUiThread(object : Runnable {
                         override fun run() {
                             ToastUtil.showToast(this@SettingActivity, "昵称修改失败,请稍后重试")
+                            dismissProgressDialog()
+                        }
+                    })
+                }
+
+            })
+    }
+
+    //修改用户手机号
+    private fun setNewMobile(mobile: String) {
+        HttpManager.getInstance()
+            .post(Api.SETMobile, NewParameter.getUpdMobile(mobile), object : Subscriber<String>() {
+                override fun onNext(result: String?) {
+                    //todo后台返回数据结构问题，暂时这样处理
+                    val str = result?.substring(result?.indexOf("{"), result.length)
+
+                    if (JsonParser.isValidJsonWithSimpleJudge(str!!)) {
+                        var jsonObj: JSONObject? = null
+                        jsonObj = JSONObject(str)
+                        if (!jsonObj.optBoolean(JsonParser.JSON_Status)
+                        ) {
+                            ToastUtil.showToast(
+                                this@SettingActivity,
+                                jsonObj.optString(JsonParser.JSON_MSG)
+                            )
+                        } else {
+                            val user = SpUtil.getIstance().user
+                            user.phone_num = mobile
+                            mobileT.text = mobile //昵称
+                            SpUtil.getIstance().user = user
+                            this@SettingActivity.runOnUiThread(object : Runnable {
+                                override fun run() {
+                                    ToastTool.showToast(this@SettingActivity, "手机号修改成功")
+                                    mobileNum = mobile
+                                    dismissProgressDialog()
+                                }
+                            })
+                        }
+                    }
+                }
+
+                override fun onCompleted() {
+                    LogTool.e("onCompleted", "手机号修改完成!")
+                }
+
+                override fun onError(e: Throwable?) {
+                    LogTool.e("onError", "手机号修改失败!" + e)
+                    this@SettingActivity.runOnUiThread(object : Runnable {
+                        override fun run() {
+                            ToastUtil.showToast(this@SettingActivity, "手机号修改失败,请稍后重试")
                             dismissProgressDialog()
                         }
                     })

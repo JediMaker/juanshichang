@@ -59,8 +59,8 @@
                     android:layout_width="173px"
                     android:layout_height="173px"
                     android:layout_gravity="center"
-                    app:qmui_border_width="@dimen/dp_0"
                     android:src="@drawable/head_img_def"
+                    app:qmui_border_width="@dimen/dp_0"
                     app:qmui_is_circle="true" />
 
             <TextView
@@ -112,6 +112,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white">
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="46px"
+                    android:layout_marginRight="46px"
+                    android:background="@color/ff_back" />
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:id="@+id/setMobile"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="46px"
+                android:paddingRight="46px">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="手机号"
+                    android:textColor="@color/ff_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+
+            <TextView
+                    android:id="@+id/mobileT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:drawableRight="@drawable/details_next"
+                    android:drawablePadding="29px"
+                    android:text="修改"
+                    android:textColor="@color/txt_gray"
+                    android:textSize="@dimen/sp_txt_nomal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
             <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
@@ -126,7 +168,8 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="46px"
-                android:paddingRight="46px">
+                android:paddingRight="46px"
+                android:visibility="gone">
 
             <TextView
                     android:layout_width="wrap_content"
@@ -161,7 +204,6 @@
                 android:textSize="@dimen/sp_txt_nomal" />
 
         <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/setZfb"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
@@ -169,7 +211,8 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="46px"
-                android:paddingRight="46px">
+                android:paddingRight="46px"
+                android:visibility="gone">
 
             <TextView
                     android:layout_width="wrap_content"
@@ -199,13 +242,13 @@
 
         <RelativeLayout
                 android:id="@+id/realName"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="46px"
-                android:paddingRight="46px">
+                android:paddingRight="46px"
+                android:visibility="gone">
 
             <TextView
                     android:layout_width="wrap_content"

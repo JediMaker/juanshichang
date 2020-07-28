@@ -1,6 +1,5 @@
 package com.example.juanshichang.activity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.View
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -32,6 +31,7 @@ import rx.Subscriber
  */
 class ZyAllActivity : BaseActivity(), View.OnClickListener {
     private var category_id: String? = null
+    private var categoryName: String? = null
     private var type: String? = null//type 0 热销商品 1 最新商品  2 分类商品
     private var zyAdapter: ZyAllAdapter? = null
     private var page = 1
@@ -49,6 +49,14 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
                     if (intent.getStringExtra("category_id").isNotEmpty()) {//分类页跳转
                         category_id = intent.getStringExtra("category_id")
                     }
+                }
+                if (intent.hasExtra("category_name")) {
+                    if (intent.getStringExtra("category_name").isNotEmpty()) {//分类页跳转
+                        categoryName = intent.getStringExtra("category_name")
+                    }
+                }
+                if (categoryName!=null){
+                    zyTitle.text = categoryName
                 }
             }
         }
@@ -103,9 +111,11 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
                 "0" -> {// 热销商品
                     reqHostList(page.toString())
                     refreshLayout.setNoMoreData(true)
+                    zyTitle.text = "热销商品"
                 }
                 "1" -> {//最新商品
                     reqProductNewList(page.toString())
+                    zyTitle.text = "上新商品"
                 }
                 "2" -> {//分类商品
                     if (category_id != null) {
@@ -331,7 +341,7 @@ class ZyAllActivity : BaseActivity(), View.OnClickListener {
                                        myLoading?.dismiss()
                                        finish()
                                    }, 800)*/
-                            }else if (jsonObj.optString(JsonParser.JSON_CODE)
+                            } else if (jsonObj.optString(JsonParser.JSON_CODE)
                                     .equals("215")
                             ) {
                                 if (refreshLayout.isLoading)

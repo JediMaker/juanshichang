@@ -39,20 +39,27 @@ class SplashActivity : FragmentActivity(), View.OnClickListener {
 //        edit.putString("appkey", "0371.ml.appkey")
         edit.apply()
         setContentView(R.layout.activity_splash)
+        MyApp.requestPermission(this)
         if (GxmQ) { //第一次登录
 //            setContentView(R.layout.activity_splash)
             getCode()
-            BaseActivity.goStartActivity(this@SplashActivity, GuideActivity())
+    /*        BaseActivity.goStartActivity(this@SplashActivity, GuideActivity())
             finish()
-            //首次登录 拿取appKey
+            //首次登录 拿取appKey*/
         } else {
-            splash_img.visibility = View.VISIBLE
+       /*     splash_img.visibility = View.VISIBLE
             tv.visibility = View.VISIBLE
             //各个第三方的初始化 以及获取版本信息
             Handler().postDelayed(Runnable {
                 goActivity(this@SplashActivity)
-            }, 3000)
+            }, 3000)*/
         }
+//        splash_img.visibility = View.VISIBLE
+//        tv.visibility = View.VISIBLE
+        //各个第三方的初始化 以及获取版本信息
+        Handler().postDelayed(Runnable {
+            goActivity(this@SplashActivity)
+        }, 6000)
 
         tv.setOnClickListener(this)
     }
@@ -61,7 +68,6 @@ class SplashActivity : FragmentActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.tv -> {
                 goActivity(this@SplashActivity)
-                finish()
             }
         }
     }

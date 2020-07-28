@@ -102,6 +102,7 @@ class NewClassifyActivity : BaseActivity(), View.OnClickListener,
                     val intent = Intent(this@NewClassifyActivity, ZyAllActivity::class.java)
                     intent.putExtra("type", "2")
                     intent.putExtra("category_id", it[position].category_id)
+                    intent.putExtra("category_name", it[position].name)
                     startActivity(intent)
                 }
             }

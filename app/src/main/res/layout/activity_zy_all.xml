@@ -49,7 +49,7 @@
 
         <com.scwang.smart.refresh.header.MaterialHeader
                 android:id="@+id/header"
-                app:mhShowBezierWave="true"
+                app:mhShowBezierWave="false"
                 app:mhPrimaryColor="@color/colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_56" />

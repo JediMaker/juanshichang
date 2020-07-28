@@ -403,6 +403,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="29px"
+                        android:visibility="gone"
                         android:background="@color/beijing" />
 
                 <!-- <LinearLayout
@@ -702,6 +703,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.16"
                 android:gravity="center"
+                android:visibility="visible"
                 android:orientation="vertical">
 
             <ImageView
@@ -729,7 +731,7 @@
                 android:id="@+id/spZySC"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
+                android:layout_weight="0.19"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:visibility="gone">
